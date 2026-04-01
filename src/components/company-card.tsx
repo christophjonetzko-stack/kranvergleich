@@ -54,17 +54,17 @@ export function CompanyCard({ company, onRequestQuote }: CompanyCardProps) {
       {/* Content */}
       <div className="flex-1 min-w-0">
         {/* Line 1: Name + badges */}
-        <div className="flex items-center gap-2 mb-0.5">
-          <Link href={`/anbieter/${company.slug}`} className="hover:underline">
+        <div className="flex items-center gap-2 mb-0.5 min-w-0">
+          <Link href={`/anbieter/${company.slug}`} className="hover:underline min-w-0 flex-1">
             <p className="font-medium text-[15px] text-gray-900 truncate">{company.name}</p>
           </Link>
           {company.is_verified && (
-            <span className="text-[11px] bg-green-50 text-green-700 px-1.5 py-0.5 rounded shrink-0">
+            <span className="text-[11px] bg-green-50 text-green-700 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
               Verifiziert
             </span>
           )}
           {company.is_premium && (
-            <span className="text-[11px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded shrink-0">
+            <span className="text-[11px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
               Premium
             </span>
           )}

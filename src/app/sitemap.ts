@@ -78,8 +78,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const companyPages: MetadataRoute.Sitemap = companies.map((c) => ({
     url: `${baseUrl}/anbieter/${c.slug}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
   }))
 
   return [...staticPages, ...craneTypePages, ...cityPages, ...companyPages]
