@@ -272,7 +272,7 @@ export default async function CompanyPage({
         <p className="text-[12px] text-gray-300 mt-4">
           Daten falsch oder veraltet?{' '}
           <a
-            href={`mailto:impressum@kranvergleich.de?subject=Eintrag%20melden:%20${encodeURIComponent(company.name)}&body=Firma:%20${encodeURIComponent(company.name)}%0AStadt:%20${encodeURIComponent(company.city)}%0A%0ABitte%20beschreiben%20Sie%20das%20Problem:`}
+            href={`mailto:daten-falsch@kranvergleich.de?subject=Eintrag%20melden:%20${encodeURIComponent(company.name)}&body=Firma:%20${encodeURIComponent(company.name)}%0AStadt:%20${encodeURIComponent(company.city)}%0A%0ABitte%20beschreiben%20Sie%20das%20Problem:`}
             className="text-gray-400 hover:text-gray-600 underline"
           >
             Diesen Eintrag melden
