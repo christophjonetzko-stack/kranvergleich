@@ -14,6 +14,8 @@ interface CompanyListWithFormProps {
   craneTypeId?: string
   craneTypeName?: string
   cityName?: string
+  /** Show Bundesland filter (useful on crane type pages, not on city pages) */
+  showStateFilter?: boolean
 }
 
 export function CompanyListWithForm({
@@ -21,25 +23,51 @@ export function CompanyListWithForm({
   craneTypeId,
   craneTypeName,
   cityName,
+  showStateFilter = false,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [sortBy, setSortBy] = useState<SortOption>('rating')
+  const [filterState, setFilterState] = useState<string>('')
+  const [filterMinRating, setFilterMinRating] = useState<string>('')
 
-  const sorted = useMemo(() => {
-    const list = [...companies]
+  // Unique states for filter dropdown
+  const states = useMemo(() => {
+    const s = [...new Set(companies.map((c) => c.state).filter(Boolean))].sort((a, b) =>
+      a.localeCompare(b, 'de')
+    )
+    return s
+  }, [companies])
+
+  const filtered = useMemo(() => {
+    let list = [...companies]
+
+    if (filterState) {
+      list = list.filter((c) => c.state === filterState)
+    }
+
+    if (filterMinRating) {
+      const min = parseFloat(filterMinRating)
+      list = list.filter((c) => (c.google_rating ?? 0) >= min)
+    }
+
     switch (sortBy) {
       case 'rating':
-        return list.sort((a, b) => (b.google_rating ?? 0) - (a.google_rating ?? 0))
+        list.sort((a, b) => (b.google_rating ?? 0) - (a.google_rating ?? 0))
+        break
       case 'reviews':
-        return list.sort((a, b) => b.google_reviews_count - a.google_reviews_count)
+        list.sort((a, b) => b.google_reviews_count - a.google_reviews_count)
+        break
       case 'name':
-        return list.sort((a, b) => a.name.localeCompare(b.name, 'de'))
+        list.sort((a, b) => a.name.localeCompare(b.name, 'de'))
+        break
     }
-  }, [companies, sortBy])
 
-  const visible = sorted.slice(0, visibleCount)
-  const hasMore = visibleCount < sorted.length
+    return list
+  }, [companies, sortBy, filterState, filterMinRating])
+
+  const visible = filtered.slice(0, visibleCount)
+  const hasMore = visibleCount < filtered.length
 
   const addCompany = (id: string) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
@@ -53,14 +81,40 @@ export function CompanyListWithForm({
 
   const selectedCompanies = companies.filter((c) => selectedIds.includes(c.id))
 
+  // Reset pagination when filters change
+  const handleFilterChange = (setter: (v: string) => void, value: string) => {
+    setter(value)
+    setVisibleCount(PAGE_SIZE)
+  }
+
   return (
     <div>
-      {/* Sort bar */}
+      {/* Filter & sort bar */}
       {companies.length > 1 && (
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-[13px] text-gray-400">
-            {companies.length} Anbieter
-          </p>
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          {showStateFilter && states.length > 1 && (
+            <select
+              value={filterState}
+              onChange={(e) => handleFilterChange(setFilterState, e.target.value)}
+              className="text-[13px] text-gray-500 bg-transparent border border-gray-200 rounded-md px-2 py-1"
+            >
+              <option value="">Alle Bundesländer</option>
+              {states.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          )}
+
+          <select
+            value={filterMinRating}
+            onChange={(e) => handleFilterChange(setFilterMinRating, e.target.value)}
+            className="text-[13px] text-gray-500 bg-transparent border border-gray-200 rounded-md px-2 py-1"
+          >
+            <option value="">Alle Bewertungen</option>
+            <option value="4.0">Ab 4.0 Sterne</option>
+            <option value="4.5">Ab 4.5 Sterne</option>
+          </select>
+
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortOption)}
@@ -70,6 +124,10 @@ export function CompanyListWithForm({
             <option value="reviews">Meiste Bewertungen</option>
             <option value="name">Name A–Z</option>
           </select>
+
+          <span className="text-[13px] text-gray-400 ml-auto">
+            {filtered.length} Anbieter
+          </span>
         </div>
       )}
 
@@ -84,6 +142,13 @@ export function CompanyListWithForm({
         ))}
       </div>
 
+      {/* Empty state after filtering */}
+      {filtered.length === 0 && companies.length > 0 && (
+        <p className="text-center text-[13px] text-gray-400 py-8">
+          Keine Anbieter für diese Filter gefunden.
+        </p>
+      )}
+
       {/* Load more */}
       {hasMore && (
         <div className="mt-4 text-center">
@@ -91,7 +156,7 @@ export function CompanyListWithForm({
             onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
             className="px-6 py-2 border border-gray-200 hover:border-gray-300 text-[13px] text-gray-500 rounded-md transition-colors"
           >
-            Weitere Anbieter laden ({sorted.length - visibleCount} verbleibend)
+            Weitere Anbieter laden ({filtered.length - visibleCount} verbleibend)
           </button>
         </div>
       )}

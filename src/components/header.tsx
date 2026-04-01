@@ -7,9 +7,6 @@ export function Header() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center gap-2">
-            <span className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
-              K
-            </span>
             <span className="text-sm font-semibold text-gray-900">KranVergleich.de</span>
           </Link>
 

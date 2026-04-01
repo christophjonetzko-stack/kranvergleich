@@ -103,6 +103,7 @@ export default async function CraneTypePage({
             companies={companies}
             craneTypeId={craneType.id}
             craneTypeName={craneType.name}
+            showStateFilter
           />
         </section>
       )}
