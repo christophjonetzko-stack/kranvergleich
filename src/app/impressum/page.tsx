@@ -31,15 +31,7 @@ export default function ImpressumPage() {
         <section>
           <h2 className="text-xl font-semibold">Kontakt</h2>
           <p>
-            Telefon: +49 1522 3338503<br />
             E-Mail: impressum@kranvergleich.de
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold">Umsatzsteuer-ID</h2>
-          <p>
-            Kleinunternehmer gemäß § 19 UStG — keine Umsatzsteuer-Identifikationsnummer vorhanden.
           </p>
         </section>
 
@@ -59,7 +51,7 @@ export default function ImpressumPage() {
           <p>
             Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
             Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
-            Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten
+            Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten
             nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als
             Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde
             Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige

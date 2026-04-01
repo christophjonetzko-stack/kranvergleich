@@ -51,8 +51,8 @@ export default function DatenschutzPage() {
             Unsere Website wird bei Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723,
             USA (&quot;Vercel&quot;) gehostet. Vercel ist eine Cloud-Plattform, über die wir unsere Website
             bereitstellen. Wenn Sie unsere Website besuchen, werden die für den technischen Aufruf
-            notwendigen Zugriffsdaten (IP-Adresse, Datum und Uhrzeit des Zugriffs, Browser-Typ,
-            Referrer URL) von Vercel verarbeitet.
+            notwendigen Zugriffsdaten (IP-Adresse, Datum und Uhrzeit des Zugriffs, Browser-Typ
+            und -Version, Betriebssystem, Referrer URL) von Vercel verarbeitet.
           </p>
           <p>
             Die Datenverarbeitung erfolgt auf Grundlage unseres berechtigten Interesses an einer
@@ -91,11 +91,9 @@ export default function DatenschutzPage() {
           <h3 className="text-lg font-medium mt-4">Hinweis zur verantwortlichen Stelle</h3>
           <p>
             Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br />
-            Anita Jonetzko<br />
-            Kapellenstraße 6/1<br />
-            89584 Ehingen<br />
-            E-Mail: impressum@kranvergleich.de<br />
-            Telefon: +49 1522 3338503
+            Christoph Jonetzko<br />
+            [ADRESSE]<br />
+            E-Mail: [EMAIL]
           </p>
         </section>
 
@@ -137,11 +135,12 @@ export default function DatenschutzPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold">5. Datenbank (Supabase)</h2>
+          <h2 className="text-xl font-semibold">5. Datenbank</h2>
           <p>
             Wir verwenden Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992 als
             Datenbank-Dienst. Die Daten werden auf Servern in der EU (Frankfurt, Deutschland)
-            gespeichert. Wir haben mit Supabase einen Auftragsverarbeitungsvertrag abgeschlossen.
+            gespeichert. Supabase verarbeitet Daten im Einklang mit der DSGVO. Wir haben mit
+            Supabase einen Auftragsverarbeitungsvertrag abgeschlossen.
           </p>
           <p>
             Weitere Informationen:{' '}
