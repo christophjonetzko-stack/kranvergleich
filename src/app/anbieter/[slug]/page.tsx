@@ -117,9 +117,9 @@ export default async function CompanyPage({
               )}
             </div>
             <p className="text-[14px] text-gray-500">
-              {company.address && `${company.address}, `}
-              {company.zip && `${company.zip} `}
-              {company.city}, {company.state}
+              {company.address
+                ? `${company.address}, ${company.state}`
+                : `${company.zip ? `${company.zip} ` : ''}${company.city}, ${company.state}`}
             </p>
 
             {/* Rating */}
@@ -250,6 +250,22 @@ export default async function CompanyPage({
               <p className="text-gray-400 text-[13px]">Nur per Anfrage erreichbar</p>
             )}
           </dl>
+        </section>
+
+        {/* Inquiry form */}
+        <section className="border border-blue-100 rounded-lg p-5 bg-blue-50/30">
+          <h2 className="text-sm font-semibold text-gray-900 mb-1">
+            Angebot anfragen bei {company.name}
+          </h2>
+          <p className="text-[12px] text-gray-400 mb-3">
+            Kostenlos & unverbindlich. Wir leiten Ihre Anfrage an den Anbieter weiter.
+          </p>
+          <a
+            href={`mailto:impressum@kranvergleich.de?subject=Angebot%20anfragen:%20${encodeURIComponent(company.name)}&body=Firma:%20${encodeURIComponent(company.name)}%0AStadt:%20${encodeURIComponent(company.city)}%0A%0AMein%20Projekt:%0A%0AGewünschter%20Krantyp:%0AGewünschter%20Zeitraum:`}
+            className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+          >
+            Jetzt Angebot anfragen
+          </a>
         </section>
 
         {/* Report entry */}

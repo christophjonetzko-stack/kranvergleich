@@ -26,6 +26,12 @@ export function Header() {
                 {ct.name}
               </Link>
             ))}
+            <Link
+              href="/preisliste"
+              className="px-2.5 py-1.5 text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
+            >
+              Preisliste
+            </Link>
             <div className="relative group">
               <button className="px-2.5 py-1.5 text-[13px] text-gray-500 hover:text-gray-900 transition-colors">
                 Mehr &#9662;
