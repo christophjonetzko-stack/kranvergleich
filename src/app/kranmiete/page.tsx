@@ -8,6 +8,14 @@ export const metadata: Metadata = {
   title: 'Kranmiete — Was kostet ein Kran? Preise & Anbieter im Vergleich',
   description:
     'Kranmiete in Deutschland: Was kostet ein Kran pro Tag, Woche oder Monat? Preisübersicht für Minikran, Autokran, Baukran und mehr. Jetzt vergleichen.',
+  alternates: { canonical: '/kranmiete' },
+  openGraph: {
+    title: 'Kranmiete — Was kostet ein Kran? Preise & Anbieter im Vergleich',
+    description:
+      'Kranmiete in Deutschland: Was kostet ein Kran pro Tag, Woche oder Monat? Preisübersicht für Minikran, Autokran, Baukran und mehr. Jetzt vergleichen.',
+    type: 'website',
+    url: '/kranmiete',
+  },
 }
 
 export default function KranmietePage() {

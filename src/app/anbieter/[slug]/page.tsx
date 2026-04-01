@@ -42,9 +42,20 @@ export async function generateMetadata({
   const company = await getCompanyBySlug(slug)
   if (!company) return {}
 
+  const title = `${company.name} — Kranvermietung ${company.city}`
+  const description = `${company.name} in ${company.city}: Kranvermietung mit ${company.google_rating ? `${company.google_rating} Sternen` : 'Top-Bewertungen'}. Angebot anfragen auf KranVergleich.de.`
+  const canonical = `/anbieter/${slug}`
+
   return {
-    title: `${company.name} — Kranvermietung ${company.city}`,
-    description: `${company.name} in ${company.city}: Kranvermietung mit ${company.google_rating ? `${company.google_rating} Sternen` : 'Top-Bewertungen'}. Angebot anfragen auf KranVergleich.de.`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: canonical,
+    },
   }
 }
 

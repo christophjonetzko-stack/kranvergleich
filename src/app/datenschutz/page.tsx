@@ -3,6 +3,13 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Datenschutzerklärung',
   description: 'Datenschutzerklärung von KranVergleich.de — Informationen zur Verarbeitung personenbezogener Daten.',
+  alternates: { canonical: '/datenschutz' },
+  openGraph: {
+    title: 'Datenschutzerklärung',
+    description: 'Datenschutzerklärung von KranVergleich.de — Informationen zur Verarbeitung personenbezogener Daten.',
+    type: 'website',
+    url: '/datenschutz',
+  },
 }
 
 export default function DatenschutzPage() {

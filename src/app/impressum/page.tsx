@@ -3,6 +3,13 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Impressum',
   description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 TMG.',
+  alternates: { canonical: '/impressum' },
+  openGraph: {
+    title: 'Impressum',
+    description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 TMG.',
+    type: 'website',
+    url: '/impressum',
+  },
 }
 
 export default function ImpressumPage() {

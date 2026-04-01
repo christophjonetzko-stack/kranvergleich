@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   title: 'Kran mieten Preisliste 2026 — Was kostet ein Kran pro Tag?',
   description:
     'Kran mieten Preisliste 2026: Tagespreise, Wochenpreise und Monatspreise für Minikran, Autokran, Baukran, Raupenkran und mehr. Autokran Preise pro Stunde ab ca. 150€.',
+  alternates: { canonical: '/preisliste' },
+  openGraph: {
+    title: 'Kran mieten Preisliste 2026 — Was kostet ein Kran pro Tag?',
+    description:
+      'Kran mieten Preisliste 2026: Tagespreise, Wochenpreise und Monatspreise für Minikran, Autokran, Baukran, Raupenkran und mehr. Autokran Preise pro Stunde ab ca. 150€.',
+    type: 'website',
+    url: '/preisliste',
+  },
 }
 
 const priceFAQs = [

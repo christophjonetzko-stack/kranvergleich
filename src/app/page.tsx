@@ -1,9 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SearchBox } from '@/components/search-box'
 import { PriceTable } from '@/components/price-table'
 import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: 'KranVergleich.de — Kranvermietung in Deutschland vergleichen',
+    description:
+      'Finden und vergleichen Sie Kranvermietungen in ganz Deutschland. Minikrane, Autokrane, Dachdeckerkrane — Preise, Bewertungen und kostenlose Angebote.',
+    type: 'website',
+    url: '/',
+  },
+}
 
 function getPriceFrom(slug: string): number | null {
   return cranePrices.find((p) => p.craneTypeSlug === slug)?.dayFrom ?? null

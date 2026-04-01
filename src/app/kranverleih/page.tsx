@@ -8,6 +8,14 @@ export const metadata: Metadata = {
   title: 'Kranverleih — Krane mieten in ganz Deutschland',
   description:
     'Kranverleih in Deutschland: 780+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.',
+  alternates: { canonical: '/kranverleih' },
+  openGraph: {
+    title: 'Kranverleih — Krane mieten in ganz Deutschland',
+    description:
+      'Kranverleih in Deutschland: 780+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.',
+    type: 'website',
+    url: '/kranverleih',
+  },
 }
 
 function getPriceFrom(slug: string): number | null {

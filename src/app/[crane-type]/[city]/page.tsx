@@ -50,9 +50,20 @@ export async function generateMetadata({
   const priceStr = price ? `ab ${price.dayFrom}€/Tag` : ''
   const countStr = companies.length > 0 ? `${companies.length} Anbieter vergleichen` : 'Anbieter vergleichen'
 
+  const title = `${craneType.name} mieten ${city.name}${priceStr ? ` — ${priceStr}` : ''} | ${countStr}`
+  const description = `${craneType.name} mieten in ${city.name}${priceStr ? ` ${priceStr}` : ''}. ${companies.length > 0 ? `${companies.length} Anbieter` : 'Anbieter'} mit Preisen & Bewertungen vergleichen. Kostenlos Angebote anfragen.`
+  const canonical = `/${craneTypeSlug}/${citySlug}`
+
   return {
-    title: `${craneType.name} mieten ${city.name}${priceStr ? ` — ${priceStr}` : ''} | ${countStr}`,
-    description: `${craneType.name} mieten in ${city.name}${priceStr ? ` ${priceStr}` : ''}. ${companies.length > 0 ? `${companies.length} Anbieter` : 'Anbieter'} mit Preisen & Bewertungen vergleichen. Kostenlos Angebote anfragen.`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: canonical,
+    },
   }
 }
 

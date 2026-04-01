@@ -28,9 +28,20 @@ export async function generateMetadata({
   const count = companies.length
   const priceStr = craneType.price_day_from ? `ab ${craneType.price_day_from}€/Tag` : ''
 
+  const title = `${craneType.name} mieten — ${priceStr ? `${priceStr} | ` : ''}${count} Anbieter vergleichen`
+  const description = `${craneType.name} mieten in Deutschland: ${count} Anbieter im Vergleich. ${craneType.description}${priceStr ? ` Preise ${priceStr}.` : ''} Kostenlos Angebote anfragen.`
+  const canonical = `/${craneTypeSlug}`
+
   return {
-    title: `${craneType.name} mieten — ${priceStr ? `${priceStr} | ` : ''}${count} Anbieter vergleichen`,
-    description: `${craneType.name} mieten in Deutschland: ${count} Anbieter im Vergleich. ${craneType.description}${priceStr ? ` Preise ${priceStr}.` : ''} Kostenlos Angebote anfragen.`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: canonical,
+    },
   }
 }
 

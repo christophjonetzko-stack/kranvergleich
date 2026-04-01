@@ -1,13 +1,21 @@
 import type { MetadataRoute } from 'next'
 import { getCraneTypes, getCities } from '@/lib/queries'
+import { supabase } from '@/lib/supabase'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://kranvergleich.de'
 
-  const [craneTypes, cities] = await Promise.all([
+  const [craneTypes, cities, companiesResult] = await Promise.all([
     getCraneTypes(),
     getCities(),
+    supabase
+      .from('companies')
+      .select('slug')
+      .eq('is_active', true)
+      .eq('is_relevant', true),
   ])
+
+  const companies = companiesResult.data ?? []
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -15,6 +23,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
+    },
+    {
+      url: `${baseUrl}/kranverleih`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/kranmiete`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/preisliste`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/impressum`,
@@ -38,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  // Programmatic SEO pages: crane-type × city
+  // Programmatic SEO pages: crane-type x city
   const cityPages: MetadataRoute.Sitemap = craneTypes.flatMap((ct) =>
     cities.map((city) => ({
       url: `${baseUrl}/${ct.slug}/${city.slug}`,
@@ -48,5 +74,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   )
 
-  return [...staticPages, ...craneTypePages, ...cityPages]
+  // Company pages
+  const companyPages: MetadataRoute.Sitemap = companies.map((c) => ({
+    url: `${baseUrl}/anbieter/${c.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }))
+
+  return [...staticPages, ...craneTypePages, ...cityPages, ...companyPages]
 }
