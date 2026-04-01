@@ -5,6 +5,7 @@ import {
   getCraneTypes,
   getCraneTypeBySlug,
   getCityBySlug,
+  getCities,
   getCompaniesForCraneAndCity,
   getCitiesWithMinCompanies,
 } from '@/lib/queries'
@@ -14,7 +15,6 @@ import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneAndCity } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
-import { seoCities } from '@/data/cities-static'
 
 export const revalidate = 86400
 
@@ -83,23 +83,28 @@ export default async function CraneCityPage({
 
   if (!craneType || !city) notFound()
 
-  const companies = await getCompaniesForCraneAndCity(craneType.id, city.id)
+  const [companies, allCities] = await Promise.all([
+    getCompaniesForCraneAndCity(craneType.id, city.id),
+    getCities(),
+  ])
   const faqs = getFAQsForCraneAndCity(craneType.slug, city.name, craneType.name)
   const price = getPriceForCraneType(craneType.slug)
 
   // Cross-links: other crane types in this city
   const otherCraneTypes = craneTypesList.filter((ct) => ct.slug !== craneType.slug)
 
-  // Nearby cities (same state first, then by companyCount)
-  const nearbyCities = seoCities
-    .filter((c) => c.slug !== city.slug)
-    .sort((a, b) => {
-      const aState = a.state === city.state ? 0 : 1
-      const bState = b.state === city.state ? 0 : 1
-      if (aState !== bState) return aState - bState
-      return b.companyCount - a.companyCount
-    })
-    .slice(0, 8)
+  // Nearby cities by geodistance
+  const nearbyCities = city.lat != null && city.lng != null
+    ? allCities
+        .filter((c) => c.slug !== city.slug && c.lat != null && c.lng != null)
+        .map((c) => {
+          const dlat = (c.lat! - city.lat!) * 111
+          const dlng = (c.lng! - city.lng!) * 111 * Math.cos((city.lat! * Math.PI) / 180)
+          return { ...c, dist: Math.sqrt(dlat * dlat + dlng * dlng) }
+        })
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 8)
+    : allCities.filter((c) => c.slug !== city.slug && c.state === city.state).slice(0, 8)
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

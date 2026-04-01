@@ -96,7 +96,7 @@ export function InquiryBar({
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={onClearSelection}
-              className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors hidden sm:block"
             >
               Zurücksetzen
             </button>
