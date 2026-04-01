@@ -125,6 +125,8 @@ export default async function CraneCityPage({
         </p>
       </div>
 
+      <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
+
       {/* Company Listings */}
       {companies.length > 0 ? (
         <section className="mb-10">

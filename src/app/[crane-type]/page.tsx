@@ -99,6 +99,8 @@ export default async function CraneTypePage({
         </div>
       </div>
 
+      <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
+
       {/* Price Table */}
       <div className="mb-8">
         <PriceTable craneTypeSlug={craneType.slug} />
