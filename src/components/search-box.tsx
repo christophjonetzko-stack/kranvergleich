@@ -19,6 +19,7 @@ export function SearchBox() {
   const [craneType, setCraneType] = useState('')
   const [cityQuery, setCityQuery] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [hint, setHint] = useState('')
 
   const filteredCities = cityQuery.length >= 1
     ? seoCities.filter((c) =>
@@ -28,6 +29,7 @@ export function SearchBox() {
 
   function handleSearch() {
     if (!craneType) return
+    setHint('')
 
     const matchedCity = seoCities.find(
       (c) => c.name.toLowerCase() === cityQuery.toLowerCase()
@@ -35,6 +37,9 @@ export function SearchBox() {
 
     if (matchedCity) {
       router.push(`/${craneType}/${matchedCity.slug}`)
+    } else if (cityQuery.trim()) {
+      setHint(`Für "${cityQuery}" haben wir noch keine Anbieter. Zeige alle Anbieter deutschlandweit.`)
+      router.push(`/${craneType}`)
     } else {
       router.push(`/${craneType}`)
     }
@@ -113,6 +118,9 @@ export function SearchBox() {
           </Button>
         </div>
       </div>
+      {hint && (
+        <p className="text-[12px] text-gray-400 mt-2">{hint}</p>
+      )}
     </div>
   )
 }

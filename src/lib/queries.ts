@@ -81,7 +81,7 @@ export async function getCompaniesForCraneAndCity(
   craneTypeId: string,
   cityId: string
 ): Promise<CompanyWithCranes[]> {
-  // Get company IDs that serve this city
+  // Get ALL company IDs that serve this city
   const { data: regionData } = await supabase
     .from('company_regions')
     .select('company_id')
@@ -89,27 +89,20 @@ export async function getCompaniesForCraneAndCity(
 
   if (!regionData || regionData.length === 0) return []
 
-  const companyIds = regionData.map(r => r.company_id)
+  const companyIds = [...new Set(regionData.map(r => r.company_id))]
 
-  // Get company IDs that offer this crane type
-  const { data: craneData } = await supabase
-    .from('company_cranes')
-    .select('company_id')
-    .eq('crane_type_id', craneTypeId)
-    .in('company_id', companyIds)
+  // Fetch in batches of 50 to avoid URL length limits
+  const batchSize = 50
+  const firstBatch = companyIds.slice(0, batchSize)
 
-  if (!craneData || craneData.length === 0) return []
-
-  const matchingIds = [...new Set(craneData.map(c => c.company_id))]
-
-  // Get full company data
+  // Get full company data — all companies in city, not just those with matching crane type
   const { data, error } = await supabase
     .from('companies')
     .select(`
       *,
       company_cranes (*)
     `)
-    .in('id', matchingIds)
+    .in('id', firstBatch)
     .eq('is_active', true)
     .eq('is_relevant', true)
     .order('is_premium', { ascending: false })
@@ -124,36 +117,25 @@ export async function getCompaniesForCraneAndCity(
  * Used for generateStaticParams — only generate pages for cities with enough data.
  */
 export async function getCitiesWithMinCompanies(
-  craneTypeId: string,
+  _craneTypeId: string,
   minCompanies: number = 3
 ): Promise<City[]> {
-  // Get all company_regions, then filter by crane type in memory
-  // This avoids passing 700+ UUIDs in a URL query parameter
+  // Get all company_regions and count companies per city
+  // (no longer filtered by crane type — most companies lack crane type data)
   const { data: allRegions } = await supabase
     .from('company_regions')
     .select('company_id, city_id')
 
   if (!allRegions || allRegions.length === 0) return []
 
-  const { data: craneCompanies } = await supabase
-    .from('company_cranes')
-    .select('company_id')
-    .eq('crane_type_id', craneTypeId)
-
-  if (!craneCompanies || craneCompanies.length === 0) return []
-
-  const craneCompanyIds = new Set(craneCompanies.map(c => c.company_id))
-
-  // Count companies per city that have this crane type
-  const cityCounts = new Map<string, number>()
+  const cityCounts = new Map<string, Set<string>>()
   for (const r of allRegions) {
-    if (craneCompanyIds.has(r.company_id)) {
-      cityCounts.set(r.city_id, (cityCounts.get(r.city_id) || 0) + 1)
-    }
+    if (!cityCounts.has(r.city_id)) cityCounts.set(r.city_id, new Set())
+    cityCounts.get(r.city_id)!.add(r.company_id)
   }
 
   const qualifyingCityIds = [...cityCounts.entries()]
-    .filter(([, count]) => count >= minCompanies)
+    .filter(([, companies]) => companies.size >= minCompanies)
     .map(([cityId]) => cityId)
 
   if (qualifyingCityIds.length === 0) return []

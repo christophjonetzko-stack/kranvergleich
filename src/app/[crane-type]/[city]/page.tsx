@@ -64,6 +64,8 @@ export async function generateMetadata({
       type: 'website',
       url: canonical,
     },
+    // noindex pages with fewer than 3 companies to avoid thin content penalty
+    ...(companies.length < 3 && { robots: { index: false, follow: true } }),
   }
 }
 
