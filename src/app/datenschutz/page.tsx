@@ -48,9 +48,33 @@ export default function DatenschutzPage() {
         <section>
           <h2 className="text-xl font-semibold">2. Hosting</h2>
           <p>
-            Diese Website wird bei Vercel Inc. gehostet. Die Server befinden sich in der EU
-            (Frankfurt, Deutschland). Details zur Datenverarbeitung finden Sie in der
-            Datenschutzerklärung von Vercel.
+            Unsere Website wird bei Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723,
+            USA (&quot;Vercel&quot;) gehostet. Vercel ist eine Cloud-Plattform, über die wir unsere Website
+            bereitstellen. Wenn Sie unsere Website besuchen, werden die für den technischen Aufruf
+            notwendigen Zugriffsdaten (IP-Adresse, Datum und Uhrzeit des Zugriffs, Browser-Typ,
+            Referrer URL) von Vercel verarbeitet.
+          </p>
+          <p>
+            Die Datenverarbeitung erfolgt auf Grundlage unseres berechtigten Interesses an einer
+            sicheren und effizienten Bereitstellung unserer Website gemäß Art. 6 Abs. 1 lit. f DSGVO.
+          </p>
+          <p>
+            Da Vercel ein US-amerikanisches Unternehmen ist, kann es zu einer Übermittlung
+            personenbezogener Daten in die USA kommen. Wir weisen darauf hin, dass in den USA kein
+            mit der EU vergleichbares Datenschutzniveau garantiert werden kann. Wir haben mit Vercel
+            einen Auftragsverarbeitungsvertrag (DPA) abgeschlossen, der die Standardvertragsklauseln
+            (SCCs) der EU-Kommission gemäß Art. 46 Abs. 2 lit. c DSGVO enthält.
+          </p>
+          <p>
+            Die Datenschutzerklärung von Vercel finden Sie unter:{' '}
+            <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+              https://vercel.com/legal/privacy-policy
+            </a>
+            <br />
+            Das DPA von Vercel ist abrufbar unter:{' '}
+            <a href="https://vercel.com/legal/dpa" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+              https://vercel.com/legal/dpa
+            </a>
           </p>
         </section>
 
@@ -115,8 +139,15 @@ export default function DatenschutzPage() {
         <section>
           <h2 className="text-xl font-semibold">5. Datenbank (Supabase)</h2>
           <p>
-            Wir verwenden Supabase als Datenbank-Dienst. Die Daten werden auf Servern in der EU
-            gespeichert. Supabase Inc. verarbeitet Daten im Einklang mit der DSGVO.
+            Wir verwenden Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992 als
+            Datenbank-Dienst. Die Daten werden auf Servern in der EU (Frankfurt, Deutschland)
+            gespeichert. Wir haben mit Supabase einen Auftragsverarbeitungsvertrag abgeschlossen.
+          </p>
+          <p>
+            Weitere Informationen:{' '}
+            <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+              https://supabase.com/privacy
+            </a>
           </p>
         </section>
 
