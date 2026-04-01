@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getCompanyBySlug } from '@/lib/queries'
+import { getCompanyBySlug, getOtherCompaniesInCity } from '@/lib/queries'
 import { getCraneTypeNameById } from '@/data/crane-types'
 
 export const revalidate = 86400
@@ -67,6 +67,8 @@ export default async function CompanyPage({
   const { slug } = await params
   const company = await getCompanyBySlug(slug)
   if (!company) notFound()
+
+  const otherCompanies = await getOtherCompaniesInCity(company.city, slug)
 
   const initials = getInitials(company.name)
   const colorClass = getColorClass(company.name)
@@ -160,6 +162,12 @@ export default async function CompanyPage({
                   Website besuchen
                 </a>
               )}
+              <a
+                href={`mailto:impressum@kranvergleich.de?subject=Angebot%20anfragen:%20${encodeURIComponent(company.name)}&body=Firma:%20${encodeURIComponent(company.name)}%0AStadt:%20${encodeURIComponent(company.city)}%0A%0AMein%20Projekt:`}
+                className="inline-flex items-center px-4 py-2 border border-blue-200 hover:border-blue-300 text-[13px] text-blue-600 rounded-md transition-colors"
+              >
+                Angebot anfragen
+              </a>
             </div>
           </div>
         </div>
@@ -255,6 +263,31 @@ export default async function CompanyPage({
           </a>
         </p>
       </div>
+
+      {/* Other companies in same city */}
+      {otherCompanies.length > 0 && (
+        <section className="mt-8">
+          <h2 className="text-sm font-semibold text-gray-900 mb-3">
+            Andere Anbieter in {company.city}
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {otherCompanies.map((other) => (
+              <Link
+                key={other.slug}
+                href={`/anbieter/${other.slug}`}
+                className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1.5 transition-colors"
+              >
+                {other.name}
+                {other.google_rating != null && (
+                  <span className="text-[11px] text-gray-400">
+                    &#9733; {other.google_rating.toFixed(1)}
+                  </span>
+                )}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Schema.org */}
       <script

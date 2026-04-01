@@ -74,6 +74,27 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyWithCranes 
 }
 
 /**
+ * Get other companies in the same city (for cross-linking on company profile).
+ */
+export async function getOtherCompaniesInCity(
+  city: string,
+  excludeSlug: string,
+  limit: number = 6
+): Promise<{ name: string; slug: string; google_rating: number | null }[]> {
+  const { data } = await supabase
+    .from('companies')
+    .select('name, slug, google_rating')
+    .eq('city', city)
+    .eq('is_active', true)
+    .eq('is_relevant', true)
+    .neq('slug', excludeSlug)
+    .order('google_rating', { ascending: false })
+    .limit(limit)
+
+  return data ?? []
+}
+
+/**
  * Get companies for a crane type in a city.
  * Uses company_regions to match city, and company_cranes to match crane type.
  */

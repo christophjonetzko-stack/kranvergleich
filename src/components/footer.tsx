@@ -1,14 +1,22 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { craneTypes } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
 
-interface FooterProps {
-  /** Current crane type slug — used to make city links contextual */
-  craneTypeSlug?: string
+function getCraneTypeSlugFromPath(pathname: string): string {
+  // Extract crane type slug from paths like /autokran-mieten or /autokran-mieten/berlin
+  const segment = pathname.split('/')[1] || ''
+  if (craneTypes.some((ct) => ct.slug === segment)) {
+    return segment
+  }
+  return 'minikran-mieten' // default
 }
 
-export function Footer({ craneTypeSlug }: FooterProps) {
-  const cityLinkBase = craneTypeSlug || 'minikran-mieten'
+export function Footer() {
+  const pathname = usePathname()
+  const cityLinkBase = getCraneTypeSlugFromPath(pathname)
 
   return (
     <footer className="border-t border-gray-200 bg-white mt-auto">
@@ -31,7 +39,7 @@ export function Footer({ craneTypeSlug }: FooterProps) {
             </ul>
           </div>
 
-          {/* Top Städte — contextual */}
+          {/* Top Städte — contextual based on current crane type */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Top Städte</h3>
             <ul className="space-y-1.5">
