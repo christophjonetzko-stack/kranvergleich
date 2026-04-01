@@ -91,9 +91,11 @@ export default function DatenschutzPage() {
           <h3 className="text-lg font-medium mt-4">Hinweis zur verantwortlichen Stelle</h3>
           <p>
             Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br />
-            Christoph Jonetzko<br />
-            [ADRESSE]<br />
-            E-Mail: [EMAIL]
+            Anita Jonetzko<br />
+            Kapellenstraße 6/1<br />
+            89584 Ehingen<br />
+            E-Mail: impressum@kranvergleich.de<br />
+            Telefon: +49 1522 3338503
           </p>
         </section>
 
