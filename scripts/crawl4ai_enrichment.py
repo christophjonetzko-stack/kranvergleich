@@ -190,7 +190,7 @@ def save_enrichment(company_id, company_name, data):
     if data.get("email"):
         update["email"] = data["email"]
     if data.get("service_radius_km"):
-        update["service_radius_km"] = data["service_radius_km"]
+        update["service_radius_km"] = int(data["service_radius_km"])
     if data.get("service_regions"):
         update["service_regions"] = data["service_regions"]
     if data.get("opening_hours"):
@@ -209,17 +209,17 @@ def save_enrichment(company_id, company_name, data):
         all_month_to = [p["price_month_to"] for p in prices if p.get("price_month_to")]
 
         if all_day_from:
-            update["price_day_from"] = min(all_day_from)
+            update["price_day_from"] = int(min(all_day_from))
         if all_day_to:
-            update["price_day_to"] = max(all_day_to)
+            update["price_day_to"] = int(max(all_day_to))
         if all_week_from:
-            update["price_week_from"] = min(all_week_from)
+            update["price_week_from"] = int(min(all_week_from))
         if all_week_to:
-            update["price_week_to"] = max(all_week_to)
+            update["price_week_to"] = int(max(all_week_to))
         if all_month_from:
-            update["price_month_from"] = min(all_month_from)
+            update["price_month_from"] = int(min(all_month_from))
         if all_month_to:
-            update["price_month_to"] = max(all_month_to)
+            update["price_month_to"] = int(max(all_month_to))
 
         # Collect price notes
         notes = [p["note"] for p in prices if p.get("note")]
