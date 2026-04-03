@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+scripts/crawl4ai_enrichment_log.txt
+scripts/crawl4ai_enrichment_output.txt
+scripts/enrichment_results.csv
+kranvergleich/

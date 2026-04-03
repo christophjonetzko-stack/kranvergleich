@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import { CompanyCard } from './company-card'
 import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
+import { getCraneTypeNameById } from '@/data/crane-types'
 
 const PAGE_SIZE = 20
 
@@ -16,6 +17,8 @@ interface CompanyListWithFormProps {
   cityName?: string
   /** Show Bundesland filter (useful on crane type pages, not on city pages) */
   showStateFilter?: boolean
+  /** Show crane type filter (useful on city pages with mixed crane types) */
+  showCraneTypeFilter?: boolean
 }
 
 export function CompanyListWithForm({
@@ -24,12 +27,15 @@ export function CompanyListWithForm({
   craneTypeName,
   cityName,
   showStateFilter = false,
+  showCraneTypeFilter = false,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [sortBy, setSortBy] = useState<SortOption>('rating')
   const [filterState, setFilterState] = useState<string>('')
   const [filterMinRating, setFilterMinRating] = useState<string>('')
+  const [filterOperator, setFilterOperator] = useState<string>('')
+  const [filterCraneType, setFilterCraneType] = useState<string>('')
 
   // Unique states for filter dropdown
   const states = useMemo(() => {
@@ -37,6 +43,19 @@ export function CompanyListWithForm({
       a.localeCompare(b, 'de')
     )
     return s
+  }, [companies])
+
+  // Unique crane types across all companies
+  const availableCraneTypes = useMemo(() => {
+    const typeIds = new Set<string>()
+    for (const c of companies) {
+      for (const cc of c.company_cranes) {
+        typeIds.add(cc.crane_type_id)
+      }
+    }
+    return [...typeIds]
+      .map((id) => ({ id, name: getCraneTypeNameById(id) }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'de'))
   }, [companies])
 
   const filtered = useMemo(() => {
@@ -49,6 +68,16 @@ export function CompanyListWithForm({
     if (filterMinRating) {
       const min = parseFloat(filterMinRating)
       list = list.filter((c) => (c.google_rating ?? 0) >= min)
+    }
+
+    if (filterOperator === 'yes') {
+      list = list.filter((c) => c.company_cranes.some((cc) => cc.has_operator))
+    } else if (filterOperator === 'no') {
+      list = list.filter((c) => c.company_cranes.some((cc) => !cc.has_operator))
+    }
+
+    if (filterCraneType) {
+      list = list.filter((c) => c.company_cranes.some((cc) => cc.crane_type_id === filterCraneType))
     }
 
     switch (sortBy) {
@@ -64,7 +93,7 @@ export function CompanyListWithForm({
     }
 
     return list
-  }, [companies, sortBy, filterState, filterMinRating])
+  }, [companies, sortBy, filterState, filterMinRating, filterOperator, filterCraneType])
 
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
@@ -114,6 +143,29 @@ export function CompanyListWithForm({
             <option value="4.0">Ab 4.0 Sterne</option>
             <option value="4.5">Ab 4.5 Sterne</option>
           </select>
+
+          <select
+            value={filterOperator}
+            onChange={(e) => handleFilterChange(setFilterOperator, e.target.value)}
+            className="text-[13px] text-gray-500 bg-transparent border border-gray-200 rounded-md px-2 py-1"
+          >
+            <option value="">Kranführer</option>
+            <option value="yes">Mit Kranführer</option>
+            <option value="no">Ohne Kranführer</option>
+          </select>
+
+          {showCraneTypeFilter && availableCraneTypes.length > 1 && (
+            <select
+              value={filterCraneType}
+              onChange={(e) => handleFilterChange(setFilterCraneType, e.target.value)}
+              className="text-[13px] text-gray-500 bg-transparent border border-gray-200 rounded-md px-2 py-1"
+            >
+              <option value="">Alle Krantypen</option>
+              {availableCraneTypes.map((ct) => (
+                <option key={ct.id} value={ct.id}>{ct.name}</option>
+              ))}
+            </select>
+          )}
 
           <select
             value={sortBy}

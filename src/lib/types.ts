@@ -46,6 +46,17 @@ export interface Company {
   logo_url: string | null
   is_premium: boolean
   is_verified: boolean
+  price_day_from: number | null
+  price_day_to: number | null
+  price_week_from: number | null
+  price_week_to: number | null
+  price_month_from: number | null
+  price_month_to: number | null
+  price_note: string | null
+  service_radius_km: number | null
+  service_regions: string[] | null
+  opening_hours: string | null
+  description_enriched: string | null
 }
 
 export interface CompanyCrane {

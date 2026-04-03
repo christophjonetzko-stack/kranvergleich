@@ -95,6 +95,13 @@ export function CompanyCard({ company, onRequestQuote }: CompanyCardProps) {
               {typeName}
             </span>
           ))}
+          {company.price_day_from ? (
+            <span className="text-[12px] text-blue-600 font-medium">
+              ab {company.price_day_from.toLocaleString('de-DE')}€/Tag
+            </span>
+          ) : (
+            <span className="text-[12px] text-gray-400">Preis auf Anfrage</span>
+          )}
         </div>
       </div>
 

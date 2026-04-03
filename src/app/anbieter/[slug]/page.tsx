@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getCompanyBySlug, getOtherCompaniesInCity } from '@/lib/queries'
 import { getCraneTypeNameById } from '@/data/crane-types'
+import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 
 export const revalidate = 86400
 
@@ -178,7 +179,7 @@ export default async function CompanyPage({
         <section className="border border-gray-200 rounded-lg p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-2">Über das Unternehmen</h2>
           <p className="text-[14px] text-gray-500 leading-relaxed">
-            {company.description || description}
+            {company.description_enriched || company.description || description}
           </p>
         </section>
 
@@ -209,6 +210,52 @@ export default async function CompanyPage({
                 )}
               </div>
             )}
+          </section>
+        )}
+
+        {/* Pricing */}
+        {company.price_day_from && (
+          <section className="border border-gray-200 rounded-lg p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Preise</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {company.price_day_from && (
+                <div className="bg-gray-50 rounded-md p-3">
+                  <p className="text-[11px] text-gray-400 mb-0.5">Tagespreis</p>
+                  <p className="text-[15px] font-medium text-gray-900">
+                    {company.price_day_from.toLocaleString('de-DE')}€
+                    {company.price_day_to && company.price_day_to !== company.price_day_from && (
+                      <> – {company.price_day_to.toLocaleString('de-DE')}€</>
+                    )}
+                  </p>
+                </div>
+              )}
+              {company.price_week_from && (
+                <div className="bg-gray-50 rounded-md p-3">
+                  <p className="text-[11px] text-gray-400 mb-0.5">Wochenpreis</p>
+                  <p className="text-[15px] font-medium text-gray-900">
+                    {company.price_week_from.toLocaleString('de-DE')}€
+                    {company.price_week_to && company.price_week_to !== company.price_week_from && (
+                      <> – {company.price_week_to.toLocaleString('de-DE')}€</>
+                    )}
+                  </p>
+                </div>
+              )}
+              {company.price_month_from && (
+                <div className="bg-gray-50 rounded-md p-3">
+                  <p className="text-[11px] text-gray-400 mb-0.5">Monatspreis</p>
+                  <p className="text-[15px] font-medium text-gray-900">
+                    {company.price_month_from.toLocaleString('de-DE')}€
+                    {company.price_month_to && company.price_month_to !== company.price_month_from && (
+                      <> – {company.price_month_to.toLocaleString('de-DE')}€</>
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+            {company.price_note && (
+              <p className="text-[12px] text-gray-500 mt-2">{company.price_note}</p>
+            )}
+            <p className="text-[11px] text-gray-400 mt-1">Alle Preise Richtwerte, netto. Verbindliches Angebot auf Anfrage.</p>
           </section>
         )}
 
@@ -246,11 +293,68 @@ export default async function CompanyPage({
                 </dd>
               </div>
             )}
+            {company.opening_hours && (
+              <div className="flex gap-3">
+                <dt className="text-gray-400 w-16 shrink-0">Zeiten</dt>
+                <dd className="text-gray-700">{company.opening_hours}</dd>
+              </div>
+            )}
             {!company.phone && !company.website && (
               <p className="text-gray-400 text-[13px]">Nur per Anfrage erreichbar</p>
             )}
           </dl>
         </section>
+
+        {/* Service area */}
+        {(company.service_regions?.length || company.service_radius_km) && (
+          <section className="border border-gray-200 rounded-lg p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Einsatzgebiet</h2>
+            {company.service_radius_km && (
+              <p className="text-[14px] text-gray-500 mb-2">
+                Lieferung im Umkreis von {company.service_radius_km} km
+              </p>
+            )}
+            {company.service_regions && company.service_regions.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {company.service_regions.map((region) => (
+                  <span
+                    key={region}
+                    className="text-[12px] bg-gray-100 text-gray-700 rounded-full px-3 py-1"
+                  >
+                    {region}
+                  </span>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* Location map */}
+        {company.lat != null && company.lng != null && (
+          <section className="border border-gray-200 rounded-lg p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Standort</h2>
+            <CompanyMapWrapper
+              companies={[{
+                name: company.name,
+                slug: company.slug,
+                lat: company.lat,
+                lng: company.lng,
+                city: company.city,
+                google_rating: company.google_rating,
+              }]}
+              centerLat={company.lat}
+              centerLng={company.lng}
+            />
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${company.lat},${company.lng}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center mt-3 text-[13px] text-blue-600 hover:underline"
+            >
+              Route planen &rarr;
+            </a>
+          </section>
+        )}
 
         {/* Inquiry form */}
         <section className="border border-blue-100 rounded-lg p-5 bg-blue-50/30">

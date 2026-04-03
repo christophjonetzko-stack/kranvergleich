@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { SearchBox } from '@/components/search-box'
 import { PriceTable } from '@/components/price-table'
@@ -72,17 +73,26 @@ export default function HomePage() {
               <Link
                 key={ct.slug}
                 href={`/${ct.slug}`}
-                className="flex items-center justify-between gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors"
+                className="flex gap-3 p-3 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors overflow-hidden"
               >
-                <div className="min-w-0">
+                <div className="relative w-20 h-20 rounded-md overflow-hidden shrink-0 bg-gray-100">
+                  <Image
+                    src={ct.image}
+                    alt={ct.name}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </div>
+                <div className="min-w-0 flex flex-col justify-center">
                   <p className="font-medium text-[15px] text-gray-900">{ct.name}</p>
                   <p className="text-[13px] text-gray-500 truncate">{ct.desc}</p>
+                  {priceFrom && (
+                    <span className="text-[12px] font-medium text-blue-700 mt-1">
+                      ab {priceFrom.toLocaleString('de-DE')}€/Tag
+                    </span>
+                  )}
                 </div>
-                {priceFrom && (
-                  <span className="text-[12px] font-medium text-blue-700 bg-blue-50 px-2 py-1 rounded shrink-0">
-                    ab {priceFrom.toLocaleString('de-DE')}€/Tag
-                  </span>
-                )}
               </Link>
             )
           })}
@@ -96,7 +106,7 @@ export default function HomePage() {
           {topCities.map((city) => (
             <Link
               key={city.slug}
-              href={`/minikran-mieten/${city.slug}`}
+              href={`/autokran-mieten/${city.slug}`}
               className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
             >
               {city.name}
@@ -104,7 +114,7 @@ export default function HomePage() {
             </Link>
           ))}
           <Link
-            href="/minikran-mieten"
+            href="/autokran-mieten"
             className="inline-flex items-center text-[13px] text-blue-600 hover:text-blue-700 px-2 py-1.5 transition-colors"
           >
             Alle Städte &rarr;

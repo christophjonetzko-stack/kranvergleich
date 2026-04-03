@@ -1,12 +1,13 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getCraneTypeBySlug, getCraneTypes, getCities } from '@/lib/queries'
+import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity } from '@/lib/queries'
 import { CompanyListWithForm } from '@/components/company-list-with-form'
+import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneType } from '@/data/faq'
-import { getCompaniesForCraneType } from '@/lib/queries'
+import { getPriceForCraneType } from '@/data/crane-prices'
 
 export const revalidate = 86400
 
@@ -60,7 +61,9 @@ export default async function CraneTypePage({
   ])
 
   const faqs = getFAQsForCraneType(craneType.slug)
+  const price = getPriceForCraneType(craneType.slug)
   const topCities = cities.slice(0, 15)
+  const cityCounts = await getCompanyCountsPerCity(topCities.map((c) => c.id))
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -75,6 +78,9 @@ export default async function CraneTypePage({
       <div className="mb-8">
         <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
           {craneType.name} mieten
+          {craneType.price_day_from && (
+            <span className="text-blue-600"> — ab {craneType.price_day_from.toLocaleString('de-DE')}€/Tag</span>
+          )}
         </h1>
         <p className="text-[15px] text-gray-500 mb-3">
           {craneType.description}
@@ -91,24 +97,59 @@ export default async function CraneTypePage({
           {craneType.typical_height_m && (
             <span>Hakenhöhe: {craneType.typical_height_m}</span>
           )}
-          {craneType.price_day_from && (
-            <span className="text-blue-600 font-medium">
-              ab {craneType.price_day_from.toLocaleString('de-DE')}€/Tag
-            </span>
-          )}
         </div>
       </div>
 
       <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
 
+      {/* Table of Contents */}
+      <nav className="mb-8 border border-gray-200 rounded-lg p-4">
+        <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
+        <ul className="flex flex-col gap-1">
+          <li>
+            <a href="#preise" className="text-[13px] text-blue-600 hover:underline">
+              Preisübersicht
+            </a>
+          </li>
+          {companies.length > 0 && (
+            <li>
+              <a href="#anbieter" className="text-[13px] text-blue-600 hover:underline">
+                {companies.length} Anbieter
+              </a>
+            </li>
+          )}
+          {companies.some((c) => c.lat != null && c.lng != null) && (
+            <li>
+              <a href="#karte" className="text-[13px] text-blue-600 hover:underline">
+                Karte
+              </a>
+            </li>
+          )}
+          {faqs.length > 0 && (
+            <li>
+              <a href="#faq" className="text-[13px] text-blue-600 hover:underline">
+                Häufige Fragen
+              </a>
+            </li>
+          )}
+          {topCities.length > 0 && (
+            <li>
+              <a href="#staedte" className="text-[13px] text-blue-600 hover:underline">
+                {craneType.name} in Ihrer Stadt
+              </a>
+            </li>
+          )}
+        </ul>
+      </nav>
+
       {/* Price Table */}
-      <div className="mb-8">
+      <div id="preise" className="mb-8 scroll-mt-20">
         <PriceTable craneTypeSlug={craneType.slug} />
       </div>
 
       {/* Company Listings */}
       {companies.length > 0 && (
-        <section className="mb-10">
+        <section id="anbieter" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             {craneType.name}-Anbieter in Deutschland ({companies.length})
           </h2>
@@ -121,27 +162,72 @@ export default async function CraneTypePage({
         </section>
       )}
 
+      {/* Map — all providers in Germany */}
+      {(() => {
+        const mappable = companies.filter((c) => c.lat != null && c.lng != null)
+        if (mappable.length === 0) return null
+        return (
+          <section id="karte" className="mb-10 scroll-mt-20">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              {craneType.name}-Anbieter in Deutschland — Karte
+            </h2>
+            <CompanyMapWrapper
+              companies={mappable.map((c) => ({
+                name: c.name,
+                slug: c.slug,
+                lat: c.lat!,
+                lng: c.lng!,
+                city: c.city,
+                google_rating: c.google_rating,
+              }))}
+              centerLat={51.1657}
+              centerLng={10.4515}
+            />
+          </section>
+        )
+      })()}
+
+      {/* Intro text (unique per crane type for SEO) */}
+      <div className="text-[14px] text-gray-500 leading-relaxed mb-10">
+        <p>
+          Sie suchen einen <strong className="text-gray-900">{craneType.name}</strong> zur Miete
+          in Deutschland? Auf KranVergleich.de finden Sie {companies.length > 0 ? `${companies.length} ` : ''}
+          {craneType.name}-Vermieter im direkten Vergleich.
+          {price && (
+            <> Die Tagesmiete liegt zwischen ca. {price.dayFrom.toLocaleString('de-DE')}€ und {price.dayTo.toLocaleString('de-DE')}€ (Richtwerte, netto).
+            {price.includesOperator
+              ? ' Der Preis beinhaltet in der Regel einen qualifizierten Kranführer.'
+              : ' Ein Kranführer ist nicht im Preis enthalten und kann separat gebucht werden.'}</>
+          )}
+          {' '}Vergleichen Sie Bewertungen, Preise und Leistungen — und fordern Sie kostenlos Angebote an.
+        </p>
+      </div>
+
       {/* FAQ */}
-      <div className="mb-10">
+      <div id="faq" className="mb-10 scroll-mt-20">
         <FAQSection faqs={faqs} craneTypeName={craneType.name} />
       </div>
 
       {/* Cities pills */}
       {topCities.length > 0 && (
-        <section className="mb-10">
+        <section id="staedte" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             {craneType.name} mieten in Ihrer Stadt
           </h2>
           <div className="flex flex-wrap gap-2">
-            {topCities.map((city) => (
-              <Link
-                key={city.slug}
-                href={`/${craneType.slug}/${city.slug}`}
-                className="inline-flex items-center text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
-              >
-                {city.name}
-              </Link>
-            ))}
+            {topCities.map((city) => {
+              const count = cityCounts.get(city.id) ?? 0
+              return (
+                <Link
+                  key={city.slug}
+                  href={`/${craneType.slug}/${city.slug}`}
+                  className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
+                >
+                  {city.name}
+                  {count > 0 && <span className="text-[11px] text-gray-400">{count}</span>}
+                </Link>
+              )
+            })}
           </div>
         </section>
       )}

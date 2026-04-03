@@ -206,6 +206,35 @@ export async function getCompaniesForCraneType(
   return data ?? []
 }
 
+/**
+ * Get company count per city for a list of cities.
+ * Returns a map of cityId → count.
+ */
+export async function getCompanyCountsPerCity(
+  cityIds: string[]
+): Promise<Map<string, number>> {
+  if (cityIds.length === 0) return new Map()
+
+  const { data: allRegions } = await supabase
+    .from('company_regions')
+    .select('company_id, city_id')
+    .in('city_id', cityIds)
+
+  const counts = new Map<string, number>()
+  if (!allRegions) return counts
+
+  const cityCompanies = new Map<string, Set<string>>()
+  for (const r of allRegions) {
+    if (!cityCompanies.has(r.city_id)) cityCompanies.set(r.city_id, new Set())
+    cityCompanies.get(r.city_id)!.add(r.company_id)
+  }
+  for (const [cityId, companies] of cityCompanies) {
+    counts.set(cityId, companies.size)
+  }
+
+  return counts
+}
+
 // ============================================
 // LEADS
 // ============================================

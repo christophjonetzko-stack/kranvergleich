@@ -8,8 +8,10 @@ import {
   getCities,
   getCompaniesForCraneAndCity,
   getCitiesWithMinCompanies,
+  getCompanyCountsPerCity,
 } from '@/lib/queries'
 import { CompanyListWithForm } from '@/components/company-list-with-form'
+import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneAndCity } from '@/data/faq'
@@ -106,6 +108,8 @@ export default async function CraneCityPage({
         .slice(0, 8)
     : allCities.filter((c) => c.slug !== city.slug && c.state === city.state).slice(0, 8)
 
+  const nearbyCityCounts = await getCompanyCountsPerCity(nearbyCities.map((c) => c.id))
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
@@ -132,14 +136,53 @@ export default async function CraneCityPage({
 
       <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
 
+      {/* Table of Contents */}
+      <nav className="mb-8 border border-gray-200 rounded-lg p-4">
+        <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
+        <ul className="flex flex-col gap-1">
+          {companies.length > 0 && (
+            <li>
+              <a href="#anbieter" className="text-[13px] text-blue-600 hover:underline">
+                {companies.length} Anbieter in {city.name}
+              </a>
+            </li>
+          )}
+          {companies.some((c) => c.lat != null && c.lng != null) && (
+            <li>
+              <a href="#karte" className="text-[13px] text-blue-600 hover:underline">
+                Karte
+              </a>
+            </li>
+          )}
+          <li>
+            <a href="#preise" className="text-[13px] text-blue-600 hover:underline">
+              Preise
+            </a>
+          </li>
+          {faqs.length > 0 && (
+            <li>
+              <a href="#faq" className="text-[13px] text-blue-600 hover:underline">
+                Häufige Fragen
+              </a>
+            </li>
+          )}
+          <li>
+            <a href="#verwandte" className="text-[13px] text-blue-600 hover:underline">
+              Verwandte Suchen
+            </a>
+          </li>
+        </ul>
+      </nav>
+
       {/* Company Listings */}
       {companies.length > 0 ? (
-        <section className="mb-10">
+        <section id="anbieter" className="mb-10 scroll-mt-20">
           <CompanyListWithForm
             companies={companies}
             craneTypeId={craneType.id}
             craneTypeName={craneType.name}
             cityName={city.name}
+            showCraneTypeFilter
           />
         </section>
       ) : (
@@ -153,8 +196,33 @@ export default async function CraneCityPage({
         </section>
       )}
 
+      {/* Map */}
+      {(() => {
+        const mappable = companies.filter((c) => c.lat != null && c.lng != null)
+        if (mappable.length === 0) return null
+        return (
+          <section id="karte" className="mb-10 scroll-mt-20">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              {craneType.name}-Anbieter in {city.name} — Karte
+            </h2>
+            <CompanyMapWrapper
+              companies={mappable.map((c) => ({
+                name: c.name,
+                slug: c.slug,
+                lat: c.lat!,
+                lng: c.lng!,
+                city: c.city,
+                google_rating: c.google_rating,
+              }))}
+              centerLat={city.lat ?? 51.1657}
+              centerLng={city.lng ?? 10.4515}
+            />
+          </section>
+        )
+      })()}
+
       {/* Price Table */}
-      <div className="mb-10">
+      <div id="preise" className="mb-10 scroll-mt-20">
         <PriceTable craneTypeSlug={craneType.slug} />
       </div>
 
@@ -175,12 +243,12 @@ export default async function CraneCityPage({
       </div>
 
       {/* FAQ */}
-      <div className="mb-10">
+      <div id="faq" className="mb-10 scroll-mt-20">
         <FAQSection faqs={faqs} craneTypeName={craneType.name} cityName={city.name} />
       </div>
 
       {/* Cross-links */}
-      <div className="grid gap-6 sm:grid-cols-2 mb-10">
+      <div id="verwandte" className="grid gap-6 sm:grid-cols-2 mb-10 scroll-mt-20">
         {/* Other crane types in this city */}
         <div>
           <h2 className="text-sm font-semibold text-gray-900 mb-3">
@@ -205,15 +273,19 @@ export default async function CraneCityPage({
             {craneType.name} in der Nähe
           </h2>
           <div className="flex flex-wrap gap-1.5">
-            {nearbyCities.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/${craneType.slug}/${c.slug}`}
-                className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors"
-              >
-                {c.name}
-              </Link>
-            ))}
+            {nearbyCities.map((c) => {
+              const count = nearbyCityCounts.get(c.id) ?? 0
+              return (
+                <Link
+                  key={c.slug}
+                  href={`/${craneType.slug}/${c.slug}`}
+                  className="inline-flex items-center gap-1 text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors"
+                >
+                  {c.name}
+                  {count > 0 && <span className="text-[11px] text-gray-400">{count}</span>}
+                </Link>
+              )
+            })}
           </div>
         </div>
       </div>
