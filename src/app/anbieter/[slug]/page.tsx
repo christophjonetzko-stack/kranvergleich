@@ -78,6 +78,12 @@ export default async function CompanyPage({
     .map((c) => getCraneTypeNameById(c.crane_type_id))
     .filter((name, i, arr) => arr.indexOf(name) === i)
 
+  // DSGVO: only show generic business emails, not personal ones (jan.kowalski@firma.de = personal data)
+  const genericPrefixes = ['info', 'kontakt', 'contact', 'office', 'mail', 'post', 'anfrage', 'service', 'vermietung', 'kran', 'buero', 'zentrale']
+  const displayEmail = company.email && genericPrefixes.some((p) => company.email!.toLowerCase().startsWith(p + '@'))
+    ? company.email
+    : null
+
   const description = `${company.name} ist ein Kranvermieter in ${company.city}, ${company.state}. ${
     craneTypeNames.length > 0
       ? `Das Unternehmen bietet ${craneTypeNames.join(', ')} zur Miete an und`
@@ -273,12 +279,12 @@ export default async function CompanyPage({
                 </dd>
               </div>
             )}
-            {company.email && (
+            {displayEmail && (
               <div className="flex gap-3">
                 <dt className="text-gray-400 w-16 shrink-0">E-Mail</dt>
                 <dd>
-                  <a href={`mailto:${company.email}`} className="text-blue-600 hover:underline">
-                    {company.email}
+                  <a href={`mailto:${displayEmail}`} className="text-blue-600 hover:underline">
+                    {displayEmail}
                   </a>
                 </dd>
               </div>
@@ -427,7 +433,7 @@ export default async function CompanyPage({
               addressCountry: 'DE',
             },
             telephone: company.phone,
-            email: company.email,
+            ...(displayEmail && { email: displayEmail }),
             url: company.website,
             ...(company.google_rating && {
               aggregateRating: {
