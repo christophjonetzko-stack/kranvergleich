@@ -378,16 +378,22 @@ export default async function CompanyPage({
           </a>
         </section>
 
-        {/* Report entry */}
-        <p className="text-[12px] text-gray-300 mt-4">
-          Daten falsch oder veraltet?{' '}
-          <a
-            href={`mailto:daten-falsch@kranvergleich.de?subject=Eintrag%20melden:%20${encodeURIComponent(company.name)}&body=Firma:%20${encodeURIComponent(company.name)}%0AStadt:%20${encodeURIComponent(company.city)}%0A%0ABitte%20beschreiben%20Sie%20das%20Problem:`}
-            className="text-gray-400 hover:text-gray-600 underline"
-          >
-            Diesen Eintrag melden
-          </a>
-        </p>
+        {/* Opt-out / data correction — DSGVO Art. 17 */}
+        <div className="border border-gray-100 rounded-lg p-4 mt-4">
+          <p className="text-[13px] text-gray-500">
+            Sind Ihre Daten nicht korrekt oder möchten Sie Ihren Eintrag ändern oder entfernen?
+            Kontaktieren Sie uns:{' '}
+            <a
+              href={`mailto:datenschutz@kranvergleich.de?subject=${encodeURIComponent(`Eintrag ändern/entfernen: ${company.name}`)}&body=${encodeURIComponent(`Firma: ${company.name}\nStadt: ${company.city}\n\nIch möchte:\n☐ Daten korrigieren\n☐ Eintrag vollständig entfernen\n\nBeschreibung:`)}`}
+              className="text-blue-600 hover:underline"
+            >
+              datenschutz@kranvergleich.de
+            </a>
+          </p>
+          <p className="text-[11px] text-gray-400 mt-1">
+            Wir bearbeiten Ihre Anfrage innerhalb von 7 Werktagen.
+          </p>
+        </div>
       </div>
 
       {/* Other companies in same city */}
