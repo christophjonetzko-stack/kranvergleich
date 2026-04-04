@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { supabase, getServiceSupabase } from './supabase'
 import type { CraneType, City, Company, CompanyWithCranes } from './types'
 
 // ============================================
@@ -252,9 +252,10 @@ export async function submitLead(formData: {
   company_ids: string[]
 }) {
   const { company_ids, ...leadData } = formData
+  const sb = getServiceSupabase()
 
   // Insert lead
-  const { data: lead, error: leadError } = await supabase
+  const { data: lead, error: leadError } = await sb
     .from('leads')
     .insert(leadData)
     .select('id')
@@ -264,7 +265,7 @@ export async function submitLead(formData: {
 
   // Insert lead_companies
   if (company_ids.length > 0 && lead) {
-    const { error: lcError } = await supabase
+    const { error: lcError } = await sb
       .from('lead_companies')
       .insert(
         company_ids.map(companyId => ({
