@@ -27,7 +27,7 @@ export function Header() {
               </Link>
             ))}
             <Link
-              href="/preisliste"
+              href="/kran-mieten-preise"
               className="px-2.5 py-1.5 text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
             >
               Preisliste
@@ -83,7 +83,7 @@ export function Header() {
             ))}
             <div className="border-t border-gray-100 pt-2 mt-2">
               <Link
-                href="/preisliste"
+                href="/kran-mieten-preise"
                 onClick={() => setMobileOpen(false)}
                 className="block py-2 text-[14px] text-gray-500 hover:text-gray-900 transition-colors"
               >
