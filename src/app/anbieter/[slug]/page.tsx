@@ -185,7 +185,7 @@ export default async function CompanyPage({
         <section className="border border-gray-200 rounded-lg p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-2">Über das Unternehmen</h2>
           <p className="text-[14px] text-gray-500 leading-relaxed">
-            {company.description_enriched || company.description || description}
+            {company.description || description}
           </p>
         </section>
 
