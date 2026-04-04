@@ -5,7 +5,7 @@ import { submitLead } from '@/lib/queries'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const NOTIFICATION_EMAIL = 'anfragen@send.kranvergleich.de'
-const FROM_EMAIL = 'KranVergleich <anfragen@send.kranvergleich.de>'
+const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 
 export async function POST(request: Request) {
   try {
