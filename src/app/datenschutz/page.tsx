@@ -198,7 +198,7 @@ export default function DatenschutzPage() {
 
         <div className="border-t pt-4 mt-8">
           <p className="text-xs text-muted-foreground">
-            Stand: März 2026
+            Stand: April 2026
           </p>
         </div>
       </div>

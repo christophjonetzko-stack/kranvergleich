@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Impressum',
-  description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 TMG.',
+  description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 DDG.',
   alternates: { canonical: '/impressum' },
   openGraph: {
     title: 'Impressum',
-    description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 TMG.',
+    description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 DDG.',
     type: 'website',
     url: '/impressum',
   },
@@ -19,7 +19,7 @@ export default function ImpressumPage() {
 
       <div className="prose prose-sm max-w-none space-y-6">
         <section>
-          <h2 className="text-xl font-semibold">Angaben gemäß § 5 TMG</h2>
+          <h2 className="text-xl font-semibold">Angaben gemäß § 5 DDG</h2>
           <p>
             <strong>Anita Jonetzko</strong><br />
             Kapellenstraße 6/1<br />
@@ -31,12 +31,13 @@ export default function ImpressumPage() {
         <section>
           <h2 className="text-xl font-semibold">Kontakt</h2>
           <p>
-            E-Mail: impressum@kranvergleich.de
+            E-Mail: impressum@kranvergleich.de<br />
+            Telefon: +49 1522 3338503
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+          <h2 className="text-xl font-semibold">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
           <p>
             Anita Jonetzko<br />
             Kapellenstraße 6/1<br />
@@ -58,6 +59,14 @@ export default function ImpressumPage() {
             Tätigkeit hinweisen.
           </p>
 
+          <h3 className="text-lg font-medium mt-4">Haftung für Vermittlung</h3>
+          <p>
+            KranVergleich.de vermittelt lediglich Kontakte zwischen Nutzern und Kranvermietungsunternehmen
+            und übernimmt keine Haftung für die Qualität, Verfügbarkeit, Zuverlässigkeit oder Preise der
+            gelisteten Anbieter. Alle Angaben zu Preisen und Leistungen sind unverbindliche Richtwerte.
+            Verbindliche Angebote erhalten Sie direkt vom jeweiligen Anbieter.
+          </p>
+
           <h3 className="text-lg font-medium mt-4">Haftung für Links</h3>
           <p>
             Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen
@@ -68,17 +77,27 @@ export default function ImpressumPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold">Streitschlichtung</h2>
+          <h2 className="text-xl font-semibold">Wie unser Ranking entsteht (§ 5a UWG)</h2>
           <p>
-            Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
-            https://ec.europa.eu/consumers/odr/. Wir sind nicht bereit oder verpflichtet, an
-            Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+            Die Reihenfolge der Anbieter auf KranVergleich.de basiert standardmäßig auf der
+            Google-Bewertung (höchste zuerst). Nutzer können die Sortierung jederzeit ändern
+            (z.&nbsp;B. nach Anzahl der Bewertungen oder Name A–Z). Die Reihenfolge wird
+            durch keine bezahlte Platzierung beeinflusst. Sollten wir künftig bezahlte
+            Premium-Einträge anbieten, werden diese deutlich als „Anzeige" gekennzeichnet.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">Streitschlichtung (§ 36 VSBG)</h2>
+          <p>
+            Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+            Verbraucherschlichtungsstelle teilzunehmen.
           </p>
         </section>
 
         <div className="border-t pt-4 mt-8">
           <p className="text-xs text-muted-foreground">
-            Stand: März 2026
+            Stand: April 2026
           </p>
         </div>
       </div>

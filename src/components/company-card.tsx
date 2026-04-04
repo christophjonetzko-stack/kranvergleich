@@ -65,7 +65,7 @@ export function CompanyCard({ company, onRequestQuote }: CompanyCardProps) {
           )}
           {company.is_premium && (
             <span className="text-[11px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
-              Premium
+              Anzeige
             </span>
           )}
         </div>

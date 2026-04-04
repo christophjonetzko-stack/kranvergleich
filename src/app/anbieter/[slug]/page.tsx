@@ -113,7 +113,7 @@ export default async function CompanyPage({
               )}
               {company.is_premium && (
                 <span className="text-[11px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded">
-                  Premium
+                  Anzeige
                 </span>
               )}
             </div>
