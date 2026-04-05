@@ -131,7 +131,7 @@ export function Header() {
                   ))}
                   <div className="border-t border-gray-100 mt-1 pt-1">
                     <Link
-                      href="/ratgeber/welchen-kran-brauche-ich"
+                      href="/ratgeber"
                       className="block px-4 py-2 text-[13px] text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors"
                     >
                       Ratgeber
@@ -203,7 +203,7 @@ export function Header() {
                 Preisliste
               </Link>
               <Link
-                href="/ratgeber/welchen-kran-brauche-ich"
+                href="/ratgeber"
                 onClick={() => setMobileOpen(false)}
                 className="block py-2 text-[14px] text-gray-500 hover:text-gray-900 transition-colors"
               >
