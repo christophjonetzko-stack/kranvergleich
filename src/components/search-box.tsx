@@ -57,9 +57,9 @@ export function SearchBox() {
   }
 
   return (
-    <div className="border border-gray-200 rounded-lg p-4 max-w-3xl mx-auto bg-white">
-      <div className="grid gap-4 sm:grid-cols-[1fr_1fr_auto]">
-        <div>
+    <div className="border border-gray-200 rounded-lg p-4 max-w-2xl mx-auto bg-white">
+      <div className="flex flex-col sm:flex-row gap-4 items-end justify-center">
+        <div className="w-full sm:w-[200px]">
           <label className="text-sm font-medium text-muted-foreground mb-1 block">
             Krantyp
           </label>
@@ -77,7 +77,7 @@ export function SearchBox() {
           </Select>
         </div>
 
-        <div className="relative">
+        <div className="relative w-full sm:w-[200px]">
           <label className="text-sm font-medium text-muted-foreground mb-1 block">
             Stadt
           </label>
