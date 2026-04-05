@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -36,8 +36,19 @@ export function InquiryBar({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [toast, setToast] = useState<string | null>(null)
+  const prevCount = useRef(selectedCompanies.length)
 
-  if (selectedCompanies.length === 0) return null
+  // Show toast when a company is added
+  useEffect(() => {
+    if (selectedCompanies.length > prevCount.current) {
+      const newest = selectedCompanies[selectedCompanies.length - 1]
+      setToast(newest.name)
+      const timer = setTimeout(() => setToast(null), 2500)
+      return () => clearTimeout(timer)
+    }
+    prevCount.current = selectedCompanies.length
+  }, [selectedCompanies])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -82,33 +93,46 @@ export function InquiryBar({
 
   return (
     <>
-      {/* Sticky bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-blue-200 bg-white shadow-lg">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-gray-900">
-              {count} {count === 1 ? 'Anbieter' : 'Anbieter'} ausgewählt
-            </p>
-            <p className="text-xs text-gray-500 truncate">
-              {selectedCompanies.map((c) => c.name).join(', ')}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={onClearSelection}
-              className="text-xs text-gray-400 hover:text-gray-600 transition-colors hidden sm:block"
-            >
-              Zurücksetzen
-            </button>
-            <button
-              onClick={() => setIsOpen(true)}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"
-            >
-              Sammelanfrage senden
-            </button>
+      {/* Toast notification — top of screen */}
+      {toast && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] animate-in slide-in-from-top fade-in duration-300">
+          <div className="bg-green-600 text-white px-5 py-3 rounded-lg shadow-xl flex items-center gap-2 text-sm font-medium">
+            <span>&#10003;</span>
+            <span>{toast} hinzugefugt</span>
+            <span className="text-green-200 ml-1">({count} ausgewahlt)</span>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Sticky bar — bottom of screen */}
+      {count > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-blue-600 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] animate-in slide-in-from-bottom duration-300">
+          <div className="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
+            <div className="min-w-0 text-white">
+              <p className="text-sm font-semibold">
+                {count} {count === 1 ? 'Anbieter' : 'Anbieter'} ausgewahlt
+              </p>
+              <p className="text-xs text-blue-200 truncate">
+                {selectedCompanies.map((c) => c.name).join(', ')}
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={onClearSelection}
+                className="text-xs text-blue-200 hover:text-white transition-colors hidden sm:block"
+              >
+                Zurucksetzen
+              </button>
+              <button
+                onClick={() => setIsOpen(true)}
+                className="px-5 py-2.5 bg-white hover:bg-gray-100 text-blue-600 text-sm font-semibold rounded-md transition-colors"
+              >
+                Sammelanfrage senden
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal with form */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -138,7 +162,7 @@ export function InquiryBar({
                   onClearSelection()
                 }}
               >
-                Schließen
+                Schliessen
               </Button>
             </div>
           ) : (
@@ -202,7 +226,7 @@ export function InquiryBar({
                     id="ib-description"
                     name="description"
                     rows={3}
-                    placeholder="Was soll gehoben werden? Gewicht, Höhe, Zufahrt..."
+                    placeholder="Was soll gehoben werden? Gewicht, Hohe, Zufahrt..."
                   />
                 </div>
 
@@ -213,11 +237,11 @@ export function InquiryBar({
                     onCheckedChange={(checked) => setDsgvoConsent(checked === true)}
                   />
                   <Label htmlFor="ib-dsgvo" className="text-xs text-gray-500 leading-relaxed">
-                    Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
+                    Ich stimme der Verarbeitung meiner Daten gemass der{' '}
                     <a href="/datenschutz" className="underline hover:text-gray-700" target="_blank">
-                      Datenschutzerklärung
+                      Datenschutzerklarung
                     </a>{' '}
-                    zu. Meine Daten werden an die ausgewählten Anbieter weitergeleitet. *
+                    zu. Meine Daten werden an die ausgewahlten Anbieter weitergeleitet. *
                   </Label>
                 </div>
 
