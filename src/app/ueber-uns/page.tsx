@@ -4,12 +4,12 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Über uns — KranVergleich.de',
   description:
-    'KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über 780 Anbieter, 8 Krantypen, 50+ Städte. Kostenlos und unverbindlich.',
+    'KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über 740 Anbieter, 8 Krantypen, 50+ Städte. Kostenlos und unverbindlich.',
   alternates: { canonical: '/ueber-uns' },
   openGraph: {
     title: 'Über uns — KranVergleich.de',
     description:
-      'KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über 780 Anbieter, 8 Krantypen, 50+ Städte.',
+      'KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über 740 Anbieter, 8 Krantypen, 50+ Städte.',
     type: 'website',
     url: '/ueber-uns',
   },
@@ -41,7 +41,7 @@ export default function UeberUnsPage() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Unsere Daten</h2>
           <p>
-            Unsere Datenbank umfasst über 780 Kranvermieter in ganz Deutschland. Die Daten
+            Unsere Datenbank umfasst über 740 Kranvermieter in ganz Deutschland. Die Daten
             stammen aus öffentlich zugänglichen Quellen (Google Maps) und werden regelmäßig
             aktualisiert. Wir zeigen echte Google-Bewertungen, Kontaktdaten und — wo verfügbar
             — Preisinformationen.

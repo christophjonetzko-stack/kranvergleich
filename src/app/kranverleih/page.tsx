@@ -7,12 +7,12 @@ import { seoCities } from '@/data/cities-static'
 export const metadata: Metadata = {
   title: 'Kranverleih — Krane mieten in ganz Deutschland',
   description:
-    'Kranverleih in Deutschland: 780+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.',
+    'Kranverleih in Deutschland: 740+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.',
   alternates: { canonical: '/kranverleih' },
   openGraph: {
     title: 'Kranverleih — Krane mieten in ganz Deutschland',
     description:
-      'Kranverleih in Deutschland: 780+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.',
+      'Kranverleih in Deutschland: 740+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.',
     type: 'website',
     url: '/kranverleih',
   },
@@ -37,7 +37,7 @@ export default function KranverleihPage() {
         Kranverleih — Krane mieten in ganz Deutschland
       </h1>
       <p className="text-[15px] text-gray-500 mb-8 max-w-3xl">
-        Sie suchen einen Kranverleih in Ihrer Nähe? Auf KranVergleich.de finden Sie über 780
+        Sie suchen einen Kranverleih in Ihrer Nähe? Auf KranVergleich.de finden Sie über 740
         Kranverleiher in ganz Deutschland. Ob Minikran, Autokran oder Baukran — vergleichen Sie
         Preise, lesen Sie Bewertungen und fragen Sie kostenlos Angebote an. Kranvermietung war
         noch nie so einfach.

@@ -359,7 +359,7 @@ export default function KranMietenPreisePage() {
         <p>
           Die Kosten für die Kranmiete hängen von mehreren Faktoren ab: Krantyp, Tragkraft,
           Mietdauer, Region und Verfügbarkeit. <strong className="text-gray-900">Auf KranVergleich.de</strong> vergleichen
-          Sie die Preise von über 780 Anbietern in ganz Deutschland — kostenlos und unverbindlich.
+          Sie die Preise von über 740 Anbietern in ganz Deutschland — kostenlos und unverbindlich.
           Fordern Sie über unsere <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage</Link> Angebote
           von mehreren Firmen gleichzeitig an und sparen Sie Zeit und Geld.
         </p>

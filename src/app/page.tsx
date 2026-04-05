@@ -34,7 +34,7 @@ export default function HomePage() {
             Kran mieten in Deutschland
           </h1>
           <p className="text-base text-gray-500 mb-8">
-            780 Anbieter vergleichen. Preise sehen. Kostenlos Angebote anfragen.
+            740 Anbieter vergleichen. Preise sehen. Kostenlos Angebote anfragen.
           </p>
           <SearchBox />
         </div>
@@ -45,7 +45,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
-              <p className="text-xl font-semibold text-gray-900">780+</p>
+              <p className="text-xl font-semibold text-gray-900">740+</p>
               <p className="text-xs text-gray-500">Anbieter</p>
             </div>
             <div>
