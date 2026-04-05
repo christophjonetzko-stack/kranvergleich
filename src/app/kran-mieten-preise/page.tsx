@@ -90,6 +90,7 @@ export default function KranMietenPreisePage() {
         <ul className="flex flex-col gap-1">
           <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle alle Krantypen</a></li>
           <li><a href="#autokran-stunde" className="text-[13px] text-blue-600 hover:underline">Autokran Preise pro Stunde</a></li>
+          <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran Kosten</a></li>
           <li><a href="#preise-detail" className="text-[13px] text-blue-600 hover:underline">Preise nach Krantyp</a></li>
           <li><a href="#zusatzkosten" className="text-[13px] text-blue-600 hover:underline">Zusatzkosten</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen zu Kosten</a></li>
@@ -159,6 +160,45 @@ export default function KranMietenPreisePage() {
         <p className="text-[12px] text-gray-400 mt-3">
           Mindestmietdauer meist 4 Stunden. An-/Abfahrt wird oft separat berechnet (ca. 2–4€/km).
         </p>
+      </section>
+
+      {/* Dachdeckerkran costs — dedicated section for ranking keyword */}
+      <section id="dachdeckerkran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Dachdeckerkran mieten — Kosten &amp; Preise 2026
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Ein Dachdeckerkran ist die günstigste und schnellste Lösung für Dacharbeiten — Materialien
+          werden direkt aufs Dach gehoben, ohne aufwendiges Gerüst. Die Miete erfolgt in der Regel
+          ohne Bediener (Selbstbedienung nach Einweisung).
+        </p>
+        <div className="grid gap-3 sm:grid-cols-3 text-center">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">200–450€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Tagespreis</p>
+            <p className="text-[11px] text-gray-400">ohne Bediener</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">1.000–2.500€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Wochenpreis</p>
+            <p className="text-[11px] text-gray-400">bei Dachsanierung</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">3.000–7.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Monatspreis</p>
+            <p className="text-[11px] text-gray-400">Großprojekte</p>
+          </div>
+        </div>
+        <div className="mt-4 text-[13px] text-gray-500 space-y-1">
+          <p><strong className="text-gray-700">Typische Einsätze:</strong> Dachsanierung, Dachstuhlarbeiten, Solaranlagen-Montage, Schornsteinarbeiten</p>
+          <p><strong className="text-gray-700">Zusatzkosten:</strong> Transport/Anlieferung 150–300€, Einweisung meist inklusive</p>
+          <p><strong className="text-gray-700">Aufbauart:</strong> LKW-Aufbau oder Anhänger — passt in enge Zufahrten</p>
+        </div>
+        <div className="mt-4">
+          <Link href="/dachdeckerkran-mieten" className="text-[13px] text-blue-600 hover:underline">
+            Alle Dachdeckerkran-Anbieter vergleichen &rarr;
+          </Link>
+        </div>
       </section>
 
       {/* Price details per type with images */}
