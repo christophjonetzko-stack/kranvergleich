@@ -6,6 +6,14 @@ import { PriceTable } from '@/components/price-table'
 import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
+import { supabase } from '@/lib/supabase'
+
+export const revalidate = 86400
+
+/** Round down to nearest 10 */
+function roundDown10(n: number): number {
+  return Math.floor(n / 10) * 10
+}
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -22,7 +30,13 @@ function getPriceFrom(slug: string): number | null {
   return cranePrices.find((p) => p.craneTypeSlug === slug)?.dayFrom ?? null
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [{ count: firmCount }, { count: cityCount }] = await Promise.all([
+    supabase.from('companies').select('*', { count: 'exact', head: true }).eq('is_active', true).eq('is_relevant', true),
+    supabase.from('cities').select('*', { count: 'exact', head: true }).eq('is_active', true),
+  ])
+  const anbieterCount = roundDown10(firmCount ?? 740)
+  const staedteCount = roundDown10(cityCount ?? 40)
   const topCities = seoCities.slice(0, 12)
 
   return (
@@ -34,7 +48,7 @@ export default function HomePage() {
             Kran mieten in Deutschland
           </h1>
           <p className="text-base text-gray-500 mb-8">
-            740 Anbieter vergleichen. Preise sehen. Kostenlos Angebote anfragen.
+            {anbieterCount}+ Anbieter vergleichen. Preise sehen. Kostenlos Angebote anfragen.
           </p>
           <SearchBox />
         </div>
@@ -45,11 +59,11 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
-              <p className="text-xl font-semibold text-gray-900">740+</p>
+              <p className="text-xl font-semibold text-gray-900">{anbieterCount}+</p>
               <p className="text-xs text-gray-500">Anbieter</p>
             </div>
             <div>
-              <p className="text-xl font-semibold text-gray-900">50+</p>
+              <p className="text-xl font-semibold text-gray-900">{staedteCount}+</p>
               <p className="text-xs text-gray-500">Städte</p>
             </div>
             <div>
