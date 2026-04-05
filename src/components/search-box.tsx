@@ -67,7 +67,7 @@ export function SearchBox() {
             <SelectTrigger>
               <SelectValue placeholder="Krantyp wählen…" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent align="center" sideOffset={4}>
               {craneTypes.map((ct) => (
                 <SelectItem key={ct.slug} value={ct.slug}>
                   {ct.name}
