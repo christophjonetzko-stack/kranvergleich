@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { craneTypes } from '@/data/crane-types'
-import { seoCities } from '@/data/cities-static'
+import { seoCities, allCities } from '@/data/cities-static'
 
 export function SearchBox() {
   const router = useRouter()
@@ -22,21 +22,27 @@ export function SearchBox() {
   const [hint, setHint] = useState('')
 
   const filteredCities = cityQuery.length >= 1
-    ? seoCities.filter((c) =>
+    ? allCities.filter((c) =>
         c.name.toLowerCase().includes(cityQuery.toLowerCase())
-      )
+      ).slice(0, 8)
     : []
 
   function handleSearch() {
     if (!craneType) return
     setHint('')
 
-    const matchedCity = seoCities.find(
+    // First check exact match in allCities (includes cities without companies)
+    const matched = allCities.find(
       (c) => c.name.toLowerCase() === cityQuery.toLowerCase()
     )
 
-    if (matchedCity) {
-      router.push(`/${craneType}/${matchedCity.slug}`)
+    if (matched) {
+      const targetSlug = matched.nearestSlug ?? matched.slug
+      if (matched.nearestSlug) {
+        const targetCity = seoCities.find((c) => c.slug === matched.nearestSlug)
+        setHint(`Für ${matched.name} zeigen wir Anbieter in ${targetCity?.name ?? 'der Nähe'}.`)
+      }
+      router.push(`/${craneType}/${targetSlug}`)
     } else if (cityQuery.trim()) {
       setHint(`Für "${cityQuery}" haben wir noch keine Anbieter. Zeige alle Anbieter deutschlandweit.`)
       router.push(`/${craneType}`)
@@ -45,7 +51,7 @@ export function SearchBox() {
     }
   }
 
-  function selectCity(city: typeof seoCities[number]) {
+  function selectCity(city: typeof allCities[number]) {
     setCityQuery(city.name)
     setShowSuggestions(false)
   }
@@ -101,6 +107,11 @@ export function SearchBox() {
                     onMouseDown={() => selectCity(city)}
                   >
                     {city.name}
+                    {city.nearestSlug && (
+                      <span className="text-gray-400 ml-1">
+                        (Nähe: {seoCities.find(c => c.slug === city.nearestSlug)?.name})
+                      </span>
+                    )}
                   </button>
                 </li>
               ))}

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { craneTypes } from '@/data/crane-types'
-import { seoCities } from '@/data/cities-static'
+import { seoCities, allCities } from '@/data/cities-static'
 
 function CompactSearch() {
   const router = useRouter()
@@ -13,14 +13,15 @@ function CompactSearch() {
   const [showSuggestions, setShowSuggestions] = useState(false)
 
   const filteredCities = cityQuery.length >= 1
-    ? seoCities.filter((c) => c.name.toLowerCase().includes(cityQuery.toLowerCase())).slice(0, 6)
+    ? allCities.filter((c) => c.name.toLowerCase().includes(cityQuery.toLowerCase())).slice(0, 6)
     : []
 
   function handleSearch() {
     if (!craneType) return
-    const matched = seoCities.find((c) => c.name.toLowerCase() === cityQuery.toLowerCase())
+    const matched = allCities.find((c) => c.name.toLowerCase() === cityQuery.toLowerCase())
     if (matched) {
-      router.push(`/${craneType}/${matched.slug}`)
+      const targetSlug = matched.nearestSlug ?? matched.slug
+      router.push(`/${craneType}/${targetSlug}`)
     } else {
       router.push(`/${craneType}`)
     }
@@ -59,7 +60,11 @@ function CompactSearch() {
                   className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-gray-50 transition-colors"
                   onMouseDown={() => { setCityQuery(city.name); setShowSuggestions(false) }}
                 >
-                  {city.name} <span className="text-gray-400">{city.companyCount}</span>
+                  {city.name}
+                  {city.nearestSlug
+                    ? <span className="text-gray-400 ml-1">→ {seoCities.find(c => c.slug === city.nearestSlug)?.name}</span>
+                    : <span className="text-gray-400 ml-1">{seoCities.find(c => c.slug === city.slug)?.companyCount}</span>
+                  }
                 </button>
               </li>
             ))}
