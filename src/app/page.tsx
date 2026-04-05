@@ -132,6 +132,33 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Kostenfaktoren + Zusatzkosten */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Was beeinflusst die Kranmiete?</h2>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-[13px]">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-gray-900 mb-1">Krantyp &amp; Tragkraft</p>
+            <p className="text-gray-500">Minikran ab 250€/Tag, Autokran ab 500€/Tag, Raupenkran ab 800€/Tag</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-gray-900 mb-1">Mietdauer</p>
+            <p className="text-gray-500">Längere Mietdauer = niedrigerer Tagespreis. Monatsmiete spart bis 40%</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-gray-900 mb-1">Kranführer</p>
+            <p className="text-gray-500">Bei Autokran &amp; Mobilkran inkl. (Pflicht). Bei Minikran separat buchbar (40-60€/h)</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-gray-900 mb-1">Transport &amp; Montage</p>
+            <p className="text-gray-500">Anlieferung 150-500€. Baukran-Montage 3.000-8.000€ extra</p>
+          </div>
+        </div>
+        <p className="text-[12px] text-gray-400 mt-3">
+          Alle Preise netto zzgl. MwSt. Richtwerte — verbindliche Angebote erhalten Sie direkt von den Anbietern.{' '}
+          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Ausführliche Preisliste &rarr;</Link>
+        </p>
+      </section>
+
       {/* Schema.org structured data */}
       <script
         type="application/ld+json"
