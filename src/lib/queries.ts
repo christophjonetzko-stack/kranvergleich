@@ -2,6 +2,25 @@ import { supabase, getServiceSupabase } from './supabase'
 import type { CraneType, City, Company, CompanyWithCranes } from './types'
 
 // ============================================
+// STATS (for trust bar / dynamic counts)
+// ============================================
+
+function roundDown10(n: number): number {
+  return Math.floor(n / 10) * 10
+}
+
+export async function getSiteStats(): Promise<{ anbieterCount: number; staedteCount: number }> {
+  const [{ count: firmCount }, { count: cityCount }] = await Promise.all([
+    supabase.from('companies').select('*', { count: 'exact', head: true }).eq('is_active', true).eq('is_relevant', true),
+    supabase.from('cities').select('*', { count: 'exact', head: true }).eq('is_active', true),
+  ])
+  return {
+    anbieterCount: roundDown10(firmCount ?? 740),
+    staedteCount: roundDown10(cityCount ?? 40),
+  }
+}
+
+// ============================================
 // CRANE TYPES
 // ============================================
 

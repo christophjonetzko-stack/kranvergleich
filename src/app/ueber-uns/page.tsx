@@ -1,21 +1,27 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getSiteStats } from '@/lib/queries'
 
-export const metadata: Metadata = {
-  title: 'Über uns — KranVergleich.de',
-  description:
-    'KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über 740 Anbieter, 8 Krantypen, 50+ Städte. Kostenlos und unverbindlich.',
-  alternates: { canonical: '/ueber-uns' },
-  openGraph: {
+export const revalidate = 86400
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { anbieterCount, staedteCount } = await getSiteStats()
+  return {
     title: 'Über uns — KranVergleich.de',
-    description:
-      'KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über 740 Anbieter, 8 Krantypen, 50+ Städte.',
-    type: 'website',
-    url: '/ueber-uns',
-  },
+    description: `KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte. Kostenlos und unverbindlich.`,
+    alternates: { canonical: '/ueber-uns' },
+    openGraph: {
+      title: 'Über uns — KranVergleich.de',
+      description: `KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte.`,
+      type: 'website',
+      url: '/ueber-uns',
+    },
+  }
 }
 
-export default function UeberUnsPage() {
+export default async function UeberUnsPage() {
+  const { anbieterCount } = await getSiteStats()
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <nav className="text-[13px] text-gray-400 mb-6">
@@ -41,7 +47,7 @@ export default function UeberUnsPage() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Unsere Daten</h2>
           <p>
-            Unsere Datenbank umfasst über 740 Kranvermieter in ganz Deutschland. Die Daten
+            Unsere Datenbank umfasst über {anbieterCount} Kranvermieter in ganz Deutschland. Die Daten
             stammen aus öffentlich zugänglichen Quellen (Google Maps) und werden regelmäßig
             aktualisiert. Wir zeigen echte Google-Bewertungen, Kontaktdaten und — wo verfügbar
             — Preisinformationen.

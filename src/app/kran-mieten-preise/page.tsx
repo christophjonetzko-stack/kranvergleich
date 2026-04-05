@@ -5,6 +5,9 @@ import { PriceTable } from '@/components/price-table'
 import { cranePrices } from '@/data/crane-prices'
 import { craneTypes } from '@/data/crane-types'
 import { FAQSection } from '@/components/faq-section'
+import { getSiteStats } from '@/lib/queries'
+
+export const revalidate = 86400
 
 export const metadata: Metadata = {
   title: 'Was kostet ein Kran? Preise & Kosten 2026 — Kran mieten Preisliste',
@@ -63,7 +66,8 @@ const costFAQs = [
   },
 ]
 
-export default function KranMietenPreisePage() {
+export default async function KranMietenPreisePage() {
+  const { anbieterCount } = await getSiteStats()
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
@@ -359,7 +363,7 @@ export default function KranMietenPreisePage() {
         <p>
           Die Kosten für die Kranmiete hängen von mehreren Faktoren ab: Krantyp, Tragkraft,
           Mietdauer, Region und Verfügbarkeit. <strong className="text-gray-900">Auf KranVergleich.de</strong> vergleichen
-          Sie die Preise von über 740 Anbietern in ganz Deutschland — kostenlos und unverbindlich.
+          Sie die Preise von über {anbieterCount} Anbietern in ganz Deutschland — kostenlos und unverbindlich.
           Fordern Sie über unsere <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage</Link> Angebote
           von mehreren Firmen gleichzeitig an und sparen Sie Zeit und Geld.
         </p>

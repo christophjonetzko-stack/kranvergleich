@@ -6,14 +6,9 @@ import { PriceTable } from '@/components/price-table'
 import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
-import { supabase } from '@/lib/supabase'
+import { getSiteStats } from '@/lib/queries'
 
 export const revalidate = 86400
-
-/** Round down to nearest 10 */
-function roundDown10(n: number): number {
-  return Math.floor(n / 10) * 10
-}
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -31,12 +26,7 @@ function getPriceFrom(slug: string): number | null {
 }
 
 export default async function HomePage() {
-  const [{ count: firmCount }, { count: cityCount }] = await Promise.all([
-    supabase.from('companies').select('*', { count: 'exact', head: true }).eq('is_active', true).eq('is_relevant', true),
-    supabase.from('cities').select('*', { count: 'exact', head: true }).eq('is_active', true),
-  ])
-  const anbieterCount = roundDown10(firmCount ?? 740)
-  const staedteCount = roundDown10(cityCount ?? 40)
+  const { anbieterCount, staedteCount } = await getSiteStats()
   const topCities = seoCities.slice(0, 12)
 
   return (
