@@ -8,6 +8,7 @@ import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneType } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
+import { craneTypes as craneTypesList } from '@/data/crane-types'
 
 export const revalidate = 86400
 
@@ -29,8 +30,11 @@ export async function generateMetadata({
   const count = companies.length
   const priceStr = craneType.price_day_from ? `ab ${craneType.price_day_from}€/Tag` : ''
 
+  const ctInfo = craneTypesList.find((c) => c.slug === craneTypeSlug)
+  const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
+
   const title = `${craneType.name} mieten — ${priceStr ? `${priceStr} | ` : ''}${count} Anbieter vergleichen`
-  const description = `${craneType.name} mieten in Deutschland: ${count} Anbieter im Vergleich. ${craneType.description}${priceStr ? ` Preise ${priceStr}.` : ''} Kostenlos Angebote anfragen.`
+  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten in Deutschland: ${count} Anbieter im Vergleich. ${craneType.description}${priceStr ? ` Preise ${priceStr}.` : ''} Kostenlos Angebote anfragen.`
   const canonical = `/${craneTypeSlug}`
 
   return {
@@ -187,21 +191,29 @@ export default async function CraneTypePage({
         )
       })()}
 
-      {/* Intro text (unique per crane type for SEO) */}
-      <div className="text-[14px] text-gray-500 leading-relaxed mb-10">
-        <p>
-          Sie suchen einen <strong className="text-gray-900">{craneType.name}</strong> zur Miete
-          in Deutschland? Auf KranVergleich.de finden Sie {companies.length > 0 ? `${companies.length} ` : ''}
-          {craneType.name}-Vermieter im direkten Vergleich.
-          {price && (
-            <> Die Tagesmiete liegt zwischen ca. {price.dayFrom.toLocaleString('de-DE')}€ und {price.dayTo.toLocaleString('de-DE')}€ (Richtwerte, netto).
-            {price.includesOperator
-              ? ' Der Preis beinhaltet in der Regel einen qualifizierten Kranführer.'
-              : ' Ein Kranführer ist nicht im Preis enthalten und kann separat gebucht werden.'}</>
-          )}
-          {' '}Vergleichen Sie Bewertungen, Preise und Leistungen — und fordern Sie kostenlos Angebote an.
-        </p>
-      </div>
+      {/* Intro text (unique per crane type for SEO + synonyms) */}
+      {(() => {
+        const ctInfo = craneTypesList.find((c) => c.slug === craneType.slug)
+        const synonyms = ctInfo?.synonyms ?? []
+        return (
+          <div className="text-[14px] text-gray-500 leading-relaxed mb-10">
+            <p>
+              Sie suchen einen <strong className="text-gray-900">{craneType.name}</strong>
+              {synonyms.length > 0 && <> (auch {synonyms.slice(0, 3).join(', ')} genannt)</>}
+              {' '}zur Miete in Deutschland? Auf KranVergleich.de finden Sie{' '}
+              {companies.length > 0 ? `${companies.length} ` : ''}{craneType.name}-Vermieter im direkten Vergleich.
+              {price && (
+                <> Die Tagesmiete liegt zwischen ca. {price.dayFrom.toLocaleString('de-DE')}€ und{' '}
+                {price.dayTo.toLocaleString('de-DE')}€ (Richtwerte, netto).
+                {price.includesOperator
+                  ? ' Der Preis beinhaltet in der Regel einen qualifizierten Kranführer.'
+                  : ' Ein Kranführer ist nicht im Preis enthalten und kann separat gebucht werden.'}</>
+              )}
+              {' '}Vergleichen Sie Bewertungen, Preise und Leistungen — und fordern Sie kostenlos Angebote an.
+            </p>
+          </div>
+        )
+      })()}
 
       {/* FAQ */}
       <div id="faq" className="mb-10 scroll-mt-20">
