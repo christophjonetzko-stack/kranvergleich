@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getSiteStats } from '@/lib/queries'
+
+export const revalidate = 86400
 
 export const metadata: Metadata = {
   title: 'Welchen Kran brauche ich? — Der große Kran-Ratgeber',
@@ -74,7 +77,8 @@ const scenarios = [
   },
 ]
 
-export default function WelchenKranPage() {
+export default async function WelchenKranPage() {
+  const { anbieterCount, staedteCount } = await getSiteStats()
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <nav className="text-[13px] text-gray-400 mb-6">
@@ -140,17 +144,21 @@ export default function WelchenKranPage() {
         </div>
       </section>
 
-      <section className="text-[14px] text-gray-500 leading-relaxed">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Noch unsicher? Lassen Sie sich beraten
+      <section className="bg-blue-50 border border-blue-100 rounded-lg p-6 text-center">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Noch unsicher? Lassen Sie sich kostenlos beraten
         </h2>
-        <p>
-          Wenn Sie sich nicht sicher sind, welchen Kran Sie brauchen — fragen Sie einfach an.
+        <p className="text-[14px] text-gray-500 mb-5 max-w-xl mx-auto">
           Die meisten Kranvermieter beraten Sie kostenlos und empfehlen den passenden Kran
-          für Ihr Projekt. Nutzen Sie die{' '}
-          <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage auf KranVergleich.de</Link>,
-          um Angebote von mehreren Anbietern gleichzeitig einzuholen.
+          für Ihr Projekt. Vergleichen Sie jetzt {anbieterCount}+ Anbieter in {staedteCount}+ Städten.
         </p>
+        <Link
+          href="/"
+          className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-md transition-colors"
+        >
+          Jetzt Angebote von {anbieterCount}+ Kranvermietern vergleichen
+        </Link>
+        <p className="text-[12px] text-gray-400 mt-3">Kostenlos & unverbindlich. Keine versteckten Kosten.</p>
       </section>
     </div>
   )
