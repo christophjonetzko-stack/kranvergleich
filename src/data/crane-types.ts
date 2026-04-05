@@ -12,14 +12,14 @@ export interface CraneTypeInfo {
 }
 
 export const craneTypes: CraneTypeInfo[] = [
-  { slug: 'minikran-mieten', name: 'Minikran', namePlural: 'Minikrane', desc: 'Kompakt, für enge Baustellen & Innenräume', image: '/images/crane-types/minikran.webp', synonyms: ['Spinnenkran', 'Spider Crane', 'Glasmontagekran', 'Kompaktkran'] },
-  { slug: 'autokran-mieten', name: 'Autokran', namePlural: 'Autokrane', desc: 'Flexibel, für mittlere bis schwere Lasten', image: '/images/crane-types/autokran.webp', synonyms: ['Kranwagen', 'Fahrzeugkran', 'LKW-Kran', 'Mobilautokran'] },
-  { slug: 'dachdeckerkran-mieten', name: 'Dachdeckerkran', namePlural: 'Dachdeckerkrane', desc: 'Schneller Aufbau für Dacharbeiten', image: '/images/crane-types/dachdeckerkran.webp', synonyms: ['Dachkran', 'Aufzugskran', 'Ziegelkran', 'Schrägaufzug'] },
-  { slug: 'raupenkran-mieten', name: 'Raupenkran', namePlural: 'Raupenkrane', desc: 'Schweres Gelände, große Traglasten', image: '/images/crane-types/raupenkran.webp', synonyms: ['Kettenkran', 'Crawler Crane', 'Gleiskettenkran'] },
-  { slug: 'anhaengerkran-mieten', name: 'Anhängerkran', namePlural: 'Anhängerkrane', desc: 'Günstig & leicht transportierbar', image: '/images/crane-types/anhaengerkran.webp', synonyms: ['Trailerkran', 'Mobilanhängerkran', 'Kleinkran'] },
-  { slug: 'mobilkran-mieten', name: 'Mobilkran', namePlural: 'Mobilkrane', desc: 'Hohe Traglasten, schnell einsatzbereit', image: '/images/crane-types/mobilkran.webp', synonyms: ['Schwerlastkran', 'Teleskopkran', 'Kranwagen', 'All-Terrain-Kran'] },
-  { slug: 'baukran-mieten', name: 'Baukran', namePlural: 'Baukrane', desc: 'Turmdrehkran für Großbaustellen', image: '/images/crane-types/baukran.webp', synonyms: ['Turmdrehkran', 'Obendreherkran', 'Baukran-Turm', 'Kran für Baustelle'] },
-  { slug: 'ladekran-mieten', name: 'Ladekran', namePlural: 'Ladekrane', desc: 'LKW-montiert, für Be- & Entladearbeiten', image: '/images/crane-types/ladekran.webp', synonyms: ['Ladegeschirr', 'Knickarmkran', 'Hiab-Kran', 'LKW-Ladekran'] },
+  { slug: 'minikran-mieten', name: 'Minikran', namePlural: 'Minikrane', desc: 'Kompakt, für enge Baustellen & Innenräume', image: '/images/crane-types/minikran.svg', synonyms: ['Spinnenkran', 'Spider Crane', 'Glasmontagekran', 'Kompaktkran'] },
+  { slug: 'autokran-mieten', name: 'Autokran', namePlural: 'Autokrane', desc: 'Flexibel, für mittlere bis schwere Lasten', image: '/images/crane-types/autokran.svg', synonyms: ['Kranwagen', 'Fahrzeugkran', 'LKW-Kran', 'Mobilautokran'] },
+  { slug: 'dachdeckerkran-mieten', name: 'Dachdeckerkran', namePlural: 'Dachdeckerkrane', desc: 'Schneller Aufbau für Dacharbeiten', image: '/images/crane-types/dachdeckerkran.svg', synonyms: ['Dachkran', 'Aufzugskran', 'Ziegelkran', 'Schrägaufzug'] },
+  { slug: 'raupenkran-mieten', name: 'Raupenkran', namePlural: 'Raupenkrane', desc: 'Schweres Gelände, große Traglasten', image: '/images/crane-types/raupenkran.svg', synonyms: ['Kettenkran', 'Crawler Crane', 'Gleiskettenkran'] },
+  { slug: 'anhaengerkran-mieten', name: 'Anhängerkran', namePlural: 'Anhängerkrane', desc: 'Günstig & leicht transportierbar', image: '/images/crane-types/anhaengerkran.svg', synonyms: ['Trailerkran', 'Mobilanhängerkran', 'Kleinkran'] },
+  { slug: 'mobilkran-mieten', name: 'Mobilkran', namePlural: 'Mobilkrane', desc: 'Hohe Traglasten, schnell einsatzbereit', image: '/images/crane-types/mobilkran.svg', synonyms: ['Schwerlastkran', 'Teleskopkran', 'Kranwagen', 'All-Terrain-Kran'] },
+  { slug: 'baukran-mieten', name: 'Baukran', namePlural: 'Baukrane', desc: 'Turmdrehkran für Großbaustellen', image: '/images/crane-types/baukran.svg', synonyms: ['Turmdrehkran', 'Obendreherkran', 'Baukran-Turm', 'Kran für Baustelle'] },
+  { slug: 'ladekran-mieten', name: 'Ladekran', namePlural: 'Ladekrane', desc: 'LKW-montiert, für Be- & Entladearbeiten', image: '/images/crane-types/ladekran.svg', synonyms: ['Ladegeschirr', 'Knickarmkran', 'Hiab-Kran', 'LKW-Ladekran'] },
 ]
 
 export function getCraneTypeName(slug: string): string {

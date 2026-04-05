@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <rect width="120" height="120" rx="12" fill="#EFF6FF"/>
+  <!-- Base/body -->
+  <rect x="45" y="75" width="30" height="12" rx="2" fill="#2563EB"/>
+  <!-- Legs (spider) -->
+  <line x1="35" y1="87" x2="25" y2="97" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+  <line x1="85" y1="87" x2="95" y2="97" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+  <line x1="40" y1="87" x2="30" y2="97" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+  <line x1="80" y1="87" x2="90" y2="97" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+  <!-- Mast -->
+  <rect x="57" y="35" width="6" height="40" rx="1" fill="#1D4ED8"/>
+  <!-- Boom (angled) -->
+  <line x1="60" y1="38" x2="85" y2="25" stroke="#1D4ED8" stroke-width="3" stroke-linecap="round"/>
+  <!-- Hook -->
+  <line x1="85" y1="25" x2="85" y2="40" stroke="#93C5FD" stroke-width="2"/>
+  <path d="M82 40 Q85 46 88 40" stroke="#1D4ED8" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
