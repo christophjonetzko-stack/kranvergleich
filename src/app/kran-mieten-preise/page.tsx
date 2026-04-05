@@ -9,7 +9,7 @@ import { FAQSection } from '@/components/faq-section'
 export const metadata: Metadata = {
   title: 'Was kostet ein Kran? Preise & Kosten 2026 — Kran mieten Preisliste',
   description:
-    'Kran mieten Preisliste 2026: Tagespreise, Wochenpreise und Monatspreise für alle Krantypen. Autokran ab 500€/Tag, Minikran ab 250€/Tag, Baukran ab 300€/Tag. Jetzt Preise vergleichen.',
+    'Kran mieten Preisliste 2026: Tagespreise, Wochenpreise und Monatspreise für alle Krantypen. Autokran ab 500€/Tag, Minikran ab 250€/Tag, Baukran ab 300€/Tag, Mobilkran (Schwerlastkran/Kranwagen) ab 600€/Tag. Mietkran Preise vergleichen.',
   alternates: { canonical: '/kran-mieten-preise' },
   openGraph: {
     title: 'Was kostet ein Kran? Preise & Kosten 2026',
@@ -78,9 +78,9 @@ export default function KranMietenPreisePage() {
         Was kostet ein Kran? Preise &amp; Kosten 2026
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
-        Komplette Preisliste für alle 8 Krantypen in Deutschland: Tagespreise, Wochenpreise und
-        Monatspreise im Überblick. Alle Preise sind unverbindliche Richtwerte (netto, zzgl. MwSt.)
-        basierend auf Marktrecherche Q1 2026.
+        Komplette Mietkran-Preisliste für alle 8 Krantypen in Deutschland: Tagespreise, Wochenpreise und
+        Monatspreise im Überblick — von Minikran über Autokran (Kranwagen) bis Schwerlastkran.
+        Alle Preise sind unverbindliche Richtwerte (netto, zzgl. MwSt.) basierend auf Marktrecherche Q1 2026.
       </p>
       <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026</p>
 
@@ -91,6 +91,8 @@ export default function KranMietenPreisePage() {
           <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle alle Krantypen</a></li>
           <li><a href="#autokran-stunde" className="text-[13px] text-blue-600 hover:underline">Autokran Preise pro Stunde</a></li>
           <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran Kosten</a></li>
+          <li><a href="#baukran-kosten" className="text-[13px] text-blue-600 hover:underline">Baukran Kosten</a></li>
+          <li><a href="#mobilkran-kosten" className="text-[13px] text-blue-600 hover:underline">Mobilkran / Schwerlastkran Kosten</a></li>
           <li><a href="#preise-detail" className="text-[13px] text-blue-600 hover:underline">Preise nach Krantyp</a></li>
           <li><a href="#zusatzkosten" className="text-[13px] text-blue-600 hover:underline">Zusatzkosten</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen zu Kosten</a></li>
@@ -197,6 +199,83 @@ export default function KranMietenPreisePage() {
         <div className="mt-4">
           <Link href="/dachdeckerkran-mieten" className="text-[13px] text-blue-600 hover:underline">
             Alle Dachdeckerkran-Anbieter vergleichen &rarr;
+          </Link>
+        </div>
+      </section>
+
+      {/* Baukran costs — targets baukran mieten kosten, mietpreis baukran, baukran kosten pro tag */}
+      <section id="baukran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Baukran mieten — Kosten &amp; Preise 2026
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Ein Baukran (Turmdrehkran) wird bei Großbaustellen für Wochen oder Monate aufgestellt.
+          Die Mietkosten setzen sich aus Miete, Montage/Demontage und Transport zusammen.
+          Der Bediener wird separat gebucht oder vom Mieter selbst gestellt.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-3 text-center">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">300–1.500€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Tagespreis</p>
+            <p className="text-[11px] text-gray-400">ohne Bediener</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">1.500–8.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Wochenpreis</p>
+            <p className="text-[11px] text-gray-400">je nach Höhe/Ausladung</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">4.000–25.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Monatspreis</p>
+            <p className="text-[11px] text-gray-400">Standardmiete</p>
+          </div>
+        </div>
+        <div className="mt-4 text-[13px] text-gray-500 space-y-1">
+          <p><strong className="text-gray-700">Zusatzkosten:</strong> Montage/Demontage 3.000–8.000€, Fundament 1.000–3.000€, Transport 500–2.000€</p>
+          <p><strong className="text-gray-700">Typische Einsätze:</strong> Hochbau, Wohnungsbau, Gewerbebauten, Brückenbau</p>
+          <p><strong className="text-gray-700">Mietdauer:</strong> Meist mehrere Monate — längere Laufzeit = niedrigerer Monatspreis</p>
+        </div>
+        <div className="mt-4">
+          <Link href="/baukran-mieten" className="text-[13px] text-blue-600 hover:underline">
+            Alle Baukran-Anbieter vergleichen &rarr;
+          </Link>
+        </div>
+      </section>
+
+      {/* Mobilkran costs — targets mobilkran mieten preisliste, mobilkran preisliste */}
+      <section id="mobilkran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Mobilkran mieten — Kosten &amp; Preisliste 2026
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Ein Mobilkran (auch Schwerlastkran oder Kranwagen) ist schnell einsatzbereit und bietet
+          hohe Traglasten von 20t bis über 1.200t. Der Kranführer ist immer inklusive (gesetzlich vorgeschrieben).
+        </p>
+        <div className="grid gap-3 sm:grid-cols-3 text-center">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">600–3.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Tagespreis</p>
+            <p className="text-[11px] text-gray-400">inkl. Kranführer</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">3.000–15.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Wochenpreis</p>
+            <p className="text-[11px] text-gray-400">je nach Tragkraft</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">10.000–50.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Monatspreis</p>
+            <p className="text-[11px] text-gray-400">Großprojekte</p>
+          </div>
+        </div>
+        <div className="mt-4 text-[13px] text-gray-500 space-y-1">
+          <p><strong className="text-gray-700">Typische Einsätze:</strong> Industriemontage, Stahlbau, Windkraftanlagen, Brückenarbeiten</p>
+          <p><strong className="text-gray-700">Vorteil:</strong> Keine Montage nötig — fährt auf die Baustelle und ist sofort einsatzbereit</p>
+          <p><strong className="text-gray-700">Synonyme:</strong> Schwerlastkran, Kranwagen, Teleskopkran</p>
+        </div>
+        <div className="mt-4">
+          <Link href="/mobilkran-mieten" className="text-[13px] text-blue-600 hover:underline">
+            Alle Mobilkran-Anbieter vergleichen &rarr;
           </Link>
         </div>
       </section>
