@@ -80,12 +80,20 @@ const typeFAQs: Record<string, FAQItem[]> = {
   ],
   'anhaengerkran-mieten': [
     {
-      question: 'Kann ich einen Anhängerkran mit meinem PKW transportieren?',
-      answer: 'Ja, die meisten Anhängerkrane können mit einem PKW mit Anhängerkupplung transportiert werden. Das macht den Anhängerkranverleih besonders flexibel. Das Zugfahrzeug sollte für das Gesamtgewicht zugelassen sein.',
+      question: 'Was kostet es, einen Anhängerkran zu mieten?',
+      answer: 'Einen Anhängerkran leihen kostet zwischen 150€ und 350€ pro Tag (netto). Wochenmiete ab 700€, Monatsmiete ab 2.000€. Der Anhängerkran (PKW-Anhänger mit Kran) ist die günstigste Option für Hebearbeiten bis 1,5 Tonnen.',
     },
     {
-      question: 'Was kostet es, einen Anhängerkran zu mieten?',
-      answer: 'Einen Anhängerkran leihen kostet zwischen 150€ und 350€ pro Tag. Die Anhängerkranvermietung bietet die günstigste Option für mobile Hebearbeiten.',
+      question: 'Kann ich einen Anhängerkran mit meinem PKW transportieren?',
+      answer: 'Ja, Anhängerkrane sind für den Transport mit normaler PKW-Anhängerkupplung ausgelegt. Das Zugfahrzeug sollte für das Gesamtgewicht (ca. 1.500–3.500 kg) zugelassen sein. Kein Kranführerschein nötig — eine Einweisung durch den Vermieter reicht.',
+    },
+    {
+      question: 'Wo finde ich einen Anhängerkran in meiner Nähe?',
+      answer: 'Auf KranVergleich.de finden Sie Anhängerkran-Vermieter in ganz Deutschland. Geben Sie Ihre Stadt in die Suche ein und vergleichen Sie Anbieter nach Preis und Bewertung. Kostenlos Angebote anfragen — bei einem oder mehreren Vermietern gleichzeitig.',
+    },
+    {
+      question: 'Brauche ich einen Führerschein für einen Anhängerkran?',
+      answer: 'Nein, für die Bedienung eines Anhängerkrans ist kein Kranführerschein erforderlich. Eine Einweisung durch den Vermieter reicht aus. Für den Transport benötigen Sie einen PKW-Führerschein mit Anhänger-Berechtigung (Klasse B oder BE je nach Gewicht).',
     },
   ],
   'mobilkran-mieten': [
