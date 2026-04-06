@@ -95,6 +95,10 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Brauche ich einen Führerschein für einen Anhängerkran?',
       answer: 'Nein, für die Bedienung eines Anhängerkrans ist kein Kranführerschein erforderlich. Eine Einweisung durch den Vermieter reicht aus. Für den Transport benötigen Sie einen PKW-Führerschein mit Anhänger-Berechtigung (Klasse B oder BE je nach Gewicht).',
     },
+    {
+      question: 'Welche Anhängerkran-Marken kann man mieten?',
+      answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (Marktführer in Deutschland), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet — viele Vermieter auf KranVergleich.de bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
+    },
   ],
   'mobilkran-mieten': [
     {

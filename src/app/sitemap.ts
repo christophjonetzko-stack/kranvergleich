@@ -42,6 +42,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/ratgeber/minikran-vs-autokran`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/kran-mieten-tipps`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     {
+      url: `${baseUrl}/anhaengerkran-mieten-preise`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
+    {
       url: `${baseUrl}/kran-mieten-preise`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
