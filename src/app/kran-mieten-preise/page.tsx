@@ -64,6 +64,14 @@ const costFAQs = [
     answer:
       'Für die meisten Bauunternehmen lohnt sich die Miete. Ein neuer Minikran kostet 50.000–150.000€, ein Autokran 200.000–1.000.000€+. Bei weniger als 100 Einsatztagen pro Jahr ist Mieten fast immer günstiger — keine Wartungskosten, keine Lagerhaltung, keine Kapitalbindung.',
   },
+  {
+    question: 'Was kostet ein 80-Tonnen-Kran?',
+    answer: 'Ein 80-Tonnen-Autokran kostet ca. 1.200–2.000€ pro Tag (inkl. Kranführer). Stundenpreise liegen bei 250–350€/h. Für Wocheneinsätze rechnen Sie mit 5.000–10.000€. Der Transport zur Baustelle kostet zusätzlich ca. 300–800€ je nach Entfernung.',
+  },
+  {
+    question: 'Was kostet ein PKW-Anhänger mit Kran (Anhängerkran)?',
+    answer: 'Ein Anhängerkran (PKW-Anhänger mit Kran) kostet ab 150€ pro Tag. Wochenmiete ab 700€. Tragkraft bis 1.500 kg. Kann mit normaler PKW-Anhängerkupplung transportiert werden — kein Führerschein für den Kran nötig, nur Einweisung.',
+  },
 ]
 
 export default async function KranMietenPreisePage() {
@@ -93,7 +101,7 @@ export default async function KranMietenPreisePage() {
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
         <ul className="flex flex-col gap-1">
           <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle alle Krantypen</a></li>
-          <li><a href="#autokran-stunde" className="text-[13px] text-blue-600 hover:underline">Autokran Preise pro Stunde</a></li>
+          <li><a href="#autokran-kosten" className="text-[13px] text-blue-600 hover:underline">Autokran Kosten pro Tag &amp; Stunde</a></li>
           <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran Kosten</a></li>
           <li><a href="#baukran-kosten" className="text-[13px] text-blue-600 hover:underline">Baukran Kosten</a></li>
           <li><a href="#mobilkran-kosten" className="text-[13px] text-blue-600 hover:underline">Mobilkran / Schwerlastkran Kosten</a></li>
@@ -137,14 +145,15 @@ export default async function KranMietenPreisePage() {
         <PriceTable showAll />
       </section>
 
-      {/* Autokran hourly prices */}
-      <section id="autokran-stunde" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+      {/* Autokran prices — day + hourly */}
+      <section id="autokran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Autokran Preise pro Stunde
+          Was kostet ein Autokran pro Tag &amp; pro Stunde?
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
-          Autokrane werden häufig stundenweise abgerechnet, besonders bei kurzen Einsätzen.
-          Der Stundenpreis beinhaltet immer den Kranführer (gesetzlich vorgeschrieben bei Autokranen).
+          Autokrane (Kranwagen) kosten zwischen <strong className="text-gray-900">500€ und 2.000€ pro Tag</strong>,
+          je nach Tragkraft. Bei Kurzeinsätzen wird stundenweise abgerechnet. Der Kranführer ist immer
+          inklusive (gesetzlich vorgeschrieben).
         </p>
         <div className="grid gap-3 sm:grid-cols-3 text-center">
           <div className="bg-gray-50 rounded-lg p-4">
