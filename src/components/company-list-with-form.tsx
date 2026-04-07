@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { CompanyCard } from './company-card'
 import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
@@ -19,6 +19,8 @@ interface CompanyListWithFormProps {
   showStateFilter?: boolean
   /** Show crane type filter (useful on city pages with mixed crane types) */
   showCraneTypeFilter?: boolean
+  /** Called when filtered company list changes — use to sync map */
+  onFilteredChange?: (companies: CompanyWithCranes[]) => void
 }
 
 export function CompanyListWithForm({
@@ -28,6 +30,7 @@ export function CompanyListWithForm({
   cityName,
   showStateFilter = false,
   showCraneTypeFilter = false,
+  onFilteredChange,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
@@ -94,6 +97,11 @@ export function CompanyListWithForm({
 
     return list
   }, [companies, sortBy, filterState, filterMinRating, filterOperator, filterCraneType])
+
+  // Notify parent when filtered list changes (for map sync)
+  useEffect(() => {
+    onFilteredChange?.(filtered)
+  }, [filtered, onFilteredChange])
 
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length

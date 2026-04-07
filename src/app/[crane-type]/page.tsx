@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity } from '@/lib/queries'
-import { CompanyListWithForm } from '@/components/company-list-with-form'
-import { CompanyMapWrapper } from '@/components/company-map-wrapper'
+import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneType } from '@/data/faq'
@@ -151,45 +150,22 @@ export default async function CraneTypePage({
         <PriceTable craneTypeSlug={craneType.slug} />
       </div>
 
-      {/* Company Listings */}
+      {/* Company Listings + Map (synced via filters) */}
       {companies.length > 0 && (
         <section id="anbieter" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             {craneType.name}-Anbieter in Deutschland ({companies.length})
           </h2>
-          <CompanyListWithForm
+          <CompanySection
             companies={companies}
             craneTypeId={craneType.id}
             craneTypeName={craneType.name}
             showStateFilter
+            centerLat={51.1657}
+            centerLng={10.4515}
           />
         </section>
       )}
-
-      {/* Map — all providers in Germany */}
-      {(() => {
-        const mappable = companies.filter((c) => c.lat != null && c.lng != null)
-        if (mappable.length === 0) return null
-        return (
-          <section id="karte" className="mb-10 scroll-mt-20">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              {craneType.name}-Anbieter in Deutschland — Karte
-            </h2>
-            <CompanyMapWrapper
-              companies={mappable.map((c) => ({
-                name: c.name,
-                slug: c.slug,
-                lat: c.lat!,
-                lng: c.lng!,
-                city: c.city,
-                google_rating: c.google_rating,
-              }))}
-              centerLat={51.1657}
-              centerLng={10.4515}
-            />
-          </section>
-        )
-      })()}
 
       {/* Intro text (unique per crane type for SEO + synonyms) */}
       {(() => {

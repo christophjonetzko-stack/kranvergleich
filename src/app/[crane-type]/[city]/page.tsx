@@ -10,8 +10,7 @@ import {
   getCitiesWithMinCompanies,
   getCompanyCountsPerCity,
 } from '@/lib/queries'
-import { CompanyListWithForm } from '@/components/company-list-with-form'
-import { CompanyMapWrapper } from '@/components/company-map-wrapper'
+import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneAndCity } from '@/data/faq'
@@ -174,15 +173,17 @@ export default async function CraneCityPage({
         </ul>
       </nav>
 
-      {/* Company Listings */}
+      {/* Company Listings + Map (synced via filters) */}
       {companies.length > 0 ? (
         <section id="anbieter" className="mb-10 scroll-mt-20">
-          <CompanyListWithForm
+          <CompanySection
             companies={companies}
             craneTypeId={craneType.id}
             craneTypeName={craneType.name}
             cityName={city.name}
             showCraneTypeFilter
+            centerLat={city.lat ?? 51.1657}
+            centerLng={city.lng ?? 10.4515}
           />
         </section>
       ) : (
@@ -195,31 +196,6 @@ export default async function CraneCityPage({
           </p>
         </section>
       )}
-
-      {/* Map */}
-      {(() => {
-        const mappable = companies.filter((c) => c.lat != null && c.lng != null)
-        if (mappable.length === 0) return null
-        return (
-          <section id="karte" className="mb-10 scroll-mt-20">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              {craneType.name}-Anbieter in {city.name} — Karte
-            </h2>
-            <CompanyMapWrapper
-              companies={mappable.map((c) => ({
-                name: c.name,
-                slug: c.slug,
-                lat: c.lat!,
-                lng: c.lng!,
-                city: c.city,
-                google_rating: c.google_rating,
-              }))}
-              centerLat={city.lat ?? 51.1657}
-              centerLng={city.lng ?? 10.4515}
-            />
-          </section>
-        )
-      })()}
 
       {/* Price Table */}
       <div id="preise" className="mb-10 scroll-mt-20">

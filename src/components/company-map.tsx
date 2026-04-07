@@ -26,6 +26,7 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
 
+  // Create map once
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return
 
@@ -40,6 +41,36 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
       maxZoom: 18,
     }).addTo(map)
 
+    return () => {
+      map.remove()
+      mapInstanceRef.current = null
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Update markers when companies change (filtering)
+  useEffect(() => {
+    const map = mapInstanceRef.current
+    if (!map) return
+
+    // Remove all existing marker layers
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Marker || (layer as any)._group) {
+        map.removeLayer(layer)
+      }
+    })
+    // Remove cluster groups
+    map.eachLayer((layer) => {
+      if ((layer as any).clearLayers) {
+        map.removeLayer(layer)
+      }
+    })
+
+    if (companies.length === 0) {
+      map.setView([centerLat, centerLng], 6)
+      return
+    }
+
     const icon = L.divIcon({
       className: '',
       html: `<div style="width:28px;height:28px;background:#2563eb;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>`,
@@ -50,7 +81,6 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
 
     const bounds: L.LatLngExpression[] = []
 
-    // Use marker cluster for large sets (>30), individual markers for small
     const useCluster = companies.length > 30
     const clusterGroup = useCluster
       ? (L as any).markerClusterGroup({
@@ -85,15 +115,11 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
       map.addLayer(clusterGroup)
     }
 
+    // fitBounds to show only visible companies
     if (bounds.length > 1) {
       map.fitBounds(L.latLngBounds(bounds), { padding: [40, 40], maxZoom: 13 })
     } else if (bounds.length === 1) {
       map.setView(bounds[0], 14)
-    }
-
-    return () => {
-      map.remove()
-      mapInstanceRef.current = null
     }
   }, [companies, centerLat, centerLng])
 
