@@ -115,6 +115,12 @@ export function Header() {
               >
                 Preisliste
               </Link>
+              <Link
+                href="/kostenrechner"
+                className="px-2.5 py-1.5 text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                Kostenrechner
+              </Link>
               <div className="relative group">
                 <button className="px-2.5 py-1.5 text-[13px] text-gray-500 hover:text-gray-900 transition-colors">
                   Mehr &#9662;
@@ -201,6 +207,13 @@ export function Header() {
                 className="block py-2 text-[14px] text-gray-500 hover:text-gray-900 transition-colors"
               >
                 Preisliste
+              </Link>
+              <Link
+                href="/kostenrechner"
+                onClick={() => setMobileOpen(false)}
+                className="block py-2 text-[14px] text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                Kostenrechner
               </Link>
               <Link
                 href="/ratgeber"
