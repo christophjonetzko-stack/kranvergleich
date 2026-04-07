@@ -7,9 +7,44 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const NOTIFICATION_EMAIL = 'anfragen@send.kranvergleich.de'
 const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 
+// --- Rate limiting: max 5 requests per minute per IP ---
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX = 5
+const ipRequestLog = new Map<string, number[]>()
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const timestamps = ipRequestLog.get(ip) ?? []
+  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS)
+  recent.push(now)
+  ipRequestLog.set(ip, recent)
+  // Clean up old entries periodically
+  if (ipRequestLog.size > 10_000) {
+    for (const [key, val] of ipRequestLog) {
+      if (val.every((t) => now - t > RATE_LIMIT_WINDOW_MS)) ipRequestLog.delete(key)
+    }
+  }
+  return recent.length > RATE_LIMIT_MAX
+}
+
 export async function POST(request: Request) {
   try {
+    // Rate limit by IP
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Zu viele Anfragen. Bitte versuchen Sie es in einer Minute erneut.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
+
+    // Honeypot: if the hidden field is filled, it's a bot
+    if (body.website_url) {
+      // Silently accept but do nothing — bots think it worked
+      return NextResponse.json({ success: true, id: 'ok' })
+    }
 
     // Validate required fields
     if (!body.customer_email || !body.dsgvo_consent) {

@@ -66,6 +66,7 @@ export function LeadForm({
           duration_days: formData.get('duration') ? Number(formData.get('duration')) : null,
           dsgvo_consent: dsgvoConsent,
           company_ids: selectedCompanies,
+          website_url: formData.get('website_url') || '',
         }),
       })
 
@@ -139,6 +140,8 @@ export function LeadForm({
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Honeypot — hidden from real users, filled by bots */}
+          <input type="text" name="website_url" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute opacity-0 h-0 w-0 overflow-hidden pointer-events-none" />
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="name">Name *</Label>

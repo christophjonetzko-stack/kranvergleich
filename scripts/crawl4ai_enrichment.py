@@ -33,7 +33,7 @@ import anthropic
 
 # ─── CONFIG ───────────────────────────────────────────────
 # Kranvergleich Supabase project
-SUPABASE_URL = "https://agzxugnhvgjxubmegiip.supabase.co"
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
 ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
