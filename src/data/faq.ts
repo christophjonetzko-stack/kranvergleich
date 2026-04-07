@@ -35,6 +35,10 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Welche Tragkraft hat ein Minikran?',
       answer: 'Minikrane haben typischerweise eine Tragkraft von 500 kg bis 3.000 kg. Die Hakenhöhe reicht von 5m bis 18m, die Ausladung von 3m bis 16m. Für die Vermietung stehen verschiedene Größen zur Auswahl.',
     },
+    {
+      question: 'Was ist ein Raupen-Minikran und wo kann ich ihn leihen?',
+      answer: 'Ein Raupen-Minikran (auch Spinnenkran oder Spider Crane) ist ein kompakter Kran auf Raupenfahrwerk. Dank seiner geringen Breite ab 60 cm passt er durch Türen und Hallentore. Auf KranVergleich.de finden Sie Anbieter, bei denen Sie einen Raupen-Minikran leihen oder ausleihen können — mit oder ohne Bediener.',
+    },
   ],
   'autokran-mieten': [
     {
@@ -53,6 +57,10 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Brauche ich eine Genehmigung, wenn ich einen Autokran ausleihen will?',
       answer: 'Auf privatem Gelände ist meist keine Genehmigung nötig. Für den Einsatz auf öffentlichen Straßen oder Gehwegen benötigen Sie eine Sondernutzungsgenehmigung der Stadt.',
     },
+    {
+      question: 'Was kostet ein Autokran (Kranwagen) pro Tag?',
+      answer: 'Ein Autokran (auch Kranwagen oder Fahrzeugkran) kostet zwischen 500€ und 2.000€ pro Tag, inklusive Kranführer. Kleine Autokrane (30t) ab ca. 500€, mittlere (50–80t) ab 800€, schwere (100t+) ab 1.200€ pro Tag. Die Autokran-Mietpreise variieren je nach Region und Auslastung.',
+    },
   ],
   'dachdeckerkran-mieten': [
     {
@@ -66,6 +74,10 @@ const typeFAQs: Record<string, FAQItem[]> = {
     {
       question: 'Welche Reichweite hat ein Dachdeckerkran?',
       answer: 'Dachdeckerkrane erreichen typischerweise Hakenhöhen von 15–30m und Ausladungen von 10–25m. Damit sind die meisten Wohnhäuser problemlos erreichbar. Ideal zum Ausleihen für Dachsanierungen.',
+    },
+    {
+      question: 'Was kostet ein Dachdeckerkran pro Tag?',
+      answer: 'Die Kosten für einen Dachdeckerkran (auch Dachkran oder Ziegelkran) liegen bei 200–450€ pro Tag ohne Bediener. Bei Wochenmiete zahlen Sie 1.000–2.500€. Transport und Einweisung sind bei den meisten Vermietern inklusive. Vergleichen Sie Dachdeckerkran-Preise auf KranVergleich.de.',
     },
   ],
   'raupenkran-mieten': [
@@ -98,6 +110,10 @@ const typeFAQs: Record<string, FAQItem[]> = {
     {
       question: 'Welche Anhängerkran-Marken kann man mieten?',
       answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (Marktführer in Deutschland), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet — viele Vermieter auf KranVergleich.de bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
+    },
+    {
+      question: 'Was ist ein PKW-Anhänger mit Kran?',
+      answer: 'Ein PKW-Anhänger mit Kran (auch Anhängerkran oder Trailerkran) ist ein Hebekran, der auf einem PKW-Anhänger montiert ist. Er lässt sich mit jedem Fahrzeug mit Anhängerkupplung transportieren — ideal zum Ausleihen für Dachdeckerarbeiten, Baumaterialtransport oder Montagen bis 1.500 kg Traglast.',
     },
   ],
   'mobilkran-mieten': [
@@ -132,6 +148,10 @@ const typeFAQs: Record<string, FAQItem[]> = {
     {
       question: 'Brauche ich eine Baugenehmigung für einen Baukran?',
       answer: 'Ja, für die Aufstellung eines Turmdrehkrans benötigen Sie in der Regel eine Genehmigung der Baubehörde. Die Baukranvermietung unterstützt Sie dabei.',
+    },
+    {
+      question: 'Was ist der Unterschied zwischen Baukran, Schnellbaukran und Turmdrehkran?',
+      answer: 'Ein Baukran (auch Baustellenkran oder Hochbaukran) ist der Oberbegriff für Turmdrehkrane auf Baustellen. Ein Schnellbaukran ist eine kompaktere Variante, die schneller aufgebaut werden kann (wenige Stunden statt Tage) und für kleinere Baustellen geeignet ist. Turmdrehkran ist die technische Bezeichnung für den klassischen Baukran mit drehbarem Ausleger.',
     },
   ],
 }

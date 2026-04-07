@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: '%s | KranVergleich.de',
   },
   description:
-    'Finden und vergleichen Sie Kranvermietungen in ganz Deutschland. Minikrane, Autokrane, Dachdeckerkrane — Preise, Bewertungen und kostenlose Angebote.',
+    'Kran mieten oder leihen in ganz Deutschland. Kranmiete Preise vergleichen: Minikrane, Autokrane, Dachdeckerkrane, Mobilkrane — Bewertungen und kostenlose Angebote. Mietkran Preisvergleich.',
   metadataBase: new URL('https://kranvergleich.de'),
   openGraph: {
     type: 'website',

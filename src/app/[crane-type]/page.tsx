@@ -34,7 +34,7 @@ export async function generateMetadata({
   const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
 
   const title = `${craneType.name} mieten — ${priceStr ? `${priceStr} | ` : ''}${count} Anbieter vergleichen`
-  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten in Deutschland: ${count} Anbieter im Vergleich. ${craneType.description}${priceStr ? ` Preise ${priceStr}.` : ''} Kostenlos Angebote anfragen.`
+  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten oder leihen in Deutschland: ${count} Anbieter im Vergleich. ${craneType.description}${priceStr ? ` Preise ${priceStr}.` : ''} Kostenlos Angebote anfragen — Kranmiete Preise vergleichen.`
   const canonical = `/${craneTypeSlug}`
 
   return {
@@ -198,9 +198,9 @@ export default async function CraneTypePage({
         return (
           <div className="text-[14px] text-gray-500 leading-relaxed mb-10">
             <p>
-              Sie suchen einen <strong className="text-gray-900">{craneType.name}</strong>
+              Sie möchten einen <strong className="text-gray-900">{craneType.name}</strong>
               {synonyms.length > 0 && <> (auch {synonyms.slice(0, 3).join(', ')} genannt)</>}
-              {' '}zur Miete in Deutschland? Auf KranVergleich.de finden Sie{' '}
+              {' '}mieten oder leihen in Deutschland? Auf KranVergleich.de finden Sie{' '}
               {companies.length > 0 ? `${companies.length} ` : ''}{craneType.name}-Vermieter im direkten Vergleich.
               {price && (
                 <> Die Tagesmiete liegt zwischen ca. {price.dayFrom.toLocaleString('de-DE')}€ und{' '}

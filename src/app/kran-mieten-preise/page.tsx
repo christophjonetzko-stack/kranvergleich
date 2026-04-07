@@ -12,7 +12,7 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: 'Was kostet ein Kran? Preise & Kosten 2026 — Kran mieten Preisliste',
   description:
-    'Kran mieten Preisliste 2026: Tagespreise, Wochenpreise und Monatspreise für alle Krantypen. Autokran ab 500€/Tag, Minikran ab 250€/Tag, Baukran ab 300€/Tag, Mobilkran (Schwerlastkran/Kranwagen) ab 600€/Tag. Mietkran Preise vergleichen.',
+    'Kran mieten Preisliste 2026: Tagespreise, Wochenpreise und Monatspreise für alle Krantypen. Autokran ab 500€/Tag, Minikran ab 250€/Tag, Baukran ab 300€/Tag, Mobilkran ab 600€/Tag. Kranmiete Kosten, Mietkran Preise und Kran leihen — alle Preise im Überblick.',
   alternates: { canonical: '/kran-mieten-preise' },
   openGraph: {
     title: 'Was kostet ein Kran? Preise & Kosten 2026',
@@ -72,6 +72,18 @@ const costFAQs = [
     question: 'Was kostet ein PKW-Anhänger mit Kran (Anhängerkran)?',
     answer: 'Ein Anhängerkran (PKW-Anhänger mit Kran) kostet ab 150€ pro Tag. Wochenmiete ab 700€. Tragkraft bis 1.500 kg. Kann mit normaler PKW-Anhängerkupplung transportiert werden — kein Führerschein für den Kran nötig, nur Einweisung.',
   },
+  {
+    question: 'Was kostet es, einen Kran zu mieten?',
+    answer: 'Die Kranmiete kostet je nach Typ zwischen 150€ und 5.000€ pro Tag (netto). Der günstigste Kran zum Leihen ist der Anhängerkran ab 150€/Tag, der teuerste der Raupenkran ab 800€/Tag. Vergleichen Sie Mietkran-Preise von mehreren Anbietern, um das beste Angebot zu finden.',
+  },
+  {
+    question: 'Was kostet ein Kran am Tag?',
+    answer: 'Ein Kran kostet am Tag zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane zum Ausleihen: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Baukran ab 300€/Tag. Alle Tagespreise sind Richtwerte ohne MwSt.',
+  },
+  {
+    question: 'Wie viel kostet ein Kran?',
+    answer: 'Die Kosten für einen Mietkran hängen von Typ, Tragkraft und Mietdauer ab. Tagesmiete: 150–5.000€, Wochenmiete: 700–25.000€, Monatsmiete: 2.000–50.000€. Auf KranVergleich.de können Sie die Kranmiete Preise kostenlos vergleichen.',
+  },
 ]
 
 export default async function KranMietenPreisePage() {
@@ -92,6 +104,7 @@ export default async function KranMietenPreisePage() {
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Komplette Mietkran-Preisliste für alle 8 Krantypen in Deutschland: Tagespreise, Wochenpreise und
         Monatspreise im Überblick — von Minikran über Autokran (Kranwagen) bis Schwerlastkran.
+        Ob Sie einen Kran mieten oder leihen möchten: hier finden Sie alle Kranmiete Kosten auf einen Blick.
         Alle Preise sind unverbindliche Richtwerte (netto, zzgl. MwSt.) basierend auf Marktrecherche Q1 2026.
       </p>
       <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026</p>
