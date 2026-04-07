@@ -155,13 +155,8 @@ export function SearchBox() {
       } else {
         // No page for this city — find nearest city with companies
         const nearest = findNearestSeoCity(selectedCity.lat, selectedCity.lng)
-        if (nearest.distance <= 50) {
-          setHint(`Für ${selectedCity.name} zeigen wir Anbieter in ${nearest.name} (${Math.round(nearest.distance)} km entfernt).`)
-          router.push(`/${craneType}/${nearest.slug}`)
-        } else {
-          setHint(`Für ${selectedCity.name} haben wir noch keine Anbieter in der Nähe. Zeige alle Anbieter deutschlandweit.`)
-          router.push(`/${craneType}`)
-        }
+        setHint(`Für ${selectedCity.name} zeigen wir Anbieter in ${nearest.name} (${Math.round(nearest.distance)} km entfernt).`)
+        router.push(`/${craneType}/${nearest.slug}`)
       }
     } else if (cityQuery.trim()) {
       // Text typed but no autocomplete selection — try exact match
