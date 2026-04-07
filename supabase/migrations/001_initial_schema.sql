@@ -181,4 +181,5 @@ CREATE POLICY "Public read company_regions" ON company_regions FOR SELECT USING 
 
 -- Leads: nur Insert (kein Read für anon)
 CREATE POLICY "Public insert leads" ON leads FOR INSERT WITH CHECK (dsgvo_consent = true);
-CREATE POLICY "Public insert lead_companies" ON lead_companies FOR INSERT WITH CHECK (true);
+-- lead_companies: no anon INSERT — only service_role inserts via API
+-- CREATE POLICY "Public insert lead_companies" ON lead_companies FOR INSERT WITH CHECK (true);
