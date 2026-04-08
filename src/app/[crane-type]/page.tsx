@@ -78,7 +78,20 @@ export default async function CraneTypePage({
       </nav>
 
       {/* Hero mini */}
-      <div className="mb-8">
+      <div className="mb-8 flex items-start gap-4">
+        {(() => {
+          const ctImg = craneTypesList.find((c) => c.slug === craneType.slug)
+          return ctImg?.image ? (
+          <img
+            src={ctImg.image}
+            alt={`${craneType.name} Illustration`}
+            width={64}
+            height={64}
+            className="shrink-0 hidden sm:block"
+          />
+          ) : null
+        })()}
+        <div>
         <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
           {craneType.name} mieten
           {craneType.price_day_from && (
@@ -100,6 +113,7 @@ export default async function CraneTypePage({
           {craneType.typical_height_m && (
             <span>Hakenhöhe: {craneType.typical_height_m}</span>
           )}
+        </div>
         </div>
       </div>
 
