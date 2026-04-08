@@ -73,22 +73,19 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
 
     const icon = L.divIcon({
       className: '',
-      html: `<div style="width:28px;height:28px;background:#2563eb;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>`,
-      iconSize: [28, 28],
-      iconAnchor: [14, 14],
-      popupAnchor: [0, -16],
+      html: `<div style="width:12px;height:12px;background:#16a34a;border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>`,
+      iconSize: [12, 12],
+      iconAnchor: [6, 6],
+      popupAnchor: [0, -8],
     })
 
     const bounds: L.LatLngExpression[] = []
 
-    const useCluster = companies.length > 30
-    const clusterGroup = useCluster
-      ? (L as any).markerClusterGroup({
-          maxClusterRadius: 40,
-          spiderfyOnMaxZoom: true,
-          showCoverageOnHover: false,
-        })
-      : null
+    const clusterGroup = (L as any).markerClusterGroup({
+      maxClusterRadius: 40,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+    })
 
     for (const c of companies) {
       bounds.push([c.lat, c.lng])
@@ -104,16 +101,10 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
           { maxWidth: 220 }
         )
 
-      if (clusterGroup) {
-        clusterGroup.addLayer(marker)
-      } else {
-        marker.addTo(map)
-      }
+      clusterGroup.addLayer(marker)
     }
 
-    if (clusterGroup) {
-      map.addLayer(clusterGroup)
-    }
+    map.addLayer(clusterGroup)
 
     // fitBounds to show only visible companies
     if (bounds.length > 1) {
