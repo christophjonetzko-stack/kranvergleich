@@ -135,7 +135,6 @@ export async function getCompaniesForCraneAndCity(
   const batchSize = 50
   const firstBatch = companyIds.slice(0, batchSize)
 
-  // Get full company data — all companies in city, not just those with matching crane type
   const { data, error } = await supabase
     .from('companies')
     .select(`
@@ -149,7 +148,16 @@ export async function getCompaniesForCraneAndCity(
     .order('google_rating', { ascending: false })
 
   if (error) throw error
-  return data ?? []
+  const all = data ?? []
+
+  // Sort: companies with matching crane type first, then the rest
+  const withType = all.filter((c) =>
+    c.company_cranes?.some((cc: any) => cc.crane_type_id === craneTypeId)
+  )
+  const withoutType = all.filter(
+    (c) => !c.company_cranes?.some((cc: any) => cc.crane_type_id === craneTypeId)
+  )
+  return [...withType, ...withoutType]
 }
 
 /**
