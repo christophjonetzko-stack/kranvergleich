@@ -440,7 +440,7 @@ export default async function CompanyPage({
             },
             telephone: company.phone,
             ...(displayEmail && { email: displayEmail }),
-            url: company.website,
+            ...(company.website && { url: company.website }),
             ...(company.google_rating && {
               aggregateRating: {
                 '@type': 'AggregateRating',

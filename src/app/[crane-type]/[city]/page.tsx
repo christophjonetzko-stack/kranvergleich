@@ -304,7 +304,7 @@ export default async function CraneCityPage({
                     addressCountry: 'DE',
                   },
                   telephone: company.phone,
-                  url: company.website,
+                  ...(company.website && { url: company.website }),
                   ...(company.google_rating && {
                     aggregateRating: {
                       '@type': 'AggregateRating',
