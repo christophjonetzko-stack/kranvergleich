@@ -7,6 +7,14 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
 
+// Override Leaflet default icon to prevent blue marker fallback
+delete (L.Icon.Default.prototype as any)._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconUrl: '',
+  iconRetinaUrl: '',
+  shadowUrl: '',
+})
+
 interface MapCompany {
   name: string
   slug: string
@@ -85,6 +93,14 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
       maxClusterRadius: 40,
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: false,
+      iconCreateFunction: (cluster: any) => {
+        const count = cluster.getChildCount()
+        return L.divIcon({
+          html: `<div style="width:36px;height:36px;background:rgba(22,163,74,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px;font-family:system-ui;box-shadow:0 2px 6px rgba(0,0,0,.2);">${count}</div>`,
+          className: '',
+          iconSize: L.point(36, 36),
+        })
+      },
     })
 
     for (const c of companies) {
