@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { submitLead } from '@/lib/queries'
+import { getServiceSupabase } from '@/lib/supabase'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -165,6 +166,73 @@ export async function POST(request: Request) {
     }).catch((err) => {
       console.error('Resend confirmation error:', err)
     })
+
+    // Send lead email to selected companies
+    if (companyIds.length > 0) {
+      const sb = getServiceSupabase()
+      const { data: companies } = await sb
+        .from('companies')
+        .select('id, name, email')
+        .in('id', companyIds)
+
+      if (companies && companies.length > 0) {
+        const companiesWithEmail = companies.filter((c) => c.email)
+        const companiesWithoutEmail = companies.filter((c) => !c.email)
+
+        // Send to each company that has an email
+        for (const company of companiesWithEmail) {
+          resend.emails.send({
+            from: FROM_EMAIL,
+            to: company.email!,
+            replyTo: customerEmail,
+            subject: `Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
+            html: `
+              <div style="font-family:system-ui;max-width:560px;">
+                <h2 style="font-size:18px;color:#1a1a1a;">Neue Anfrage über KranVergleich.de</h2>
+                <p style="color:#4b5563;font-size:14px;line-height:1.6;">
+                  Ein potenzieller Kunde hat über KranVergleich.de eine Anfrage an <strong>${escapeHtml(company.name)}</strong> gesendet.
+                </p>
+                <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
+                  <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Name</td><td><strong>${safeName}</strong></td></tr>
+                  <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+                  ${safePhone !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Telefon</td><td>${safePhone}</td></tr>` : ''}
+                  <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Stadt</td><td>${safeCity}</td></tr>
+                  ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
+                  ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
+                </table>
+                ${safeDesc ? `<p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>${safeDesc}</p>` : ''}
+                <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
+                <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
+                <p style="font-size:12px;color:#9ca3af;">
+                  Diese Anfrage wurde über <a href="https://kranvergleich.de" style="color:#2563eb;">KranVergleich.de</a> vermittelt.
+                </p>
+              </div>
+            `,
+          }).catch((err) => {
+            console.error(`Resend company email error (${company.name}):`, err)
+          })
+        }
+
+        // Forward leads for companies without email to owner
+        if (companiesWithoutEmail.length > 0) {
+          const missingNames = companiesWithoutEmail.map((c) => escapeHtml(c.name)).join(', ')
+          resend.emails.send({
+            from: FROM_EMAIL,
+            to: NOTIFICATION_EMAIL,
+            subject: `⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
+            html: `
+              <h3>Firmen ohne E-Mail-Adresse — manuelle Weiterleitung nötig</h3>
+              <p>Folgende Firmen wurden vom Kunden ausgewählt, haben aber keine E-Mail in der Datenbank:</p>
+              <ul>${companiesWithoutEmail.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
+              <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
+              <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
+            `,
+          }).catch((err) => {
+            console.error('Resend missing-email notification error:', err)
+          })
+        }
+      }
+    }
 
     return NextResponse.json({ success: true, id: lead.id })
   } catch {
