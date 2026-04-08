@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getCompanyBySlug, getOtherCompaniesInCity } from '@/lib/queries'
 import { getCraneTypeNameById } from '@/data/crane-types'
 import { CompanyMapWrapper } from '@/components/company-map-wrapper'
+import { LeadForm } from '@/components/lead-form'
 
 export const revalidate = 86400
 
@@ -170,7 +171,7 @@ export default async function CompanyPage({
                 </a>
               )}
               <a
-                href={`mailto:impressum@kranvergleich.de?subject=Angebot%20anfragen:%20${encodeURIComponent(company.name)}&body=Firma:%20${encodeURIComponent(company.name)}%0AStadt:%20${encodeURIComponent(company.city)}%0A%0AMein%20Projekt:`}
+                href="#anfrage"
                 className="inline-flex items-center px-4 py-2 border border-blue-200 hover:border-blue-300 text-[13px] text-blue-600 rounded-md transition-colors"
               >
                 Angebot anfragen
@@ -363,19 +364,12 @@ export default async function CompanyPage({
         )}
 
         {/* Inquiry form */}
-        <section className="border border-blue-100 rounded-lg p-5 bg-blue-50/30">
-          <h2 className="text-sm font-semibold text-gray-900 mb-1">
-            Angebot anfragen bei {company.name}
-          </h2>
-          <p className="text-[12px] text-gray-400 mb-3">
-            Kostenlos & unverbindlich. Wir leiten Ihre Anfrage an den Anbieter weiter.
-          </p>
-          <a
-            href={`mailto:impressum@kranvergleich.de?subject=Angebot%20anfragen:%20${encodeURIComponent(company.name)}&body=Firma:%20${encodeURIComponent(company.name)}%0AStadt:%20${encodeURIComponent(company.city)}%0A%0AMein%20Projekt:%0A%0AGewünschter%20Krantyp:%0AGewünschter%20Zeitraum:`}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
-          >
-            Jetzt Angebot anfragen
-          </a>
+        <section id="anfrage" className="scroll-mt-20">
+          <LeadForm
+            cityName={company.city}
+            companies={[company]}
+            selectedCompanyIds={[company.id]}
+          />
         </section>
 
         {/* Opt-out / data correction — DSGVO Art. 17 */}
