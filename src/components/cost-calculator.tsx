@@ -163,6 +163,8 @@ export function CostCalculator() {
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [result, setResult] = useState<Recommendation | null>(null)
+  const [emailSent, setEmailSent] = useState(false)
+  const [emailSending, setEmailSending] = useState(false)
 
   function handleSelect(value: string) {
     const step = STEPS[currentStep]
@@ -180,6 +182,34 @@ export function CostCalculator() {
     setCurrentStep(0)
     setAnswers({})
     setResult(null)
+    setEmailSent(false)
+    setEmailSending(false)
+  }
+
+  async function handleSendEmail(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (!result || emailSending) return
+    const form = new FormData(e.currentTarget)
+    const email = form.get('email') as string
+    if (!email) return
+
+    setEmailSending(true)
+    try {
+      const res = await fetch('/api/send-result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          craneName: result.name,
+          reason: result.reason,
+          priceEstimate: result.priceEstimate,
+          includesOperator: result.includesOperator,
+          slug: result.slug,
+        }),
+      })
+      if (res.ok) setEmailSent(true)
+    } catch { /* ignore */ }
+    setEmailSending(false)
   }
 
   // --- Result screen ---
@@ -228,6 +258,40 @@ export function CostCalculator() {
           >
             Neu berechnen
           </button>
+        </div>
+
+        {/* Email capture */}
+        <div className="border border-gray-200 rounded-lg p-4 mt-4">
+          {emailSent ? (
+            <p className="text-[13px] text-green-700 font-medium">
+              ✓ Kostenvergleich wurde an Ihre E-Mail gesendet.
+            </p>
+          ) : (
+            <form onSubmit={handleSendEmail}>
+              <p className="text-[13px] font-medium text-gray-700 mb-2">
+                Ergebnis per E-Mail erhalten
+              </p>
+              <div className="flex gap-2">
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="ihre@email.de"
+                  className="flex-1 text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400"
+                />
+                <button
+                  type="submit"
+                  disabled={emailSending}
+                  className="text-[13px] font-medium bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors whitespace-nowrap"
+                >
+                  {emailSending ? 'Senden…' : 'Senden'}
+                </button>
+              </div>
+              <p className="text-[11px] text-gray-400 mt-2">
+                Ihre E-Mail wird nur für den Versand des Kostenvergleichs verwendet. Keine Werbung.
+              </p>
+            </form>
+          )}
         </div>
 
         <p className="text-[11px] text-gray-400 mt-3">
