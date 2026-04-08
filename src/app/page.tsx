@@ -173,10 +173,23 @@ export default async function HomePage() {
             name: 'KranVergleich.de',
             url: 'https://kranvergleich.de',
             description: 'Vergleichsportal für Kranvermietung in Deutschland',
-            potentialAction: {
-              '@type': 'SearchAction',
-              target: 'https://kranvergleich.de/{crane_type}/{city}',
-              'query-input': 'required name=crane_type required name=city',
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'KranVergleich.de',
+            url: 'https://kranvergleich.de',
+            description: 'Vergleichsportal für Kranvermietung in Deutschland. Über 740 Anbieter für Minikrane, Autokrane und mehr.',
+            contactPoint: {
+              '@type': 'ContactPoint',
+              email: 'anfragen@send.kranvergleich.de',
+              contactType: 'customer service',
+              availableLanguage: 'German',
             },
           }),
         }}
