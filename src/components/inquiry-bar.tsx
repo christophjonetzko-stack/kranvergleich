@@ -233,20 +233,17 @@ export function InquiryBar({
                   />
                 </div>
 
-                <div className="flex items-start gap-2">
+                <label className="flex gap-2 cursor-pointer">
                   <Checkbox
                     id="ib-dsgvo"
                     checked={dsgvoConsent}
                     onCheckedChange={(checked) => setDsgvoConsent(checked === true)}
+                    className="mt-0.5 shrink-0"
                   />
-                  <Label htmlFor="ib-dsgvo" className="text-xs text-gray-500 leading-relaxed">
-                    Ich stimme der Verarbeitung meiner Daten gemass der{' '}
-                    <a href="/datenschutz" className="underline hover:text-gray-700" target="_blank">
-                      Datenschutzerklarung
-                    </a>{' '}
-                    zu. Meine Daten werden an die ausgewahlten Anbieter weitergeleitet. *
-                  </Label>
-                </div>
+                  <span className="text-xs text-gray-500 leading-relaxed">
+                    Ich stimme der Verarbeitung meiner Daten gemäß der <a href="/datenschutz" className="underline hover:text-gray-700" target="_blank" onClick={(e) => e.stopPropagation()}>Datenschutzerklärung</a> zu. Meine Daten werden an die ausgewählten Anbieter weitergeleitet. *
+                  </span>
+                </label>
 
                 {error && <p className="text-sm text-red-600">{error}</p>}
 

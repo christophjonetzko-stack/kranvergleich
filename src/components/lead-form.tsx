@@ -181,21 +181,17 @@ export function LeadForm({
             />
           </div>
 
-          <div className="flex items-start gap-2">
+          <label className="flex gap-2 cursor-pointer">
             <Checkbox
               id="dsgvo"
               checked={dsgvoConsent}
               onCheckedChange={(checked) => setDsgvoConsent(checked === true)}
+              className="mt-0.5 shrink-0"
             />
-            <Label htmlFor="dsgvo" className="text-xs text-muted-foreground leading-relaxed">
-              Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
-              <a href="/datenschutz" className="underline hover:text-foreground" target="_blank">
-                Datenschutzerklärung
-              </a>{' '}
-              zu. Meine Daten werden zur Bearbeitung meiner Anfrage an die ausgewählten Anbieter
-              weitergeleitet. *
-            </Label>
-          </div>
+            <span className="text-xs text-muted-foreground leading-relaxed">
+              Ich stimme der Verarbeitung meiner Daten gemäß der <a href="/datenschutz" className="underline hover:text-foreground" target="_blank" onClick={(e) => e.stopPropagation()}>Datenschutzerklärung</a> zu. Meine Daten werden zur Bearbeitung meiner Anfrage an die ausgewählten Anbieter weitergeleitet. *
+            </span>
+          </label>
 
           {error && (
             <p className="text-sm text-destructive">{error}</p>
