@@ -327,17 +327,23 @@ export default async function CompanyPage({
                 </dd>
               </div>
             )}
-            {company.opening_hours && (
-              <div className="flex gap-3">
-                <dt className="text-gray-400 w-16 shrink-0">Zeiten</dt>
-                <dd className="text-gray-700">{company.opening_hours}</dd>
-              </div>
-            )}
             {!company.phone && !company.website && (
               <p className="text-gray-400 text-[13px]">Nur per Anfrage erreichbar</p>
             )}
           </dl>
         </section>
+
+        {/* Opening hours */}
+        {company.opening_hours && (
+          <section className="border border-gray-200 rounded-lg p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Öffnungszeiten</h2>
+            <div className="space-y-1">
+              {company.opening_hours.split(/\s*\|\s*/).map((line, i) => (
+                <p key={i} className="text-[14px] text-gray-700">{line.trim()}</p>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Service area */}
         {(company.service_regions?.length || company.service_radius_km) && (
