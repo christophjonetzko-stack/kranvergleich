@@ -141,51 +141,20 @@ export default async function CraneCityPage({
             {craneType.name} mieten in {city.name}
             {price && <span className="text-blue-600"> — ab {price.dayFrom}€/Tag</span>}
           </h1>
-          <p className="text-[15px] text-gray-500">
+          <p className="text-[15px] text-gray-500 mb-1">
             {companies.length} Anbieter in {city.name} und Umgebung
           </p>
+          <nav className="flex items-center gap-1 text-[12px] text-gray-400 flex-wrap">
+            {companies.length > 0 && <><a href="#anbieter" className="hover:text-gray-600">Anbieter</a><span>·</span></>}
+            {companies.some((c) => c.lat != null && c.lng != null) && <><a href="#karte" className="hover:text-gray-600">Karte</a><span>·</span></>}
+            <a href="#preise" className="hover:text-gray-600">Preise</a>
+            {faqs.length > 0 && <><span>·</span><a href="#faq" className="hover:text-gray-600">FAQ</a></>}
+            <span>·</span><a href="#verwandte" className="hover:text-gray-600">Verwandte Suchen</a>
+          </nav>
         </div>
       </div>
 
       <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
-
-      {/* Table of Contents */}
-      <nav className="mb-8 border border-gray-200 rounded-lg p-4">
-        <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
-        <ul className="flex flex-col gap-1">
-          {companies.length > 0 && (
-            <li>
-              <a href="#anbieter" className="text-[13px] text-blue-600 hover:underline">
-                {companies.length} Anbieter in {city.name}
-              </a>
-            </li>
-          )}
-          {companies.some((c) => c.lat != null && c.lng != null) && (
-            <li>
-              <a href="#karte" className="text-[13px] text-blue-600 hover:underline">
-                Karte
-              </a>
-            </li>
-          )}
-          <li>
-            <a href="#preise" className="text-[13px] text-blue-600 hover:underline">
-              Preise
-            </a>
-          </li>
-          {faqs.length > 0 && (
-            <li>
-              <a href="#faq" className="text-[13px] text-blue-600 hover:underline">
-                Häufige Fragen
-              </a>
-            </li>
-          )}
-          <li>
-            <a href="#verwandte" className="text-[13px] text-blue-600 hover:underline">
-              Verwandte Suchen
-            </a>
-          </li>
-        </ul>
-      </nav>
 
       {/* Company Listings + Map (synced via filters) */}
       {companies.length > 0 ? (
