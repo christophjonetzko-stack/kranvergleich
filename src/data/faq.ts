@@ -39,6 +39,14 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Was ist ein Raupen-Minikran und wo kann ich ihn leihen?',
       answer: 'Ein Raupen-Minikran (auch Spinnenkran oder Spider Crane) ist ein kompakter Kran auf Raupenfahrwerk. Dank seiner geringen Breite ab 60 cm passt er durch Türen und Hallentore. Auf KranVergleich.de finden Sie Anbieter, bei denen Sie einen Raupen-Minikran leihen oder ausleihen können — mit oder ohne Bediener.',
     },
+    {
+      question: 'Wo finde ich eine Minikran-Preisliste?',
+      answer: 'Eine aktuelle Minikran-Preisliste finden Sie auf KranVergleich.de: Tagesmiete 250–500€, Wochenmiete 1.000–2.500€, Monatsmiete 3.000–7.000€ (netto). Vergleichen Sie Minikran-Mietpreise und fordern Sie kostenlos Angebote an.',
+    },
+    {
+      question: 'Kann ich einen kleinen Kran mieten?',
+      answer: 'Ja, einen kleinen Kran (Minikran) können Sie ab 250€/Tag mieten. Minikrane eignen sich ideal für enge Baustellen, Innenräume und Arbeiten mit eingeschränkter Zufahrt. Kein Kranführerschein erforderlich — eine Einweisung reicht.',
+    },
   ],
   'autokran-mieten': [
     {
@@ -79,6 +87,10 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Was kostet ein Dachdeckerkran pro Tag?',
       answer: 'Die Kosten für einen Dachdeckerkran (auch Dachkran oder Ziegelkran) liegen bei 200–450€ pro Tag ohne Bediener. Bei Wochenmiete zahlen Sie 1.000–2.500€. Transport und Einweisung sind bei den meisten Vermietern inklusive. Vergleichen Sie Dachdeckerkran-Preise auf KranVergleich.de.',
     },
+    {
+      question: 'Was kostet ein Dachdecker-Kran für Dacharbeiten?',
+      answer: 'Einen Dachdecker-Kran (Dachdeckerkran) mieten kostet 200–450€/Tag. Für Dachsanierungen, Ziegeltransport und Dachstuhlarbeiten ist der Dachkran die effizienteste Lösung. Die Dachdeckerkran-Preisliste: Wochenmiete 1.000–2.500€, Monatsmiete 3.000–7.000€.',
+    },
   ],
   'raupenkran-mieten': [
     {
@@ -118,12 +130,20 @@ const typeFAQs: Record<string, FAQItem[]> = {
   ],
   'mobilkran-mieten': [
     {
+      question: 'Was kostet ein Mobilkran pro Tag?',
+      answer: 'Einen Mobilkran (auch Schwerlastkran oder Teleskopkran) mieten kostet zwischen 600€ und 3.000€ pro Tag (netto), inklusive Kranführer. Die Mobilkran-Preisliste richtet sich nach Tragkraft: 50t ab ca. 600€, 100t ab 1.200€, 200t+ ab 2.000€/Tag.',
+    },
+    {
       question: 'Was ist der Unterschied zwischen Mobilkran und Autokran?',
-      answer: 'Ein Mobilkran hat ein spezielles Kranfahrgestell und ist für höhere Traglasten ausgelegt (bis 1.200t). Ein Autokran basiert auf einem LKW-Fahrgestell. Die Mobilkranvermietung bedient vor allem Großprojekte.',
+      answer: 'Ein Mobilkran (mobiler Kran) hat ein spezielles Kranfahrgestell und ist für höhere Traglasten ausgelegt (bis 1.200t). Ein Autokran basiert auf einem LKW-Fahrgestell. Die Mobilkranvermietung bedient vor allem Großprojekte und Schwerlastmontagen.',
     },
     {
       question: 'Was kostet es, einen Mobilkran zu leihen?',
-      answer: 'Einen Mobilkran mieten kostet zwischen 600€ und 3.000€ pro Tag, inklusive Kranführer. Beim Mobilkranverleih hängt der Preis stark von der Tragkraft ab.',
+      answer: 'Einen Mobilkran leihen kostet 600–3.000€/Tag. Die Wochenmiete liegt bei 3.000–15.000€. Beim Mobilkranverleih sind Kranführer und An-/Abfahrt meist inklusive. Vergleichen Sie Mobilkran-Mietpreise auf KranVergleich.de.',
+    },
+    {
+      question: 'Was kostet ein Schwerlastkran?',
+      answer: 'Ein Schwerlastkran (Mobilkran ab 100t Tragkraft) kostet ab 1.200€ pro Tag inklusive Kranführer. Für 80-Tonnen-Einsätze rechnen Sie mit ca. 800–1.500€/Tag. Schwerlastkran mieten lohnt sich für Industrie-, Brücken- und Windkraftmontagen.',
     },
   ],
   'ladekran-mieten': [
@@ -138,20 +158,28 @@ const typeFAQs: Record<string, FAQItem[]> = {
   ],
   'baukran-mieten': [
     {
+      question: 'Was kostet ein Baukran pro Tag?',
+      answer: 'Einen Baukran mieten kostet zwischen 300€ und 1.500€ pro Tag (netto), je nach Tragkraft und Auslegerlänge. Für größere Turmdrehkrane oder Baustellenkrane ist die Monatsmiete (4.000–25.000€) üblich. Die Baukran-Preisliste hängt stark von Krantyp und Mietdauer ab.',
+    },
+    {
+      question: 'Was kostet ein Baukran pro Monat?',
+      answer: 'Die Monatsmiete für einen Baukran liegt zwischen 4.000€ und 25.000€ (netto). Hinzu kommen Kosten für Montage/Demontage (3.000–8.000€), Fundament (1.000–3.000€) und Transport (500–2.000€). Einen Baukran leihen lohnt sich ab einer Bauzeit von 3+ Monaten.',
+    },
+    {
       question: 'Wie lange dauert der Aufbau eines Baukrans?',
       answer: 'Der Aufbau eines Turmdrehkrans dauert in der Regel 1–3 Tage, abhängig von Größe und Standort. Beim Baukranverleih liegen die Kosten für Montage/Demontage bei 3.000–8.000€.',
     },
     {
-      question: 'Was kostet es, einen Baukran zu leihen?',
-      answer: 'Die Monatsmiete beim Baukranverleih liegt zwischen 4.000€ und 25.000€. Hinzu kommen Kosten für Montage, Demontage, Fundament und Statik. Einen Baukran mieten lohnt sich ab einer Bauzeit von 3+ Monaten.',
-    },
-    {
       question: 'Brauche ich eine Baugenehmigung für einen Baukran?',
-      answer: 'Ja, für die Aufstellung eines Turmdrehkrans benötigen Sie in der Regel eine Genehmigung der Baubehörde. Die Baukranvermietung unterstützt Sie dabei.',
+      answer: 'Ja, für die Aufstellung eines Turmdrehkrans (Baustellenkran) benötigen Sie eine Genehmigung der Baubehörde. Die Baukranvermietung unterstützt Sie beim Genehmigungsverfahren.',
     },
     {
       question: 'Was ist der Unterschied zwischen Baukran, Schnellbaukran und Turmdrehkran?',
-      answer: 'Ein Baukran (auch Baustellenkran oder Hochbaukran) ist der Oberbegriff für Turmdrehkrane auf Baustellen. Ein Schnellbaukran ist eine kompaktere Variante, die schneller aufgebaut werden kann (wenige Stunden statt Tage) und für kleinere Baustellen geeignet ist. Turmdrehkran ist die technische Bezeichnung für den klassischen Baukran mit drehbarem Ausleger.',
+      answer: 'Ein Baukran (auch Baustellenkran, Hochbaukran oder Mobilbaukran) ist der Oberbegriff für Turmdrehkrane auf Baustellen. Ein Schnellbaukran ist eine kompaktere Variante, die schneller aufgebaut werden kann (wenige Stunden statt Tage) und für kleinere Baustellen geeignet ist. Turmdrehkran ist die technische Bezeichnung für den klassischen Baukran mit drehbarem Ausleger.',
+    },
+    {
+      question: 'Wo finde ich eine Baukran-Preisliste?',
+      answer: 'Auf KranVergleich.de finden Sie eine aktuelle Baukran-Preisliste mit Tages-, Wochen- und Monatspreisen. Vergleichen Sie Baukran-Mietpreise von über 100 Anbietern in ganz Deutschland — kostenlos und unverbindlich.',
     },
   ],
 }

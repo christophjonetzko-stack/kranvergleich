@@ -33,8 +33,8 @@ export async function generateMetadata({
   const ctInfo = craneTypesList.find((c) => c.slug === craneTypeSlug)
   const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
 
-  const title = `${craneType.name} mieten — ${priceStr ? `${priceStr} | ` : ''}${count} Anbieter vergleichen`
-  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten oder leihen in Deutschland: ${count} Anbieter im Vergleich. ${craneType.description}${priceStr ? ` Preise ${priceStr}.` : ''} Kostenlos Angebote anfragen — Kranmiete Preise vergleichen.`
+  const title = `${craneType.name} mieten — ${priceStr ? `${priceStr} | ` : ''}Preisliste & ${count} Anbieter`
+  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten oder leihen: ${count} Anbieter vergleichen. ${craneType.description}${priceStr ? ` Kosten ${priceStr}.` : ''} Preisliste 2026 mit Tages-, Wochen- & Monatspreisen. Kostenlos Angebote anfragen.`
   const canonical = `/${craneTypeSlug}`
 
   return {
