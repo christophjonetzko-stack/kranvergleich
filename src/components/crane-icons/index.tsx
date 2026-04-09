@@ -159,3 +159,18 @@ const craneIconMap: Record<string, React.FC<CraneIconProps>> = {
 export function getCraneIcon(slug: string): React.FC<CraneIconProps> {
   return craneIconMap[slug] ?? MinikranIcon
 }
+
+const craneIconByName: Record<string, React.FC<CraneIconProps>> = {
+  'Minikran': MinikranIcon,
+  'Autokran': AutokranIcon,
+  'Dachdeckerkran': DachdeckerkranIcon,
+  'Raupenkran': RaupenkranIcon,
+  'Anhängerkran': AnhaengerkranIcon,
+  'Mobilkran': MobilkranIcon,
+  'Baukran': BaukranIcon,
+  'Ladekran': LadekranIcon,
+}
+
+export function getCraneIconByName(name: string): React.FC<CraneIconProps> {
+  return craneIconByName[name] ?? MinikranIcon
+}

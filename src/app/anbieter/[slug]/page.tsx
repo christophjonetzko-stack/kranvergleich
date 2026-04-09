@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getCompanyBySlug, getOtherCompaniesInCity, getCraneTypes } from '@/lib/queries'
 import { getCraneTypeNameById } from '@/data/crane-types'
+import { getCraneIconByName } from '@/components/crane-icons'
 import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { LeadForm } from '@/components/lead-form'
 
@@ -201,15 +202,19 @@ export default async function CompanyPage({
         {craneTypeNames.length > 0 && (
           <section className="border border-gray-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Kranflotte</h2>
-            <div className="flex flex-wrap gap-2">
-              {craneTypeNames.map((typeName) => (
-                <span
-                  key={typeName}
-                  className="text-[13px] bg-gray-100 text-gray-700 px-3 py-1 rounded"
-                >
-                  {typeName}
-                </span>
-              ))}
+            <div className="flex flex-wrap gap-3">
+              {craneTypeNames.map((typeName) => {
+                const Icon = getCraneIconByName(typeName)
+                return (
+                  <div
+                    key={typeName}
+                    className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2"
+                  >
+                    <Icon className="w-8 h-8 shrink-0" />
+                    <span className="text-[13px] font-medium text-gray-700">{typeName}</span>
+                  </div>
+                )
+              })}
             </div>
             {company.company_cranes.some((c) => c.has_operator || c.has_glass_sucker || c.electric) && (
               <div className="flex flex-wrap gap-2 mt-3">
