@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getCompanyBySlug, getOtherCompaniesInCity } from '@/lib/queries'
+import { getCompanyBySlug, getOtherCompaniesInCity, getCraneTypes } from '@/lib/queries'
 import { getCraneTypeNameById } from '@/data/crane-types'
 import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { LeadForm } from '@/components/lead-form'
@@ -70,7 +70,10 @@ export default async function CompanyPage({
   const company = await getCompanyBySlug(slug)
   if (!company) notFound()
 
-  const otherCompanies = await getOtherCompaniesInCity(company.city, slug)
+  const [otherCompanies, allCraneTypes] = await Promise.all([
+    getOtherCompaniesInCity(company.city, slug),
+    getCraneTypes(),
+  ])
 
   const initials = getInitials(company.name)
   const colorClass = getColorClass(company.name)
@@ -78,6 +81,10 @@ export default async function CompanyPage({
   const craneTypeNames = company.company_cranes
     .map((c) => getCraneTypeNameById(c.crane_type_id))
     .filter((name, i, arr) => arr.indexOf(name) === i)
+
+  // Reference prices for crane types in this company's fleet (fallback when no own prices)
+  const craneTypeIds = company.company_cranes.map((c) => c.crane_type_id)
+  const fleetCraneTypes = allCraneTypes.filter((ct) => craneTypeIds.includes(ct.id))
 
   // DSGVO: only show generic business emails, not personal ones (jan.kowalski@firma.de = personal data)
   const genericPrefixes = ['info', 'kontakt', 'contact', 'office', 'mail', 'post', 'anfrage', 'service', 'vermietung', 'kran', 'buero', 'zentrale']
@@ -220,8 +227,8 @@ export default async function CompanyPage({
           </section>
         )}
 
-        {/* Pricing */}
-        {company.price_day_from && (
+        {/* Pricing — own prices or reference prices from crane types */}
+        {company.price_day_from ? (
           <section className="border border-gray-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Preise</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -263,6 +270,26 @@ export default async function CompanyPage({
               <p className="text-[12px] text-gray-500 mt-2">{company.price_note}</p>
             )}
             <p className="text-[11px] text-gray-400 mt-1">Alle Preise Richtwerte, netto. Verbindliches Angebot auf Anfrage.</p>
+          </section>
+        ) : fleetCraneTypes.length > 0 && (
+          <section className="border border-gray-200 rounded-lg p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Orientierungspreise</h2>
+            <p className="text-[13px] text-gray-500 mb-3">
+              Geschätzte Tagespreise für die Krantypen dieser Firma — basierend auf dem Marktdurchschnitt 2026:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {fleetCraneTypes.map((ct) => (
+                <div key={ct.id} className="flex items-center justify-between bg-amber-50 border border-amber-100 rounded-md px-3 py-2">
+                  <span className="text-[13px] font-medium text-gray-900">{ct.name}</span>
+                  <span className="text-[13px] text-amber-700 font-medium">
+                    {ct.price_day_from?.toLocaleString('de-DE')}€ – {ct.price_day_to?.toLocaleString('de-DE')}€/Tag
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p className="text-[11px] text-amber-600 mt-2">
+              ⓘ Richtwerte (netto) — keine Preise des Anbieters. Verbindliche Preise direkt beim Anbieter anfragen.
+            </p>
           </section>
         )}
 
