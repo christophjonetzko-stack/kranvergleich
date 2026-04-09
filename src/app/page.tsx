@@ -37,10 +37,19 @@ export default async function HomePage() {
           <h1 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-3">
             Kran mieten in Deutschland
           </h1>
-          <p className="text-base text-gray-500 mb-8">
+          <p className="text-base text-gray-500 mb-6">
             {anbieterCount}+ Anbieter vergleichen. Preise sehen. Kostenlos Angebote anfragen.
           </p>
           <SearchBox />
+          <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/kostenrechner"
+              className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-medium rounded-lg transition-colors"
+            >
+              Kostenloses Angebot anfragen →
+            </Link>
+            <span className="text-[13px] text-gray-400">Unverbindlich & in 2 Minuten</span>
+          </div>
         </div>
       </section>
 
