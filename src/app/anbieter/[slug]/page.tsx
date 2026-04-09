@@ -336,11 +336,19 @@ export default async function CompanyPage({
         {/* Service badges */}
         {(() => {
           const badges: { icon: string; label: string; color: string }[] = []
-          if (company.company_cranes.some((c) => c.has_operator)) {
-            badges.push({ icon: 'operator', label: 'Mit Kranführer', color: 'bg-green-50 text-green-700 border-green-200' })
+          // Crane types that REQUIRE a certified operator by German law (DGUV Vorschrift 52, BetrSichV)
+          const operatorRequiredTypes = new Set(['Autokran', 'Mobilkran', 'Raupenkran', 'Baukran', 'Ladekran'])
+          // Crane types that can be self-operated after instruction (Einweisung)
+          const selfOperatedTypes = new Set(['Minikran', 'Dachdeckerkran', 'Anhängerkran'])
+
+          const hasOperatorRequired = craneTypeNames.some((name) => operatorRequiredTypes.has(name))
+          const hasSelfOperated = craneTypeNames.some((name) => selfOperatedTypes.has(name))
+
+          if (hasOperatorRequired) {
+            badges.push({ icon: 'operator', label: 'Mit Kranführer (gesetzlich vorgeschrieben)', color: 'bg-green-50 text-green-700 border-green-200' })
           }
-          if (company.company_cranes.length > 0 && !company.company_cranes.some((c) => c.has_operator)) {
-            badges.push({ icon: 'self', label: 'Ohne Kranführer / Selbstbedienung', color: 'bg-gray-50 text-gray-600 border-gray-200' })
+          if (hasSelfOperated) {
+            badges.push({ icon: 'self', label: 'Selbstbedienung nach Einweisung möglich', color: 'bg-gray-50 text-gray-600 border-gray-200' })
           }
           if (company.company_cranes.some((c) => c.has_glass_sucker)) {
             badges.push({ icon: 'glass', label: 'Glassauger verfügbar', color: 'bg-blue-50 text-blue-700 border-blue-200' })
