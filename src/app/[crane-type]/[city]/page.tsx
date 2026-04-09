@@ -52,8 +52,11 @@ export async function generateMetadata({
   const priceStr = price ? `ab ${price.dayFrom}€/Tag` : ''
   const countStr = companies.length > 0 ? `${companies.length} Anbieter vergleichen` : 'Anbieter vergleichen'
 
+  const ctInfo = craneTypesList.find((c) => c.slug === craneTypeSlug)
+  const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
+
   const title = `${craneType.name} mieten ${city.name}${priceStr ? ` — ${priceStr}` : ''} | ${countStr}`
-  const description = `${craneType.name} mieten in ${city.name}${priceStr ? ` ${priceStr}` : ''}. ${companies.length > 0 ? `${companies.length} Anbieter` : 'Anbieter'} mit Preisen & Bewertungen vergleichen. Kostenlos Angebote anfragen.`
+  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten in ${city.name}${priceStr ? `: Kosten ${priceStr}` : ''}. ${companies.length > 0 ? `${companies.length} Anbieter` : 'Anbieter'} in ${city.name} & Umgebung vergleichen. Preisliste, Bewertungen & kostenlose Angebote.`
   const canonical = `/${craneTypeSlug}/${citySlug}`
 
   return {
@@ -215,20 +218,28 @@ export default async function CraneCityPage({
       </div>
 
       {/* Intro text (unique per page for SEO) */}
-      <div className="text-[14px] text-gray-500 leading-relaxed mb-10">
-        <p>
-          Sie suchen einen <strong className="text-gray-900">{craneType.name}</strong> zur Miete
-          in <strong className="text-gray-900">{city.name}</strong> ({city.state})?
-          Auf KranVergleich.de finden Sie {companies.length > 0 ? `${companies.length} ` : ''}
-          {craneType.name}-Vermieter in {city.name} und Umgebung.
-          {price && (
-            <> Die Tagesmiete liegt zwischen ca. {price.dayFrom}€ und {price.dayTo}€ (Richtwerte, netto).
-            {price.includesOperator
-              ? ' Der Preis beinhaltet in der Regel einen qualifizierten Kranführer.'
-              : ' Ein Kranführer ist nicht im Preis enthalten und kann separat gebucht werden.'}</>
-          )}
-        </p>
-      </div>
+      {(() => {
+        const ctInfo = craneTypesList.find((c) => c.slug === craneType.slug)
+        const synonyms = ctInfo?.synonyms ?? []
+        return (
+          <div className="text-[14px] text-gray-500 leading-relaxed mb-10">
+            <p>
+              Sie möchten einen <strong className="text-gray-900">{craneType.name}</strong>
+              {synonyms.length > 0 && <> ({synonyms.slice(0, 2).join(', ')})</>}
+              {' '}mieten oder leihen in <strong className="text-gray-900">{city.name}</strong> ({city.state})?
+              Auf KranVergleich.de finden Sie {companies.length > 0 ? `${companies.length} ` : ''}
+              {craneType.name}-Vermieter in {city.name} und Umgebung — mit Preisen, Google-Bewertungen und direkter Kontaktmöglichkeit.
+              {price && (
+                <> Die {craneType.name}-Kosten in {city.name} liegen bei ca. {price.dayFrom}€–{price.dayTo}€ pro Tag (Richtwerte, netto).
+                {price.includesOperator
+                  ? ' Der Preis beinhaltet in der Regel einen qualifizierten Kranführer.'
+                  : ' Ein Kranführer ist nicht im Preis enthalten und kann separat gebucht werden.'}</>
+              )}
+              {' '}Vergleichen Sie Angebote und sparen Sie bei Ihrer {craneType.name}-Miete in {city.name}.
+            </p>
+          </div>
+        )
+      })()}
 
       {/* FAQ */}
       <div id="faq" className="mb-10 scroll-mt-20">
