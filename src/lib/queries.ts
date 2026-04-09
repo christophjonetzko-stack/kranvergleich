@@ -9,14 +9,36 @@ function roundDown10(n: number): number {
   return Math.floor(n / 10) * 10
 }
 
-export async function getSiteStats(): Promise<{ anbieterCount: number; staedteCount: number }> {
-  const [{ count: firmCount }, { count: cityCount }] = await Promise.all([
+export async function getSiteStats(): Promise<{
+  anbieterCount: number
+  staedteCount: number
+  avgRating: number
+  totalReviews: number
+}> {
+  const [{ count: firmCount }, { count: cityCount }, { data: ratingData }] = await Promise.all([
     supabase.from('companies').select('*', { count: 'exact', head: true }).eq('is_active', true).eq('is_relevant', true),
     supabase.from('cities').select('*', { count: 'exact', head: true }).eq('is_active', true),
+    supabase
+      .from('companies')
+      .select('google_rating, google_reviews_count')
+      .eq('is_active', true)
+      .eq('is_relevant', true)
+      .not('google_rating', 'is', null),
   ])
+
+  let avgRating = 4.2
+  let totalReviews = 0
+  if (ratingData && ratingData.length > 0) {
+    const sum = ratingData.reduce((acc, r) => acc + (r.google_rating ?? 0), 0)
+    avgRating = Math.round((sum / ratingData.length) * 10) / 10
+    totalReviews = ratingData.reduce((acc, r) => acc + (r.google_reviews_count ?? 0), 0)
+  }
+
   return {
     anbieterCount: roundDown10(firmCount ?? 740),
     staedteCount: roundDown10(cityCount ?? 40),
+    avgRating,
+    totalReviews: Math.floor(totalReviews / 100) * 100,
   }
 }
 

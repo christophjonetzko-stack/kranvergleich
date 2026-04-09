@@ -26,7 +26,7 @@ function getPriceFrom(slug: string): number | null {
 }
 
 export default async function HomePage() {
-  const { anbieterCount, staedteCount } = await getSiteStats()
+  const { anbieterCount, staedteCount, avgRating, totalReviews } = await getSiteStats()
   const topCities = seoCities.slice(0, 12)
 
   return (
@@ -59,19 +59,21 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
               <p className="text-xl font-semibold text-gray-900">{anbieterCount}+</p>
-              <p className="text-xs text-gray-500">Anbieter</p>
+              <p className="text-xs text-gray-500">Anbieter deutschlandweit</p>
             </div>
             <div>
               <p className="text-xl font-semibold text-gray-900">{staedteCount}+</p>
-              <p className="text-xs text-gray-500">Städte</p>
+              <p className="text-xs text-gray-500">Städte abgedeckt</p>
             </div>
             <div>
-              <p className="text-xl font-semibold text-gray-900">100%</p>
-              <p className="text-xs text-gray-500">Kostenlos</p>
+              <p className="text-xl font-semibold text-amber-600">
+                {avgRating} <span className="text-amber-500">&#9733;</span>
+              </p>
+              <p className="text-xs text-gray-500">Ø Google-Bewertung</p>
             </div>
             <div>
-              <p className="text-xl font-semibold text-gray-900">8</p>
-              <p className="text-xs text-gray-500">Krantypen</p>
+              <p className="text-xl font-semibold text-gray-900">{totalReviews.toLocaleString('de-DE')}+</p>
+              <p className="text-xs text-gray-500">Google-Rezensionen</p>
             </div>
           </div>
         </div>
@@ -172,7 +174,99 @@ export default async function HomePage() {
         </p>
       </section>
 
+      {/* FAQ */}
+      <section className="bg-gray-50 border-y border-gray-200 py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Häufige Fragen zur Kranvermietung</h2>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'Was kostet es, einen Kran zu mieten?',
+                a: 'Die Kosten hängen vom Krantyp, der Mietdauer und dem Einsatzort ab. Ein Minikran kostet ab ca.\u00A0250\u00A0€/Tag, ein Autokran ab ca.\u00A0500\u00A0€/Tag und ein Raupenkran ab ca.\u00A0800\u00A0€/Tag (netto). Bei längerer Mietdauer sinkt der Tagespreis — Wochenmiete spart rund 20\u00A0%, Monatsmiete bis zu 40\u00A0%. Dazu kommen ggf. Transport, Kranführer und Montagekosten.',
+              },
+              {
+                q: 'Welchen Kran brauche ich für mein Projekt?',
+                a: 'Das richtet sich nach Tragkraft, Hubhöhe und Einsatzort. Für Arbeiten in Innenräumen oder engen Zufahrten eignet sich ein Minikran (bis ca.\u00A05\u00A0t). Für Baustellen und Montagen im Freien ist ein Autokran (bis 500\u00A0t) die häufigste Wahl. Dachdeckerarbeiten erfordern einen speziellen Dachdeckerkran, und für Schwerlastprojekte kommen Raupenkrane zum Einsatz. Nutzen Sie unseren Kostenrechner oder fragen Sie direkt bei Anbietern an.',
+              },
+              {
+                q: 'Brauche ich einen Kranführer?',
+                a: 'Bei Autokranen und Mobilkranen ist ein ausgebildeter Kranführer gesetzlich vorgeschrieben — er ist bei diesen Typen in der Regel im Mietpreis enthalten. Minikrane und Dachdeckerkrane dürfen nach einer Einweisung oft selbst bedient werden. Fragen Sie beim Anbieter nach, ob ein Bediener inklusive ist oder separat gebucht werden muss.',
+              },
+              {
+                q: 'Wie weit im Voraus muss ich einen Kran reservieren?',
+                a: 'Für Standardprojekte empfehlen wir eine Vorlaufzeit von 1–2\u00A0Wochen. In der Hochsaison (Frühjahr bis Herbst) und bei speziellen Krantypen wie Raupenkranen kann es deutlich länger dauern. Kurzfristige Buchungen sind bei vielen Anbietern möglich, jedoch mit Aufpreis. Je früher Sie anfragen, desto besser die Verfügbarkeit und der Preis.',
+              },
+              {
+                q: 'Wie finde ich den besten Kranvermieter in meiner Nähe?',
+                a: 'Auf KranVergleich.de können Sie über {anbieterCount} Kranvermieter in ganz Deutschland nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an — so finden Sie den besten Preis für Ihr Projekt.',
+              },
+            ].map((faq, i) => (
+              <details key={i} className="group bg-white border border-gray-200 rounded-lg">
+                <summary className="flex items-center justify-between cursor-pointer px-5 py-4 text-[14px] font-medium text-gray-900 select-none">
+                  {faq.q}
+                  <svg className="w-4 h-4 shrink-0 text-gray-400 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+                </summary>
+                <p className="px-5 pb-4 text-[14px] text-gray-600 leading-relaxed">
+                  {faq.a.replace('{anbieterCount}', String(anbieterCount))}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Schema.org structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: 'Was kostet es, einen Kran zu mieten?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Die Kosten hängen vom Krantyp, der Mietdauer und dem Einsatzort ab. Ein Minikran kostet ab ca. 250 €/Tag, ein Autokran ab ca. 500 €/Tag und ein Raupenkran ab ca. 800 €/Tag (netto). Bei längerer Mietdauer sinkt der Tagespreis — Wochenmiete spart rund 20 %, Monatsmiete bis zu 40 %. Dazu kommen ggf. Transport, Kranführer und Montagekosten.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Welchen Kran brauche ich für mein Projekt?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Das richtet sich nach Tragkraft, Hubhöhe und Einsatzort. Für Arbeiten in Innenräumen oder engen Zufahrten eignet sich ein Minikran (bis ca. 5 t). Für Baustellen und Montagen im Freien ist ein Autokran (bis 500 t) die häufigste Wahl. Dachdeckerarbeiten erfordern einen speziellen Dachdeckerkran, und für Schwerlastprojekte kommen Raupenkrane zum Einsatz.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Brauche ich einen Kranführer?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Bei Autokranen und Mobilkranen ist ein ausgebildeter Kranführer gesetzlich vorgeschrieben — er ist bei diesen Typen in der Regel im Mietpreis enthalten. Minikrane und Dachdeckerkrane dürfen nach einer Einweisung oft selbst bedient werden.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Wie weit im Voraus muss ich einen Kran reservieren?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Für Standardprojekte empfehlen wir eine Vorlaufzeit von 1–2 Wochen. In der Hochsaison (Frühjahr bis Herbst) und bei speziellen Krantypen kann es deutlich länger dauern. Je früher Sie anfragen, desto besser die Verfügbarkeit und der Preis.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Wie finde ich den besten Kranvermieter in meiner Nähe?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Auf KranVergleich.de können Sie über 800 Kranvermieter in ganz Deutschland nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an.',
+                },
+              },
+            ],
+          }),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

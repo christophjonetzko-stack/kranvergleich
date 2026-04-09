@@ -301,42 +301,85 @@ export default async function CompanyPage({
         {/* Contact */}
         <section className="border border-gray-200 rounded-lg p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-3">Kontakt</h2>
-          <dl className="space-y-2 text-[14px]">
-            {company.phone && (
-              <div className="flex gap-3">
-                <dt className="text-gray-400 w-16 shrink-0">Telefon</dt>
-                <dd>
-                  <a href={`tel:${company.phone}`} className="text-blue-600 hover:underline">
-                    {company.phone}
-                  </a>
-                </dd>
-              </div>
-            )}
+          <div className="flex flex-col gap-2">
             {displayEmail && (
-              <div className="flex gap-3">
-                <dt className="text-gray-400 w-16 shrink-0">E-Mail</dt>
-                <dd>
-                  <a href={`mailto:${displayEmail}`} className="text-blue-600 hover:underline">
-                    {displayEmail}
-                  </a>
-                </dd>
-              </div>
+              <a
+                href="#anfrage"
+                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                Angebot anfragen
+              </a>
             )}
             {company.website && (
-              <div className="flex gap-3">
-                <dt className="text-gray-400 w-16 shrink-0">Website</dt>
-                <dd>
-                  <a href={company.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                    {company.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                  </a>
-                </dd>
-              </div>
+              <a
+                href={company.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-gray-200 hover:border-gray-300 text-[13px] text-gray-700 font-medium rounded-md transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+                Website besuchen
+              </a>
             )}
-            {!company.phone && !company.website && (
-              <p className="text-gray-400 text-[13px]">Nur per Anfrage erreichbar</p>
+            {!displayEmail && !company.website && (
+              <a
+                href="#anfrage"
+                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+              >
+                Angebot anfragen
+              </a>
             )}
-          </dl>
+          </div>
         </section>
+
+        {/* Service badges */}
+        {(() => {
+          const badges: { icon: string; label: string; color: string }[] = []
+          if (company.company_cranes.some((c) => c.has_operator)) {
+            badges.push({ icon: 'operator', label: 'Mit Kranführer', color: 'bg-green-50 text-green-700 border-green-200' })
+          }
+          if (company.company_cranes.length > 0 && !company.company_cranes.some((c) => c.has_operator)) {
+            badges.push({ icon: 'self', label: 'Ohne Kranführer / Selbstbedienung', color: 'bg-gray-50 text-gray-600 border-gray-200' })
+          }
+          if (company.company_cranes.some((c) => c.has_glass_sucker)) {
+            badges.push({ icon: 'glass', label: 'Glassauger verfügbar', color: 'bg-blue-50 text-blue-700 border-blue-200' })
+          }
+          if (company.company_cranes.some((c) => c.electric)) {
+            badges.push({ icon: 'electric', label: 'Elektrokran verfügbar', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' })
+          }
+          if (company.service_radius_km) {
+            badges.push({ icon: 'radius', label: `Einsatzradius: ${company.service_radius_km} km`, color: 'bg-purple-50 text-purple-700 border-purple-200' })
+          }
+          if (!badges.length) return null
+          return (
+            <section className="border border-gray-200 rounded-lg p-5">
+              <h2 className="text-sm font-semibold text-gray-900 mb-3">Auf einen Blick</h2>
+              <div className="flex flex-wrap gap-2">
+                {badges.map((b) => (
+                  <span key={b.label} className={`inline-flex items-center gap-1.5 text-[12px] font-medium border rounded-full px-3 py-1.5 ${b.color}`}>
+                    {b.icon === 'operator' && (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                    )}
+                    {b.icon === 'self' && (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085" /></svg>
+                    )}
+                    {b.icon === 'glass' && (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 3.75H6.912a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859" /></svg>
+                    )}
+                    {b.icon === 'electric' && (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>
+                    )}
+                    {b.icon === 'radius' && (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                    )}
+                    {b.label}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )
+        })()}
 
         {/* Opening hours */}
         {company.opening_hours && (
