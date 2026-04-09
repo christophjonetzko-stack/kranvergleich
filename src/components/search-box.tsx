@@ -2,14 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { craneTypes } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
 
@@ -196,24 +188,20 @@ export function SearchBox() {
   }
 
   return (
-    <div className="border border-gray-200 rounded-full px-3 py-2 max-w-2xl mx-auto bg-white shadow-lg">
-      <div className="flex flex-col sm:flex-row gap-2 items-center">
-        <div className="w-full sm:flex-1">
-          <Select onValueChange={(val) => setCraneType(val ?? '')} value={craneType}>
-            <SelectTrigger className="border-0 shadow-none focus:ring-0 h-10 text-sm">
-              <SelectValue placeholder="Krantyp wählen…" />
-            </SelectTrigger>
-            <SelectContent align="center" sideOffset={4}>
-              {craneTypes.map((ct) => (
-                <SelectItem key={ct.slug} value={ct.slug}>
-                  {ct.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="border border-gray-200 rounded-full max-w-2xl mx-auto bg-white shadow-lg">
+      <div className="flex flex-col sm:flex-row items-center">
+        <select
+          value={craneType}
+          onChange={(e) => setCraneType(e.target.value)}
+          className="w-full sm:flex-1 h-11 bg-transparent pl-5 pr-2 text-sm font-medium text-gray-900 focus:outline-none cursor-pointer appearance-none rounded-full"
+        >
+          <option value="" disabled>Krantyp wählen…</option>
+          {craneTypes.map((ct) => (
+            <option key={ct.slug} value={ct.slug}>{ct.name}</option>
+          ))}
+        </select>
 
-        <div className="hidden sm:block w-px h-6 bg-gray-200" />
+        <div className="hidden sm:block w-px h-6 bg-gray-200 shrink-0" />
 
         <div ref={wrapperRef} className="relative w-full sm:flex-1">
           <div className="relative">
@@ -225,10 +213,10 @@ export function SearchBox() {
               onFocus={() => { if (results.length > 0) setIsOpen(true) }}
               placeholder="Stadt oder PLZ…"
               autoComplete="off"
-              className="w-full h-10 bg-transparent px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
+              className="w-full h-11 bg-transparent px-4 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
             />
             {isLoading && (
-              <div className="absolute right-2 top-1/2 -translate-y-1/2">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 <div className="h-3.5 w-3.5 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
               </div>
             )}
@@ -240,7 +228,7 @@ export function SearchBox() {
                   <button
                     type="button"
                     onMouseDown={() => selectCity(city)}
-                    className={`w-full text-left px-3 py-2.5 text-[13px] transition-colors ${
+                    className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors ${
                       i === activeIndex ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
@@ -254,19 +242,19 @@ export function SearchBox() {
           )}
         </div>
 
-        <Button
+        <button
           onClick={handleSearch}
           disabled={!craneType}
-          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 h-10 flex items-center gap-2"
+          className="sm:m-1 w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-full px-6 h-9 text-sm font-medium transition-colors flex items-center justify-center gap-2 shrink-0"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           Suchen
-        </Button>
+        </button>
       </div>
       {hint && (
-        <p className="text-[12px] text-gray-400 mt-2 px-3 pb-1">{hint}</p>
+        <p className="text-[12px] text-gray-400 mt-1 px-5 pb-2">{hint}</p>
       )}
     </div>
   )
