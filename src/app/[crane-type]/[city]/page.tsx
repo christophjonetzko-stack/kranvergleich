@@ -16,6 +16,7 @@ import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneAndCity } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
+import { getCraneIcon } from '@/components/crane-icons'
 
 export const revalidate = 86400
 
@@ -125,16 +126,12 @@ export default async function CraneCityPage({
       {/* Hero mini */}
       <div className="mb-8 flex items-start gap-4">
         {(() => {
-          const ct = craneTypesList.find((c) => c.slug === craneType.slug)
-          return ct?.image ? (
-            <img
-              src={ct.image}
-              alt={`${craneType.name} Illustration`}
-              width={64}
-              height={64}
-              className="shrink-0 hidden sm:block"
-            />
-          ) : null
+          const Icon = getCraneIcon(craneType.slug)
+          return (
+            <div className="shrink-0 hidden sm:block text-gray-600">
+              <Icon className="w-16 h-16" />
+            </div>
+          )
         })()}
         <div>
           <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">

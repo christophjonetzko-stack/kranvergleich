@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { PriceTable } from '@/components/price-table'
+import { getCraneIcon } from '@/components/crane-icons'
 import { cranePrices } from '@/data/crane-prices'
 import { craneTypes } from '@/data/crane-types'
 import { FAQSection } from '@/components/faq-section'
@@ -317,8 +317,8 @@ export default async function KranMietenPreisePage() {
           return (
             <div key={p.craneTypeSlug} className="border border-gray-200 rounded-lg p-4">
               <div className="flex gap-4 items-start">
-                <div className="relative w-16 h-16 rounded-md overflow-hidden shrink-0 bg-gray-100 hidden sm:block">
-                  <Image src={ct.image} alt={ct.name} fill className="object-cover" sizes="64px" />
+                <div className="w-16 h-16 rounded-md shrink-0 hidden sm:flex items-center justify-center text-gray-600">
+                  {(() => { const Icon = getCraneIcon(ct.slug); return <Icon className="w-14 h-14" /> })()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <Link href={`/${ct.slug}`} className="hover:underline">

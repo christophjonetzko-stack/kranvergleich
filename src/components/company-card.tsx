@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getCraneTypeNameById } from '@/data/crane-types'
+import { getCraneIconByName } from '@/components/crane-icons'
 
 interface CompanyCardProps {
   company: CompanyWithCranes
@@ -46,12 +47,18 @@ export function CompanyCard({ company, onRequestQuote, referencePrice }: Company
 
   return (
     <div className="flex items-start gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
-      {/* Initials avatar */}
-      <div
-        className={`w-11 h-11 rounded-lg flex items-center justify-center text-sm font-medium shrink-0 ${colorClass}`}
-      >
-        {initials}
-      </div>
+      {/* Crane type icon or initials fallback */}
+      {craneTypeNames.length > 0 ? (
+        <div className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0 bg-gray-50 text-gray-500">
+          {(() => { const Icon = getCraneIconByName(craneTypeNames[0]); return <Icon className="w-9 h-9" /> })()}
+        </div>
+      ) : (
+        <div
+          className={`w-11 h-11 rounded-lg flex items-center justify-center text-sm font-medium shrink-0 ${colorClass}`}
+        >
+          {initials}
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex-1 min-w-0">

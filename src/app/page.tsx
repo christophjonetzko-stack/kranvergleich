@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { SearchBox } from '@/components/search-box'
+import { getCraneIcon } from '@/components/crane-icons'
 import { PriceTable } from '@/components/price-table'
 import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats } from '@/lib/queries'
+import { NewsletterSignup } from '@/components/newsletter-signup'
 
 export const revalidate = 86400
 
@@ -84,20 +85,15 @@ export default async function HomePage() {
         <div className="grid gap-3 sm:grid-cols-2">
           {craneTypes.map((ct) => {
             const priceFrom = getPriceFrom(ct.slug)
+            const Icon = getCraneIcon(ct.slug)
             return (
               <Link
                 key={ct.slug}
                 href={`/${ct.slug}`}
                 className="flex gap-3 p-3 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors overflow-hidden"
               >
-                <div className="relative w-20 h-20 rounded-md overflow-hidden shrink-0 bg-gray-100">
-                  <Image
-                    src={ct.image}
-                    alt={ct.name}
-                    fill
-                    className="object-cover"
-                    sizes="80px"
-                  />
+                <div className="w-16 h-16 rounded-md shrink-0 flex items-center justify-center text-gray-600">
+                  <Icon className="w-14 h-14" />
                 </div>
                 <div className="min-w-0 flex flex-col justify-center">
                   <p className="font-medium text-[15px] text-gray-900">{ct.name}</p>
@@ -212,6 +208,22 @@ export default async function HomePage() {
               </details>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Newsletter holding pattern */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 sm:p-8 text-center">
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Aktuelle Kran-Preise & Tipps per E-Mail
+          </h2>
+          <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
+            Erhalten Sie monatlich aktuelle Marktpreise, Spar-Tipps und neue Anbieter in Ihrer Region — kostenlos und jederzeit abbestellbar.
+          </p>
+          <NewsletterSignup />
+          <p className="text-[11px] text-gray-400 mt-3">
+            Kein Spam. Max. 2 E-Mails/Monat. Abmeldung jederzeit möglich.
+          </p>
         </div>
       </section>
 
