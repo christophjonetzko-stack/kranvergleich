@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>KranVergleich — Manuelles Krantypen-Tool</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212121; padding: 20px; }
+  .container { max-width: 750px; margin: 0 auto; }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  .subtitle { color: #757575; font-size: 13px; margin-bottom: 24px; }
+  .progress { background: #e0e0e0; border-radius: 8px; height: 8px; margin-bottom: 20px; }
+  .progress-bar { background: #2563eb; height: 8px; border-radius: 8px; transition: width 0.3s; }
+  .stats { display: flex; gap: 16px; font-size: 13px; color: #757575; margin-bottom: 20px; flex-wrap: wrap; }
+  .stats span { font-weight: 600; color: #212121; }
+  .card { background: white; border: 1px solid #e0e0e0; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .company-name { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .company-meta { font-size: 13px; color: #757575; margin-bottom: 12px; }
+  .website-link { display: inline-block; background: #2563eb; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 16px; }
+  .website-link:hover { background: #1d4ed8; }
+  .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+  .type-btn { padding: 10px 8px; border: 2px solid #e0e0e0; border-radius: 8px; background: white; cursor: pointer; font-size: 13px; font-weight: 500; text-align: center; transition: all 0.15s; }
+  .type-btn:hover { border-color: #93c5fd; background: #eff6ff; }
+  .type-btn.selected { border-color: #2563eb; background: #dbeafe; color: #1d4ed8; }
+  .type-btn .key { display: block; font-size: 11px; color: #a3a3a3; margin-top: 2px; font-weight: 400; }
+  .type-btn.selected .key { color: #60a5fa; }
+  .action-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .btn-save { padding: 10px 20px; background: #16a34a; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .btn-save:hover { background: #15803d; }
+  .btn-save:disabled { background: #a3a3a3; cursor: not-allowed; }
+  .btn-skip { padding: 10px 16px; background: #f5f5f5; color: #757575; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; cursor: pointer; }
+  .btn-skip:hover { background: #e5e5e5; }
+  .btn-remove { padding: 10px 16px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 8px; font-size: 14px; cursor: pointer; }
+  .btn-remove:hover { background: #fee2e2; }
+  .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; font-size: 14px; color: white; opacity: 0; transition: opacity 0.3s; z-index: 99; }
+  .toast.success { background: #16a34a; }
+  .toast.show { opacity: 1; }
+  .done { text-align: center; padding: 40px; }
+  .done h2 { font-size: 24px; margin-bottom: 8px; }
+  .keyboard-hint { font-size: 11px; color: #a3a3a3; margin-top: 8px; }
+  .operator-row { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; font-size: 13px; }
+  .operator-row label { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+  .existing-types { font-size: 12px; color: #2563eb; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🏗️ Krantypen-Enrichment Tool</h1>
+  <p class="subtitle">Website öffnen → Krantypen auswählen (1-8) → Enter speichern. Tab = überspringen.</p>
+
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="stats">
+    <div><span id="current">0</span> / <span id="total">0</span> Firmen</div>
+    <div>Zugeordnet: <span id="found">0</span></div>
+    <div>Übersprungen: <span id="skipped">0</span></div>
+    <div>Entfernt: <span id="removed">0</span></div>
+  </div>
+
+  <div id="cardArea"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://agzxugnhvgjxubmegiip.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnenh1Z25odmdqeHVibWVnaWlwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDkwNzE5MCwiZXhwIjoyMDkwNDgzMTkwfQ.JIMJ0BLkhem0sPwKN19ek5WSdALBfZPp12PnWOJm76g';
+
+const CRANE_TYPES = [
+  { key: '1', name: 'Minikran',        id: '1a7019bd-7fd3-401a-8713-7f6be6fbd827' },
+  { key: '2', name: 'Autokran',        id: 'ab511eea-d464-47b9-8ada-16931dab5078' },
+  { key: '3', name: 'Dachdeckerkran',   id: '99e6ce74-f707-494e-afc8-31627b3bf41d' },
+  { key: '4', name: 'Raupenkran',       id: '0b61b867-53a6-4cf9-afbb-50c610dc4a2a' },
+  { key: '5', name: 'Anhängerkran',     id: 'ef7ed422-402e-4553-9c01-661df28c66fc' },
+  { key: '6', name: 'Mobilkran',        id: '02dc05de-6699-4849-93fb-2b655177bfd9' },
+  { key: '7', name: 'Baukran',          id: 'f1f86ce7-14b8-48ce-9004-5db8dde53949' },
+  { key: '8', name: 'Ladekran',         id: 'a556dcad-e379-4ac3-8d72-6eed094900d1' },
+];
+
+let companies = [];
+let index = 0;
+let found = 0;
+let skipped = 0;
+let removed = 0;
+let selectedTypes = new Set();
+let hasOperator = false;
+
+async function supabaseFetch(path, options = {}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || (options.method === 'POST' ? 'resolution=merge-duplicates' : ''),
+    },
+    ...options,
+  });
+  if (!res.ok) throw new Error(await res.text());
+  if (options.method === 'PATCH' || options.method === 'POST') return null;
+  return res.json();
+}
+
+async function loadCompanies() {
+  // Get all company IDs that already have crane types
+  const existingCranes = await supabaseFetch('company_cranes?select=company_id');
+  const hasTypes = new Set(existingCranes.map(r => r.company_id));
+
+  // Get active companies with websites
+  const allCompanies = await supabaseFetch(
+    'companies?select=id,name,website,phone,city,state&is_active=eq.true&is_relevant=eq.true&website=not.is.null&order=google_reviews_count.desc.nullslast&limit=1000'
+  );
+
+  // Filter to companies WITHOUT crane types
+  companies = allCompanies.filter(c => !hasTypes.has(c.id));
+  document.getElementById('total').textContent = companies.length;
+  showCompany();
+}
+
+function showCompany() {
+  const area = document.getElementById('cardArea');
+  document.getElementById('current').textContent = index + 1;
+  document.getElementById('progressBar').style.width = `${(index / companies.length) * 100}%`;
+  document.getElementById('found').textContent = found;
+  document.getElementById('skipped').textContent = skipped;
+  document.getElementById('removed').textContent = removed;
+  selectedTypes = new Set();
+  hasOperator = false;
+
+  if (index >= companies.length) {
+    area.innerHTML = `<div class="done"><h2>✓ Fertig!</h2><p>${found} Firmen zugeordnet, ${skipped} übersprungen, ${removed} entfernt.</p></div>`;
+    document.getElementById('progressBar').style.width = '100%';
+    return;
+  }
+
+  const c = companies[index];
+  const url = c.website.startsWith('http') ? c.website : 'https://' + c.website;
+
+  area.innerHTML = `
+    <div class="card">
+      <div class="company-name">${c.name}</div>
+      <div class="company-meta">
+        ${c.city}, ${c.state}
+        ${c.phone ? ` · ${c.phone}` : ''}
+      </div>
+      <a href="${url}" target="_blank" class="website-link" id="webLink">🌐 Website öffnen →</a>
+
+      <p style="font-size:13px;color:#757575;margin-bottom:8px;">Welche Krantypen bietet diese Firma an? (Mehrfachauswahl)</p>
+
+      <div class="type-grid" id="typeGrid">
+        ${CRANE_TYPES.map(ct => `
+          <button class="type-btn" data-id="${ct.id}" data-key="${ct.key}" onclick="toggleType(this, '${ct.id}')">
+            ${ct.name}
+            <span class="key">${ct.key}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <div class="operator-row">
+        <label><input type="checkbox" id="operatorCheck" onchange="hasOperator = this.checked"> Mit Kranführer</label>
+        <span style="color:#a3a3a3;font-size:11px;">(Taste: F)</span>
+      </div>
+
+      <div class="action-row">
+        <button class="btn-save" id="btnSave" onclick="saveTypes()">Speichern (Enter)</button>
+        <button class="btn-skip" onclick="skipCompany()">Überspringen (Tab)</button>
+        <button class="btn-remove" onclick="removeCompany()">✗ Keine Kranvermietung (Entf)</button>
+      </div>
+      <div class="keyboard-hint">1-8 = Typ umschalten · F = Kranführer · Enter = Speichern · Tab = Überspringen · Entf = Entfernen</div>
+    </div>
+  `;
+}
+
+function toggleType(btn, id) {
+  if (selectedTypes.has(id)) {
+    selectedTypes.delete(id);
+    btn.classList.remove('selected');
+  } else {
+    selectedTypes.add(id);
+    btn.classList.add('selected');
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  // Number keys 1-8 toggle crane types
+  const num = parseInt(e.key);
+  if (num >= 1 && num <= 8) {
+    e.preventDefault();
+    const ct = CRANE_TYPES[num - 1];
+    const btn = document.querySelector(`[data-key="${num}"]`);
+    if (btn) toggleType(btn, ct.id);
+    return;
+  }
+
+  if (e.key === 'f' || e.key === 'F') {
+    e.preventDefault();
+    const cb = document.getElementById('operatorCheck');
+    if (cb) { cb.checked = !cb.checked; hasOperator = cb.checked; }
+    return;
+  }
+
+  if (e.key === 'Enter') { e.preventDefault(); saveTypes(); return; }
+  if (e.key === 'Tab') { e.preventDefault(); skipCompany(); return; }
+  if (e.key === 'Delete') { e.preventDefault(); removeCompany(); return; }
+});
+
+async function saveTypes() {
+  if (selectedTypes.size === 0) {
+    showToast('Mindestens 1 Krantyp auswählen', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnSave');
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  const companyId = companies[index].id;
+  const names = [];
+
+  try {
+    for (const typeId of selectedTypes) {
+      await supabaseFetch('company_cranes', {
+        method: 'POST',
+        prefer: 'resolution=merge-duplicates',
+        body: JSON.stringify({
+          company_id: companyId,
+          crane_type_id: typeId,
+          has_operator: hasOperator,
+        }),
+      });
+      const ct = CRANE_TYPES.find(t => t.id === typeId);
+      if (ct) names.push(ct.name);
+    }
+    found++;
+    showToast(`✓ ${names.join(', ')} gespeichert`, 'success');
+  } catch (e) {
+    showToast('Fehler: ' + e.message, 'error');
+  }
+
+  index++;
+  showCompany();
+}
+
+function skipCompany() {
+  skipped++;
+  index++;
+  showCompany();
+}
+
+async function removeCompany() {
+  const c = companies[index];
+  try {
+    await supabaseFetch(`companies?id=eq.${c.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ is_relevant: false }),
+    });
+    removed++;
+    showToast(`✗ ${c.name} als irrelevant markiert`, 'success');
+  } catch (e) {
+    showToast('Fehler: ' + e.message, 'error');
+  }
+  index++;
+  showCompany();
+}
+
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => toast.className = 'toast', 2000);
+}
+
+loadCompanies();
+</script>
+</body>
+</html>
