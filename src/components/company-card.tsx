@@ -103,6 +103,31 @@ export function CompanyCard({ company, onRequestQuote }: CompanyCardProps) {
             <span className="text-[12px] text-gray-400">Preis auf Anfrage</span>
           )}
         </div>
+
+        {/* Line 4: Service area */}
+        {(company.service_radius_km || (company.service_regions && company.service_regions.length > 0)) && (
+          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+            <span className="text-[12px] text-gray-400">Einsatzgebiet:</span>
+            {company.service_radius_km && (
+              <span className="text-[12px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+                {company.service_radius_km} km Umkreis
+              </span>
+            )}
+            {company.service_regions && company.service_regions.slice(0, 4).map((region) => (
+              <span
+                key={region}
+                className="text-[12px] bg-gray-50 text-gray-600 px-2 py-0.5 rounded"
+              >
+                {region}
+              </span>
+            ))}
+            {company.service_regions && company.service_regions.length > 4 && (
+              <span className="text-[12px] text-gray-400">
+                +{company.service_regions.length - 4} weitere
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* CTA buttons */}
