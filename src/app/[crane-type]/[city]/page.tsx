@@ -198,6 +198,7 @@ export default async function CraneCityPage({
             showCraneTypeFilter
             centerLat={city.lat ?? 51.1657}
             centerLng={city.lng ?? 10.4515}
+            referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
           />
         </section>
       ) : (

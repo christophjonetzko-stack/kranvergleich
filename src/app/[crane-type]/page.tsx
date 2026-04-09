@@ -177,6 +177,7 @@ export default async function CraneTypePage({
             showStateFilter
             centerLat={51.1657}
             centerLng={10.4515}
+            referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
           />
         </section>
       )}

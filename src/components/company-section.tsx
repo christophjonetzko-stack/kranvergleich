@@ -14,6 +14,7 @@ interface CompanySectionProps {
   showCraneTypeFilter?: boolean
   centerLat: number
   centerLng: number
+  referencePrice?: string | null
 }
 
 export function CompanySection({
@@ -25,6 +26,7 @@ export function CompanySection({
   showCraneTypeFilter,
   centerLat,
   centerLng,
+  referencePrice,
 }: CompanySectionProps) {
   const [mapCompanies, setMapCompanies] = useState(() =>
     companies
@@ -64,6 +66,7 @@ export function CompanySection({
         showStateFilter={showStateFilter}
         showCraneTypeFilter={showCraneTypeFilter}
         onFilteredChange={handleFilteredChange}
+        referencePrice={referencePrice}
       />
 
       {mapCompanies.length > 0 && (

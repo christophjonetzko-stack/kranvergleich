@@ -21,6 +21,8 @@ interface CompanyListWithFormProps {
   showCraneTypeFilter?: boolean
   /** Called when filtered company list changes — use to sync map */
   onFilteredChange?: (companies: CompanyWithCranes[]) => void
+  /** Reference price label for companies without own pricing */
+  referencePrice?: string | null
 }
 
 export function CompanyListWithForm({
@@ -31,6 +33,7 @@ export function CompanyListWithForm({
   showStateFilter = false,
   showCraneTypeFilter = false,
   onFilteredChange,
+  referencePrice,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
@@ -198,6 +201,7 @@ export function CompanyListWithForm({
             key={company.id}
             company={company}
             onRequestQuote={addCompany}
+            referencePrice={referencePrice}
           />
         ))}
       </div>

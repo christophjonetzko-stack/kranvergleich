@@ -5,6 +5,8 @@ import { getCraneTypeNameById } from '@/data/crane-types'
 interface CompanyCardProps {
   company: CompanyWithCranes
   onRequestQuote?: (companyId: string) => void
+  /** Fallback reference price label when company has no own price, e.g. "ab 250€/Tag — Richtwert" */
+  referencePrice?: string | null
 }
 
 const INITIALS_COLORS = [
@@ -34,7 +36,7 @@ function getColorClass(name: string): string {
   return INITIALS_COLORS[Math.abs(hash) % INITIALS_COLORS.length]
 }
 
-export function CompanyCard({ company, onRequestQuote }: CompanyCardProps) {
+export function CompanyCard({ company, onRequestQuote, referencePrice }: CompanyCardProps) {
   const initials = getInitials(company.name)
   const colorClass = getColorClass(company.name)
 
@@ -98,6 +100,10 @@ export function CompanyCard({ company, onRequestQuote }: CompanyCardProps) {
           {company.price_day_from ? (
             <span className="text-[12px] text-blue-600 font-medium">
               ab {company.price_day_from.toLocaleString('de-DE')}€/Tag
+            </span>
+          ) : referencePrice ? (
+            <span className="text-[12px] text-amber-600">
+              {referencePrice}
             </span>
           ) : (
             <span className="text-[12px] text-gray-400">Preis auf Anfrage</span>
