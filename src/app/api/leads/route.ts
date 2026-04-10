@@ -22,7 +22,10 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
   return typeof str === 'string' ? str.slice(0, max) : ''
 }
 
-const NOTIFICATION_EMAIL = 'anfragen@send.kranvergleich.de'
+const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL
+if (!NOTIFICATION_EMAIL) {
+  throw new Error('NOTIFICATION_EMAIL environment variable is required')
+}
 const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 
 // --- Rate limiting: max 5 requests per minute per IP ---

@@ -302,7 +302,7 @@ export default async function HomePage() {
             description: 'Vergleichsportal für Kranvermietung in Deutschland. Über 740 Anbieter für Minikrane, Autokrane und mehr.',
             contactPoint: {
               '@type': 'ContactPoint',
-              email: 'anfragen@send.kranvergleich.de',
+              email: 'kontakt@kranvergleich.de',
               contactType: 'customer service',
               availableLanguage: 'German',
             },
