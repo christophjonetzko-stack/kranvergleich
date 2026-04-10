@@ -66,6 +66,51 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
     ],
   },
 
+  'mobilkran-mieten': {
+    included: [
+      'Ausgebildeter Kranführer (gesetzlich vorgeschrieben)',
+      'Bei Großkranen ab 250t: meist mehrere Kranführer + Einweiser',
+      'Standardausrüstung (Ausleger, Hauptkette, Lasthaken)',
+      'Haftpflichtversicherung des Krans',
+      'Standard-Auf- und Abbau bei kleineren Mobilkranen',
+    ],
+    extras: [
+      'Anfahrt: 2–5€/km (bei Mobilkranen oft der größte Zusatzposten)',
+      'Auf-/Abbau bei Großkranen ab 250t: 500–5.000€ separat',
+      'Schwertransport ab ca. 100t Tragkraft: 1.000–10.000€',
+      'Sondergenehmigungen Schwertransport: 200–1.500€',
+      'Wochenend-Zuschlag: 20–30%',
+      'Begleitfahrzeuge bei Schwertransport: 500–2.000€',
+      'Sondertraversen / Spezialanschlagmittel: nach Aufwand',
+    ],
+    tips: [
+      'Holen Sie immer mindestens 3 Angebote ein — bei Mobilkranen schwanken die Preise zwischen Anbietern um 30–50%, vor allem durch unterschiedliche Anfahrtswege.',
+      'Anfahrt ist der größte versteckte Kostenfaktor — wählen Sie einen Vermieter in Ihrer Region (max. 100km Entfernung).',
+      'Faustregel Tragkraft: bis 100t reicht ein Autokran, 100–500t je nach Verfügbarkeit, ab 500t ist der Mobilkran die einzige Option.',
+      'Großkrane (ab 250t) 4–8 Wochen im Voraus buchen — kurzfristig sind sie kaum verfügbar.',
+      'Hochsaison März–Oktober: zusätzliche 2–4 Wochen Vorlauf einplanen.',
+      'Bei mehrtägigem Einsatz Wochenmiete vereinbaren — spart 20–30% gegenüber Tagesmiete.',
+    ],
+    useCases: [
+      {
+        title: 'Stahlbau & Industriemontage',
+        description: 'Schwere Stahlträger, Maschinenteile, Transformatoren einsetzen. Typisch: 40–250t Mobilkran, 1–3 Tage, 600–2.500€/Tag.',
+      },
+      {
+        title: 'Brückenbau',
+        description: 'Brückenträger und Fertigteile auf Pfeiler heben. Typisch: 250–1.000t Mobilkran, mehrere Tage, 1.500–5.000€/Tag + Schwertransport.',
+      },
+      {
+        title: 'Windkraftanlagen',
+        description: 'Türme, Gondeln und Rotorblätter auf bis zu 160m Höhe montieren. Typisch: 500–1.200t Mobilkran, mehrere Wochen Einsatz, 2.500–10.000€/Tag.',
+      },
+      {
+        title: 'Kraftwerke & Raffinerien',
+        description: 'Kessel, Kolonnen, Reaktorbehälter heben — höchste Tragkraftanforderungen. Typisch: 500–1.000t+, langzeit, oft mit mehreren Kränen im Tandem.',
+      },
+    ],
+  },
+
   'autokran-mieten': {
     included: [
       'Ausgebildeter Kranführer (gesetzlich vorgeschrieben)',

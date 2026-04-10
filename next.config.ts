@@ -45,6 +45,14 @@ const nextConfig: NextConfig = {
         destination: '/baukran-mieten',
         permanent: true,
       },
+      // /ratgeber/mobilkran-mieten-kosten merged into /mobilkran-mieten
+      // (0 imp vs 160 imp pos 50 in GSC) — content moved into ratgeber
+      // section on the type page
+      {
+        source: '/ratgeber/mobilkran-mieten-kosten',
+        destination: '/mobilkran-mieten',
+        permanent: true,
+      },
     ]
   },
 };
