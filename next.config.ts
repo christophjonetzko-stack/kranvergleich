@@ -29,6 +29,14 @@ const nextConfig: NextConfig = {
         destination: '/anhaengerkran-mieten',
         permanent: true,
       },
+      // /ratgeber/autokran-mieten-kosten merged into /autokran-mieten
+      // (0 imp vs 228 imp pos 40 in GSC) — content moved into ratgeber
+      // section on the type page
+      {
+        source: '/ratgeber/autokran-mieten-kosten',
+        destination: '/autokran-mieten',
+        permanent: true,
+      },
     ]
   },
 };

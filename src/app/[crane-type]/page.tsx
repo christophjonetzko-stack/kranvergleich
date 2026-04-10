@@ -8,6 +8,7 @@ import { FAQSection } from '@/components/faq-section'
 import { getFAQsForCraneType } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
+import { getRatgeberForCraneType } from '@/data/crane-ratgeber'
 import { getCraneIcon } from '@/components/crane-icons'
 
 export const revalidate = 86400
@@ -66,6 +67,7 @@ export default async function CraneTypePage({
 
   const faqs = getFAQsForCraneType(craneType.slug)
   const price = getPriceForCraneType(craneType.slug)
+  const ratgeber = getRatgeberForCraneType(craneType.slug)
   const topCities = cities.slice(0, 15)
   const cityCounts = await getCompanyCountsPerCity(topCities.map((c) => c.id))
 
@@ -228,6 +230,77 @@ export default async function CraneTypePage({
             Alle Preise netto, zzgl. MwSt. Richtwerte — die tatsächlichen {craneType.name}-Mietpreise hängen von Tragkraft, Einsatzdauer und Standort ab.
             {' '}Transport (An-/Abfahrt) kommt je nach Entfernung hinzu (ca. 150–500€).
           </p>
+        </section>
+      )}
+
+      {/* Ratgeber section — merged from /ratgeber/{slug}-mieten-kosten articles */}
+      {ratgeber && (
+        <section id="ratgeber" className="mb-10 scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Ratgeber: Was beeinflusst die {craneType.name}-Kosten?
+          </h2>
+          <p className="text-[14px] text-gray-500 mb-4">
+            Der Tagespreis ist nur ein Teil der Gesamtkosten. Hier finden Sie die wichtigsten Kostenfaktoren,
+            was im Mietpreis enthalten ist und wie Sie die {craneType.name}-Miete optimieren.
+          </p>
+
+          {/* Im Preis enthalten vs Zusätzliche Kosten */}
+          <div className="grid gap-3 sm:grid-cols-2 mb-5">
+            <div className="border border-green-200 bg-green-50 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-2 text-[14px]">Im Preis enthalten</p>
+              <ul className="text-[13px] text-gray-600 space-y-1">
+                {ratgeber.included.map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="text-green-600 shrink-0">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-2 text-[14px]">Zusätzliche Kosten</p>
+              <ul className="text-[13px] text-gray-600 space-y-1">
+                {ratgeber.extras.map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="text-gray-400 shrink-0">•</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Tipps */}
+          <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 mb-5">
+            <p className="font-medium text-gray-900 mb-2 text-[14px]">
+              Tipps zur Kostenoptimierung
+            </p>
+            <ul className="text-[13px] text-gray-700 space-y-1.5">
+              {ratgeber.tips.map((tip) => (
+                <li key={tip} className="flex gap-2">
+                  <span className="text-amber-600 shrink-0">💡</span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Use cases */}
+          {ratgeber.useCases && ratgeber.useCases.length > 0 && (
+            <div>
+              <h3 className="text-[14px] font-semibold text-gray-900 mb-3">
+                Wann lohnt sich ein {craneType.name}? Typische Einsatzgebiete
+              </h3>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {ratgeber.useCases.map((uc) => (
+                  <div key={uc.title} className="border border-gray-200 rounded-lg p-4">
+                    <p className="font-medium text-gray-900 mb-1 text-[14px]">{uc.title}</p>
+                    <p className="text-[13px] text-gray-500">{uc.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       )}
 

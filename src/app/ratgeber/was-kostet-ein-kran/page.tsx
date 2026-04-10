@@ -217,7 +217,7 @@ export default async function WasKostetEinKranPage() {
               <p className="font-medium text-gray-900">8.000–35.000€</p>
             </div>
           </div>
-          <Link href="/ratgeber/autokran-mieten-kosten" className="text-[13px] text-blue-600 hover:underline">
+          <Link href="/autokran-mieten#ratgeber" className="text-[13px] text-blue-600 hover:underline">
             Autokran Kosten im Detail &rarr;
           </Link>
         </section>
@@ -375,7 +375,7 @@ export default async function WasKostetEinKranPage() {
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">Weiterführende Ratgeber</h2>
         <div className="flex flex-wrap gap-2">
-          <Link href="/ratgeber/autokran-mieten-kosten" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Autokran Kosten im Detail</Link>
+          <Link href="/autokran-mieten#ratgeber" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Autokran Kosten im Detail</Link>
           <Link href="/ratgeber/baukran-mieten-kosten" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Baukran Kosten im Detail</Link>
           <Link href="/ratgeber/welchen-kran-brauche-ich" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Welchen Kran brauche ich?</Link>
           <Link href="/ratgeber/kran-aufstellen-genehmigung" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Kran Genehmigung</Link>
