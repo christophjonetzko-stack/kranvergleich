@@ -69,8 +69,16 @@ const costFAQs = [
     answer: 'Ein 30-Tonnen-Autokran kostet ca. 500–800€ pro Tag (inkl. Kranführer). Stundenpreise liegen bei 150–200€/h mit 4 Stunden Mindestmietdauer. Ideal für Baumontagen, Maschinentransport und mittelschwere Hebearbeiten. Transport zur Baustelle: ca. 150–400€ extra.',
   },
   {
+    question: 'Was kostet ein 30 Tonnen Kran pro Tag?',
+    answer: 'Ein 30 Tonnen Kran kostet pro Tag zwischen 500€ und 800€ netto, inklusive Kranführer (gesetzlich vorgeschrieben). Bei Wochenmiete zahlen Sie 2.500–4.000€, bei Monatsmiete 8.000–15.000€. Der 30-Tonner ist ein klassischer Autokran und der häufigste Krantyp im Hausbau, bei Dachstuhlmontagen und Maschinentransporten. Anfahrt zur Baustelle wird separat berechnet (ca. 2–4€/km, oft 150–400€ insgesamt).',
+  },
+  {
     question: 'Was kostet ein 80-Tonnen-Kran?',
     answer: 'Ein 80-Tonnen-Mobilkran kostet ca. 1.200–2.000€ pro Tag (inkl. Kranführer). Stundenpreise liegen bei 300–500€/h. Für Wocheneinsätze rechnen Sie mit 5.000–10.000€. Der Transport zur Baustelle kostet zusätzlich ca. 300–800€ je nach Entfernung.',
+  },
+  {
+    question: 'Was kostet ein 80 Tonnen Kran?',
+    answer: 'Ein 80 Tonnen Kran (Mobilkran oder schwerer Autokran) kostet zwischen 1.000€ und 1.500€ pro Tag inklusive Kranführer. Wochenmiete: 5.000–7.500€. Monatsmiete: 15.000–25.000€. Der 80-Tonner kommt bei Industriemontagen, Brückenteilen und schweren Stahlbauarbeiten zum Einsatz. Ab dieser Tragklasse fällt oft Schwertransport zur Baustelle an (1.000–3.000€ extra). Stundenweise Abrechnung möglich (ca. 250–400€/h, Mindestmietdauer 4h).',
   },
   {
     question: 'Was kostet ein PKW-Anhänger mit Kran (Anhängerkran)?',
@@ -323,6 +331,103 @@ export default async function KranMietenPreisePage() {
         </div>
       </section>
 
+      {/* Krankosten nach Tragkraft — targets "30 tonnen kran kosten" (pos 9), "80 tonnen kran kosten" (pos 38), "120 t kran kosten" */}
+      <section id="tragkraft" className="mb-10 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Was kostet ein 30-Tonnen-Kran? Preise nach Tragkraft 2026
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Die Kranmiete hängt vor allem von der benötigten Tragkraft ab. Hier finden Sie Tages-, Wochen-
+          und Monatspreise für die gängigsten Tragklassen — von 30 Tonnen für den Hausbau bis 500+ Tonnen
+          für Windkraft und Industrie. Alle Preise inklusive Kranführer (bei Auto- und Mobilkran gesetzlich vorgeschrieben).
+        </p>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="bg-gray-50 border-b text-left">
+                <th className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">Tragkraft</th>
+                <th className="py-3 px-4 font-medium text-gray-900">Typischer Krantyp</th>
+                <th className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">Kosten / Tag</th>
+                <th className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">Kosten / Woche</th>
+                <th className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">Kosten / Monat</th>
+                <th className="py-3 px-4 font-medium text-gray-900">Typische Einsätze</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600">
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">30 t</td>
+                <td className="py-2.5 px-4"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">500–800€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">2.500–4.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">8.000–15.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Klimaanlage, Dachstuhl, Fertiggarage, Maschinentransport</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">50 t</td>
+                <td className="py-2.5 px-4"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">700–1.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">3.500–5.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">11.000–18.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Stahlträger, Betonfertigteile, Hallenbau</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">80 t</td>
+                <td className="py-2.5 px-4"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link> / <Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">1.000–1.500€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">5.000–7.500€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">15.000–25.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Industriemontage, Brückenteile, schwere Stahlbauten</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">100 t</td>
+                <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">1.200–1.800€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">6.000–9.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">18.000–30.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Industriemontage, Hallenbau, Maschinen</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">120 t</td>
+                <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">1.500–2.200€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">7.500–11.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">22.000–35.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Brückenbau, Stahlbau, Schwerlastmontage</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">160 t</td>
+                <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">1.800–2.800€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">9.000–14.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">28.000–45.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Schwere Maschinen, Brückenteile, Kraftwerksbau</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">250 t</td>
+                <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">2.500–4.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">12.500–20.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">40.000–60.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Windkraftanlagen, Schwerlastmontage, Raffinerien</td>
+              </tr>
+              <tr className="bg-amber-50/40">
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">500 t+</td>
+                <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link> / <Link href="/raupenkran-mieten" className="text-blue-600 hover:underline">Raupenkran</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">4.000–10.000€+</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">20.000–50.000€</td>
+                <td className="py-2.5 px-4 whitespace-nowrap">60.000–150.000€</td>
+                <td className="py-2.5 px-4 text-gray-500">Offshore, Kraftwerke, Großbrücken, Großwindräder</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[11px] text-gray-400 mt-2">
+          Alle Preise netto, zzgl. MwSt. Kranführer bei Auto-, Mobil- und Raupenkran inklusive.
+          Anfahrt (150–500€) und Schwertransport ab ca. 100t Tragkraft (1.000–10.000€) kommen separat hinzu.
+          Wochenmiete spart 15–25%, Monatsmiete bis zu 40% gegenüber Einzeltagen.
+        </p>
+      </section>
+
       {/* Price details per type with images */}
       <section id="preise-detail" className="mb-10 scroll-mt-20 space-y-4">
         <h2 className="text-lg font-semibold text-gray-900">
@@ -366,119 +471,6 @@ export default async function KranMietenPreisePage() {
             </div>
           )
         })}
-      </section>
-
-      {/* Kosten nach Tragkraft — targets "30 tonnen kran kosten" (pos 9), "80 tonnen kran kosten" (pos 38) */}
-      <section id="tragkraft" className="mb-10 scroll-mt-20">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">
-          Kran mieten: Kosten nach Tragkraft (30t, 50t, 80t, 100t+)
-        </h2>
-        <p className="text-[14px] text-gray-500 mb-4">
-          Was kostet ein 30-Tonnen-Kran, ein 80-Tonnen-Kran oder ein Schwerlastkran mit 100+ Tonnen?
-          Die Kranmiete hängt direkt von der benötigten Tragkraft ab. Hier finden Sie Richtwerte
-          für alle gängigen Tragklassen — inklusive Kranführer und An-/Abfahrt.
-        </p>
-        <div className="overflow-x-auto border border-gray-200 rounded-lg">
-          <table className="w-full text-[13px]">
-            <thead>
-              <tr className="bg-gray-50 border-b text-left">
-                <th className="py-3 px-4 font-medium text-gray-900">Tragkraft</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Tagespreis</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Stundenpreis</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Krantyp</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Typische Einsätze</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-600">
-              <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium text-gray-900">bis 5 t</td>
-                <td className="py-2.5 px-4">150–500€</td>
-                <td className="py-2.5 px-4">—</td>
-                <td className="py-2.5 px-4"><Link href="/minikran-mieten" className="text-blue-600 hover:underline">Minikran</Link>, <Link href="/anhaengerkran-mieten" className="text-blue-600 hover:underline">Anhängerkran</Link></td>
-                <td className="py-2.5 px-4 text-gray-400">Glasmontage, Gartenbau, Innenräume</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium text-gray-900">10–30 t</td>
-                <td className="py-2.5 px-4">500–800€</td>
-                <td className="py-2.5 px-4">150–200€/h</td>
-                <td className="py-2.5 px-4"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link></td>
-                <td className="py-2.5 px-4 text-gray-400">Klimaanlage, Stahlträger, Betonfertigteile</td>
-              </tr>
-              <tr className="border-b bg-blue-50/50">
-                <td className="py-2.5 px-4 font-medium text-gray-900">30–50 t</td>
-                <td className="py-2.5 px-4 font-medium">500–1.200€</td>
-                <td className="py-2.5 px-4">150–250€/h</td>
-                <td className="py-2.5 px-4"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link></td>
-                <td className="py-2.5 px-4 text-gray-400">Baumontage, Hallenbau, Maschinentransport</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium text-gray-900">50–80 t</td>
-                <td className="py-2.5 px-4">800–1.500€</td>
-                <td className="py-2.5 px-4">200–300€/h</td>
-                <td className="py-2.5 px-4"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link>, <Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
-                <td className="py-2.5 px-4 text-gray-400">Stahlbau, Brückenteile, Industriemontage</td>
-              </tr>
-              <tr className="border-b bg-blue-50/50">
-                <td className="py-2.5 px-4 font-medium text-gray-900">80–100 t</td>
-                <td className="py-2.5 px-4 font-medium">1.200–2.000€</td>
-                <td className="py-2.5 px-4">300–500€/h</td>
-                <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
-                <td className="py-2.5 px-4 text-gray-400">Schwerlastmontage, Kraftwerksbau</td>
-              </tr>
-              <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium text-gray-900">100–200 t</td>
-                <td className="py-2.5 px-4">2.000–3.500€</td>
-                <td className="py-2.5 px-4">auf Anfrage</td>
-                <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link>, <Link href="/raupenkran-mieten" className="text-blue-600 hover:underline">Raupenkran</Link></td>
-                <td className="py-2.5 px-4 text-gray-400">Windkraft, Raffinerien, Großprojekte</td>
-              </tr>
-              <tr>
-                <td className="py-2.5 px-4 font-medium text-gray-900">200+ t</td>
-                <td className="py-2.5 px-4">3.500–10.000€+</td>
-                <td className="py-2.5 px-4">auf Anfrage</td>
-                <td className="py-2.5 px-4"><Link href="/raupenkran-mieten" className="text-blue-600 hover:underline">Raupenkran</Link></td>
-                <td className="py-2.5 px-4 text-gray-400">Brückenbau, Offshore, Windkraftanlagen</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="text-[11px] text-gray-400 mt-2">
-          Alle Preise netto zzgl. MwSt. Kranführer bei Autokran, Mobilkran und Raupenkran inklusive.
-          An-/Abfahrt (150–500€) kommt in der Regel hinzu.
-        </p>
-
-        {/* Targeted H3s for specific tonnage queries */}
-        <div className="grid gap-4 sm:grid-cols-2 mt-6">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="text-[14px] font-semibold text-gray-900 mb-1">Was kostet ein 30-Tonnen-Kran?</h3>
-            <p className="text-[13px] text-gray-500">
-              Ein 30-Tonnen-Kran (Autokran) kostet ca. 500–800€ pro Tag inkl. Kranführer.
-              Stundenpreis: 150–200€/h bei Mindestmietdauer 4 Stunden.
-              Ideal für Baumontagen und mittelschwere Hebearbeiten.
-            </p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="text-[14px] font-semibold text-gray-900 mb-1">Was kostet ein 50-Tonnen-Kran?</h3>
-            <p className="text-[13px] text-gray-500">
-              Ein 50-Tonnen-Autokran kostet ca. 800–1.200€ pro Tag inkl. Kranführer.
-              Stundenpreis: 200–250€/h. Für Stahlbau, Hallenmontage und größere Bauprojekte.
-            </p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="text-[14px] font-semibold text-gray-900 mb-1">Was kostet ein 80-Tonnen-Kran?</h3>
-            <p className="text-[13px] text-gray-500">
-              Ein 80-Tonnen-Kran (Mobilkran) kostet ca. 1.200–2.000€ pro Tag inkl. Kranführer.
-              Stundenpreis: 300–500€/h. Einsatz bei Schwerlastmontagen und Industrieprojekten.
-            </p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="text-[14px] font-semibold text-gray-900 mb-1">Was kostet ein 100-Tonnen-Kran oder mehr?</h3>
-            <p className="text-[13px] text-gray-500">
-              Ein 100-Tonnen-Schwerlastkran kostet ab 2.000€ pro Tag. Für Lasten über 200t kommen
-              Raupenkrane (ab 3.500€/Tag) zum Einsatz. Preise auf Anfrage — je nach Projekt und Standort.
-            </p>
-          </div>
-        </div>
       </section>
 
       {/* Zusatzkosten */}
