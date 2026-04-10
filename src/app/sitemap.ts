@@ -32,7 +32,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     { url: `${baseUrl}/ratgeber/was-kostet-ein-kran`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/ratgeber/welchen-kran-brauche-ich`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
-    { url: `${baseUrl}/ratgeber/baukran-mieten-kosten`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/dachdeckerkran-mieten`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/mobilkran-mieten-kosten`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/minikran-vs-autokran`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },

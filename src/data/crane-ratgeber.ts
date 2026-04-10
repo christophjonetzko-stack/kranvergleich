@@ -21,6 +21,51 @@ export interface CraneRatgeber {
 }
 
 export const craneRatgeber: Record<string, CraneRatgeber> = {
+  'baukran-mieten': {
+    included: [
+      'Standardausrüstung (Ausleger, Lasthaken, Steuerung)',
+      'Wartung & Verschleißteile während der Mietzeit',
+      'Versicherung des Krans (Maschinenbruch, Diebstahl)',
+      'Telefonsupport & Servicebereitschaft des Vermieters',
+      'Standardgarantieleistung',
+    ],
+    extras: [
+      'Montage / Demontage: 3.000–8.000€ (einmalig)',
+      'Kranfundament: 1.000–3.000€ (entfällt bei Schnellmontagekranen)',
+      'Transport zur Baustelle: 500–2.000€',
+      'Statiknachweis Fundament: 500–2.000€',
+      'Sondernutzungserlaubnis / Überschwenkgenehmigung: 50–500€',
+      'Bediener (sofern nicht selbst gestellt): 50–80€/h',
+      'Stromanschluss & Beleuchtung: nach Aufwand',
+    ],
+    tips: [
+      'Faustregel: Baukran lohnt sich ab 3 Monaten Bauzeit oder 15–20 Einzeleinsätzen — bei kürzeren Projekten ist der Autokran günstiger.',
+      'Schnellmontagekrane (bis 30m Hakenhöhe) brauchen oft kein Fundament — spart 1.000–3.000€ und 2–3 Tage Vorlauf.',
+      'Genehmigungen früh beantragen: Sondernutzung & Überschwenk dauern 1–3 Wochen Bearbeitungszeit.',
+      'Kranstandort schon im Bauantrag einzeichnen — spart einen separaten Antrag.',
+      'Demontage-Termin rechtzeitig planen, vor allem wenn nach dem Kran noch Außenanlagen oder Pflasterung kommen.',
+      'Bei Bauzeit über 6 Monate verhandeln — Vermieter geben oft 5–15% Rabatt auf den Monatspreis.',
+    ],
+    useCases: [
+      {
+        title: 'Einfamilien- oder Doppelhaus',
+        description: 'Mauerarbeiten, Decken und Dachstuhl. Typisch: Schnellmontagekran bis 30m Hakenhöhe, 3–6 Monate, ca. 4.000–8.000€/Monat + 3.000€ Montage.',
+      },
+      {
+        title: 'Mehrfamilienhaus / Wohnungsbau',
+        description: '3–6 Geschosse mit Materialhebung über das gesamte Baufeld. Typisch: mittlerer Obendreher 30–50m, 6–12 Monate, ca. 8.000–15.000€/Monat + 5.000€ Montage.',
+      },
+      {
+        title: 'Großbaustelle / Hochhaus',
+        description: 'Hochhausbau, Hotelkomplex, Klinik. Typisch: großer Obendreher über 50m, 12–24 Monate, ca. 15.000–25.000€/Monat + 6.000–8.000€ Montage.',
+      },
+      {
+        title: 'Industriebau & Hallen',
+        description: 'Lager-, Produktionshallen, Logistikzentren. Typisch: mittlerer Obendreher, 4–8 Monate, oft kombiniert mit Autokran-Einsätzen für Stahlbau.',
+      },
+    ],
+  },
+
   'autokran-mieten': {
     included: [
       'Ausgebildeter Kranführer (gesetzlich vorgeschrieben)',

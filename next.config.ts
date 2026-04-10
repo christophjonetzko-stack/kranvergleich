@@ -37,6 +37,14 @@ const nextConfig: NextConfig = {
         destination: '/autokran-mieten',
         permanent: true,
       },
+      // /ratgeber/baukran-mieten-kosten merged into /baukran-mieten
+      // (0 imp vs 401 imp pos 38 in GSC) — content moved into ratgeber
+      // section on the type page
+      {
+        source: '/ratgeber/baukran-mieten-kosten',
+        destination: '/baukran-mieten',
+        permanent: true,
+      },
     ]
   },
 };
