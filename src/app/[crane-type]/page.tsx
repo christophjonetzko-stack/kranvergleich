@@ -156,10 +156,80 @@ export default async function CraneTypePage({
         </ul>
       </nav>
 
+      {/* Synonym H2 — SEO for "leihen", "ausleihen", "Verleih", "Vermietung" variants */}
+      {(() => {
+        const ctInfo = craneTypesList.find((c) => c.slug === craneType.slug)
+        const synonyms = ctInfo?.synonyms ?? []
+        const plural = ctInfo?.namePlural ?? `${craneType.name}e`
+        return (
+          <section className="mb-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-3">
+              {craneType.name} leihen, ausleihen oder mieten? {plural} Vermietung in ganz Deutschland
+            </h2>
+            <p className="text-[14px] text-gray-500 leading-relaxed">
+              Ob Sie einen <strong className="text-gray-900">{craneType.name}</strong> mieten, leihen oder ausleihen möchten —
+              {' '}auf KranVergleich.de vergleichen Sie {plural}-Vermietung, {craneType.name}verleih und Anbieter im direkten Preisvergleich.
+              {synonyms.length > 0 && (
+                <> Der {craneType.name} wird auch als <strong className="text-gray-900">{synonyms.slice(0, 4).join(', ')}</strong>
+                {synonyms.length > 4 ? ` oder ${synonyms[4]}` : ''} bezeichnet.</>
+              )}
+              {' '}Die Vermieter bieten Tages-, Wochen- und Monatsmiete — mit oder ohne Kranführer, inkl. Transport.
+            </p>
+          </section>
+        )
+      })()}
+
       {/* Price Table */}
       <div id="preise" className="mb-8 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          {craneType.name} mieten — Preisliste 2026 mit Tages-, Wochen- und Monatspreisen
+        </h2>
         <PriceTable craneTypeSlug={craneType.slug} />
       </div>
+
+      {/* Cost breakdown — targets "kosten pro tag/stunde/woche/monat" queries */}
+      {price && (
+        <section className="mb-10 border border-gray-200 rounded-lg p-5">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Was kostet ein {craneType.name}? Kosten pro Tag, Stunde, Woche & Monat
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px]">
+            <div className="bg-gray-50 rounded-md p-3">
+              <p className="text-[11px] text-gray-400 mb-1">{craneType.name} mieten — Kosten pro Tag</p>
+              <p className="text-gray-700">
+                Ein {craneType.name} kostet zwischen <strong>{price.dayFrom.toLocaleString('de-DE')}€ und {price.dayTo.toLocaleString('de-DE')}€ pro Tag</strong> (netto).
+                {price.includesOperator ? ' Kranführer inklusive.' : ' Ohne Kranführer.'}
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-md p-3">
+              <p className="text-[11px] text-gray-400 mb-1">{craneType.name} Kosten pro Woche</p>
+              <p className="text-gray-700">
+                Wochenmiete: <strong>{price.weekFrom.toLocaleString('de-DE')}€ – {price.weekTo.toLocaleString('de-DE')}€</strong>.
+                {' '}Ersparnis gegenüber Tagesmiete: ca. 15–25%.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-md p-3">
+              <p className="text-[11px] text-gray-400 mb-1">{craneType.name} Kosten pro Monat</p>
+              <p className="text-gray-700">
+                Monatsmiete: <strong>{price.monthFrom.toLocaleString('de-DE')}€ – {price.monthTo.toLocaleString('de-DE')}€</strong>.
+                {' '}Ersparnis ca. 30–40% gegenüber Einzeltagen.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-md p-3">
+              <p className="text-[11px] text-gray-400 mb-1">Was kostet ein {craneType.name} pro Stunde?</p>
+              <p className="text-gray-700">
+                {price.includesOperator
+                  ? `Stundenpreis ca. ${Math.round(price.dayFrom / 8).toLocaleString('de-DE')}–${Math.round(price.dayTo / 6).toLocaleString('de-DE')}€/h inkl. Kranführer. Mindestmietdauer meist 4 Stunden.`
+                  : `Stundensätze sind bei ${craneType.name} unüblich — der ${craneType.name} wird tageweise vermietet. Kurzzeitmiete auf Anfrage.`}
+              </p>
+            </div>
+          </div>
+          <p className="text-[11px] text-gray-400 mt-3">
+            Alle Preise netto, zzgl. MwSt. Richtwerte — die tatsächlichen {craneType.name}-Mietpreise hängen von Tragkraft, Einsatzdauer und Standort ab.
+            {' '}Transport (An-/Abfahrt) kommt je nach Entfernung hinzu (ca. 150–500€).
+          </p>
+        </section>
+      )}
 
       {/* Company Listings + Map (synced via filters) */}
       {companies.length > 0 && (

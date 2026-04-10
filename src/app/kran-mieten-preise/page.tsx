@@ -88,6 +88,18 @@ const costFAQs = [
     question: 'Wie viel kostet ein Kran?',
     answer: 'Die Kosten für einen Mietkran hängen von Typ, Tragkraft und Mietdauer ab. Tagesmiete: 150–5.000€, Wochenmiete: 700–25.000€, Monatsmiete: 2.000–50.000€. Auf KranVergleich.de können Sie die Kranmiete Preise kostenlos vergleichen.',
   },
+  {
+    question: 'Wie teuer ist ein Kran im Monat?',
+    answer: 'Wie teuer ein Kran im Monat ist, hängt vom Krantyp ab: Anhängerkran ab 2.000€/Monat, Minikran ab 3.500€/Monat, Dachdeckerkran ab 3.000€/Monat, Autokran ab 8.000€/Monat, Baukran ab 4.000€/Monat (zzgl. Montage), Mobilkran ab 10.000€/Monat, Raupenkran ab 15.000€/Monat. Monatsmieten sind pro Tag rund 30–40% günstiger als Einzeltage — lohnt sich ab 10 Einsatztagen.',
+  },
+  {
+    question: 'Was kostet es, einen Kran zu mieten oder zu leihen?',
+    answer: 'Einen Kran zu mieten oder zu leihen kostet je nach Typ zwischen 150€ und 5.000€ pro Tag (netto). Der Mietkran-Preis enthält bei Autokranen, Mobilkranen und Raupenkranen den Kranführer. Bei Minikranen, Dachdeckerkranen und Anhängerkranen können Sie den Kran nach Einweisung selbst bedienen — einen Bediener buchen Sie separat (ca. 40–60€/h). Synonyme: Kran ausleihen, Kranverleih, Kranvermietung, Kranmiete — alle meinen dasselbe.',
+  },
+  {
+    question: 'Ich brauche einen Kran — welcher Krantyp ist der richtige für mein Projekt?',
+    answer: 'Welchen Kran Sie brauchen, hängt von Tragkraft, Hubhöhe und Zufahrt ab. Kurze Entscheidungshilfe: (1) Arbeiten in Innenräumen oder enge Zufahrt? → Minikran (ab 250€/Tag). (2) Dacharbeiten, Ziegel, Dachstuhl? → Dachdeckerkran (ab 200€/Tag). (3) Mittelschwere Montagen im Freien? → Autokran 30–80t (ab 500€/Tag). (4) Schwerlasten 100t+? → Mobilkran oder Raupenkran. (5) Langzeit-Baustelle (3+ Monate)? → Baukran (Turmdrehkran). Nutzen Sie unseren Kostenrechner — in 2 Minuten erhalten Sie eine Empfehlung und Preisschätzung.',
+  },
 ]
 
 export default async function KranMietenPreisePage() {

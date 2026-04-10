@@ -26,12 +26,17 @@ export function PriceTable({ craneTypeSlug, showAll }: PriceTableProps) {
 
   if (prices.length === 0) return null
 
+  const singleCraneName = !showAll && craneTypeSlug ? getCraneTypeName(craneTypeSlug) : null
+  const heading = showAll
+    ? 'Kran mieten Preisliste 2026 — Kosten pro Tag, Woche & Monat'
+    : singleCraneName
+      ? `${singleCraneName} Preisliste 2026 — Kosten pro Tag, Woche & Monat`
+      : 'Preisliste (Richtwerte)'
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          {showAll ? 'Kran mieten: Preisübersicht' : 'Preisübersicht (Richtwerte)'}
-        </CardTitle>
+        <CardTitle>{heading}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">

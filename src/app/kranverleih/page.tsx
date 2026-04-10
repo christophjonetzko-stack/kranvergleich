@@ -72,12 +72,17 @@ export default async function KranverleihPage() {
       <section className="mb-10">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Kranverleih in Ihrer Stadt</h2>
         <div className="flex flex-wrap gap-2">
-          {topCities.map((city) => (
-            <Link key={city.slug} href={`/minikran-mieten/${city.slug}`} className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors">
-              {city.name}
-              <span className="text-[11px] text-gray-400">{city.companyCount}</span>
-            </Link>
-          ))}
+          {topCities.map((city, i) => {
+            // Rotate across 4 top crane types so links distribute across pages, not just minikran
+            const typeSlugs = ['baukran-mieten', 'autokran-mieten', 'mobilkran-mieten', 'minikran-mieten']
+            const typeSlug = typeSlugs[i % typeSlugs.length]
+            return (
+              <Link key={city.slug} href={`/${typeSlug}/${city.slug}`} className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors">
+                {city.name}
+                <span className="text-[11px] text-gray-400">{city.companyCount}</span>
+              </Link>
+            )
+          })}
         </div>
       </section>
 

@@ -110,22 +110,27 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Top Städte — pills */}
+      {/* Top Städte — pills. Rotate crane-type slug across cities so internal links distribute across type pages */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Städte</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Kran mieten in Ihrer Stadt</h2>
         <div className="flex flex-wrap gap-2">
-          {topCities.map((city) => (
-            <Link
-              key={city.slug}
-              href={`/autokran-mieten/${city.slug}`}
-              className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
-            >
-              {city.name}
-              <span className="text-[11px] text-gray-400">{city.companyCount}</span>
-            </Link>
-          ))}
+          {topCities.map((city, i) => {
+            // Rotate across the 4 highest-impression crane types per GSC data
+            const typeSlugs = ['autokran-mieten', 'baukran-mieten', 'minikran-mieten', 'mobilkran-mieten']
+            const typeSlug = typeSlugs[i % typeSlugs.length]
+            return (
+              <Link
+                key={city.slug}
+                href={`/${typeSlug}/${city.slug}`}
+                className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
+              >
+                {city.name}
+                <span className="text-[11px] text-gray-400">{city.companyCount}</span>
+              </Link>
+            )
+          })}
           <Link
-            href="/autokran-mieten"
+            href="/kranverleih"
             className="inline-flex items-center text-[13px] text-blue-600 hover:text-blue-700 px-2 py-1.5 transition-colors"
           >
             Alle Städte &rarr;
