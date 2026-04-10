@@ -158,16 +158,14 @@ export default async function CompanyPage({
               </div>
             )}
 
-            {/* CTA buttons */}
+            {/* CTA buttons — primary: Angebot anfragen (revenue), secondary: Website, tertiary: Anrufen */}
             <div className="flex flex-wrap gap-2 mt-4">
-              {company.phone && (
-                <a
-                  href={`tel:${company.phone}`}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
-                >
-                  Anrufen: {company.phone}
-                </a>
-              )}
+              <a
+                href="#anfrage"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+              >
+                Angebot anfragen
+              </a>
               {company.website && (
                 <a
                   href={company.website}
@@ -178,12 +176,14 @@ export default async function CompanyPage({
                   Website besuchen
                 </a>
               )}
-              <a
-                href="#anfrage"
-                className="inline-flex items-center px-4 py-2 border border-blue-200 hover:border-blue-300 text-[13px] text-blue-600 rounded-md transition-colors"
-              >
-                Angebot anfragen
-              </a>
+              {company.phone && (
+                <a
+                  href={`tel:${company.phone}`}
+                  className="inline-flex items-center px-4 py-2 border border-gray-100 hover:border-gray-200 text-[13px] text-gray-600 rounded-md transition-colors"
+                >
+                  Anrufen: {company.phone}
+                </a>
+              )}
             </div>
           </div>
         </div>
