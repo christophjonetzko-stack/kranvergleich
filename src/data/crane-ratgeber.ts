@@ -66,6 +66,50 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
     ],
   },
 
+  'dachdeckerkran-mieten': {
+    included: [
+      'Funkfernsteuerung (Bedienung vom Boden aus)',
+      'Einweisung durch den Vermieter (30–60 Minuten gemäß DGUV Vorschrift 52)',
+      'Transport zur Baustelle (bei vielen Vermietern bis 50km inkl.)',
+      'Standardlasthaken & Anschlagmittel',
+      'Versicherung des Krans',
+    ],
+    extras: [
+      'Anfahrt über 50km: ca. 1,50–3€/km',
+      'Wochenend-Zuschlag: 15–25%',
+      'Bediener (optional, wenn Sie nicht selbst bedienen wollen): 40–60€/h',
+      'Sondernutzungserlaubnis bei Aufstellung auf öffentlichem Grund: 50–200€',
+      'Spezialhebezeuge (Glasträger, Plattenheber): 20–50€/Tag extra',
+      'Verlängerung Mietdauer: nach Tagessatz',
+    ],
+    tips: [
+      'Kein Kranführerschein nötig — eine 30-60-minütige Einweisung gemäß DGUV Vorschrift 52 reicht aus. Mindestalter: 18 Jahre.',
+      'Für Dacharbeiten ist der Dachdeckerkran 60–70% günstiger als ein Autokran — wählen Sie ihn immer, wenn Hakenhöhe bis 30m reicht.',
+      'Wochenmiete spart 15–30% gegenüber 7 Tagessätzen — bei Sanierungen über 5 Tage sofort fragen.',
+      'Stellplatz prüfen: ein Dachdeckerkran braucht nur ca. 2,5×6m an der Straße — passt auch in enge Wohngebiete.',
+      'Aufbauzeit nur 15–30 Minuten — der Kran kann am Morgen aufgestellt und abends abgebaut werden, falls Stellplatz knapp ist.',
+      'Bei höheren Gebäuden (über 9 Stockwerke / 30m) brauchen Sie stattdessen einen Autokran — Dachdeckerkran reicht nicht.',
+    ],
+    useCases: [
+      {
+        title: 'Dachsanierung',
+        description: 'Dachziegel, Dämmstoffe, Dachfenster, Lattung aufs Dach heben. Typisch: 1–2 Wochen, 1.000–2.500€ Wochenmiete.',
+      },
+      {
+        title: 'Solaranlagen-Montage',
+        description: 'PV-Module, Montagegestelle, Wechselrichter und Verkabelung transportieren. Typisch: 2–5 Tage, 400–1.500€.',
+      },
+      {
+        title: 'Schornsteinsanierung',
+        description: 'Schornsteinteile, Edelstahlrohre, Kaminköpfe auf Dachhöhe bringen. Typisch: 1–3 Tage, 200–800€.',
+      },
+      {
+        title: 'Dachbegrünung & Klimaanlagen',
+        description: 'Substrat, Pflanzkassetten, Drainageschichten oder Außengeräte aufs Flachdach heben. Typisch: 1–2 Tage, 200–600€.',
+      },
+    ],
+  },
+
   'mobilkran-mieten': {
     included: [
       'Ausgebildeter Kranführer (gesetzlich vorgeschrieben)',

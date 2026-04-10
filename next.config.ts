@@ -53,6 +53,14 @@ const nextConfig: NextConfig = {
         destination: '/mobilkran-mieten',
         permanent: true,
       },
+      // /ratgeber/dachdeckerkran-mieten merged into /dachdeckerkran-mieten
+      // duplicate URL stem caused cannibalization (ratgeber 0 imp vs type
+      // page 61 imp pos 26.8 in GSC, with cost query at pos 6)
+      {
+        source: '/ratgeber/dachdeckerkran-mieten',
+        destination: '/dachdeckerkran-mieten',
+        permanent: true,
+      },
     ]
   },
 };
