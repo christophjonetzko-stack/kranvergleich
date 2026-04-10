@@ -22,8 +22,8 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
   return typeof str === 'string' ? str.slice(0, max) : ''
 }
 
-const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL
-if (!NOTIFICATION_EMAIL) {
+const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL!
+if (!process.env.NOTIFICATION_EMAIL) {
   throw new Error('NOTIFICATION_EMAIL environment variable is required')
 }
 const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
