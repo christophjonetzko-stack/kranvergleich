@@ -15,6 +15,13 @@ const nextConfig: NextConfig = {
         destination: '/autokran-mieten',
         permanent: true,
       },
+      // /kranmiete cannibalized /kran-mieten-preise (0 imp vs 447 imp in GSC)
+      // consolidate link equity into the ranking page
+      {
+        source: '/kranmiete',
+        destination: '/kran-mieten-preise',
+        permanent: true,
+      },
     ]
   },
 };
