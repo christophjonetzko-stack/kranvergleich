@@ -43,8 +43,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/ratgeber/kran-aufstellen-genehmigung`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/krantypen`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
     {
-      url: `${baseUrl}/anhaengerkran-mieten-preise`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
-    {
       url: `${baseUrl}/kostenrechner`,
       lastModified: new Date(),
       changeFrequency: 'monthly',

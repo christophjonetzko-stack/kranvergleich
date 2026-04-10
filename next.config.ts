@@ -22,6 +22,13 @@ const nextConfig: NextConfig = {
         destination: '/kran-mieten-preise',
         permanent: true,
       },
+      // /anhaengerkran-mieten-preise cannibalized /anhaengerkran-mieten
+      // (0 imp vs 35 imp pos 22 in GSC) — consolidate into the ranking page
+      {
+        source: '/anhaengerkran-mieten-preise',
+        destination: '/anhaengerkran-mieten',
+        permanent: true,
+      },
     ]
   },
 };
