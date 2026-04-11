@@ -50,6 +50,16 @@ const costFAQs = [
       'Bei Autokranen, Mobilkranen und Raupenkranen ist der Kranführer in der Regel inklusive (gesetzlich vorgeschrieben). Bei Minikranen, Dachdeckerkranen, Anhängerkranen und Ladekranen bedienen Sie den Kran nach Einweisung selbst — oder buchen einen Bediener separat.',
   },
   {
+    question: 'Was kostet ein Kran mit Fahrer pro Tag?',
+    answer:
+      'Ein Kran mit Fahrer kostet je nach Typ 500–3.000€ pro Tag — der Kranführer ist bei Autokran (ab 500€/Tag), Mobilkran (ab 600€/Tag) und Raupenkran (ab 800€/Tag) gesetzlich vorgeschrieben und im Tagespreis enthalten. Bei Baukranen wird der Turmdrehkranführer separat gebucht (50–70€/h oder 400–560€/Tag). Bei Ladekranen ist der LKW-Fahrer oft als Komplettpaket verfügbar (500–800€/Tag inkl. LKW). Minikran, Dachdeckerkran und Anhängerkran können Sie nach einer Einweisung selbst bedienen — ein separater Bediener kostet 50–80€/h oder 400–650€/Tag.',
+  },
+  {
+    question: 'Brauche ich einen Kranführerschein zum Kran mieten?',
+    answer:
+      'Für die meisten Kranvermietungen brauchen Sie KEINEN Kranführerschein. Bei Autokran, Mobilkran und Raupenkran ist der zertifizierte Kranführer gesetzlich vorgeschrieben und im Mietpreis enthalten — Sie müssen nichts selbst bedienen. Bei Minikran, Dachdeckerkran und Anhängerkran reicht eine 30–60-minütige Einweisung durch den Vermieter (gemäß DGUV Vorschrift 52), Sie brauchen lediglich das Mindestalter 18 Jahre. Einen Kranführerschein (Befähigungsnachweis nach DGUV V52) benötigen Sie nur, wenn Sie einen Baukran (Turmdrehkran) selbst bedienen oder als angestellter Kranführer arbeiten möchten.',
+  },
+  {
     question: 'Welche Zusatzkosten gibt es beim Kran mieten?',
     answer:
       'Typische Zusatzkosten: Transport (An-/Abfahrt) 150–500€, Montage/Demontage bei Baukranen 3.000–8.000€, Genehmigungen für Straßensperrung je nach Kommune, Versicherung und Sicherheitseinrichtung. Fragen Sie immer nach einem Komplettangebot.',
@@ -144,6 +154,7 @@ export default async function KranMietenPreisePage() {
           <li><a href="#mobilkran-kosten" className="text-[13px] text-blue-600 hover:underline">Mobilkran / Schwerlastkran Kosten</a></li>
           <li><a href="#preise-detail" className="text-[13px] text-blue-600 hover:underline">Preise nach Krantyp</a></li>
           <li><a href="#tragkraft" className="text-[13px] text-blue-600 hover:underline">Kosten nach Tragkraft (30t, 50t, 80t, 100t+)</a></li>
+          <li><a href="#kranfuehrer" className="text-[13px] text-blue-600 hover:underline">Kran mit Fahrer — was kostet ein Kranführer?</a></li>
           <li><a href="#zusatzkosten" className="text-[13px] text-blue-600 hover:underline">Zusatzkosten</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen zu Kosten</a></li>
         </ul>
@@ -425,6 +436,130 @@ export default async function KranMietenPreisePage() {
           Alle Preise netto, zzgl. MwSt. Kranführer bei Auto-, Mobil- und Raupenkran inklusive.
           Anfahrt (150–500€) und Schwertransport ab ca. 100t Tragkraft (1.000–10.000€) kommen separat hinzu.
           Wochenmiete spart 15–25%, Monatsmiete bis zu 40% gegenüber Einzeltagen.
+        </p>
+      </section>
+
+      {/* Kranführer costs — targets "kran mieten mit fahrer" (pos 29), "was kostet ein kranführer" */}
+      <section id="kranfuehrer" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Kran mit Fahrer mieten — was kostet ein Kranführer?
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Ein <strong className="text-gray-900">Kranführer kostet 50–80€ pro Stunde</strong> oder
+          {' '}<strong className="text-gray-900">400–650€ pro Tag</strong> (8 Stunden). Bei manchen
+          Krantypen ist der Bediener gesetzlich vorgeschrieben und im Mietpreis enthalten — bei anderen
+          können Sie den Kran nach einer kurzen Einweisung selbst bedienen oder den Kranführer separat
+          dazubuchen.
+        </p>
+
+        {/* Kranführer Preise */}
+        <div className="grid gap-3 sm:grid-cols-3 text-center mb-5">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">50–80€/h</p>
+            <p className="text-[13px] text-gray-500 mt-1">Stundenpreis Kranführer</p>
+            <p className="text-[11px] text-gray-400">bei separater Buchung</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">400–650€/Tag</p>
+            <p className="text-[13px] text-gray-500 mt-1">Tagessatz (8 Std.)</p>
+            <p className="text-[11px] text-gray-400">inkl. Fahrtzeit</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">60.000–80.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Jahresgehalt brutto</p>
+            <p className="text-[11px] text-gray-400">angestellter Kranführer</p>
+          </div>
+        </div>
+
+        {/* Inklusive vs. separat Tabelle */}
+        <h3 className="text-[14px] font-semibold text-gray-900 mb-2">
+          Bei welchen Krantypen ist der Kranführer inklusive?
+        </h3>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="bg-gray-50 border-b text-left">
+                <th className="py-3 px-4 font-medium text-gray-900">Krantyp</th>
+                <th className="py-3 px-4 font-medium text-gray-900">Kranführer</th>
+                <th className="py-3 px-4 font-medium text-gray-900">Rechtliche Grundlage</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600">
+              <tr className="border-b bg-green-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link></td>
+                <td className="py-2.5 px-4 text-green-700 font-medium">✓ Immer inklusive</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52 — nur zertifizierte Kranführer</td>
+              </tr>
+              <tr className="border-b bg-green-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
+                <td className="py-2.5 px-4 text-green-700 font-medium">✓ Immer inklusive</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52 — gesetzlich vorgeschrieben</td>
+              </tr>
+              <tr className="border-b bg-green-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/raupenkran-mieten" className="text-blue-600 hover:underline">Raupenkran</Link></td>
+                <td className="py-2.5 px-4 text-green-700 font-medium">✓ Immer inklusive</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52 — nur zertifizierte Kranführer</td>
+              </tr>
+              <tr className="border-b bg-amber-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/baukran-mieten" className="text-blue-600 hover:underline">Baukran (Turmdrehkran)</Link></td>
+                <td className="py-2.5 px-4 text-amber-700 font-medium">↻ Separat buchbar</td>
+                <td className="py-2.5 px-4 text-gray-500">Turmdrehkranführer-Schein nötig — 50–70€/h</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/minikran-mieten" className="text-blue-600 hover:underline">Minikran</Link></td>
+                <td className="py-2.5 px-4 text-gray-700">– Nicht nötig (Einweisung)</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV V52 — Einweisung durch Vermieter reicht</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/dachdeckerkran-mieten" className="text-blue-600 hover:underline">Dachdeckerkran</Link></td>
+                <td className="py-2.5 px-4 text-gray-700">– Nicht nötig (Einweisung)</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV V52 — Funkfernsteuerung vom Boden</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/anhaengerkran-mieten" className="text-blue-600 hover:underline">Anhängerkran</Link></td>
+                <td className="py-2.5 px-4 text-gray-700">– Nicht nötig (Einweisung)</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV V52 — Einweisung reicht, ab 18 Jahren</td>
+              </tr>
+              <tr>
+                <td className="py-2.5 px-4 font-medium"><Link href="/ladekran-mieten" className="text-blue-600 hover:underline">Ladekran</Link></td>
+                <td className="py-2.5 px-4 text-amber-700 font-medium">↻ Oft mit LKW-Fahrer</td>
+                <td className="py-2.5 px-4 text-gray-500">Komplettpaket mit LKW möglich</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Kontext boxes: Inkludiert vs separat vs ohne */}
+        <div className="grid gap-3 sm:grid-cols-3 mt-5">
+          <div className="border border-green-200 bg-green-50 rounded-lg p-4">
+            <p className="font-medium text-gray-900 mb-1 text-[13px]">✓ Kranführer immer inklusive</p>
+            <p className="text-[12px] text-gray-600">
+              Autokran, Mobilkran und Raupenkran dürfen nur mit zertifiziertem Kranführer betrieben
+              werden (DGUV Vorschrift 52). Der Bediener ist im Tagespreis enthalten — Sie zahlen nichts extra.
+            </p>
+          </div>
+          <div className="border border-amber-200 bg-amber-50 rounded-lg p-4">
+            <p className="font-medium text-gray-900 mb-1 text-[13px]">↻ Separat dazubuchen</p>
+            <p className="text-[12px] text-gray-600">
+              Bei Baukranen brauchen Sie einen Turmdrehkranführer — entweder eigenes Personal oder
+              separat gebucht (50–70€/h). Bei Ladekranen oft als Komplettpaket mit LKW-Fahrer (500–800€/Tag).
+            </p>
+          </div>
+          <div className="border border-gray-200 bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-gray-900 mb-1 text-[13px]">– Selbst bedienen nach Einweisung</p>
+            <p className="text-[12px] text-gray-600">
+              Minikran, Dachdeckerkran und Anhängerkran können Sie nach einer 30–60-minütigen Einweisung
+              (DGUV V52) selbst bedienen. Kein Kranführerschein nötig. Mindestalter: 18 Jahre.
+            </p>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-gray-400 mt-3">
+          Bei allen Krantypen ohne inklusiven Bediener können Sie einen Kranführer separat dazubuchen,
+          wenn Sie den Kran nicht selbst bedienen möchten. Mehr Info:{' '}
+          <Link href="/ratgeber/kran-mieten-ohne-fuehrerschein" className="text-blue-600 hover:underline">
+            Kran mieten ohne Führerschein &rarr;
+          </Link>
         </p>
       </section>
 
