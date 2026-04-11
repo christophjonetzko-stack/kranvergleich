@@ -196,6 +196,184 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       },
     ],
   },
+
+  'minikran-mieten': {
+    included: [
+      'Transport zur Baustelle (bei vielen Vermietern bis 50km inkl.)',
+      'Einweisung durch den Vermieter (30–60 Minuten gemäß DGUV Vorschrift 52)',
+      'Funkfernsteuerung für Bedienung vom Boden aus',
+      'Standardlasthaken & Anschlagmittel',
+      'Versicherung des Krans',
+    ],
+    extras: [
+      'Anfahrt über 50km: ca. 1,50–3€/km',
+      'Glassauger / Vakuumheber für Glasmontage: 50–120€/Tag',
+      'Spezialtraversen, Plattenheber: 30–80€/Tag',
+      'Bediener (optional, wenn Sie nicht selbst bedienen wollen): 50–80€/h',
+      'Wochenend-Zuschlag: 15–25%',
+      'Stromanschluss-Adapter bei reinen Elektromodellen (Innenraum-Einsätze)',
+    ],
+    tips: [
+      'Türbreite vor der Buchung messen — die meisten Minikrane brauchen mindestens 80cm Durchfahrbreite, einige Spider-Crane-Modelle passen ab 60cm.',
+      'Für Innenräume ein Elektro-Akku-Modell wählen — keine Abgase, deutlich leiser (unter 65 dB), kein Stromkabel nötig.',
+      'Raupen-Minikran (Spinnenkran) vs LKW-Minikran: Raupen für weichen Untergrund und engste Zufahrten, LKW-Basis für direkten Straßeneinsatz.',
+      'Tragkraft IMMER im Zusammenhang mit der Ausladung prüfen — bei maximaler Reichweite sinkt die Nennlast oft auf 20–30%.',
+      'Für Glasmontage gezielt nach Modellen mit Vakuumsauger-Vorbereitung fragen — nicht jeder Minikran hat die Halterung.',
+      'Wochenmiete ab 3 Einsatztagen rechnet sich fast immer — 15–25% Ersparnis gegenüber 3 Tagesmieten.',
+    ],
+    useCases: [
+      {
+        title: 'Glasmontage & Fassaden',
+        description: 'Fensterelemente, Schaufenster, Glastüren, PV-Module, Glasfassaden heben. Typisch: Elektro-Minikran mit Vakuumheber, 1–2 Tage, 350–600€/Tag.',
+      },
+      {
+        title: 'Innenräume & Altbau-Sanierung',
+        description: 'Kaminöfen, schwere Möbel, Treppenelemente, Heizkessel in Altbauten oder Dachböden positionieren. Typisch: Elektro-Minikran, 250–400€/Tag.',
+      },
+      {
+        title: 'Friedhof & Grabsteinmontage',
+        description: 'Grabsteine, Grabdenkmäler, Grabeinfassungen aufstellen. Typisch: kompakter Raupen-Minikran, 300–500€/Tag, halber bis ganzer Tag.',
+      },
+      {
+        title: 'Hinterhöfe & enge Zufahrten',
+        description: 'Projekte, wo ein Autokran nicht rankommt — Baumaterial in Innenhöfe, Pools, Gartenhäuser, Skulpturen. Typisch: 1–3 Tage, 250–400€/Tag.',
+      },
+    ],
+  },
+
+  'raupenkran-mieten': {
+    included: [
+      'Ausgebildeter Kranführer (bei Großkranen oft mehrere + Einweiser)',
+      'Standardausleger inkl. Hauptausrüstung',
+      'Versicherung des Krans (Maschinenbruch, Haftpflicht)',
+      'Kranmonteur-Team für Auf- und Abbau',
+      'Standardanschlagmittel',
+    ],
+    extras: [
+      'Auf-/Abbau: 5.000–30.000€ einmalig (mehrere Tage Arbeit, oft mit Assist-Kran)',
+      'Schwertransport zur Baustelle: 5.000–50.000€ (Tiefladerkombination, mehrere LKW)',
+      'Sondergenehmigungen für Schwertransport: 500–5.000€',
+      'Bodenplatten / Lastverteilungsmatten bei weichem Untergrund: nach Aufwand',
+      'Luffjib / Wippausleger: 10–20% Aufpreis',
+      'Superlift / Derrick-System für extreme Lasten: 20–30% Aufpreis',
+      'Assist-Kran für den Aufbau des Raupenkrans: 2.000–8.000€',
+    ],
+    tips: [
+      'Raupenkrane 6–12 Wochen im Voraus buchen — Verfügbarkeit ist extrem knapp, besonders bei Modellen über 500t.',
+      'Tragkraftdiagramm (Lastmoment) genau prüfen — die Nennlast gilt nur bei kurzer Ausladung, bei voller Reichweite oft nur 15–25%.',
+      'Baugrund-Anforderung vom Vermieter schriftlich bestätigen lassen — Raupenkrane brauchen je nach Tragkraft 1–3 kg/cm² Traglast.',
+      'Unter 500t Nutzlast oft Mobilkran günstiger — keine wochenlange Transport- und Aufbaulogistik.',
+      'Aufbauzeit einkalkulieren — 2–5 Tage allein für Montage, die nicht zur Produktivzeit zählen.',
+      'Tandemhub mit zwei kleineren Kranen erwägen statt einem Riesen-Raupenkran — oft günstiger und flexibler.',
+    ],
+    useCases: [
+      {
+        title: 'Windkraftanlagen-Errichtung',
+        description: 'Türme, Gondeln und Rotorblätter bis 160m Höhe montieren. Typisch: 500–1.200t Raupenkran, mehrere Wochen Einsatz, 4.000–8.000€/Tag + Transport.',
+      },
+      {
+        title: 'Brückenbau',
+        description: 'Brückenträger und Fertigteile auf Pfeiler setzen. Typisch: 250–1.000t Raupenkran, mehrere Wochen, oft im Tandembetrieb.',
+      },
+      {
+        title: 'Weicher Untergrund & Moor',
+        description: 'Baustellen auf Moor, Sand oder aufgeweichter Fläche, wo ein Mobilkran einsinken würde. Raupenfahrwerk verteilt die Last auf große Fläche.',
+      },
+      {
+        title: 'Kraftwerke, Raffinerien & Chemieanlagen',
+        description: 'Kessel, Kolonnen, Reaktorbehälter und Rohrbrücken mit Tragkraft bis 3.000t heben. Typisch: Monatelange Projekte, Großraupenkrane ab 1.000t.',
+      },
+    ],
+  },
+
+  'anhaengerkran-mieten': {
+    included: [
+      'Transport auf der PKW-Anhängerkupplung — Sie fahren den Kran selbst',
+      'Einweisung durch den Vermieter (ca. 30 Minuten)',
+      'Funkfernsteuerung für Bedienung vom Boden',
+      'Kurbelstützen (manuell oder hydraulisch)',
+      'Standardlasthaken & Anschlagmittel',
+      'Versicherung des Krans',
+    ],
+    extras: [
+      'Anlieferung durch Vermieter (wenn kein passender PKW verfügbar): 80–250€',
+      'Zugfahrzeug-Vermietung: 60–120€/Tag',
+      'Vollkasko-Versicherung (Diebstahl, Unfall): 15–30€/Tag',
+      'Glassauger für Glasmontage: 30–60€/Tag',
+      'Spezialtraversen: 20–50€/Tag',
+      'Wochenend-Zuschlag: 10–20%',
+    ],
+    tips: [
+      'Anhängerkupplung Ihres PKW prüfen — Zugkraft muss zum Anhängerkran-Gewicht passen (meist 1.300–3.500 kg Gesamtgewicht).',
+      'Führerschein Klasse BE nötig bei Anhängerkranen über 750 kg — der normale Klasse-B-Schein reicht dafür NICHT aus.',
+      'Aufbauzeit nur 15–20 Minuten — ideal für kurze Einsätze, kann mehrmals am Tag versetzt werden.',
+      'Hakenhöhe und Ausladung vor der Buchung prüfen — typisch 10–25m Höhe, max. 1,5t Tragkraft.',
+      'Bei Dacharbeiten über 15m Höhe lieber einen Dachdeckerkran wählen — deutlich größere Reichweite.',
+      'Rückgabezeiten klären — manche Vermieter haben 24/7-Rückgabeboxen, andere nur Werktagsöffnungszeiten.',
+    ],
+    useCases: [
+      {
+        title: 'Dachdecker-Kleinbetrieb',
+        description: 'Ziegel, Lattung, Dachfenster aufs Dach heben bei Einfamilienhäusern. Typisch: 1–3 Tage, 200–350€/Tag. Günstigste Option für Dacharbeiten.',
+      },
+      {
+        title: 'Garten- & Landschaftsbau',
+        description: 'Findlinge, Bäume, Wasserbecken, Pflanztröge und Skulpturen setzen. Ideal für Ein-Mann-Betriebe und Einzelprojekte.',
+      },
+      {
+        title: 'Grabsteine & Friedhofsarbeiten',
+        description: 'Grabsteine bis 1.500 kg, Grabeinfassungen, kleinere Grabdenkmäler aufstellen. Typisch: halber Tag, 150–250€.',
+      },
+      {
+        title: 'Baumaterialtransport zur Baustelle',
+        description: 'Paletten, Säcke, Werkzeug und Kleinmaterial zu schwer zugänglichen Baustellen heben. Flexibel durch PKW-Transport.',
+      },
+    ],
+  },
+
+  'ladekran-mieten': {
+    included: [
+      'LKW mit Ladekran als Komplettpaket',
+      'LKW-Fahrer mit Ladekranführer-Qualifikation',
+      'Versicherung des Krans und Fahrzeugs',
+      'Standard-Anschlagmittel (Schlingen, Haken)',
+      'Funk- oder manuelle Steuerung',
+    ],
+    extras: [
+      'Anfahrt: 1,50–3€/km über Standardradius hinaus',
+      'Überstunden: 60–90€/h',
+      'Wochenend- & Feiertags-Zuschlag: 20–30%',
+      'Sonderausrüstung (Palettengabel, Container-Spreader, Greifer): 30–100€/Tag',
+      'Stundensatz bei Kurzeinsätzen: 80–120€/h inkl. LKW + Fahrer',
+      'Entsorgung / Abtransport von Material: nach Aufwand',
+    ],
+    tips: [
+      'Tragkraft sinkt dramatisch mit der Ausladung — bei max. Reichweite oft nur 1/3 der Nennlast. Vorher Lastdiagramm prüfen.',
+      'Die gängigen Marken (Hiab, Palfinger, Atlas, Fassi) haben ähnliche Preisniveaus — bei der Auswahl eher auf Reichweite achten.',
+      'Ladekran + LKW als Komplettpaket ist fast immer günstiger als LKW und separater Kran einzeln zu buchen.',
+      'Knickarm-Reichweite prüfen: 5m reichen oft nicht, um mittig auf der Ladefläche abzusetzen. 8–10m sind typisch empfehlenswert.',
+      'Bei regelmäßigem Bedarf (Speditionen, Baustoffhandel) lohnt Langzeitmiete — 15–30% Rabatt ab einem Monat.',
+      'Funkfernsteuerung gegen Aufpreis wert — der Fahrer kann neben der Last stehen und hat bessere Sicht als aus der Kabine.',
+    ],
+    useCases: [
+      {
+        title: 'Baustoffhandel — Paletten auf die Baustelle',
+        description: 'Ziegel, Zementpaletten, Dachziegel, Pflastersteine direkt von der Ladefläche auf die Baustelle heben. Typisch: halber Tag, 300–500€.',
+      },
+      {
+        title: 'Spedition & Container-Logistik',
+        description: 'Container, Maschinen, Gitterboxen be- und entladen. Oft 2–4h Kurzeinsätze, 250–500€ pauschal.',
+      },
+      {
+        title: 'Umzug schwerer Gegenstände',
+        description: 'Tresore, Werkstattmaschinen, Pianos, Großskulpturen oder Glasobjekte umsetzen. Typisch: halber Tag, 350–500€.',
+      },
+      {
+        title: 'Abbruch- & Entsorgungslogistik',
+        description: 'Bauschutt, Sperrgut oder Altmaterial vom Dach direkt in die Mulde heben. Oft mit Greifer-Aufsatz, 400–700€/Tag.',
+      },
+    ],
+  },
 }
 
 export function getRatgeberForCraneType(slug: string): CraneRatgeber | null {
