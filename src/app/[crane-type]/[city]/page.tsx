@@ -138,11 +138,14 @@ export default async function CraneCityPage({
         })()}
         <div>
           <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
-            {craneType.name} mieten in {city.name}
+            {craneType.name} mieten {city.name}
             {price && <span className="text-blue-600"> — ab {price.dayFrom}€/Tag</span>}
+            {companies.length > 0 && (
+              <span className="text-gray-500 font-normal"> | {companies.length} Anbieter</span>
+            )}
           </h1>
           <p className="text-[15px] text-gray-500 mb-1">
-            {companies.length} Anbieter in {city.name} und Umgebung
+            Mietpreise &amp; Bewertungen von Kranvermietern in {city.name} und Umgebung vergleichen
           </p>
           <nav className="flex items-center gap-1 text-[12px] text-gray-400 flex-wrap">
             {companies.length > 0 && <><a href="#anbieter" className="hover:text-gray-600">Anbieter</a><span>·</span></>}
