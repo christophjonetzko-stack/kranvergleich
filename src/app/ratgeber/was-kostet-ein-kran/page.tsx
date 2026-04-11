@@ -6,14 +6,14 @@ import { getSiteStats } from '@/lib/queries'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Was kostet ein Kran? Komplette Preisübersicht 2026',
+  title: 'Kran kaufen oder mieten? Break-even-Rechnung & Entscheidungshilfe 2026',
   description:
-    'Was kostet ein Kran? Minikran ab 250€/Tag, Autokran ab 500€/Tag, Baukran ab 4.000€/Monat. Alle 8 Krantypen mit Preisen — basierend auf 740+ Anbietern.',
+    'Lohnt sich der Kauf eines Krans oder ist Miete günstiger? Kaufpreise, Betriebskosten, Break-even pro Krantyp und Entscheidungshilfe — ab wann sich der Kauf rechnet.',
   alternates: { canonical: '/ratgeber/was-kostet-ein-kran' },
   openGraph: {
-    title: 'Was kostet ein Kran? Komplette Preisübersicht 2026',
+    title: 'Kran kaufen oder mieten? Break-even-Rechnung 2026',
     description:
-      'Was kostet ein Kran? Minikran ab 250€/Tag, Autokran ab 500€/Tag, Baukran ab 4.000€/Monat. Alle 8 Krantypen mit Preisen.',
+      'Lohnt sich der Kauf eines Krans oder ist Miete günstiger? Kaufpreise, Betriebskosten und Break-even pro Krantyp im Vergleich.',
     type: 'website',
     url: '/ratgeber/was-kostet-ein-kran',
   },
@@ -21,29 +21,39 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: 'Was kostet ein Kran pro Tag?',
+    question: 'Lohnt es sich, einen Autokran zu kaufen?',
     answer:
-      'Die Tagesmiete liegt je nach Krantyp zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Baukran ab 300€/Tag. Alle Preise netto zzgl. MwSt.',
+      'Der Kauf eines Autokrans lohnt sich erst ab ca. 180–220 Einsatztagen pro Jahr. Ein 50-Tonnen-Autokran kostet neu 500.000–800.000€, hinzu kommen jährlich ca. 180.000€ Betriebskosten (Kranführer-Gehalt 65.000€, Wartung 36.000€, Versicherung 9.000€, Wertverlust 48.000€, Finanzierung 24.000€). Bei weniger Einsatztagen ist Mieten (ab 500€/Tag inkl. Kranführer) deutlich günstiger.',
   },
   {
-    question: 'Ist der Kranführer im Preis enthalten?',
+    question: 'Was kostet ein gebrauchter Kran?',
     answer:
-      'Bei Autokranen, Mobilkranen und Raupenkranen ist der Kranführer immer inklusive (gesetzlich vorgeschrieben). Bei Minikranen, Dachdeckerkranen, Anhängerkranen und Ladekranen bedienen Sie den Kran nach Einweisung selbst — oder buchen einen Bediener separat (ca. 40–60€/h).',
+      'Gebrauchte Krane kosten typischerweise 30–60% des Neupreises — abhängig von Baujahr, Betriebsstunden und Zustand. Beispiele: Gebrauchter Autokran 50t (5–10 Jahre alt): 150.000–300.000€. Gebrauchter Minikran: 25.000–120.000€. Gebrauchter Baukran: 50.000–400.000€. Beachten Sie: Bei älteren Kranen steigen die Wartungskosten, und die TÜV-Abnahme kann aufwendiger werden.',
   },
   {
-    question: 'Welcher Kran ist am günstigsten?',
+    question: 'Wie lange dauert es, bis sich der Kauf eines Krans amortisiert?',
     answer:
-      'Der Anhängerkran ist mit 150–350€/Tag der günstigste Krantyp. Er eignet sich für leichte Lasten bis 1.500 kg und kann mit einer PKW-Anhängerkupplung transportiert werden. Für etwas schwerere Lasten ist der Dachdeckerkran ab 200€/Tag eine gute Alternative.',
+      'Die Amortisationszeit hängt von der jährlichen Auslastung ab. Faustregel: Bei 150+ Einsatztagen/Jahr amortisiert sich ein Kran in 5–7 Jahren. Bei 80–120 Tagen dauert es 10–15 Jahre — oft länger als die wirtschaftliche Nutzungsdauer. Bei weniger als 80 Tagen pro Jahr rentiert sich der Kauf praktisch nie.',
   },
   {
-    question: 'Was kostet ein Kran für einen Hausbau?',
+    question: 'Kann ich einen Kran leasen statt kaufen?',
     answer:
-      'Für einen Hausbau wird typischerweise ein Baukran (Turmdrehkran) eingesetzt: 4.000–10.000€/Monat zzgl. 3.000–8.000€ Montage/Demontage. Bei einer Bauzeit von 6 Monaten rechnen Sie mit Gesamtkosten von 27.000–68.000€. Alternativ: punktuelle Autokran-Einsätze ab 500€/Tag.',
+      'Ja, Leasing ist eine gängige Alternative. Beim Finanzierungsleasing zahlen Sie monatliche Raten (ca. 1,5–2,5% des Kaufpreises) über 48–72 Monate und übernehmen am Ende den Restwert. Beim Operating Leasing geben Sie den Kran nach der Laufzeit zurück — ideal, wenn Sie immer aktuelle Technik wollen. Leasing ist steuerlich attraktiv (Raten sind Betriebsausgaben), bindet aber weniger Kapital als Kauf.',
+  },
+  {
+    question: 'Was kostet ein Baukran zum Kauf?',
+    answer:
+      'Ein Baukran (Turmdrehkran) kostet neu zwischen 150.000€ (kleiner Schnellmontagekran) und 800.000€ (großer Obendreher mit 60m+ Hakenhöhe). Gebrauchte Baukrane: 50.000–400.000€. Hinzu kommen Kosten für Montage/Demontage (3.000–8.000€ pro Einsatz), Transport, Lagerung zwischen Projekten und regelmäßige Hauptuntersuchung. Baukrane werden meist von größeren Bauunternehmen gekauft — kleine und mittlere Betriebe mieten fast immer.',
+  },
+  {
+    question: 'Warum mieten die meisten Unternehmen statt zu kaufen?',
+    answer:
+      'Über 80% der Krannutzer in Deutschland mieten — aus mehreren Gründen: (1) Keine Kapitalbindung (500.000€ für einen Autokran bindet liquide Mittel), (2) Flexibilität beim Krantyp je nach Projekt, (3) Wartung, TÜV und Kranführer sind inklusive, (4) Steuerlich sofort als Betriebsausgabe absetzbar, (5) Kein Risiko durch Stillstand bei Auftragslücken. Kauf lohnt sich erst bei kontinuierlich hoher Auslastung in größeren Unternehmen.',
   },
 ]
 
 export default async function WasKostetEinKranPage() {
-  const { anbieterCount, staedteCount } = await getSiteStats()
+  const { anbieterCount } = await getSiteStats()
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -53,314 +63,402 @@ export default async function WasKostetEinKranPage() {
         <span className="mx-1.5">/</span>
         <Link href="/ratgeber" className="hover:text-gray-600">Ratgeber</Link>
         <span className="mx-1.5">/</span>
-        <span className="text-gray-900">Was kostet ein Kran?</span>
+        <span className="text-gray-900">Kran kaufen oder mieten?</span>
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Was kostet ein Kran? Komplette Preisübersicht 2026
+        Kran kaufen oder mieten? Break-even-Rechnung &amp; Entscheidungshilfe 2026
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
-        Ein Kran kostet zwischen <strong className="text-gray-900">150€ und 5.000€ pro Tag</strong> —
-        je nach Krantyp, Tragkraft und Mietdauer. In dieser Übersicht finden Sie die aktuellen Mietpreise
-        für alle 8 Krantypen in Deutschland, basierend auf {anbieterCount}+ Anbietern.
+        Ein Kran kostet beim Kauf zwischen <strong className="text-gray-900">25.000€</strong> (Anhängerkran)
+        und <strong className="text-gray-900">5.000.000€</strong> (Schwerlast-Raupenkran) — und dann kommen
+        jährlich noch einmal 15–30% des Kaufpreises für Wartung, Versicherung, Kranführer und Wertverlust
+        hinzu. Wir rechnen vor, ab wie vielen Einsatztagen pro Jahr sich der Kauf gegenüber der Miete rechnet.
       </p>
+      <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+        <p className="text-[13px] text-gray-700">
+          <strong className="text-gray-900">Kurz gesagt:</strong> Bei kleinen Kranen (Anhängerkran, Minikran)
+          lohnt sich der Kauf ab ca. 40–80 Einsatztagen/Jahr. Bei mittleren (Autokran 30–80t) erst ab
+          150–220 Tagen. Bei Schwerlastkranen (Mobil-/Raupenkran) fast nie — diese werden praktisch immer
+          gemietet oder über Leasing finanziert.
+        </p>
+      </div>
       <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026 | Alle Preise netto zzgl. MwSt.</p>
 
       {/* TOC */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
         <ul className="flex flex-col gap-1">
-          <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle: Alle 8 Krantypen im Vergleich</a></li>
-          <li><a href="#minikran" className="text-[13px] text-blue-600 hover:underline">Minikran Kosten</a></li>
-          <li><a href="#autokran" className="text-[13px] text-blue-600 hover:underline">Autokran Kosten</a></li>
-          <li><a href="#baukran" className="text-[13px] text-blue-600 hover:underline">Baukran Kosten</a></li>
-          <li><a href="#weitere-krantypen" className="text-[13px] text-blue-600 hover:underline">Weitere Krantypen</a></li>
-          <li><a href="#preisfaktoren" className="text-[13px] text-blue-600 hover:underline">Welche Faktoren beeinflussen den Preis?</a></li>
-          <li><a href="#sparen" className="text-[13px] text-blue-600 hover:underline">Wie kann ich bei der Kranmiete sparen?</a></li>
+          <li><a href="#kaufpreise" className="text-[13px] text-blue-600 hover:underline">Was kostet ein Kran zum Kauf?</a></li>
+          <li><a href="#laufende-kosten" className="text-[13px] text-blue-600 hover:underline">Versteckte Kosten beim Kranbesitz</a></li>
+          <li><a href="#break-even" className="text-[13px] text-blue-600 hover:underline">Break-even: Ab wann lohnt sich der Kauf?</a></li>
+          <li><a href="#entscheidung" className="text-[13px] text-blue-600 hover:underline">Entscheidungsmatrix: kaufen oder mieten?</a></li>
+          <li><a href="#alternativen" className="text-[13px] text-blue-600 hover:underline">Alternativen: Leasing, Langzeitmiete, Mietkauf</a></li>
+          <li><a href="#miete-vorteile" className="text-[13px] text-blue-600 hover:underline">Vorteile der Miete im Überblick</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen</a></li>
         </ul>
       </nav>
 
       <div className="space-y-10 text-[14px] text-gray-600 leading-relaxed">
 
-        {/* Big comparison table */}
-        <section id="preistabelle" className="scroll-mt-20">
+        {/* Kaufpreise */}
+        <section id="kaufpreise" className="scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            Preistabelle: Alle 8 Krantypen im Vergleich
+            Was kostet ein Kran zum Kauf? Anschaffungspreise 2026
           </h2>
           <p className="mb-4">
-            Die folgende Tabelle zeigt die Mietpreise aller gängigen Krantypen in Deutschland —
-            sortiert nach Tagespreis.
+            Die Anschaffungskosten für einen Kran hängen stark von Typ, Tragkraft und Hersteller ab.
+            Die folgenden Preise beziehen sich auf <strong className="text-gray-900">Neukrane</strong> —
+            gebrauchte Modelle kosten typischerweise 30–60% davon.
           </p>
           <div className="overflow-x-auto border border-gray-200 rounded-lg">
             <table className="w-full text-[13px]">
               <thead>
                 <tr className="bg-gray-50">
                   <th className="py-3 px-4 text-left font-medium text-gray-900">Krantyp</th>
-                  <th className="py-3 px-4 text-left font-medium text-gray-900">Tag</th>
-                  <th className="py-3 px-4 text-left font-medium text-gray-900">Woche</th>
-                  <th className="py-3 px-4 text-left font-medium text-gray-900">Monat</th>
-                  <th className="py-3 px-4 text-left font-medium text-gray-900">Kranführer</th>
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Neupreis</th>
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Gebraucht</th>
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Typische Käufer</th>
                 </tr>
               </thead>
               <tbody className="text-gray-600">
                 <tr className="border-t">
-                  <td className="py-3 px-4"><Link href="/anhaengerkran-mieten" className="text-blue-600 hover:underline">Anhängerkran</Link></td>
-                  <td className="py-3 px-4">150–350€</td>
-                  <td className="py-3 px-4">700–1.800€</td>
-                  <td className="py-3 px-4">2.000–5.000€</td>
-                  <td className="py-3 px-4">ohne</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Anhängerkran</td>
+                  <td className="py-3 px-4 whitespace-nowrap">25.000–80.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">10.000–40.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Dachdecker-Kleinbetriebe, Garten- &amp; Landschaftsbau</td>
                 </tr>
                 <tr className="border-t bg-gray-50">
-                  <td className="py-3 px-4"><Link href="/dachdeckerkran-mieten" className="text-blue-600 hover:underline">Dachdeckerkran</Link></td>
-                  <td className="py-3 px-4">200–450€</td>
-                  <td className="py-3 px-4">1.000–2.500€</td>
-                  <td className="py-3 px-4">3.000–7.000€</td>
-                  <td className="py-3 px-4">ohne</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Minikran</td>
+                  <td className="py-3 px-4 whitespace-nowrap">50.000–300.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">25.000–120.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Glasmontagebetriebe, Innenausbau-Spezialisten</td>
                 </tr>
                 <tr className="border-t">
-                  <td className="py-3 px-4"><Link href="/minikran-mieten" className="text-blue-600 hover:underline">Minikran</Link></td>
-                  <td className="py-3 px-4">250–500€</td>
-                  <td className="py-3 px-4">1.200–2.800€</td>
-                  <td className="py-3 px-4">3.500–8.000€</td>
-                  <td className="py-3 px-4">ohne</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Dachdeckerkran</td>
+                  <td className="py-3 px-4 whitespace-nowrap">80.000–200.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">35.000–90.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Dachdeckerbetriebe mit hoher Auslastung</td>
                 </tr>
                 <tr className="border-t bg-gray-50">
-                  <td className="py-3 px-4"><Link href="/baukran-mieten" className="text-blue-600 hover:underline">Baukran</Link></td>
-                  <td className="py-3 px-4">300–1.500€</td>
-                  <td className="py-3 px-4">1.500–8.000€</td>
-                  <td className="py-3 px-4">4.000–25.000€</td>
-                  <td className="py-3 px-4">ohne*</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Ladekran (auf LKW)</td>
+                  <td className="py-3 px-4 whitespace-nowrap">60.000–250.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">25.000–120.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Speditionen, Baustoffhändler, Logistikdienstleister</td>
                 </tr>
                 <tr className="border-t">
-                  <td className="py-3 px-4"><Link href="/ladekran-mieten" className="text-blue-600 hover:underline">Ladekran</Link></td>
-                  <td className="py-3 px-4">300–800€</td>
-                  <td className="py-3 px-4">1.500–4.000€</td>
-                  <td className="py-3 px-4">4.000–12.000€</td>
-                  <td className="py-3 px-4">ohne</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Autokran 30–80t</td>
+                  <td className="py-3 px-4 whitespace-nowrap">400.000–1.500.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">150.000–700.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Spezialisierte Kranvermietungen</td>
                 </tr>
                 <tr className="border-t bg-gray-50">
-                  <td className="py-3 px-4"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link></td>
-                  <td className="py-3 px-4">500–2.000€</td>
-                  <td className="py-3 px-4">2.500–10.000€</td>
-                  <td className="py-3 px-4">8.000–35.000€</td>
-                  <td className="py-3 px-4">inklusive</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Baukran (Turmdrehkran)</td>
+                  <td className="py-3 px-4 whitespace-nowrap">150.000–800.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">50.000–400.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Große Bauunternehmen mit Dauerauslastung</td>
                 </tr>
                 <tr className="border-t">
-                  <td className="py-3 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
-                  <td className="py-3 px-4">600–3.000€</td>
-                  <td className="py-3 px-4">3.000–15.000€</td>
-                  <td className="py-3 px-4">10.000–50.000€</td>
-                  <td className="py-3 px-4">inklusive</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Mobilkran 100–500t</td>
+                  <td className="py-3 px-4 whitespace-nowrap">1.500.000–4.000.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">500.000–1.800.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Reine Kranvermieter, Großunternehmen</td>
                 </tr>
                 <tr className="border-t bg-gray-50">
-                  <td className="py-3 px-4"><Link href="/raupenkran-mieten" className="text-blue-600 hover:underline">Raupenkran</Link></td>
-                  <td className="py-3 px-4">800–5.000€</td>
-                  <td className="py-3 px-4">4.000–25.000€</td>
-                  <td className="py-3 px-4">12.000–80.000€</td>
-                  <td className="py-3 px-4">inklusive</td>
+                  <td className="py-3 px-4 font-medium text-gray-900">Raupenkran 100–500t</td>
+                  <td className="py-3 px-4 whitespace-nowrap">1.000.000–5.000.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">400.000–2.500.000€</td>
+                  <td className="py-3 px-4 text-gray-500">Windkraft-Errichter, Schwerlast-Spezialisten</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p className="text-[11px] text-gray-400 mt-2">
-            * Baukran: zzgl. 3.000–8.000€ Montage/Demontage. Alle Preise netto, unverbindliche Richtwerte.
+            Neupreise für Hersteller wie Liebherr, Terex, Manitowoc, Palfinger, Böcker, Klaas, Jekko.
+            Gebrauchtpreise variieren stark mit Baujahr, Betriebsstunden und Zustand.
           </p>
         </section>
 
-        {/* Minikran */}
-        <section id="minikran" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Was kostet ein Minikran?</h2>
-          <p className="mb-3">
-            Ein Minikran kostet <strong className="text-gray-900">250–500€ pro Tag</strong> ohne Bediener.
-            Er eignet sich für enge Baustellen, Innenräume und Glasmontage. Tragkraft: 500 kg bis 3 t.
-            Der Minikran wird ohne Kranführer vermietet — Sie bedienen ihn nach Einweisung selbst.
+        {/* Laufende Kosten */}
+        <section id="laufende-kosten" className="scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Versteckte Kosten beim Kranbesitz</h2>
+          <p className="mb-4">
+            Der Kaufpreis ist nur die halbe Wahrheit. Wer einen Kran kauft, zahlt jedes Jahr zusätzlich
+            zwischen <strong className="text-gray-900">15% und 30% des Anschaffungspreises</strong> an
+            laufenden Kosten — bei einem 600.000€ Autokran sind das 90.000–180.000€ pro Jahr, bevor
+            der Kran einen einzigen Handgriff getan hat.
           </p>
-          <div className="grid grid-cols-3 gap-2 text-[12px] mb-3">
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Tag</span>
-              <p className="font-medium text-gray-900">250–500€</p>
-            </div>
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Woche</span>
-              <p className="font-medium text-gray-900">1.200–2.800€</p>
-            </div>
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Monat</span>
-              <p className="font-medium text-gray-900">3.500–8.000€</p>
-            </div>
-          </div>
-          <Link href="/minikran-mieten" className="text-[13px] text-blue-600 hover:underline">
-            Minikran-Anbieter vergleichen &rarr;
-          </Link>
-        </section>
-
-        {/* Autokran */}
-        <section id="autokran" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Was kostet ein Autokran?</h2>
-          <p className="mb-3">
-            Ein Autokran kostet <strong className="text-gray-900">500–2.000€ pro Tag</strong> inklusive Kranführer.
-            Der Preis hängt von der Tragkraft ab: kleine Autokrane (30 t) ab 500€/Tag, große Modelle
-            (250 t+) ab 1.500€/Tag. Autokrane sind ideal für kurzfristige Hebearbeiten von 1–3 Tagen.
-          </p>
-          <div className="grid grid-cols-3 gap-2 text-[12px] mb-3">
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Tag</span>
-              <p className="font-medium text-gray-900">500–2.000€</p>
-            </div>
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Woche</span>
-              <p className="font-medium text-gray-900">2.500–10.000€</p>
-            </div>
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Monat</span>
-              <p className="font-medium text-gray-900">8.000–35.000€</p>
-            </div>
-          </div>
-          <Link href="/autokran-mieten#ratgeber" className="text-[13px] text-blue-600 hover:underline">
-            Autokran Kosten im Detail &rarr;
-          </Link>
-        </section>
-
-        {/* Baukran */}
-        <section id="baukran" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Was kostet ein Baukran?</h2>
-          <p className="mb-3">
-            Ein Baukran (Turmdrehkran) kostet <strong className="text-gray-900">4.000–25.000€ pro Monat</strong> zzgl.
-            3.000–8.000€ Montage/Demontage. Baukrane werden typischerweise für mehrere Monate gemietet und
-            lohnen sich ab einer Bauzeit von 3 Monaten. Der Bediener wird separat gebucht.
-          </p>
-          <div className="grid grid-cols-3 gap-2 text-[12px] mb-3">
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Tag</span>
-              <p className="font-medium text-gray-900">300–1.500€</p>
-            </div>
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Woche</span>
-              <p className="font-medium text-gray-900">1.500–8.000€</p>
-            </div>
-            <div className="bg-gray-50 rounded p-3 text-center">
-              <span className="text-gray-400">Monat</span>
-              <p className="font-medium text-gray-900">4.000–25.000€</p>
-            </div>
-          </div>
-          <Link href="/baukran-mieten#ratgeber" className="text-[13px] text-blue-600 hover:underline">
-            Baukran Kosten im Detail &rarr;
-          </Link>
-        </section>
-
-        {/* Weitere Krantypen */}
-        <section id="weitere-krantypen" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Weitere Krantypen und ihre Kosten</h2>
           <div className="space-y-3">
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Dachdeckerkran — 200–450€/Tag</p>
-              <p className="text-[13px] text-gray-500">Kompakter Kran für Dacharbeiten. Hakenhöhe bis 30 m, ohne Bediener. Ideal für Dachsanierung und Solaranlagen.</p>
-              <Link href="/dachdeckerkran-mieten" className="text-[13px] text-blue-600 hover:underline mt-1 inline-block">Dachdeckerkran-Anbieter &rarr;</Link>
+              <p className="font-medium text-gray-900 mb-1">Wartung &amp; Inspektionen — 5–8% pro Jahr</p>
+              <p className="text-[13px] text-gray-500">
+                Regelmäßige Wartung durch den Hersteller, Verschleißteile (Seile, Bremsen, Hydraulik),
+                Ölwechsel. Bei älteren Kranen steigt dieser Posten deutlich.
+              </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Raupenkran — 800–5.000€/Tag</p>
-              <p className="text-[13px] text-gray-500">Schwerlastkran für Lasten bis 3.000 t. Inkl. Kranführer. Einsatz auf unbefestigtem Untergrund möglich.</p>
-              <Link href="/raupenkran-mieten" className="text-[13px] text-blue-600 hover:underline mt-1 inline-block">Raupenkran-Anbieter &rarr;</Link>
+              <p className="font-medium text-gray-900 mb-1">Versicherung — 1–2% pro Jahr</p>
+              <p className="text-[13px] text-gray-500">
+                Maschinenbruchversicherung, Haftpflicht, Transportversicherung. Bei einem 600.000€
+                Autokran: 6.000–12.000€ jährlich.
+              </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Mobilkran — 600–3.000€/Tag</p>
-              <p className="text-[13px] text-gray-500">Flexibler Schwerlastkran, sofort einsatzbereit. Inkl. Kranführer. Tragkraft 20–1.200 t.</p>
-              <Link href="/mobilkran-mieten" className="text-[13px] text-blue-600 hover:underline mt-1 inline-block">Mobilkran-Anbieter &rarr;</Link>
+              <p className="font-medium text-gray-900 mb-1">Kranführer-Gehalt — 60.000–80.000€ brutto/Jahr</p>
+              <p className="text-[13px] text-gray-500">
+                Bei Auto-, Mobil- und Raupenkranen gesetzlich vorgeschrieben (kein Einsatz ohne Bediener).
+                Inkl. Sozialversicherung, Weiterbildung und Urlaubsersatz kalkulieren die meisten
+                Betriebe 75.000–95.000€ pro Kranführer und Jahr.
+              </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Ladekran — 300–800€/Tag</p>
-              <p className="text-[13px] text-gray-500">Auf dem LKW montierter Kran. Ohne Bediener. Tragkraft 1–30 t, ideal zum Be- und Entladen.</p>
-              <Link href="/ladekran-mieten" className="text-[13px] text-blue-600 hover:underline mt-1 inline-block">Ladekran-Anbieter &rarr;</Link>
+              <p className="font-medium text-gray-900 mb-1">Wertverlust (Abschreibung) — 6–10% pro Jahr</p>
+              <p className="text-[13px] text-gray-500">
+                Im ersten Jahr 10–15%, danach ca. 6–8% pro Jahr. Über 10 Jahre verliert ein Kran
+                rund 50–60% seines Neuwerts.
+              </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Anhängerkran — 150–350€/Tag</p>
-              <p className="text-[13px] text-gray-500">Günstigste Option. Mit PKW-Anhängerkupplung transportierbar. Tragkraft bis 1.500 kg.</p>
-              <Link href="/anhaengerkran-mieten" className="text-[13px] text-blue-600 hover:underline mt-1 inline-block">Anhängerkran-Anbieter &rarr;</Link>
+              <p className="font-medium text-gray-900 mb-1">Finanzierung / Kapitalbindung — 3–5% pro Jahr</p>
+              <p className="text-[13px] text-gray-500">
+                Zinsen auf Kredite oder entgangene Rendite auf gebundenes Eigenkapital. Bei
+                500.000€ Kaufpreis: 15.000–25.000€ pro Jahr Opportunitätskosten.
+              </p>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-1">TÜV, Prüfungen, Zertifikate — 500–3.000€ pro Jahr</p>
+              <p className="text-[13px] text-gray-500">
+                Jährliche Hauptuntersuchung nach BetrSichV, Kranprüfungen, Sachverständigen-Gutachten,
+                Dokumentation. Bei Schwerlastkranen entsprechend höher.
+              </p>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-1">Lagerung, Transport &amp; Standzeiten</p>
+              <p className="text-[13px] text-gray-500">
+                Stellplatz oder Halle zwischen Einsätzen, Transporte zwischen Baustellen, Stillstand
+                bei schlechtem Wetter oder Auftragslücken. Schwer zu beziffern, aber real.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Preisfaktoren */}
-        <section id="preisfaktoren" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Welche Faktoren beeinflussen den Preis?</h2>
+        {/* Break-even */}
+        <section id="break-even" className="scroll-mt-20 border border-gray-200 rounded-lg p-5 bg-gray-50/50">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Break-even: Ab wann lohnt sich der Kauf eines Krans?
+          </h2>
+          <p className="mb-4">
+            Der Break-even-Punkt ist die Anzahl der Einsatztage pro Jahr, ab der die Kaufkosten
+            (Anschaffung + jährliche Fixkosten) günstiger sind als die entsprechende Miete.
+            Faustformel:
+          </p>
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-5 font-mono text-[13px] text-gray-700">
+            Break-even-Tage/Jahr = (Jährliche Fixkosten) ÷ (Mietpreis pro Tag − variable Eigenkosten)
+          </div>
+          <p className="mb-4">
+            Hier die Richtwerte pro Krantyp — kalkuliert mit Standardauslastung, Finanzierung über
+            8 Jahre und Mietpreisen aus <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">unserer Preisliste</Link>:
+          </p>
+          <div className="overflow-x-auto border border-gray-200 rounded-lg">
+            <table className="w-full text-[13px] bg-white">
+              <thead>
+                <tr className="bg-gray-50">
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Krantyp</th>
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Fixkosten/Jahr</th>
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Mietpreis/Tag</th>
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Break-even</th>
+                  <th className="py-3 px-4 text-left font-medium text-gray-900">Kauf lohnt sich?</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600">
+                <tr className="border-t">
+                  <td className="py-3 px-4 font-medium text-gray-900">Anhängerkran</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~8.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">200€</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 40 Tage</td>
+                  <td className="py-3 px-4 text-green-600">bei Dachdeckerbetrieben sinnvoll</td>
+                </tr>
+                <tr className="border-t bg-gray-50">
+                  <td className="py-3 px-4 font-medium text-gray-900">Minikran</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~22.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">350€</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 65 Tage</td>
+                  <td className="py-3 px-4 text-green-600">bei Glasmontagebetrieben oft rentabel</td>
+                </tr>
+                <tr className="border-t">
+                  <td className="py-3 px-4 font-medium text-gray-900">Dachdeckerkran</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~20.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">300€</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 70 Tage</td>
+                  <td className="py-3 px-4 text-green-600">ja, bei Dachdeckerbetrieben ab mittlerer Größe</td>
+                </tr>
+                <tr className="border-t bg-gray-50">
+                  <td className="py-3 px-4 font-medium text-gray-900">Ladekran (mit LKW)</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~35.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">500€</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 80 Tage</td>
+                  <td className="py-3 px-4 text-green-600">für Speditionen ab Eigenauslastung rentabel</td>
+                </tr>
+                <tr className="border-t">
+                  <td className="py-3 px-4 font-medium text-gray-900">Autokran 30–50t</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~150.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">800€</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 200 Tage</td>
+                  <td className="py-3 px-4 text-amber-600">nur bei reinen Kranvermietern</td>
+                </tr>
+                <tr className="border-t bg-gray-50">
+                  <td className="py-3 px-4 font-medium text-gray-900">Autokran 80–120t</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~200.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">1.300€</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 180 Tage</td>
+                  <td className="py-3 px-4 text-amber-600">nur bei reinen Kranvermietern</td>
+                </tr>
+                <tr className="border-t">
+                  <td className="py-3 px-4 font-medium text-gray-900">Baukran (mittel)</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~50.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">8.000€/Monat</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 6 Monate/Jahr</td>
+                  <td className="py-3 px-4 text-amber-600">nur für große Bauunternehmen</td>
+                </tr>
+                <tr className="border-t bg-gray-50">
+                  <td className="py-3 px-4 font-medium text-gray-900">Mobilkran 250t+</td>
+                  <td className="py-3 px-4 whitespace-nowrap">~400.000€</td>
+                  <td className="py-3 px-4 whitespace-nowrap">2.800€</td>
+                  <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 230 Tage</td>
+                  <td className="py-3 px-4 text-red-600">praktisch nie — immer mieten</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-[11px] text-gray-400 mt-3">
+            Die Zahlen sind Richtwerte. Der tatsächliche Break-even hängt von Finanzierungsart, regionalen
+            Mietpreisen, Wartungsaufwand und möglichen Mieterträgen durch Untervermietung ab.
+          </p>
+        </section>
+
+        {/* Entscheidungsmatrix */}
+        <section id="entscheidung" className="scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Entscheidungsmatrix: Kaufen oder mieten?
+          </h2>
+          <p className="mb-4">
+            Die reine Break-even-Rechnung ist nur die halbe Miete. Auch strategische Faktoren zählen:
+            Kapitalbindung, Flexibilität, Verfügbarkeit und Risiko. Hier die wichtigsten Entscheidungskriterien:
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="border border-green-200 bg-green-50 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-2">✓ Kauf lohnt sich, wenn…</p>
+              <ul className="text-[13px] text-gray-600 space-y-1.5">
+                <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Auslastung über 150–220 Einsatztagen pro Jahr (je nach Krantyp)</li>
+                <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Stabiler Auftragsbestand über 5+ Jahre</li>
+                <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Eigener, ausgebildeter Kranführer vorhanden</li>
+                <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Möglichkeit, den Kran an Dritte zu vermieten (Mieteinnahmen gegenrechnen)</li>
+                <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Kranbetrieb ist Kerngeschäft (z. B. Dachdecker mit Dachdeckerkran)</li>
+                <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Ausreichend Kapital verfügbar, das nicht anderweitig benötigt wird</li>
+              </ul>
+            </div>
+            <div className="border border-amber-200 bg-amber-50 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-2">↻ Miete lohnt sich, wenn…</p>
+              <ul className="text-[13px] text-gray-600 space-y-1.5">
+                <li className="flex gap-2"><span className="text-amber-600 shrink-0">•</span> Einzel- oder Projektgeschäft mit wechselndem Bedarf</li>
+                <li className="flex gap-2"><span className="text-amber-600 shrink-0">•</span> Unterschiedliche Krantypen werden benötigt (Flexibilität)</li>
+                <li className="flex gap-2"><span className="text-amber-600 shrink-0">•</span> Weniger als 100–150 Einsatztage pro Jahr</li>
+                <li className="flex gap-2"><span className="text-amber-600 shrink-0">•</span> Kapital für Wachstum oder andere Investitionen benötigt</li>
+                <li className="flex gap-2"><span className="text-amber-600 shrink-0">•</span> Kein eigenes Fachpersonal (Kranführer, Wartung)</li>
+                <li className="flex gap-2"><span className="text-amber-600 shrink-0">•</span> Immer aktuelle Technik gewünscht (keine Wertverlust-Sorgen)</li>
+                <li className="flex gap-2"><span className="text-amber-600 shrink-0">•</span> Start-up oder KMU ohne Investitionsbudget</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Alternativen */}
+        <section id="alternativen" className="scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Alternativen zum Kauf: Leasing, Langzeitmiete, Mietkauf
+          </h2>
+          <p className="mb-4">
+            Zwischen Kauf und Tagesmiete gibt es weitere Modelle, die je nach Situation die bessere
+            Wahl sein können:
+          </p>
           <div className="space-y-3">
-            <div className="flex gap-3">
-              <span className="text-gray-400 shrink-0 font-medium">1.</span>
-              <div>
-                <p className="font-medium text-gray-900">Mietdauer</p>
-                <p className="text-[13px] text-gray-500">Längere Miete = niedrigerer Tagespreis. Wochenpreise sind 20–40% günstiger pro Tag als Tagespreise.</p>
-              </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-1">Finanzierungsleasing</p>
+              <p className="text-[13px] text-gray-500">
+                Monatliche Raten über 48–72 Monate (ca. 1,5–2,5% des Kaufpreises/Monat). Am Ende
+                übernehmen Sie den Restwert und werden Eigentümer. Leasingraten sind sofort als
+                Betriebsausgabe absetzbar — steuerlich oft attraktiver als Abschreibung.
+              </p>
             </div>
-            <div className="flex gap-3">
-              <span className="text-gray-400 shrink-0 font-medium">2.</span>
-              <div>
-                <p className="font-medium text-gray-900">Region</p>
-                <p className="text-[13px] text-gray-500">In Ballungsräumen (München, Hamburg, Frankfurt) sind die Preise 10–20% höher als in ländlichen Gebieten.</p>
-              </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-1">Operating Leasing</p>
+              <p className="text-[13px] text-gray-500">
+                Sie nutzen den Kran über 3–5 Jahre und geben ihn danach zurück. Kein Restwert-Risiko,
+                immer aktuelle Technik, keine Kapitalbindung. Monatliche Kosten liegen höher als beim
+                Finanzierungsleasing, dafür ohne Übernahmeverpflichtung.
+              </p>
             </div>
-            <div className="flex gap-3">
-              <span className="text-gray-400 shrink-0 font-medium">3.</span>
-              <div>
-                <p className="font-medium text-gray-900">Saison</p>
-                <p className="text-[13px] text-gray-500">März bis Oktober ist Hochsaison. In der Nebensaison sind Rabatte von 10–15% möglich.</p>
-              </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-1">Langzeitmiete (6–24 Monate)</p>
+              <p className="text-[13px] text-gray-500">
+                Klassische Miete, aber mit deutlichem Rabatt bei langen Laufzeiten. Bei Baukranen der
+                Standard-Weg. Wartung, Versicherung und Austausch bei Defekt sind Sache des Vermieters.
+                Ideal bei einem konkreten Großprojekt mit planbarer Laufzeit.
+              </p>
             </div>
-            <div className="flex gap-3">
-              <span className="text-gray-400 shrink-0 font-medium">4.</span>
-              <div>
-                <p className="font-medium text-gray-900">Transport</p>
-                <p className="text-[13px] text-gray-500">An- und Abfahrt kosten je nach Entfernung 150–500€. Bei Schwerlastkranen deutlich mehr.</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-gray-400 shrink-0 font-medium">5.</span>
-              <div>
-                <p className="font-medium text-gray-900">Genehmigungen</p>
-                <p className="text-[13px] text-gray-500">Straßensperrung, Halteverbot und Sondernutzungserlaubnis kosten zusätzlich 100–500€.</p>
-              </div>
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="font-medium text-gray-900 mb-1">Mietkauf</p>
+              <p className="text-[13px] text-gray-500">
+                Sie mieten den Kran über einen festgelegten Zeitraum und ein Teil der Mietzahlungen
+                wird beim späteren Kauf angerechnet. Gibt Ihnen Flexibilität, den Kauf aufzuschieben,
+                bis Sie die Auslastung real kennen. Verfügbar bei einigen großen Kranvermietern.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Sparen */}
-        <section id="sparen" className="scroll-mt-20 border border-gray-200 rounded-lg p-5">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Wie kann ich bei der Kranmiete sparen?</h2>
-          <ul className="space-y-2 text-[13px]">
-            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> <strong className="text-gray-900">Mehrere Angebote vergleichen:</strong> Preisunterschiede von 30–50% sind üblich. Nutzen Sie unsere <Link href="/" className="text-blue-600 hover:underline">kostenlose Sammelanfrage</Link>.</li>
-            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> <strong className="text-gray-900">Wochenpreis statt Tagespreis:</strong> Ab 3 Tagen lohnt sich fast immer der Wochenpreis.</li>
-            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> <strong className="text-gray-900">Passenden Krantyp wählen:</strong> Ein zu großer Kran kostet unnötig viel. Lassen Sie sich beraten.</li>
-            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> <strong className="text-gray-900">Frühzeitig buchen:</strong> 2–4 Wochen Vorlauf spart Eilzuschläge.</li>
-            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> <strong className="text-gray-900">Einsatz gut planen:</strong> Wartezeiten vermeiden — jede Stunde zählt beim Autokran.</li>
-            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> <strong className="text-gray-900">Nebensaison nutzen:</strong> November bis Februar bieten bessere Verfügbarkeit und Preise.</li>
-          </ul>
+        {/* Miete Vorteile */}
+        <section id="miete-vorteile" className="scroll-mt-20 border border-gray-200 rounded-lg p-5">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Warum über 80% der Nutzer mieten statt kaufen
+          </h2>
+          <p className="mb-4">
+            Der deutsche Kranmarkt wird klar von der Miete dominiert — aus guten Gründen:
+          </p>
+          <div className="grid gap-2 sm:grid-cols-2 text-[13px]">
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Keine Kapitalbindung</strong> — 500.000€ bleiben frei für andere Investitionen</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Keine Wartungsaufgaben</strong> — Wartung, TÜV und Reparaturen sind Sache des Vermieters</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Flexibilität beim Krantyp</strong> — für jedes Projekt der passende Kran</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Kranführer inklusive</strong> — kein Einstellungs- und Gehaltsrisiko</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Sofort abzugsfähig</strong> — Miete ist Betriebsausgabe, keine Abschreibung nötig</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Kein Wertverlust-Risiko</strong> — kein Kopfzerbrechen beim Wiederverkauf</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Skalierbar</strong> — bei Auftragslücken entstehen keine Fixkosten</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Immer aktuell</strong> — Sie nutzen neueste Modelle mit modernster Sicherheitstechnik</span></div>
+          </div>
           <div className="mt-4">
-            <Link href="/kostenrechner" className="text-[13px] text-blue-600 hover:underline">
-              Krankosten berechnen mit unserem Kostenrechner &rarr;
+            <Link href="/kran-mieten-preise" className="text-[13px] text-blue-600 hover:underline">
+              Alle aktuellen Mietpreise im Überblick &rarr;
             </Link>
           </div>
         </section>
 
       </div>
 
-      {/* Anbieter finden */}
+      {/* Anbieter finden CTA */}
       <section className="mt-10 bg-blue-50 border border-blue-100 rounded-lg p-6 text-center">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
-          Anbieter finden &amp; Preise vergleichen
+          Miete ist für Sie die bessere Wahl?
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-xl mx-auto">
-          Vergleichen Sie jetzt {anbieterCount}+ Kranvermieter in {staedteCount}+ Städten.
-          Kostenlos Angebote einholen und den besten Preis für Ihr Projekt finden.
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in Deutschland und holen Sie kostenlos
+          Angebote ein — ohne Kaufrisiko, ohne Kapitalbindung, mit Kranführer und voller Wartung.
         </p>
         <div className="flex flex-wrap justify-center gap-2 mb-5">
-          <Link href="/minikran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Minikran</Link>
-          <Link href="/autokran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Autokran</Link>
-          <Link href="/baukran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Baukran</Link>
-          <Link href="/dachdeckerkran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Dachdeckerkran</Link>
-          <Link href="/mobilkran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Mobilkran</Link>
-          <Link href="/raupenkran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Raupenkran</Link>
-          <Link href="/ladekran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Ladekran</Link>
-          <Link href="/anhaengerkran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Anhängerkran</Link>
+          <Link href="/minikran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Minikran mieten</Link>
+          <Link href="/autokran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Autokran mieten</Link>
+          <Link href="/baukran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Baukran mieten</Link>
+          <Link href="/mobilkran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Mobilkran mieten</Link>
+          <Link href="/dachdeckerkran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Dachdeckerkran mieten</Link>
         </div>
         <Link
           href="/"
@@ -368,17 +466,17 @@ export default async function WasKostetEinKranPage() {
         >
           Jetzt {anbieterCount}+ Anbieter vergleichen
         </Link>
-        <p className="text-[12px] text-gray-400 mt-3">Kostenlos & unverbindlich.</p>
+        <p className="text-[12px] text-gray-400 mt-3">Kostenlos &amp; unverbindlich.</p>
       </section>
 
       {/* Weiterführende Artikel */}
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">Weiterführende Ratgeber</h2>
         <div className="flex flex-wrap gap-2">
+          <Link href="/kran-mieten-preise" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Aktuelle Mietpreise aller Krantypen</Link>
           <Link href="/autokran-mieten#ratgeber" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Autokran Kosten im Detail</Link>
           <Link href="/baukran-mieten#ratgeber" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Baukran Kosten im Detail</Link>
           <Link href="/ratgeber/welchen-kran-brauche-ich" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Welchen Kran brauche ich?</Link>
-          <Link href="/ratgeber/kran-aufstellen-genehmigung" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Kran Genehmigung</Link>
           <Link href="/ratgeber/kran-mieten-tipps" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">7 Tipps zur Kranmiete</Link>
           <Link href="/kostenrechner" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Kostenrechner</Link>
         </div>
@@ -399,7 +497,7 @@ export default async function WasKostetEinKranPage() {
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://kranvergleich.de/' },
               { '@type': 'ListItem', position: 2, name: 'Ratgeber', item: 'https://kranvergleich.de/ratgeber' },
-              { '@type': 'ListItem', position: 3, name: 'Was kostet ein Kran?' },
+              { '@type': 'ListItem', position: 3, name: 'Kran kaufen oder mieten?' },
             ],
           }),
         }}
