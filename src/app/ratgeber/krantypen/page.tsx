@@ -7,126 +7,150 @@ import { getSiteStats } from '@/lib/queries'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Krantypen im Überblick — 8 Typen mit Preisen, Tragkraft & Einsatzgebieten',
+  title: 'Krantypen im Vergleich: 8 Typen, Kosten & Einsatzgebiete 2026',
   description:
-    'Alle Krantypen erklärt: Minikran, Autokran, Dachdeckerkran, Raupenkran, Anhängerkran, Mobilkran, Baukran & Ladekran. Vergleich mit Preisen, Tragkraft, Einsatzgebieten und Tipps zur Auswahl. Krantypen-Übersicht 2026.',
+    'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze. Welcher Kran passt zu Ihrem Projekt? Entscheidungshilfe & Links zu Anbietern.',
   alternates: { canonical: '/ratgeber/krantypen' },
   openGraph: {
-    title: 'Krantypen im Überblick — Alle 8 Krantypen mit Preisen & Vergleich',
+    title: 'Krantypen im Vergleich: 8 Typen, Kosten & Einsatzgebiete 2026',
     description:
-      'Alle Krantypen erklärt: Minikran, Autokran, Baukran & mehr. Preise, Tragkraft und Einsatzgebiete im direkten Vergleich.',
+      'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze.',
     type: 'article',
     url: '/ratgeber/krantypen',
   },
 }
 
-const craneTypeData = [
-  {
-    slug: 'minikran-mieten',
-    name: 'Minikran',
-    also: 'Spinnenkran, Spider Crane, Glasmontagekran, kleiner Kran',
-    desc: 'Der Minikran ist der kompakteste Krantyp — ideal für enge Baustellen, Innenräume und Hinterhöfe. Dank seiner geringen Durchfahrbreite ab 80 cm passt er durch Türöffnungen und Hallentore. Viele Modelle sind elektrisch betrieben und damit abgasfrei für Inneneinsätze. Mit Glassauger (Vakuumheber) wird er zum Spezialisten für Glasmontage.',
-    capacity: '500 kg – 3.000 kg',
-    height: '5 – 18 m',
-    operator: 'Meist ohne Kranführer (Einweisung reicht)',
-    best: 'Glasmontage, Innenräume, enge Zufahrten, Hinterhöfe',
-  },
-  {
-    slug: 'autokran-mieten',
-    name: 'Autokran',
-    also: 'Kranwagen, Fahrzeugkran, LKW-Kran, Mietkran',
-    desc: 'Der Autokran ist der vielseitigste und meistgemietete Krantyp in Deutschland. Er basiert auf einem LKW-Fahrgestell, fährt selbstständig zur Baustelle und ist in 15–30 Minuten einsatzbereit. Der Kranführer ist gesetzlich vorgeschrieben und im Mietpreis enthalten. Ideal für kurze Einsätze von wenigen Stunden bis zu einigen Tagen.',
-    capacity: '10 – 500 t',
-    height: '10 – 100 m',
-    operator: 'Immer mit Kranführer (gesetzlich vorgeschrieben, inklusive)',
-    best: 'Kurzfristige Hebearbeiten, Montagen, Baumfällung, Schwertransport',
-  },
-  {
-    slug: 'dachdeckerkran-mieten',
-    name: 'Dachdeckerkran',
-    also: 'Dachkran, Ziegelkran, Aufzugskran, Dachdecker Kran',
-    desc: 'Der Dachdeckerkran (auch Dachkran) ist speziell für Dacharbeiten konstruiert. Er steht an der Straße oder auf dem Gehweg und hebt Material direkt aufs Dach — Ziegel, Dämmstoffe, Solarmodule oder Baumaterial. Der steile Auslegerwinkel ermöglicht das Arbeiten über Dachkanten hinweg. Nach einer Einweisung können Sie den Kran selbst bedienen.',
-    capacity: '500 – 2.000 kg',
-    height: '15 – 30 m',
-    operator: 'Ohne Kranführer (Selbstbedienung nach Einweisung)',
-    best: 'Dachsanierung, Solaranlagen, Dachstuhl, Ziegeltransport',
-  },
-  {
-    slug: 'raupenkran-mieten',
-    name: 'Raupenkran',
-    also: 'Kettenkran, Crawler Crane, Gleiskettenkran',
-    desc: 'Der Raupenkran ist der Kraftprotz unter den Krantypen. Sein Raupenfahrwerk verteilt das Gewicht auf eine große Fläche und ermöglicht den Einsatz auf weichem oder unbefestigtem Untergrund. Raupenkrane erreichen Traglasten von bis zu 3.000 Tonnen und werden vor allem im Schwerlastbereich eingesetzt — Windkraftanlagen, Brückenbau, Industriemontage.',
-    capacity: '50 – 3.000 t',
-    height: '20 – 200 m',
-    operator: 'Immer mit Kranführer (inklusive)',
-    best: 'Schwerlast, Windkraft, Brückenbau, unbefestigter Untergrund',
-  },
+interface CraneTypeEntry {
+  slug: string
+  name: string
+  also: string
+  shortDesc: string
+  capacity: string
+  einsatz: string
+  pros: string[]
+  cons: string[]
+  operatorRequired: boolean
+}
+
+const craneTypeData: CraneTypeEntry[] = [
   {
     slug: 'anhaengerkran-mieten',
     name: 'Anhängerkran',
     also: 'PKW-Anhänger mit Kran, Trailerkran, Kleinkran',
-    desc: 'Der Anhängerkran ist die günstigste und einfachste Kranvariante. Er ist auf einem PKW-Anhänger montiert und lässt sich mit jedem Fahrzeug mit Anhängerkupplung transportieren. Kein Kranführerschein erforderlich — eine kurze Einweisung reicht. Ideal für Handwerker, Garten- und Landschaftsbauer und kleine Hebearbeiten.',
+    shortDesc: 'Der günstigste Krantyp — auf PKW-Anhänger montiert, mit normaler Anhängerkupplung transportierbar. Ideal für Handwerker und kleine Hebearbeiten ohne Kranführerschein.',
     capacity: 'bis 1.500 kg',
-    height: '10 – 25 m',
-    operator: 'Ohne Kranführer (Selbstbedienung)',
-    best: 'Kleine Budgets, Gartenbau, Dachdecker, Baumaterialtransport',
+    einsatz: 'Kleine Budgets, Dachdecker, Gartenbau, Baumaterialtransport',
+    pros: ['Günstigster Krantyp', 'PKW-Transport mit Anhängerkupplung', 'Kein Kranführerschein nötig', 'Kompakter Stellplatz'],
+    cons: ['Nur leichte Lasten (max. 1,5t)', 'Begrenzte Reichweite', 'Nicht für schwere Bauprojekte'],
+    operatorRequired: false,
   },
   {
-    slug: 'mobilkran-mieten',
-    name: 'Mobilkran',
-    also: 'Schwerlastkran, Teleskopkran, mobiler Kran',
-    desc: 'Der Mobilkran ist die große Version des Autokrans — mit eigenem Kranfahrgestell statt LKW-Basis. Er erreicht Traglasten von bis zu 1.200 Tonnen und kommt bei Großprojekten zum Einsatz. Im Unterschied zum Raupenkran fährt der Mobilkran auf Rädern und ist schneller transportierbar. Kranführer ist inklusive.',
-    capacity: '20 – 1.200 t',
-    height: '15 – 150 m',
-    operator: 'Immer mit Kranführer (inklusive)',
-    best: 'Schwerlastmontagen, Industrieprojekte, dort wo Raupenkran zu aufwändig',
+    slug: 'dachdeckerkran-mieten',
+    name: 'Dachdeckerkran',
+    also: 'Dachkran, Ziegelkran, Aufzugskran',
+    shortDesc: 'Speziell für Dacharbeiten konstruiert — steht an der Straße und hebt Material direkt aufs Dach. 60–70% günstiger als ein Autokran bei Dachsanierungen.',
+    capacity: '500 – 2.000 kg',
+    einsatz: 'Dachsanierung, Solaranlagen, Dachstuhl, Schornsteinsanierung',
+    pros: ['Ohne Kranführer bedienbar', 'Deutlich günstiger als Autokran bei Dacharbeiten', 'Steiler Auslegerwinkel für Dachkanten', 'Passt in enge Wohnstraßen'],
+    cons: ['Hakenhöhe maximal 30m (ca. 9 Stockwerke)', 'Nur leichte Lasten (max. 2t)', 'Ungeeignet für hohe Gebäude'],
+    operatorRequired: false,
   },
   {
-    slug: 'baukran-mieten',
-    name: 'Baukran',
-    also: 'Turmdrehkran, Baustellenkran, Schnellbaukran, Hochbaukran',
-    desc: 'Der Baukran (Turmdrehkran) ist der Klassiker auf Großbaustellen. Er steht fest auf einem Betonfundament und deckt mit seinem drehbaren Ausleger die gesamte Baustelle ab. Die Monatsmiete ist bei Bauzeiten ab 3 Monaten wirtschaftlicher als ein Autokran. Montage und Demontage dauern 1–3 Tage und kosten 3.000–8.000€ extra.',
-    capacity: '1 – 20 t',
-    height: '20 – 80 m',
-    operator: 'Mit Kranführer (Turmdrehkranführer)',
-    best: 'Neubau, Hochbau, Sanierungen ab 3 Monaten Bauzeit',
+    slug: 'minikran-mieten',
+    name: 'Minikran',
+    also: 'Spinnenkran, Spider Crane, Glasmontagekran',
+    shortDesc: 'Der kompakteste Krantyp — passt durch Türöffnungen ab 80 cm und wird oft elektrisch betrieben. Ideal für Innenräume, enge Baustellen und Glasmontage.',
+    capacity: '500 – 3.000 kg',
+    einsatz: 'Innenräume, Glasmontage, enge Zufahrten, Hinterhöfe',
+    pros: ['Passt durch Türen und Hallentore', 'Elektrisch & abgasfrei für Innenräume', 'Kein Kranführerschein erforderlich', 'Ideal mit Glassauger für Glasmontage'],
+    cons: ['Begrenzte Tragkraft (max. 3t)', 'Begrenzte Hubhöhe (max. 18m)', 'Langsamer als größere Krane'],
+    operatorRequired: false,
   },
   {
     slug: 'ladekran-mieten',
     name: 'Ladekran',
     also: 'Knickarmkran, Hiab-Kran, LKW-Ladekran, Lastkran',
-    desc: 'Der Ladekran ist ein hydraulischer Knickarmkran, der direkt auf einem LKW montiert ist. Er dient vor allem zum Be- und Entladen — Baustoffe, Container, Maschinen. Viele Anbieter vermieten den Ladekran als Komplettpaket mit LKW und Fahrer. Der Knickarm ermöglicht das Arbeiten auch in beengten Verhältnissen.',
+    shortDesc: 'Hydraulischer Knickarmkran direkt auf einem LKW montiert. Oft als Komplettpaket mit LKW und Fahrer buchbar — ideal zum Be- und Entladen von Baustellen.',
     capacity: '1 – 30 t',
-    height: '5 – 30 m',
-    operator: 'Mit LKW-Fahrer/Kranführer',
-    best: 'Be-/Entladearbeiten, Materialtransport, Container',
+    einsatz: 'Be-/Entladearbeiten, Container, Baumaterialtransport',
+    pros: ['Direkt am LKW — kein separater Transport', 'Knickarm erreicht enge Stellen', 'Komplettpaket mit Fahrer möglich', 'Schnell einsatzbereit'],
+    cons: ['Immer an LKW gebunden', 'Hauptsächlich für Material-Handling', 'Begrenzte Hubhöhe (30m)'],
+    operatorRequired: false,
+  },
+  {
+    slug: 'autokran-mieten',
+    name: 'Autokran',
+    also: 'Kranwagen, Fahrzeugkran, LKW-Kran',
+    shortDesc: 'Der vielseitigste und meistgemietete Krantyp in Deutschland — LKW-Fahrgestell, fährt selbst zur Baustelle, in 15–30 Minuten einsatzbereit. Kranführer gesetzlich inklusive.',
+    capacity: '10 – 500 t',
+    einsatz: 'Kurzfristige Hebearbeiten, Montagen, Dachstuhl, Baumfällung',
+    pros: ['Fährt selbst zur Baustelle', 'Schnell einsatzbereit (15–30 Min.)', 'Kranführer im Preis enthalten', 'Breites Tragkraftspektrum'],
+    cons: ['Kranführer gesetzlich Pflicht', 'Braucht Stellfläche für Abstützungen', 'Nicht für Innenräume geeignet'],
+    operatorRequired: true,
+  },
+  {
+    slug: 'baukran-mieten',
+    name: 'Baukran',
+    also: 'Turmdrehkran, Baustellenkran, Schnellbaukran, Hochbaukran',
+    shortDesc: 'Der Turmdrehkran ist der Klassiker auf Großbaustellen — steht fest auf einem Fundament und deckt mit seinem drehbaren Ausleger die gesamte Baustelle ab. Wirtschaftlich ab ca. 3 Monaten Bauzeit.',
+    capacity: '1 – 20 t',
+    einsatz: 'Hochbau, Wohnungsbau, Gewerbebauten, Sanierungen ab 3 Monaten',
+    pros: ['Deckt gesamte Baustelle ab', 'Niedrige Monatsmiete bei langer Laufzeit', 'Ideal für Dauereinsätze', 'Verschiedene Hubhöhen (bis 80m)'],
+    cons: ['Hohe Montagekosten (3.000–8.000€)', 'Braucht Kranfundament', 'Genehmigungen erforderlich', 'Lange Vorlaufzeit'],
+    operatorRequired: true,
+  },
+  {
+    slug: 'mobilkran-mieten',
+    name: 'Mobilkran',
+    also: 'Schwerlastkran, Teleskopkran, Telekran',
+    shortDesc: 'Die große Version des Autokrans — eigenes Kranfahrgestell mit Traglasten bis 1.200 t. Kommt bei Großprojekten zum Einsatz, bei denen ein Autokran an seine Grenzen stößt.',
+    capacity: '20 – 1.200 t',
+    einsatz: 'Schwerlastmontage, Industriebau, Brückenbau, Windkraft',
+    pros: ['Höchste mobile Tragkraft (bis 1.200t)', 'Große Hubhöhe (bis 150m)', 'Kranführer im Preis', 'Fährt auf eigenem Fahrgestell'],
+    cons: ['Sehr teuer (ab 600€/Tag)', 'Schwertransport ab 100t nötig', 'Lange Aufbauzeit (1–8 Stunden)', 'Vorlauf 4–8 Wochen bei Großkranen'],
+    operatorRequired: true,
+  },
+  {
+    slug: 'raupenkran-mieten',
+    name: 'Raupenkran',
+    also: 'Kettenkran, Crawler Crane, Gleiskettenkran',
+    shortDesc: 'Der Kraftprotz mit Raupenfahrwerk — verteilt das Gewicht auf große Fläche und funktioniert auch auf weichem oder unbefestigtem Untergrund. Höchste Tragkraft aller Krantypen.',
+    capacity: '50 – 3.000 t',
+    einsatz: 'Schwerlast, Windkraftanlagen, Brückenbau, unbefestigter Untergrund',
+    pros: ['Höchste Tragkraft aller Krantypen (bis 3.000t)', 'Funktioniert auf weichem Untergrund', 'Extrem stabil', 'Große Ausladung'],
+    cons: ['Teuerster Krantyp (ab 800€/Tag)', 'Aufbau dauert mehrere Tage', 'Schwertransport zwingend nötig', 'Benötigt große Fläche'],
+    operatorRequired: true,
   },
 ]
 
 const faqs = [
   {
-    q: 'Welche Krantypen gibt es?',
-    a: 'In Deutschland werden 8 Krantypen vermietet: Minikran, Autokran, Dachdeckerkran, Raupenkran, Anhängerkran, Mobilkran, Baukran (Turmdrehkran) und Ladekran (LKW-Ladekran). Jeder Typ hat spezifische Traglasten, Einsatzgebiete und Preiskategorien.',
-  },
-  {
-    q: 'Welcher Kran ist der günstigste?',
-    a: 'Der Anhängerkran ist mit ab 150€/Tag der günstigste Krantyp. Er eignet sich für leichte Hebearbeiten bis 1.500 kg und kann mit einem PKW-Anhänger transportiert werden. Für größere Lasten ist der Dachdeckerkran (ab 200€/Tag) eine günstige Alternative.',
-  },
-  {
-    q: 'Welcher Kran hat die höchste Tragkraft?',
-    a: 'Der Raupenkran erreicht Traglasten von bis zu 3.000 Tonnen — damit ist er der stärkste Krantyp. Mobilkrane schaffen bis zu 1.200 Tonnen, Autokrane bis zu 500 Tonnen. Für die meisten Projekte reichen jedoch Autokrane (10–500t) aus.',
-  },
-  {
-    q: 'Welchen Kran brauche ich für mein Projekt?',
-    a: 'Das hängt von Tragkraft, Hubhöhe und Einsatzort ab: Für enge Baustellen → Minikran. Für Dacharbeiten → Dachdeckerkran. Für kurzfristige Hebearbeiten → Autokran. Für Großbaustellen → Baukran. Für Schwerlast → Raupenkran oder Mobilkran. Nutzen Sie unseren Kostenrechner oder fragen Sie direkt bei Anbietern an.',
-  },
-  {
-    q: 'Brauche ich einen Kranführer?',
-    a: 'Autokrane, Mobilkrane und Raupenkrane dürfen nur mit zertifiziertem Kranführer betrieben werden — dieser ist im Mietpreis enthalten. Minikrane, Dachdeckerkrane und Anhängerkrane können nach einer Einweisung selbst bedient werden.',
+    q: 'Welchen Kran brauche ich?',
+    a: 'Die Wahl des richtigen Krans hängt von drei Faktoren ab: Tragkraft (wie schwer ist die Last?), Hubhöhe (wie hoch muss gehoben werden?) und Zugänglichkeit (wie ist die Zufahrt?). Faustregel: Innenräume oder enge Zufahrten → Minikran. Dacharbeiten bis 30m → Dachdeckerkran. Kurzfristige Hebearbeiten im Freien (1–3 Tage) → Autokran. Baustellen ab 3 Monaten → Baukran (Turmdrehkran). Schwerlast über 200t → Mobilkran oder Raupenkran. Leichte Lasten bis 1,5t mit Transport → Anhängerkran. Nutzen Sie unseren Kostenrechner oder fordern Sie direkt Angebote an.',
   },
   {
     q: 'Was ist der Unterschied zwischen Autokran und Mobilkran?',
-    a: 'Ein Autokran basiert auf einem LKW-Fahrgestell (bis 500t Tragkraft), ein Mobilkran hat ein spezielles Kranfahrgestell (bis 1.200t). Autokrane sind flexibler und günstiger, Mobilkrane leisten mehr bei Schwerlastprojekten.',
+    a: 'Ein Autokran basiert auf einem LKW-Fahrgestell (10–500 t Tragkraft) und ist schnell einsatzbereit (15–30 Min. Aufbauzeit). Ein Mobilkran hat ein spezielles Kranfahrgestell und erreicht deutlich höhere Tragkräfte (20–1.200 t), braucht aber längere Aufbauzeit (1–8 Stunden) und ab ca. 100 t Tragkraft einen Schwertransport. Faustregel: Bis 100 t reicht ein Autokran — er ist schneller und günstiger. Ab 100 t wird der Mobilkran wirtschaftlicher, ab 500 t ist er praktisch die einzige Option. Beide haben den Kranführer immer im Preis enthalten.',
+  },
+  {
+    q: 'Welcher Kran für Hausbau?',
+    a: 'Für den Hausbau gibt es drei typische Optionen, abhängig von Bauzeit und Projekttyp: (1) Neubau mit Bauzeit unter 3 Monaten → Autokran für punktuelle Einsätze (Dachstuhl setzen, Fertigteile positionieren, Betonelemente heben), ab 500€/Tag inklusive Kranführer. (2) Neubau mit Bauzeit über 3 Monaten oder mehrgeschossiger Bau → Baukran (Turmdrehkran), 4.000–8.000€/Monat zzgl. 3.000–5.000€ Montage. (3) Dachsanierung, Solaranlagen-Montage oder Dachdeckerarbeiten → Dachdeckerkran, ab 200€/Tag ohne Kranführer. Faustregel: Unter 3 Monaten Bauzeit lohnt sich der Autokran, darüber der Baukran.',
+  },
+  {
+    q: 'Welche Krantypen gibt es in Deutschland?',
+    a: 'In Deutschland werden 8 Haupttypen vermietet: Anhängerkran (bis 1,5t, ab 150€/Tag), Dachdeckerkran (bis 2t, ab 200€/Tag), Minikran (bis 3t, ab 250€/Tag), Ladekran (bis 30t, ab 300€/Tag), Baukran/Turmdrehkran (bis 20t, ab 300€/Tag), Autokran (bis 500t, ab 500€/Tag), Mobilkran (bis 1.200t, ab 600€/Tag) und Raupenkran (bis 3.000t, ab 800€/Tag). Jeder Typ hat spezifische Tragkräfte, Einsatzgebiete und Preiskategorien.',
+  },
+  {
+    q: 'Welcher Kran ist der günstigste?',
+    a: 'Der Anhängerkran ist mit ab 150€/Tag der günstigste Krantyp. Er eignet sich für Hebearbeiten bis 1.500 kg und kann mit einem PKW-Anhänger transportiert werden. Für etwas schwerere Lasten oder Dacharbeiten ist der Dachdeckerkran (ab 200€/Tag, ohne Kranführer) eine günstige Alternative. Der Minikran (ab 250€/Tag) ist für Innenräume und Glasmontage die kosteneffizienteste Wahl.',
+  },
+  {
+    q: 'Welcher Kran hat die höchste Tragkraft?',
+    a: 'Der Raupenkran erreicht Traglasten von bis zu 3.000 Tonnen und ist damit der stärkste Krantyp. Er kommt vor allem bei Windkraftanlagen, Offshore-Projekten und Schwerlastmontagen zum Einsatz. Mobilkrane erreichen bis zu 1.200 Tonnen, Autokrane bis 500 Tonnen. Für die meisten Bauprojekte reichen jedoch Autokrane (10–500 t) oder Baukrane (bis 20 t) vollkommen aus.',
+  },
+  {
+    q: 'Brauche ich einen Kranführer?',
+    a: 'Autokrane, Mobilkrane, Raupenkrane und Baukrane (Turmdrehkrane) dürfen ausschließlich von zertifizierten Kranführern bedient werden — bei Miete ist der Kranführer entweder im Tagespreis enthalten (Autokran, Mobilkran, Raupenkran) oder separat buchbar (Baukran). Minikrane, Dachdeckerkrane, Anhängerkrane und Ladekrane können Sie nach einer kurzen Einweisung (30–60 Minuten, DGUV Vorschrift 52) selbst bedienen — ein Kranführerschein ist nicht nötig.',
   },
 ]
 
@@ -138,132 +162,88 @@ export default async function KrantypenPage() {
       <nav className="text-[13px] text-gray-400 mb-6">
         <Link href="/" className="hover:text-gray-600">Startseite</Link>
         <span className="mx-1.5">/</span>
-        <Link href="/ratgeber/welchen-kran-brauche-ich" className="hover:text-gray-600">Ratgeber</Link>
+        <Link href="/ratgeber" className="hover:text-gray-600">Ratgeber</Link>
         <span className="mx-1.5">/</span>
-        <span className="text-gray-900">Krantypen</span>
+        <span className="text-gray-900">Krantypen im Überblick</span>
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Krantypen im Überblick — Alle 8 Typen im Vergleich
+        Alle Krantypen im Überblick — welcher Kran für welchen Einsatz?
       </h1>
-      <p className="text-[15px] text-gray-500 mb-8 max-w-3xl">
-        Welche Krantypen gibt es und welcher ist der richtige für Ihr Projekt?
-        Wir erklären alle 8 Krantypen mit Tragkraft, Preisen und Einsatzgebieten —
-        vom kompakten Minikran bis zum 3.000-Tonnen-Raupenkran.
+      <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
+        Von 150€ für den Anhängerkran bis 10.000€+ für den 500-Tonnen-Raupenkran — die Wahl
+        des richtigen Krantyps entscheidet über Kosten, Zeit und Machbarkeit Ihres Projekts.
+        In diesem Vergleich finden Sie alle 8 in Deutschland üblichen Krantypen mit Tragkraft,
+        Tagespreisen, typischen Einsätzen sowie Vor- und Nachteilen.
       </p>
-
       <p className="text-[11px] text-gray-300 mb-6">Stand: April 2026 · Preise netto, Richtwerte</p>
 
       {/* Table of Contents */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
-        <ul className="grid grid-cols-2 sm:grid-cols-4 gap-1">
-          {craneTypeData.map((ct) => (
-            <li key={ct.slug}>
-              <a href={`#${ct.name.toLowerCase()}`} className="text-[13px] text-blue-600 hover:underline">
-                {ct.name}
-              </a>
-            </li>
-          ))}
-          <li>
-            <a href="#vergleich" className="text-[13px] text-blue-600 hover:underline">
-              Vergleichstabelle
-            </a>
-          </li>
-          <li>
-            <a href="#faq" className="text-[13px] text-blue-600 hover:underline">
-              Häufige Fragen
-            </a>
-          </li>
+        <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-1 sm:gap-x-4">
+          <li><a href="#vergleich" className="text-[13px] text-blue-600 hover:underline">Vergleichstabelle (alle 8 Typen)</a></li>
+          <li><a href="#details" className="text-[13px] text-blue-600 hover:underline">Krantypen im Detail</a></li>
+          <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen</a></li>
         </ul>
       </nav>
 
-      {/* Crane type sections */}
-      <div className="space-y-8 mb-12">
-        {craneTypeData.map((ct) => {
-          const Icon = getCraneIcon(ct.slug)
-          const price = cranePrices.find((p) => p.craneTypeSlug === ct.slug)
-          return (
-            <section key={ct.slug} id={ct.name.toLowerCase()} className="border border-gray-200 rounded-lg p-5 scroll-mt-20">
-              <div className="flex items-start gap-4 mb-3">
-                <div className="shrink-0 text-gray-500 hidden sm:block">
-                  <Icon className="w-14 h-14" />
-                </div>
-                <div className="flex-1">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-1">
-                    <Link href={`/${ct.slug}`} className="hover:text-blue-600">{ct.name}</Link>
-                  </h2>
-                  <p className="text-[12px] text-gray-400 mb-2">Auch: {ct.also}</p>
-                  <p className="text-[14px] text-gray-500 leading-relaxed">{ct.desc}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[13px] mt-3">
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-400 text-[11px] mb-0.5">Tragkraft</p>
-                  <p className="font-medium text-gray-900">{ct.capacity}</p>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-400 text-[11px] mb-0.5">Hubhöhe</p>
-                  <p className="font-medium text-gray-900">{ct.height}</p>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-400 text-[11px] mb-0.5">Preis ab</p>
-                  <p className="font-medium text-blue-600">{price ? `${price.dayFrom}€/Tag` : '—'}</p>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-400 text-[11px] mb-0.5">Kranführer</p>
-                  <p className="font-medium text-gray-900">{ct.operator.includes('inklusive') ? 'Inklusive' : 'Optional'}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 mt-3 text-[13px]">
-                <span className="text-gray-400">Ideal für:</span>
-                <span className="text-gray-600">{ct.best}</span>
-              </div>
-
-              <div className="mt-3">
-                <Link href={`/${ct.slug}`} className="text-[13px] text-blue-600 hover:underline font-medium">
-                  {ct.name} mieten — Anbieter & Preise →
-                </Link>
-              </div>
-            </section>
-          )
-        })}
-      </div>
-
-      {/* Comparison table */}
+      {/* Comparison table — FIRST, so users get the overview immediately */}
       <section id="vergleich" className="mb-12 scroll-mt-20">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Krantypen-Vergleich: Preis, Tragkraft & Kranführer
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Krantypen-Vergleich: Tragkraft, Kosten, Vor- &amp; Nachteile
         </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Alle 8 Krantypen auf einen Blick — sortiert nach Einstiegspreis (Tagesmiete). Klicken Sie
+          auf einen Krantyp, um direkt zu den Anbietern zu gelangen.
+        </p>
         <div className="overflow-x-auto border border-gray-200 rounded-lg">
           <table className="w-full text-[13px]">
             <thead>
               <tr className="bg-gray-50 border-b text-left">
-                <th className="py-3 px-4 font-medium text-gray-900">Krantyp</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Tragkraft</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Hubhöhe</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Preis/Tag</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Kranführer</th>
-                <th className="py-3 px-4 font-medium text-gray-900">Ideal für</th>
+                <th className="py-3 px-3 font-medium text-gray-900 whitespace-nowrap">Krantyp</th>
+                <th className="py-3 px-3 font-medium text-gray-900 whitespace-nowrap">Tragkraft</th>
+                <th className="py-3 px-3 font-medium text-gray-900 whitespace-nowrap">Kosten / Tag</th>
+                <th className="py-3 px-3 font-medium text-gray-900">Typische Einsätze</th>
+                <th className="py-3 px-3 font-medium text-gray-900">Vorteile</th>
+                <th className="py-3 px-3 font-medium text-gray-900">Nachteile</th>
               </tr>
             </thead>
-            <tbody className="text-gray-600">
-              {craneTypeData.map((ct) => {
+            <tbody className="text-gray-600 align-top">
+              {craneTypeData.map((ct, i) => {
                 const price = cranePrices.find((p) => p.craneTypeSlug === ct.slug)
                 return (
-                  <tr key={ct.slug} className="border-b last:border-0">
-                    <td className="py-2.5 px-4">
+                  <tr key={ct.slug} className={`border-b last:border-0 ${i % 2 === 1 ? 'bg-gray-50/50' : ''}`}>
+                    <td className="py-3 px-3 whitespace-nowrap">
                       <Link href={`/${ct.slug}`} className="text-blue-600 hover:underline font-medium">
                         {ct.name}
                       </Link>
                     </td>
-                    <td className="py-2.5 px-4">{ct.capacity}</td>
-                    <td className="py-2.5 px-4">{ct.height}</td>
-                    <td className="py-2.5 px-4 font-medium">{price ? `ab ${price.dayFrom}€` : '—'}</td>
-                    <td className="py-2.5 px-4">{ct.operator.includes('inklusive') ? 'Inklusive' : 'Optional'}</td>
-                    <td className="py-2.5 px-4 text-gray-400">{ct.best}</td>
+                    <td className="py-3 px-3 whitespace-nowrap text-gray-700">{ct.capacity}</td>
+                    <td className="py-3 px-3 whitespace-nowrap font-medium text-gray-900">
+                      {price ? `ab ${price.dayFrom}€` : '—'}
+                    </td>
+                    <td className="py-3 px-3 text-gray-500">{ct.einsatz}</td>
+                    <td className="py-3 px-3 text-gray-500">
+                      <ul className="space-y-0.5">
+                        {ct.pros.slice(0, 3).map((pro) => (
+                          <li key={pro} className="flex gap-1">
+                            <span className="text-green-600 shrink-0">+</span>
+                            <span>{pro}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td className="py-3 px-3 text-gray-500">
+                      <ul className="space-y-0.5">
+                        {ct.cons.slice(0, 3).map((con) => (
+                          <li key={con} className="flex gap-1">
+                            <span className="text-red-500 shrink-0">−</span>
+                            <span>{con}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
                   </tr>
                 )
               })}
@@ -272,8 +252,48 @@ export default async function KrantypenPage() {
         </div>
         <p className="text-[11px] text-gray-400 mt-2">
           Alle Preise netto zzgl. MwSt. Richtwerte basierend auf Marktrecherche Q1 2026.{' '}
-          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Ausführliche Preisliste →</Link>
+          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
+            Ausführliche Preisliste 2026 &rarr;
+          </Link>
         </p>
+      </section>
+
+      {/* Short descriptions of each type with links */}
+      <section id="details" className="mb-12 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          Krantypen im Detail — kurze Beschreibung &amp; Anbieter
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {craneTypeData.map((ct) => {
+            const Icon = getCraneIcon(ct.slug)
+            const price = cranePrices.find((p) => p.craneTypeSlug === ct.slug)
+            return (
+              <article key={ct.slug} className="border border-gray-200 rounded-lg p-5">
+                <div className="flex items-start gap-3 mb-2">
+                  <div className="shrink-0 text-gray-500">
+                    <Icon className="w-12 h-12" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-[16px] font-semibold text-gray-900">
+                      <Link href={`/${ct.slug}`} className="hover:text-blue-600">{ct.name}</Link>
+                    </h3>
+                    <p className="text-[11px] text-gray-400 mb-1">Auch: {ct.also}</p>
+                    <p className="text-[12px] font-medium text-blue-600">
+                      {price ? `ab ${price.dayFrom}€/Tag` : '—'} · {ct.capacity}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-[13px] text-gray-500 leading-relaxed mb-3">{ct.shortDesc}</p>
+                <p className="text-[12px] text-gray-400 mb-3">
+                  <strong className="text-gray-600">Ideal für:</strong> {ct.einsatz}
+                </p>
+                <Link href={`/${ct.slug}`} className="text-[13px] text-blue-600 hover:underline font-medium">
+                  {ct.name} Anbieter &amp; Preise &rarr;
+                </Link>
+              </article>
+            )
+          })}
+        </div>
       </section>
 
       {/* FAQ */}
@@ -308,7 +328,7 @@ export default async function KrantypenPage() {
             href="/kostenrechner"
             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-[14px] font-medium rounded-lg transition-colors"
           >
-            Kostenrechner starten →
+            Kostenrechner starten &rarr;
           </Link>
           <Link
             href="/ratgeber/welchen-kran-brauche-ich"
@@ -319,7 +339,7 @@ export default async function KrantypenPage() {
         </div>
       </section>
 
-      {/* Structured data */}
+      {/* Structured data — FAQPage + Article */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -340,11 +360,25 @@ export default async function KrantypenPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Article',
-            headline: 'Krantypen im Überblick — Alle 8 Typen im Vergleich',
-            description: 'Alle Krantypen erklärt: Minikran, Autokran, Dachdeckerkran, Raupenkran, Anhängerkran, Mobilkran, Baukran & Ladekran mit Preisen und Einsatzgebieten.',
+            headline: 'Alle Krantypen im Überblick — welcher Kran für welchen Einsatz?',
+            description: 'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze.',
             author: { '@type': 'Organization', name: 'KranVergleich.de', url: 'https://kranvergleich.de' },
             datePublished: '2026-04-09',
-            dateModified: '2026-04-09',
+            dateModified: '2026-04-11',
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://kranvergleich.de/' },
+              { '@type': 'ListItem', position: 2, name: 'Ratgeber', item: 'https://kranvergleich.de/ratgeber' },
+              { '@type': 'ListItem', position: 3, name: 'Krantypen im Überblick' },
+            ],
           }),
         }}
       />
