@@ -37,6 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/ratgeber/kran-mieten-ohne-fuehrerschein`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/kran-mieten-tipps`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/kran-mieten-hausbau`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/ratgeber/solaranlage-kran-mieten`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/ratgeber/kran-aufstellen-genehmigung`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/ratgeber/krantypen`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
     {
