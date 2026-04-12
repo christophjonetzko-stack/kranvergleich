@@ -92,7 +92,14 @@ export default async function CraneCityPage({
     getCompaniesForCraneAndCity(craneType.id, city.id),
     getCities(),
   ])
-  const faqs = getFAQsForCraneAndCity(craneType.slug, city.name, craneType.name)
+  // Manually written city FAQ (from Supabase) takes priority over template FAQ.
+  // Override is city-wide (not crane-type-specific) — local info like permits, costs, logistics.
+  const templateFaqs = getFAQsForCraneAndCity(craneType.slug, city.name, craneType.name)
+  const cityOverrideFaqs = (city.city_faq_override ?? []).map(f => ({
+    question: f.question.replace('{craneName}', craneType.name),
+    answer: f.answer.replace(/{craneName}/g, craneType.name),
+  }))
+  const faqs = [...cityOverrideFaqs, ...templateFaqs]
   const price = getPriceForCraneType(craneType.slug)
 
   // Cross-links: other crane types in this city

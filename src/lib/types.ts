@@ -16,6 +16,11 @@ export interface CraneType {
   sort_order: number
 }
 
+export interface CityFAQItem {
+  question: string
+  answer: string
+}
+
 export interface City {
   id: string
   name: string
@@ -24,6 +29,7 @@ export interface City {
   population: number | null
   lat: number | null
   lng: number | null
+  city_faq_override: CityFAQItem[] | null
 }
 
 export interface Company {
