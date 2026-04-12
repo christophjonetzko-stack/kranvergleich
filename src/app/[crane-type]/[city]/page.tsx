@@ -261,6 +261,15 @@ export default async function CraneCityPage({
         </div>
       </div>
 
+      {/* Cross-link to main price page — boosts /kran-mieten-preise authority for "preisliste" queries */}
+      <p className="text-[13px] text-gray-500 mb-10">
+        Komplette Preisübersicht aller Krantypen:{' '}
+        <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
+          Kran mieten Preisliste 2026
+        </Link>
+        {' '}— Tages-, Wochen- und Monatspreise im Vergleich.
+      </p>
+
       {/* Structured data */}
       <script
         type="application/ld+json"

@@ -10,12 +10,12 @@ import { getSiteStats } from '@/lib/queries'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Was kostet ein Kran? Preise & Kosten 2026 — Kran mieten Preisliste',
+  title: 'Kran mieten Preisliste 2026 — Preise & Kosten aller Krantypen',
   description:
-    'Kran mieten Preisliste 2026: Tagespreise, Wochenpreise und Monatspreise für alle Krantypen. Autokran ab 500€/Tag, Minikran ab 250€/Tag, Baukran ab 300€/Tag, Mobilkran ab 600€/Tag. Kranmiete Kosten, Mietkran Preise und Kran leihen — alle Preise im Überblick.',
+    'Kran mieten Preisliste 2026: Baukran ab 300€/Tag, Autokran ab 500€/Tag, Minikran ab 250€/Tag, Mobilkran ab 600€/Tag, Dachdeckerkran ab 200€/Tag. Mietkran Preise, Kranmiete Kosten pro Tag/Woche/Monat — alle Preise im Vergleich.',
   alternates: { canonical: '/kran-mieten-preise' },
   openGraph: {
-    title: 'Was kostet ein Kran? Preise & Kosten 2026',
+    title: 'Kran mieten Preisliste 2026 — Preise & Kosten aller Krantypen',
     description:
       'Kran mieten Preisliste 2026: alle Krantypen mit Tages-, Wochen- und Monatspreisen im Überblick.',
     type: 'website',
@@ -149,9 +149,9 @@ export default async function KranMietenPreisePage() {
         <ul className="flex flex-col gap-1">
           <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle alle Krantypen</a></li>
           <li><a href="#autokran-kosten" className="text-[13px] text-blue-600 hover:underline">Autokran Kosten pro Tag &amp; Stunde</a></li>
-          <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran Kosten</a></li>
-          <li><a href="#baukran-kosten" className="text-[13px] text-blue-600 hover:underline">Baukran Kosten</a></li>
-          <li><a href="#mobilkran-kosten" className="text-[13px] text-blue-600 hover:underline">Mobilkran / Schwerlastkran Kosten</a></li>
+          <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran mieten Kosten</a></li>
+          <li><a href="#baukran-kosten" className="text-[13px] text-blue-600 hover:underline">Baukran mieten Preisliste</a></li>
+          <li><a href="#mobilkran-kosten" className="text-[13px] text-blue-600 hover:underline">Mobilkran mieten Preisliste</a></li>
           <li><a href="#preise-detail" className="text-[13px] text-blue-600 hover:underline">Preise nach Krantyp</a></li>
           <li><a href="#tragkraft" className="text-[13px] text-blue-600 hover:underline">Kosten nach Tragkraft (30t, 50t, 80t, 100t+)</a></li>
           <li><a href="#kranfuehrer" className="text-[13px] text-blue-600 hover:underline">Kran mit Fahrer — was kostet ein Kranführer?</a></li>
@@ -226,10 +226,10 @@ export default async function KranMietenPreisePage() {
         </p>
       </section>
 
-      {/* Dachdeckerkran costs — dedicated section for ranking keyword */}
+      {/* Dachdeckerkran costs — targets dachdeckerkran mieten kosten (pos 5.9!), dachdecker kran mieten */}
       <section id="dachdeckerkran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Dachdeckerkran mieten — Kosten &amp; Preise 2026
+          Dachdeckerkran mieten Kosten — Preisliste &amp; Preise 2026
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Ein Dachdeckerkran ist die günstigste und schnellste Lösung für Dacharbeiten — Materialien
@@ -265,10 +265,10 @@ export default async function KranMietenPreisePage() {
         </div>
       </section>
 
-      {/* Baukran costs — targets baukran mieten kosten, mietpreis baukran, baukran kosten pro tag */}
+      {/* Baukran costs — targets baukran mieten preisliste, baukran mieten kosten, mietpreis baukran, baukran kosten pro tag */}
       <section id="baukran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Baukran mieten — Kosten &amp; Preise 2026
+          Baukran mieten Preisliste 2026 — Kosten pro Tag, Woche &amp; Monat
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Ein Baukran (Turmdrehkran) wird bei Großbaustellen für Wochen oder Monate aufgestellt.
@@ -304,10 +304,10 @@ export default async function KranMietenPreisePage() {
         </div>
       </section>
 
-      {/* Mobilkran costs — targets mobilkran mieten preisliste, mobilkran preisliste */}
+      {/* Mobilkran costs — targets mobilkran mieten preisliste, mobilkran preisliste, mobilkran mieten preise */}
       <section id="mobilkran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Mobilkran mieten — Kosten &amp; Preisliste 2026
+          Mobilkran mieten Preisliste 2026 — Kosten, Preise &amp; Stundensätze
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Ein Mobilkran (auch Schwerlastkran oder Kranwagen) ist schnell einsatzbereit und bietet
@@ -653,17 +653,17 @@ export default async function KranMietenPreisePage() {
         <FAQSection faqs={costFAQs} craneTypeName="Kran" />
       </div>
 
-      {/* Cross-links */}
+      {/* Cross-links to pillar pages — keyword-rich anchors for internal link equity */}
       <section className="mb-10">
-        <h2 className="text-sm font-semibold text-gray-900 mb-3">Preise nach Krantyp</h2>
+        <h2 className="text-sm font-semibold text-gray-900 mb-3">Kran mieten nach Typ — Anbieter &amp; Preise vergleichen</h2>
         <div className="flex flex-wrap gap-2">
           {craneTypes.map((ct) => (
             <Link
               key={ct.slug}
               href={`/${ct.slug}`}
-              className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors"
+              className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1.5 transition-colors"
             >
-              {ct.name} Preise
+              {ct.name} mieten Preise
             </Link>
           ))}
         </div>

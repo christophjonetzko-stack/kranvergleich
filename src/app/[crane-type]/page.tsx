@@ -34,8 +34,8 @@ export async function generateMetadata({
   const ctInfo = craneTypesList.find((c) => c.slug === craneTypeSlug)
   const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
 
-  const title = `${craneType.name} mieten — ${priceStr ? `${priceStr} | ` : ''}Preisliste & ${count} Anbieter`
-  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten oder leihen: ${count} Anbieter vergleichen. ${craneType.description}${priceStr ? ` Kosten ${priceStr}.` : ''} Preisliste 2026 mit Tages-, Wochen- & Monatspreisen. Kostenlos Angebote anfragen.`
+  const title = `${craneType.name} mieten ${priceStr ? `Kosten ${priceStr}` : '— Preisliste 2026'} | ${count} Anbieter vergleichen`
+  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten: ${priceStr ? `Kosten ${priceStr}. ` : ''}${count} Anbieter vergleichen. ${craneType.description} Preisliste 2026 mit Tages-, Wochen- & Monatspreisen. Kostenlos Angebote anfragen.`
   const canonical = `/${craneTypeSlug}`
 
   return {
@@ -187,6 +187,12 @@ export default async function CraneTypePage({
           {craneType.name} mieten — Preisliste 2026 mit Tages-, Wochen- und Monatspreisen
         </h2>
         <PriceTable craneTypeSlug={craneType.slug} />
+        <p className="mt-3 text-[13px] text-gray-500">
+          Ausführliche Preisvergleiche aller Krantypen finden Sie auf unserer{' '}
+          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
+            Kran mieten Preisliste 2026
+          </Link>.
+        </p>
       </div>
 
       {/* Cost breakdown — targets "kosten pro tag/stunde/woche/monat" queries */}

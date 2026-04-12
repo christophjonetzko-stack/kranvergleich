@@ -93,6 +93,11 @@ export default async function CompanyPage({
     ? company.email
     : null
 
+  // Form is usable only when the company has a real email (delivery target for Resend).
+  // `???` is a legacy placeholder used during manual enrichment to mark "skipped" —
+  // treat it the same as NULL so we never submit a form that can't be delivered.
+  const canInquire = !!company.email && company.email.trim() !== '???'
+
   const description = `${company.name} ist ein Kranvermieter in ${company.city}, ${company.state}. ${
     craneTypeNames.length > 0
       ? `Das Unternehmen bietet ${craneTypeNames.join(', ')} zur Miete an und`
@@ -158,14 +163,25 @@ export default async function CompanyPage({
               </div>
             )}
 
-            {/* CTA buttons — primary: Angebot anfragen (revenue), secondary: Website, tertiary: Anrufen */}
+            {/* CTA buttons — primary: Angebot anfragen (revenue) OR Anrufen (no-email firms),
+                secondary: Website, tertiary: Anrufen (when form is primary) */}
             <div className="flex flex-wrap gap-2 mt-4">
-              <a
-                href="#anfrage"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
-              >
-                Angebot anfragen
-              </a>
+              {canInquire ? (
+                <a
+                  href="#anfrage"
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+                >
+                  Angebot anfragen
+                </a>
+              ) : company.phone ? (
+                <a
+                  href={`tel:${company.phone}`}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+                  Rufen Sie an: {company.phone}
+                </a>
+              ) : null}
               {company.website && (
                 <a
                   href={company.website}
@@ -176,7 +192,7 @@ export default async function CompanyPage({
                   Website besuchen
                 </a>
               )}
-              {company.phone && (
+              {canInquire && company.phone && (
                 <a
                   href={`tel:${company.phone}`}
                   className="inline-flex items-center px-4 py-2 border border-gray-100 hover:border-gray-200 text-[13px] text-gray-600 rounded-md transition-colors"
@@ -302,7 +318,7 @@ export default async function CompanyPage({
         <section className="border border-gray-200 rounded-lg p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-3">Kontakt</h2>
           <div className="flex flex-col gap-2">
-            {displayEmail && (
+            {canInquire ? (
               <a
                 href="#anfrage"
                 className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
@@ -310,7 +326,15 @@ export default async function CompanyPage({
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
                 Angebot anfragen
               </a>
-            )}
+            ) : company.phone ? (
+              <a
+                href={`tel:${company.phone}`}
+                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+                Rufen Sie an: {company.phone}
+              </a>
+            ) : null}
             {company.website && (
               <a
                 href={company.website}
@@ -322,13 +346,10 @@ export default async function CompanyPage({
                 Website besuchen
               </a>
             )}
-            {!displayEmail && !company.website && (
-              <a
-                href="#anfrage"
-                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
-              >
-                Angebot anfragen
-              </a>
+            {!canInquire && !company.phone && (
+              <p className="text-[13px] text-gray-500">
+                Keine Kontaktdaten verfügbar. Bitte besuchen Sie die Website des Anbieters.
+              </p>
             )}
           </div>
         </section>
@@ -452,14 +473,17 @@ export default async function CompanyPage({
           </section>
         )}
 
-        {/* Inquiry form */}
-        <section id="anfrage" className="scroll-mt-20">
-          <LeadForm
-            cityName={company.city}
-            companies={[company]}
-            selectedCompanyIds={[company.id]}
-          />
-        </section>
+        {/* Inquiry form — only rendered when the firm has an email (Resend delivery target).
+            Firms without email: the header CTA already points to tel: instead, so no fallback here. */}
+        {canInquire && (
+          <section id="anfrage" className="scroll-mt-20">
+            <LeadForm
+              cityName={company.city}
+              companies={[company]}
+              selectedCompanyIds={[company.id]}
+            />
+          </section>
+        )}
 
         {/* Opt-out / data correction — DSGVO Art. 17 */}
         <div className="border border-gray-100 rounded-lg p-4 mt-4">

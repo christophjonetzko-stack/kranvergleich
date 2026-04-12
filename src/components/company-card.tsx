@@ -44,6 +44,11 @@ export function CompanyCard({ company, onRequestQuote, referencePrice }: Company
     .map((c) => getCraneTypeNameById(c.crane_type_id))
     .filter((name, i, arr) => arr.indexOf(name) === i)
 
+  // Firms without an email cannot receive Resend deliveries — fall back to phone CTA
+  // so the user doesn't submit a form that goes nowhere. `???` is a manual-enrichment
+  // placeholder meaning "skipped, no email found" — treat it as if NULL.
+  const canInquire = !!company.email && company.email.trim() !== '???'
+
   return (
     <div className="flex items-start gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
       {/* Initials avatar */}
@@ -138,14 +143,22 @@ export function CompanyCard({ company, onRequestQuote, referencePrice }: Company
 
       {/* CTA buttons */}
       <div className="flex flex-col gap-1.5 shrink-0 max-sm:hidden">
-        {onRequestQuote && (
+        {onRequestQuote && canInquire ? (
           <button
             onClick={() => onRequestQuote(company.id)}
             className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[12px] font-medium rounded-md transition-colors"
           >
             Angebot anfragen
           </button>
-        )}
+        ) : company.phone ? (
+          <a
+            href={`tel:${company.phone}`}
+            className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[12px] font-medium rounded-md transition-colors text-center whitespace-nowrap"
+            aria-label={`Rufen Sie ${company.name} an: ${company.phone}`}
+          >
+            {company.phone}
+          </a>
+        ) : null}
         <Link
           href={`/anbieter/${company.slug}`}
           className="px-3.5 py-1.5 border border-gray-200 hover:border-gray-300 text-[12px] text-gray-500 rounded-md text-center transition-colors"
@@ -156,14 +169,21 @@ export function CompanyCard({ company, onRequestQuote, referencePrice }: Company
 
       {/* Mobile CTA */}
       <div className="flex flex-col gap-1.5 shrink-0 sm:hidden">
-        {onRequestQuote && (
+        {onRequestQuote && canInquire ? (
           <button
             onClick={() => onRequestQuote(company.id)}
             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-medium rounded-md transition-colors"
           >
             Anfragen
           </button>
-        )}
+        ) : company.phone ? (
+          <a
+            href={`tel:${company.phone}`}
+            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-medium rounded-md transition-colors text-center"
+          >
+            Anrufen
+          </a>
+        ) : null}
         <Link
           href={`/anbieter/${company.slug}`}
           className="px-3 py-1.5 border border-gray-200 text-[11px] text-gray-500 rounded-md text-center"
