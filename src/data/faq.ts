@@ -91,6 +91,22 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Was kostet ein Dachdecker-Kran für Dacharbeiten?',
       answer: 'Einen Dachdecker-Kran (Dachdeckerkran) mieten kostet 200–450€/Tag. Für Dachsanierungen, Ziegeltransport und Dachstuhlarbeiten ist der Dachkran die effizienteste Lösung. Die Dachdeckerkran-Preisliste: Wochenmiete 1.000–2.500€, Monatsmiete 3.000–7.000€.',
     },
+    {
+      question: 'Dachdeckerkran oder Autokran — was ist günstiger für Dacharbeiten?',
+      answer: 'Für Dacharbeiten bis 30 Meter Höhe ist der Dachdeckerkran deutlich günstiger: 200–450€/Tag ohne Bediener vs. 500–1.000€/Tag für einen Autokran (inkl. Kranführer). Der Dachdeckerkran (auch Dachkran oder Ziegelkran) wird in 15–30 Minuten aufgebaut, braucht nur 2,5×6 Meter Stellfläche und kann per Funkfernsteuerung selbst bedient werden. Ein Autokran lohnt sich erst bei Lasten über 1,5 Tonnen oder Gebäuden über 9 Stockwerke.',
+    },
+    {
+      question: 'Wie funktioniert ein Dachdeckerkran?',
+      answer: 'Ein Dachdeckerkran ist ein Schrägaufzug auf einem LKW- oder Anhängerfahrgestell. Der Teleskopausleger wird auf die gewünschte Höhe ausgefahren (15–30 m) und Material wird über eine Seilwinde hochgezogen. Die Bedienung erfolgt per Funkfernsteuerung vom Boden aus — Sie steuern Heben, Senken und Schwenken. Aufbauzeit: ca. 15–30 Minuten. Kein Kranführerschein erforderlich, eine Einweisung durch den Vermieter (ca. 30 Minuten, DGUV Vorschrift 52) reicht aus.',
+    },
+    {
+      question: 'Kann man einen Dachdeckerkran für Solaranlagen-Montage mieten?',
+      answer: 'Ja, der Dachdeckerkran ist ideal für die PV-Montage: Solarmodule, Montagegestelle, Wechselrichter und Verkabelung werden direkt aufs Dach gehoben. Typische Kosten: 200–400€/Tag für 2–5 Tage Einsatz. Vorteil gegenüber manuellem Tragen: deutlich schneller, ergonomischer und sicherer. Bei Flachdächern von Gewerbegebäuden kann alternativ ein Minikran eingesetzt werden.',
+    },
+    {
+      question: 'Welche Dachdeckerkran-Marken gibt es zum Mieten?',
+      answer: 'Die gängigsten Dachdeckerkran-Marken in Deutschland sind Böcker (Marktführer, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf KranVergleich.de bieten Böcker-Dachdeckerkrane an — sie gelten als besonders zuverlässig und einfach zu bedienen.',
+    },
   ],
   'raupenkran-mieten': [
     {
