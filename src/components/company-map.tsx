@@ -7,12 +7,12 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
 
-// Override Leaflet default icon to prevent blue marker fallback
+// Fix Leaflet default icon paths for bundlers (webpack/turbopack)
 delete (L.Icon.Default.prototype as any)._getIconUrl
 L.Icon.Default.mergeOptions({
-  iconUrl: '',
-  iconRetinaUrl: '',
-  shadowUrl: '',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 })
 
 interface MapCompany {
@@ -79,13 +79,7 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
       return
     }
 
-    const icon = L.divIcon({
-      className: '',
-      html: `<div style="width:12px;height:12px;background:#16a34a;border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>`,
-      iconSize: [12, 12],
-      iconAnchor: [6, 6],
-      popupAnchor: [0, -8],
-    })
+    const icon = new L.Icon.Default()
 
     const bounds: L.LatLngExpression[] = []
 
@@ -96,7 +90,7 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
       iconCreateFunction: (cluster: any) => {
         const count = cluster.getChildCount()
         return L.divIcon({
-          html: `<div style="width:36px;height:36px;background:rgba(22,163,74,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px;font-family:system-ui;box-shadow:0 2px 6px rgba(0,0,0,.2);">${count}</div>`,
+          html: `<div style="width:36px;height:36px;background:rgba(37,99,235,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px;font-family:system-ui;box-shadow:0 2px 6px rgba(0,0,0,.2);">${count}</div>`,
           className: '',
           iconSize: L.point(36, 36),
         })
