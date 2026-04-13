@@ -7,12 +7,15 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
 
-// Fix Leaflet default icon paths for bundlers (webpack/turbopack)
-delete (L.Icon.Default.prototype as any)._getIconUrl
-L.Icon.Default.mergeOptions({
+// Explicit icon — avoids all webpack/turbopack icon resolution issues
+const defaultIcon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
 })
 
 interface MapCompany {
@@ -79,7 +82,7 @@ export function CompanyMap({ companies, centerLat, centerLng }: CompanyMapProps)
       return
     }
 
-    const icon = new L.Icon.Default()
+    const icon = defaultIcon
 
     const bounds: L.LatLngExpression[] = []
 
