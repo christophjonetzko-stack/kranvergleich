@@ -195,6 +195,24 @@ export default async function CraneTypePage({
         </p>
       </div>
 
+      {/* Company Listings + Map — placed right after prices for fast access */}
+      {companies.length > 0 && (
+        <section id="anbieter" className="mb-10 scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            {craneType.name}-Anbieter in Deutschland ({companies.length})
+          </h2>
+          <CompanySection
+            companies={companies}
+            craneTypeId={craneType.id}
+            craneTypeName={craneType.name}
+            showStateFilter
+            centerLat={51.1657}
+            centerLng={10.4515}
+            referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
+          />
+        </section>
+      )}
+
       {/* Cost breakdown — targets "kosten pro tag/stunde/woche/monat" queries */}
       {price && (
         <section className="mb-10 border border-gray-200 rounded-lg p-5">
@@ -307,24 +325,6 @@ export default async function CraneTypePage({
               </div>
             </div>
           )}
-        </section>
-      )}
-
-      {/* Company Listings + Map (synced via filters) */}
-      {companies.length > 0 && (
-        <section id="anbieter" className="mb-10 scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {craneType.name}-Anbieter in Deutschland ({companies.length})
-          </h2>
-          <CompanySection
-            companies={companies}
-            craneTypeId={craneType.id}
-            craneTypeName={craneType.name}
-            showStateFilter
-            centerLat={51.1657}
-            centerLng={10.4515}
-            referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
-          />
         </section>
       )}
 
