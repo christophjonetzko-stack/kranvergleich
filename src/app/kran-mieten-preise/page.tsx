@@ -152,9 +152,12 @@ export default async function KranMietenPreisePage() {
           <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran mieten Kosten</a></li>
           <li><a href="#baukran-kosten" className="text-[13px] text-blue-600 hover:underline">Baukran mieten Preisliste</a></li>
           <li><a href="#mobilkran-kosten" className="text-[13px] text-blue-600 hover:underline">Mobilkran mieten Preisliste</a></li>
+          <li><a href="#minikran-kosten" className="text-[13px] text-blue-600 hover:underline">Minikran mieten Preise</a></li>
           <li><a href="#preise-detail" className="text-[13px] text-blue-600 hover:underline">Preise nach Krantyp</a></li>
           <li><a href="#tragkraft" className="text-[13px] text-blue-600 hover:underline">Kosten nach Tragkraft (30t, 50t, 80t, 100t+)</a></li>
           <li><a href="#kranfuehrer" className="text-[13px] text-blue-600 hover:underline">Kran mit Fahrer — was kostet ein Kranführer?</a></li>
+          <li><a href="#kostenbeispiele" className="text-[13px] text-blue-600 hover:underline">Kostenbeispiele aus der Praxis</a></li>
+          <li><a href="#preisfaktoren" className="text-[13px] text-blue-600 hover:underline">Was beeinflusst die Kranmiete Kosten?</a></li>
           <li><a href="#zusatzkosten" className="text-[13px] text-blue-600 hover:underline">Zusatzkosten</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen zu Kosten</a></li>
         </ul>
@@ -338,6 +341,47 @@ export default async function KranMietenPreisePage() {
         <div className="mt-4">
           <Link href="/mobilkran-mieten" className="text-[13px] text-blue-600 hover:underline">
             Alle Mobilkran-Anbieter vergleichen &rarr;
+          </Link>
+        </div>
+      </section>
+
+      {/* Minikran costs — targets minikran mieten preise (pos 20.78), minikran mieten kosten (pos 14.9), minikran mieten preisliste (pos 11) */}
+      <section id="minikran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Minikran mieten Preise — Kosten &amp; Preisliste 2026
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Ein Minikran (auch Miniraupenkran oder Spinnenkran) ist die ideale Lösung für beengte
+          Einsatzorte: Innenräume, Hinterhöfe, Dachterrassen und Industriehallen. Kompakt, leicht
+          und durch Türen transportierbar. Die Bedienung erfolgt per Fernsteuerung — <strong className="text-gray-900">kein
+          Kranführerschein nötig</strong>, eine Einweisung durch den Vermieter reicht.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-3 text-center">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">250–500€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Tagespreis</p>
+            <p className="text-[11px] text-gray-400">ohne Bediener</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">1.200–2.800€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Wochenpreis</p>
+            <p className="text-[11px] text-gray-400">spart ca. 20%</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-xl font-semibold text-gray-900">3.500–8.000€</p>
+            <p className="text-[13px] text-gray-500 mt-1">Monatspreis</p>
+            <p className="text-[11px] text-gray-400">bei Langzeiteinsatz</p>
+          </div>
+        </div>
+        <div className="mt-4 text-[13px] text-gray-500 space-y-1">
+          <p><strong className="text-gray-700">Tragkraft:</strong> 1–10 Tonnen, je nach Modell (häufig 2–3 t)</p>
+          <p><strong className="text-gray-700">Typische Einsätze:</strong> Glasmontage, Klimaanlagen, Maschinentransport in Hallen, Baumarbeiten, Grabsteinsetzen</p>
+          <p><strong className="text-gray-700">Vorteil:</strong> Passt durch Standardtüren (ab 80 cm Breite), fährt auf Raupenketten auch auf empfindlichen Böden</p>
+          <p><strong className="text-gray-700">Synonyme:</strong> Miniraupenkran, Spinnenkran, Glaskran, Raupen-Minikran</p>
+        </div>
+        <div className="mt-4">
+          <Link href="/minikran-mieten" className="text-[13px] text-blue-600 hover:underline">
+            Alle Minikran-Anbieter vergleichen &rarr;
           </Link>
         </div>
       </section>
@@ -606,6 +650,203 @@ export default async function KranMietenPreisePage() {
             </div>
           )
         })}
+      </section>
+
+      {/* Kostenbeispiele aus der Praxis — unique content, targets long-tail queries */}
+      <section id="kostenbeispiele" className="mb-10 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Kostenbeispiele aus der Praxis — was kostet ein Kran wirklich?
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Abstrakte Preisspannen helfen nur bedingt — deshalb zeigen wir Ihnen vier
+          typische Einsatzszenarien mit vollständiger Kostenaufstellung. Alle Preise sind Richtwerte
+          (netto, zzgl. MwSt.) und können je nach Region und Anbieter variieren.
+        </p>
+        <div className="grid gap-4 md:grid-cols-2">
+          {/* Beispiel 1: Dachsanierung */}
+          <div className="border border-gray-200 rounded-lg p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">🏠</span>
+              <h3 className="font-medium text-[15px] text-gray-900">Dachsanierung Einfamilienhaus</h3>
+            </div>
+            <p className="text-[13px] text-gray-500 mb-3">
+              Komplette Dachsanierung mit Ziegelabtransport und Neueindeckung. Einsatzdauer: 3 Tage.
+            </p>
+            <div className="space-y-1.5 text-[13px]">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Dachdeckerkran (3 Tage à 280€)</span>
+                <span className="font-medium text-gray-900">840€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Anlieferung + Abholung</span>
+                <span className="font-medium text-gray-900">250€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Einweisung</span>
+                <span className="font-medium text-gray-900">inklusive</span>
+              </div>
+              <div className="flex justify-between border-t border-gray-200 pt-1.5 mt-1.5">
+                <span className="font-semibold text-gray-900">Gesamtkosten</span>
+                <span className="font-semibold text-green-700">ca. 1.090€</span>
+              </div>
+            </div>
+            <p className="text-[11px] text-gray-400 mt-2">Kein Kranführer nötig — Selbstbedienung nach Einweisung.</p>
+          </div>
+
+          {/* Beispiel 2: Hausbau Dachstuhl */}
+          <div className="border border-gray-200 rounded-lg p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">🏗️</span>
+              <h3 className="font-medium text-[15px] text-gray-900">Dachstuhlmontage Neubau</h3>
+            </div>
+            <p className="text-[13px] text-gray-500 mb-3">
+              Autokran 30t für Dachstuhl-Aufsetzen. Einsatzdauer: 1 Tag (ca. 6 Stunden).
+            </p>
+            <div className="space-y-1.5 text-[13px]">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Autokran 30t (6 Stunden à 170€)</span>
+                <span className="font-medium text-gray-900">1.020€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">An-/Abfahrt (25 km)</span>
+                <span className="font-medium text-gray-900">200€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Kranführer</span>
+                <span className="font-medium text-gray-900">inklusive</span>
+              </div>
+              <div className="flex justify-between border-t border-gray-200 pt-1.5 mt-1.5">
+                <span className="font-semibold text-gray-900">Gesamtkosten</span>
+                <span className="font-semibold text-green-700">ca. 1.220€</span>
+              </div>
+            </div>
+            <p className="text-[11px] text-gray-400 mt-2">Kranführer gesetzlich vorgeschrieben und im Preis enthalten.</p>
+          </div>
+
+          {/* Beispiel 3: Klimaanlage Innenraum */}
+          <div className="border border-gray-200 rounded-lg p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">❄️</span>
+              <h3 className="font-medium text-[15px] text-gray-900">Klimaanlage auf Flachdach heben</h3>
+            </div>
+            <p className="text-[13px] text-gray-500 mb-3">
+              Minikran 2,5t für Außengerät aufs Dach. Zufahrt nur durch Hinterhof (1,2 m breit). Einsatz: 1 Tag.
+            </p>
+            <div className="space-y-1.5 text-[13px]">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Minikran 2,5t (1 Tag)</span>
+                <span className="font-medium text-gray-900">350€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Transport + Auf-/Abbau</span>
+                <span className="font-medium text-gray-900">200€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Einweisung</span>
+                <span className="font-medium text-gray-900">inklusive</span>
+              </div>
+              <div className="flex justify-between border-t border-gray-200 pt-1.5 mt-1.5">
+                <span className="font-semibold text-gray-900">Gesamtkosten</span>
+                <span className="font-semibold text-green-700">ca. 550€</span>
+              </div>
+            </div>
+            <p className="text-[11px] text-gray-400 mt-2">Minikran passt durch enge Zufahrten — ideal für Hinterhöfe und Innenhöfe.</p>
+          </div>
+
+          {/* Beispiel 4: Industriemontage Schwerlast */}
+          <div className="border border-gray-200 rounded-lg p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">🏭</span>
+              <h3 className="font-medium text-[15px] text-gray-900">Maschinenmontage Industriehalle</h3>
+            </div>
+            <p className="text-[13px] text-gray-500 mb-3">
+              Mobilkran 100t für CNC-Maschine (18t) in Produktionshalle setzen. Einsatz: 1 Tag.
+            </p>
+            <div className="space-y-1.5 text-[13px]">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Mobilkran 100t (1 Tag)</span>
+                <span className="font-medium text-gray-900">1.500€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">An-/Abfahrt Schwertransport</span>
+                <span className="font-medium text-gray-900">600€</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Kranführer</span>
+                <span className="font-medium text-gray-900">inklusive</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Einrichter / Einweiser</span>
+                <span className="font-medium text-gray-900">250€</span>
+              </div>
+              <div className="flex justify-between border-t border-gray-200 pt-1.5 mt-1.5">
+                <span className="font-semibold text-gray-900">Gesamtkosten</span>
+                <span className="font-semibold text-green-700">ca. 2.350€</span>
+              </div>
+            </div>
+            <p className="text-[11px] text-gray-400 mt-2">Mobilkran ist sofort einsatzbereit — keine Montage, keine Genehmigung auf Privatgrund.</p>
+          </div>
+        </div>
+        <p className="text-[12px] text-gray-400 mt-3">
+          Tipp: Fordern Sie über unsere <Link href="/" className="text-blue-600 hover:underline">kostenlose Sammelanfrage</Link> Angebote
+          von mehreren Anbietern an — die Preisunterschiede betragen oft 20–30%.
+        </p>
+      </section>
+
+      {/* Preisfaktoren — targets "mietkran preise" (pos 24.4), "kranmiete preise" (pos 20.64), "kran mieten kosten" (pos 27) */}
+      <section id="preisfaktoren" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Was beeinflusst die Kranmiete Kosten? — 6 Preisfaktoren
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Die Mietkran Preise variieren je nach Projekt und Region erheblich. Diese sechs Faktoren
+          bestimmen, was Sie für die Kranmiete bezahlen:
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-medium text-[14px] text-gray-900 mb-1">1. Krantyp &amp; Tragkraft</h3>
+            <p className="text-[13px] text-gray-500">
+              Der größte Kostenfaktor. Ein Minikran (2t) kostet ab 250€/Tag, ein Schwerlastkran (500t+) über 5.000€/Tag.
+              Wählen Sie den kleinsten Kran, der Ihre Anforderung sicher erfüllt — Überdimensionierung kostet unnötig.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-medium text-[14px] text-gray-900 mb-1">2. Mietdauer</h3>
+            <p className="text-[13px] text-gray-500">
+              Längere Laufzeit = niedrigerer Tagespreis. Wochenmiete spart 15–25%, Monatsmiete bis zu 40%
+              gegenüber Einzeltagen. Ab 2 Wochen lohnt sich oft die Monatsmiete.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-medium text-[14px] text-gray-900 mb-1">3. Region &amp; Anfahrt</h3>
+            <p className="text-[13px] text-gray-500">
+              Ballungsräume (München, Frankfurt) sind 10–20% teurer als ländliche Gebiete. Transportkosten
+              steigen mit der Entfernung (2–4€/km). Wählen Sie nach Möglichkeit einen Anbieter in Ihrer Nähe.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-medium text-[14px] text-gray-900 mb-1">4. Saison &amp; Verfügbarkeit</h3>
+            <p className="text-[13px] text-gray-500">
+              Frühling bis Herbst ist Hochsaison im Bau — höhere Preise, geringere Verfügbarkeit. Im
+              Winter sind Krane oft 10–20% günstiger. Frühzeitig buchen spart bei jeder Saison.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-medium text-[14px] text-gray-900 mb-1">5. Einsatzort-Bedingungen</h3>
+            <p className="text-[13px] text-gray-500">
+              Enge Zufahrt, weicher Untergrund, Höhenbeschränkungen oder Innenstadtlage erfordern
+              Spezialkrane oder zusätzliche Maßnahmen (Baggermatratzen, Nachtanlieferung) — das kostet extra.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-medium text-[14px] text-gray-900 mb-1">6. Anbietervergleich</h3>
+            <p className="text-[13px] text-gray-500">
+              Die Preisunterschiede zwischen Anbietern betragen oft 20–30% für denselben Krantyp und Einsatzort.
+              Holen Sie mindestens 3 Angebote ein — unsere{' '}
+              <Link href="/" className="text-blue-600 hover:underline">kostenlose Sammelanfrage</Link> macht das in 2 Minuten.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Zusatzkosten */}
