@@ -69,6 +69,22 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Was kostet ein Autokran (Kranwagen) pro Tag?',
       answer: 'Ein Autokran (auch Kranwagen oder Fahrzeugkran) kostet zwischen 500€ und 2.000€ pro Tag, inklusive Kranführer. Kleine Autokrane (30t) ab ca. 500€, mittlere (50–80t) ab 800€, schwere (100t+) ab 1.200€ pro Tag. Die Autokran-Mietpreise variieren je nach Region und Auslastung.',
     },
+    {
+      question: 'Wo finde ich eine Autokran-Preisliste?',
+      answer: 'Eine aktuelle Autokran-Preisliste 2026 finden Sie auf KranVergleich.de: Tagespreise 500–2.000€, Wochenpreise 2.500–10.000€, Monatspreise 8.000–35.000€ — jeweils inklusive Kranführer. Die Autokran-Mietpreise hängen von Tragkraft (30t–500t), Einsatzdauer und Region ab. Vergleichen Sie kostenlos Angebote von mehreren Autokranvermietungen.',
+    },
+    {
+      question: 'Autokran mieten — welche Tragkraft brauche ich?',
+      answer: 'Die richtige Tragkraft hängt vom Projekt ab: 30t-Autokran für Dachstuhl setzen, Fertiggarage, Klimaanlage (ab 500€/Tag). 50t für Stahlträger und Betonfertigteile (ab 700€/Tag). 80–100t für Industriemontage und schwere Maschinen (ab 1.000€/Tag). Wichtig: Die Tragkraft sinkt mit der Ausladung — bei 20m Reichweite hat ein 50t-Autokran oft nur noch 10–15t Nutzlast. Geben Sie in der Anfrage Gewicht UND Abstand an.',
+    },
+    {
+      question: 'Was kostet ein Autokran für einen Tag Hausbau?',
+      answer: 'Für typische Hausbau-Arbeiten (Dachstuhl aufsetzen, Fertigteile heben) kostet ein 30-Tonnen-Autokran ca. 500–800€ pro Tag inklusive Kranführer. Hinzu kommen An-/Abfahrtskosten von ca. 150–400€. Der Einsatz dauert meist 4–8 Stunden. Bei Stundenabrechnung zahlen Sie 150–200€/h (Mindestmietdauer 4 Stunden). Tipp: Mehrere Hebearbeiten auf einen Tag bündeln spart deutlich.',
+    },
+    {
+      question: 'Kann ich einen Autokran für eine Stunde mieten?',
+      answer: 'Eine reine 1-Stunde-Miete ist bei Autokranen nicht üblich — die Mindestmietdauer beträgt bei den meisten Vermietern 4 Stunden (ca. 600–800€ inkl. Kranführer für einen 30t-Autokran). Der Grund: An-/Abfahrt und Auf-/Abbau dauern bereits 1–2 Stunden. Bei sehr kurzen Einsätzen unter 2 Stunden Hebezeit lohnt sich die Stundenabrechnung (150–350€/h je nach Tragkraft).',
+    },
   ],
   'dachdeckerkran-mieten': [
     {
@@ -142,6 +158,18 @@ const typeFAQs: Record<string, FAQItem[]> = {
     {
       question: 'Was ist ein PKW-Anhänger mit Kran?',
       answer: 'Ein PKW-Anhänger mit Kran (auch Anhängerkran oder Trailerkran) ist ein Hebekran, der auf einem PKW-Anhänger montiert ist. Er lässt sich mit jedem Fahrzeug mit Anhängerkupplung transportieren — ideal zum Ausleihen für Dachdeckerarbeiten, Baumaterialtransport oder Montagen bis 1.500 kg Traglast.',
+    },
+    {
+      question: 'Was kostet ein PKW-Anhänger mit Kran pro Tag?',
+      answer: 'Ein PKW-Anhänger mit Kran (Anhängerkran) kostet ab 150€ pro Tag netto. Die Preise variieren je nach Hakenhöhe und Tragkraft: Modelle bis 15m Höhe ab 150€/Tag, bis 25m Höhe ab 250€/Tag, bis 30m+ ab 300€/Tag. Wochenmiete ab 700€, Monatsmiete ab 2.000€. Transport inklusive — Sie fahren den Anhängerkran mit Ihrem eigenen PKW zur Baustelle.',
+    },
+    {
+      question: 'Anhängerkran oder Dachdeckerkran — was ist der Unterschied?',
+      answer: 'Beide sind ideal für Dacharbeiten, aber: Der Anhängerkran wird mit Ihrem PKW transportiert (günstigster Einstieg ab 150€/Tag), der Dachdeckerkran ist LKW-basiert und wird vom Vermieter geliefert (ab 200€/Tag). Der Anhängerkran hat bis zu 1.500 kg Tragkraft und 25m Hakenhöhe, der Dachdeckerkran bis 2.000 kg und 30m. Für kleinere Dacharbeiten (Ziegel, Solarmodule) reicht oft der günstigere Anhängerkran.',
+    },
+    {
+      question: 'Welche Hakenhöhe hat ein Anhängerkran?',
+      answer: 'Anhängerkrane erreichen je nach Modell 10–32 Meter Hakenhöhe. Die gängigsten Mietmodelle (Böcker AK 27, AK 32, AK 46) bieten 27–46 Meter Arbeitshöhe. Für ein Einfamilienhaus (2 Stockwerke, ca. 8m) reicht ein Einstiegsmodell mit 15m — für Mehrfamilienhäuser bis 5 Etagen sollten Sie 25–30m wählen.',
     },
   ],
   'mobilkran-mieten': [
