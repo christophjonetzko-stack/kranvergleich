@@ -7,6 +7,8 @@ interface CompanyCardProps {
   onRequestQuote?: (companyId: string) => void
   /** Fallback reference price label when company has no own price, e.g. "ab 250€/Tag — Richtwert" */
   referencePrice?: string | null
+  /** Distance in km from user's PLZ (if provided) */
+  distanceKm?: number
 }
 
 const INITIALS_COLORS = [
@@ -36,7 +38,7 @@ function getColorClass(name: string): string {
   return INITIALS_COLORS[Math.abs(hash) % INITIALS_COLORS.length]
 }
 
-export function CompanyCard({ company, onRequestQuote, referencePrice }: CompanyCardProps) {
+export function CompanyCard({ company, onRequestQuote, referencePrice, distanceKm }: CompanyCardProps) {
   const initials = getInitials(company.name)
   const colorClass = getColorClass(company.name)
 
@@ -77,9 +79,15 @@ export function CompanyCard({ company, onRequestQuote, referencePrice }: Company
           )}
         </div>
 
-        {/* Line 2: Location */}
+        {/* Line 2: Location + distance */}
         <p className="text-[13px] text-gray-500 mb-1.5">
           {company.city}, {company.state}
+          {distanceKm != null && (
+            <span className="ml-2 inline-flex items-center gap-0.5 text-[12px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-medium">
+              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              {distanceKm} km
+            </span>
+          )}
         </p>
 
         {/* Line 3: Rating + crane types */}

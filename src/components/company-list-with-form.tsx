@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { CompanyCard } from './company-card'
 import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
@@ -8,7 +8,18 @@ import { getCraneTypeNameById } from '@/data/crane-types'
 
 const PAGE_SIZE = 20
 
-type SortOption = 'rating' | 'reviews' | 'name'
+type SortOption = 'rating' | 'reviews' | 'name' | 'distance'
+
+// Haversine distance in km between two lat/lng points
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLng = ((lng2 - lng1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
 
 interface CompanyListWithFormProps {
   companies: CompanyWithCranes[]
@@ -42,6 +53,43 @@ export function CompanyListWithForm({
   const [filterMinRating, setFilterMinRating] = useState<string>('')
   const [filterOperator, setFilterOperator] = useState<string>('')
   const [filterCraneType, setFilterCraneType] = useState<string>('')
+  const [plzInput, setPlzInput] = useState('')
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null)
+  const [plzLabel, setPlzLabel] = useState('')
+
+  // Lookup PLZ → coordinates via /api/cities
+  const lookupPlz = useCallback(async (plz: string) => {
+    if (!/^\d{5}$/.test(plz)) {
+      setUserCoords(null)
+      setPlzLabel('')
+      return
+    }
+    try {
+      const res = await fetch(`/api/cities?q=${plz}`)
+      const data = await res.json()
+      if (data.length > 0) {
+        setUserCoords({ lat: data[0].lat, lng: data[0].lng })
+        setPlzLabel(data[0].name)
+        setSortBy('distance')
+        setVisibleCount(PAGE_SIZE)
+      }
+    } catch {
+      setUserCoords(null)
+      setPlzLabel('')
+    }
+  }, [])
+
+  // Distance map: company id → km (only when userCoords set)
+  const distanceMap = useMemo(() => {
+    if (!userCoords) return new Map<string, number>()
+    const map = new Map<string, number>()
+    for (const c of companies) {
+      if (c.lat != null && c.lng != null) {
+        map.set(c.id, Math.round(haversineKm(userCoords.lat, userCoords.lng, c.lat, c.lng)))
+      }
+    }
+    return map
+  }, [companies, userCoords])
 
   // Unique states for filter dropdown
   const states = useMemo(() => {
@@ -96,10 +144,13 @@ export function CompanyListWithForm({
       case 'name':
         list.sort((a, b) => a.name.localeCompare(b.name, 'de'))
         break
+      case 'distance':
+        list.sort((a, b) => (distanceMap.get(a.id) ?? 9999) - (distanceMap.get(b.id) ?? 9999))
+        break
     }
 
     return list
-  }, [companies, sortBy, filterState, filterMinRating, filterOperator, filterCraneType])
+  }, [companies, sortBy, filterState, filterMinRating, filterOperator, filterCraneType, distanceMap])
 
   // Notify parent when filtered list changes (for map sync)
   useEffect(() => {
@@ -132,6 +183,29 @@ export function CompanyListWithForm({
       {/* Filter & sort bar */}
       {companies.length > 1 && (
         <div className="flex flex-wrap items-center gap-2 mb-3">
+          {/* PLZ distance search */}
+          <div className="relative">
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={5}
+              placeholder="PLZ eingeben"
+              value={plzInput}
+              onChange={(e) => {
+                const v = e.target.value.replace(/\D/g, '').slice(0, 5)
+                setPlzInput(v)
+                if (v.length === 5) lookupPlz(v)
+                if (v.length < 5) { setUserCoords(null); setPlzLabel(''); if (sortBy === 'distance') setSortBy('rating') }
+              }}
+              className="w-[120px] text-[13px] text-gray-700 border border-gray-200 rounded-md px-2 py-1 placeholder:text-gray-400"
+            />
+            {plzLabel && (
+              <span className="absolute -top-5 left-0 text-[11px] text-blue-600 whitespace-nowrap">
+                {plzLabel}
+              </span>
+            )}
+          </div>
+
           {showStateFilter && states.length > 1 && (
             <select
               value={filterState}
@@ -183,6 +257,7 @@ export function CompanyListWithForm({
             onChange={(e) => setSortBy(e.target.value as SortOption)}
             className="text-[13px] text-gray-500 bg-transparent border border-gray-200 rounded-md px-2 py-1"
           >
+            {userCoords && <option value="distance">Nächste Entfernung</option>}
             <option value="rating">Beste Bewertung</option>
             <option value="reviews">Meiste Bewertungen</option>
             <option value="name">Name A–Z</option>
@@ -202,6 +277,7 @@ export function CompanyListWithForm({
             company={company}
             onRequestQuote={addCompany}
             referencePrice={referencePrice}
+            distanceKm={distanceMap.get(company.id)}
           />
         ))}
       </div>
