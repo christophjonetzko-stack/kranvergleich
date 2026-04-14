@@ -134,6 +134,11 @@ export default async function CraneTypePage({
             Karte
           </a>
         )}
+        {craneType.slug === 'baukran-mieten' && (
+          <a href="#schnellbaukran" className="text-[13px] text-blue-600 hover:underline">
+            Schnellbaukran
+          </a>
+        )}
         {faqs.length > 0 && (
           <a href="#faq" className="text-[13px] text-blue-600 hover:underline">
             Häufige Fragen
@@ -313,6 +318,61 @@ export default async function CraneTypePage({
               </div>
             </div>
           )}
+        </section>
+      )}
+
+      {/* Schnellbaukran sub-topic — only on Baukran page, SEO for "schnellbaukran mieten" */}
+      {craneType.slug === 'baukran-mieten' && (
+        <section id="schnellbaukran" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Schnellbaukran mieten — kompakte Baukrane ab 20 m Ausladung
+          </h2>
+          <p className="text-[14px] text-gray-600 leading-relaxed mb-4">
+            Ein <strong>Schnellbaukran</strong> (auch <em>Untendreher</em> oder <em>Mobilbaukran</em> genannt) ist die mobile Variante des klassischen Turmdrehkrans.
+            Er wird als Anhänger zur Baustelle transportiert, hydraulisch in 10–30 Minuten aufgebaut und benötigt in den meisten Fällen{' '}
+            <strong>kein Fundament</strong>. Ideal für Einfamilienhäuser, Sanierungen, Anbauten und beengte Baustellen.
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2 mb-4 text-[13px]">
+            <div className="bg-blue-50 border border-blue-100 rounded-md p-3">
+              <p className="font-medium text-gray-900 mb-1">Schnellbaukran (Untendreher)</p>
+              <ul className="text-gray-600 space-y-0.5">
+                <li>• Ausladung: 20–45 m</li>
+                <li>• Hakenhöhe: 15–30 m</li>
+                <li>• Tragkraft: 1.000–6.000 kg</li>
+                <li>• Aufbauzeit: 10–30 Minuten (hydraulisch)</li>
+                <li>• Fundament meist nicht nötig</li>
+                <li>• Transport: Anhänger (1–2 Achsen)</li>
+              </ul>
+            </div>
+            <div className="bg-gray-50 border border-gray-200 rounded-md p-3">
+              <p className="font-medium text-gray-900 mb-1">Klassischer Turmdrehkran (Obendreher)</p>
+              <ul className="text-gray-600 space-y-0.5">
+                <li>• Ausladung: 40–80 m</li>
+                <li>• Hakenhöhe: 30–100+ m</li>
+                <li>• Tragkraft: 4.000–25.000 kg</li>
+                <li>• Aufbauzeit: 1–3 Tage (Autokran erforderlich)</li>
+                <li>• Fundament oder Kreuzrahmen nötig</li>
+                <li>• Für Hochhäuser &amp; Großbaustellen</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 className="text-[14px] font-semibold text-gray-900 mb-2">Bekannte Schnellbaukran-Modelle</h3>
+          <p className="text-[13px] text-gray-600 leading-relaxed mb-4">
+            <strong>Potain IGO</strong> (T70, T85, T130) — die meistvermieteten Schnellbaukrane in Deutschland.{' '}
+            <strong>Potain GTMR</strong> (331 C, 336 B, 346 A, 386 A) — Serie für mittelgroße Hochbauprojekte.{' '}
+            <strong>Liebherr K</strong>-Serie, <strong>Wolffkran WOLFF 7018</strong>, <strong>Eurogru DS 216</strong> — kompakte Modelle für Sanierungen und Einfamilienhäuser.
+          </p>
+
+          <h3 className="text-[14px] font-semibold text-gray-900 mb-2">Wann Schnellbaukran statt Turmdrehkran?</h3>
+          <ul className="text-[13px] text-gray-600 space-y-1.5 list-disc pl-5">
+            <li>Einfamilien- oder Doppelhaus bis 2 Vollgeschosse</li>
+            <li>Sanierung, Umbau, Dachaufstockung, Anbau</li>
+            <li>Enge Einfahrten, begrenzte Stellfläche (ab 4,5 × 4,5 m Abstützung)</li>
+            <li>Bauzeit unter 6 Monaten — kein Fundament spart 1.000–3.000 €</li>
+            <li>Wochen- oder Monatsmiete gewünscht (typisch 1.900–4.000 €/Monat)</li>
+          </ul>
         </section>
       )}
 
