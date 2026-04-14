@@ -24,6 +24,7 @@ export function SearchBox() {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCity, setSelectedCity] = useState<CityResult | null>(null)
   const [hint, setHint] = useState('')
+  const [plzLabel, setPlzLabel] = useState('')
   const wrapperRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
@@ -44,6 +45,11 @@ export function SearchBox() {
     setActiveIndex(-1)
     setHint('')
 
+    // Clear PLZ label when input changes
+    if (!/^\d{5}$/.test(value.trim())) {
+      setPlzLabel('')
+    }
+
     if (value.trim().length < 3) {
       setResults([])
       setIsOpen(false)
@@ -58,6 +64,10 @@ export function SearchBox() {
         const data: CityResult[] = await res.json()
         setResults(data)
         setIsOpen(data.length > 0)
+        // Auto-show city label when user typed a 5-digit PLZ
+        if (/^\d{5}$/.test(value.trim()) && data.length > 0) {
+          setPlzLabel(`${data[0].plz} ${data[0].name}`)
+        }
       } catch {
         setResults([])
       } finally {
@@ -162,8 +172,14 @@ export function SearchBox() {
         <div ref={wrapperRef} className="relative w-full sm:flex-1 text-left">
           <label className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
             Stadt oder PLZ
+            {plzLabel && <span className="ml-2 text-blue-600 font-normal">→ {plzLabel}</span>}
           </label>
           <div className="relative">
+            {plzLabel && (
+              <span className="hidden sm:block absolute -top-4 left-5 text-[11px] text-blue-600 whitespace-nowrap pointer-events-none">
+                {plzLabel}
+              </span>
+            )}
             <input
               type="text"
               value={cityQuery}
