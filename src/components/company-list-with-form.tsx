@@ -51,7 +51,6 @@ export function CompanyListWithForm({
   const [sortBy, setSortBy] = useState<SortOption>('rating')
   const [filterState, setFilterState] = useState<string>('')
   const [filterMinRating, setFilterMinRating] = useState<string>('')
-  const [filterOperator, setFilterOperator] = useState<string>('')
   const [filterCraneType, setFilterCraneType] = useState<string>('')
   const [plzInput, setPlzInput] = useState('')
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null)
@@ -124,12 +123,6 @@ export function CompanyListWithForm({
       list = list.filter((c) => (c.google_rating ?? 0) >= min)
     }
 
-    if (filterOperator === 'yes') {
-      list = list.filter((c) => c.company_cranes.some((cc) => cc.has_operator))
-    } else if (filterOperator === 'no') {
-      list = list.filter((c) => c.company_cranes.some((cc) => !cc.has_operator))
-    }
-
     if (filterCraneType) {
       list = list.filter((c) => c.company_cranes.some((cc) => cc.crane_type_id === filterCraneType))
     }
@@ -150,7 +143,7 @@ export function CompanyListWithForm({
     }
 
     return list
-  }, [companies, sortBy, filterState, filterMinRating, filterOperator, filterCraneType, distanceMap])
+  }, [companies, sortBy, filterState, filterMinRating, filterCraneType, distanceMap])
 
   // Notify parent when filtered list changes (for map sync)
   useEffect(() => {
@@ -227,16 +220,6 @@ export function CompanyListWithForm({
             <option value="">Alle Bewertungen</option>
             <option value="4.0">Ab 4.0 Sterne</option>
             <option value="4.5">Ab 4.5 Sterne</option>
-          </select>
-
-          <select
-            value={filterOperator}
-            onChange={(e) => handleFilterChange(setFilterOperator, e.target.value)}
-            className="text-[13px] text-gray-500 bg-transparent border border-gray-200 rounded-md px-2 py-1"
-          >
-            <option value="">Kranführer</option>
-            <option value="yes">Mit Kranführer</option>
-            <option value="no">Ohne Kranführer</option>
           </select>
 
           {showCraneTypeFilter && availableCraneTypes.length > 1 && (

@@ -232,11 +232,8 @@ export default async function CompanyPage({
                 )
               })}
             </div>
-            {company.company_cranes.some((c) => c.has_operator || c.has_glass_sucker || c.electric) && (
+            {company.company_cranes.some((c) => c.has_glass_sucker || c.electric) && (
               <div className="flex flex-wrap gap-2 mt-3">
-                {company.company_cranes.some((c) => c.has_operator) && (
-                  <span className="text-[12px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded">Mit Kranführer</span>
-                )}
                 {company.company_cranes.some((c) => c.has_glass_sucker) && (
                   <span className="text-[12px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded">Glassauger</span>
                 )}
@@ -357,17 +354,11 @@ export default async function CompanyPage({
         {/* Service badges */}
         {(() => {
           const badges: { icon: string; label: string; color: string }[] = []
-          // Crane types that REQUIRE a certified operator by German law (DGUV Vorschrift 52, BetrSichV)
-          const operatorRequiredTypes = new Set(['Autokran', 'Mobilkran', 'Raupenkran', 'Baukran', 'Ladekran'])
           // Crane types that can be self-operated after instruction (Einweisung)
           const selfOperatedTypes = new Set(['Minikran', 'Dachdeckerkran', 'Anhängerkran'])
 
-          const hasOperatorRequired = craneTypeNames.some((name) => operatorRequiredTypes.has(name))
           const hasSelfOperated = craneTypeNames.some((name) => selfOperatedTypes.has(name))
 
-          if (hasOperatorRequired) {
-            badges.push({ icon: 'operator', label: 'Mit Kranführer (gesetzlich vorgeschrieben)', color: 'bg-green-50 text-green-700 border-green-200' })
-          }
           if (hasSelfOperated) {
             badges.push({ icon: 'self', label: 'Selbstbedienung nach Einweisung möglich', color: 'bg-gray-50 text-gray-600 border-gray-200' })
           }
@@ -387,9 +378,6 @@ export default async function CompanyPage({
               <div className="flex flex-wrap gap-2">
                 {badges.map((b) => (
                   <span key={b.label} className={`inline-flex items-center gap-1.5 text-[12px] font-medium border rounded-full px-3 py-1.5 ${b.color}`}>
-                    {b.icon === 'operator' && (
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
-                    )}
                     {b.icon === 'self' && (
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085" /></svg>
                     )}
