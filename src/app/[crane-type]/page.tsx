@@ -118,44 +118,32 @@ export default async function CraneTypePage({
 
       <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
 
-      {/* Table of Contents */}
-      <nav className="mb-8 border border-gray-200 rounded-lg p-4">
-        <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
-        <ul className="flex flex-col gap-1">
-          <li>
-            <a href="#preise" className="text-[13px] text-blue-600 hover:underline">
-              Preisübersicht
-            </a>
-          </li>
-          {companies.length > 0 && (
-            <li>
-              <a href="#anbieter" className="text-[13px] text-blue-600 hover:underline">
-                {companies.length} Anbieter
-              </a>
-            </li>
-          )}
-          {companies.some((c) => c.lat != null && c.lng != null) && (
-            <li>
-              <a href="#karte" className="text-[13px] text-blue-600 hover:underline">
-                Karte
-              </a>
-            </li>
-          )}
-          {faqs.length > 0 && (
-            <li>
-              <a href="#faq" className="text-[13px] text-blue-600 hover:underline">
-                Häufige Fragen
-              </a>
-            </li>
-          )}
-          {topCities.length > 0 && (
-            <li>
-              <a href="#staedte" className="text-[13px] text-blue-600 hover:underline">
-                {craneType.name} in Ihrer Stadt
-              </a>
-            </li>
-          )}
-        </ul>
+      {/* Table of Contents — horizontal pills */}
+      <nav className="mb-8 border border-gray-200 rounded-lg px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <p className="text-[13px] font-medium text-gray-900 shrink-0">Inhalt:</p>
+        <a href="#preise" className="text-[13px] text-blue-600 hover:underline">
+          Preisübersicht
+        </a>
+        {companies.length > 0 && (
+          <a href="#anbieter" className="text-[13px] text-blue-600 hover:underline">
+            {companies.length} Anbieter
+          </a>
+        )}
+        {companies.some((c) => c.lat != null && c.lng != null) && (
+          <a href="#karte" className="text-[13px] text-blue-600 hover:underline">
+            Karte
+          </a>
+        )}
+        {faqs.length > 0 && (
+          <a href="#faq" className="text-[13px] text-blue-600 hover:underline">
+            Häufige Fragen
+          </a>
+        )}
+        {topCities.length > 0 && (
+          <a href="#staedte" className="text-[13px] text-blue-600 hover:underline">
+            {craneType.name} in Ihrer Stadt
+          </a>
+        )}
       </nav>
 
       {/* Synonym H2 — SEO for "leihen", "ausleihen", "Verleih", "Vermietung" variants */}
