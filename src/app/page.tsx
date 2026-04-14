@@ -9,6 +9,24 @@ import { seoCities } from '@/data/cities-static'
 import { getSiteStats } from '@/lib/queries'
 import { NewsletterSignup } from '@/components/newsletter-signup'
 
+// Tower crane SVG icon for hero
+function TowerCraneIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden>
+      <path d="M12 58h40" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M30 58V18M34 58V18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M30 22l4-4M30 30l4-4M30 38l4-4M30 46l4-4M30 54l4-4" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 18h48" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M10 22h44" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M10 18V22M54 18V22" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M16 22v6M22 22v4M26 22v3M38 22v3M44 22v4M50 22v6" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M18 28h6M46 28h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M20 28v6M22 28v6" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M18 34h6" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
 export const revalidate = 86400
 
 export const metadata: Metadata = {
@@ -33,19 +51,38 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-white py-12 lg:py-16">
+      <section className="bg-white py-6 sm:py-12 lg:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-3">
-            Kran mieten in Deutschland
-          </h1>
-          <p className="text-base text-gray-500 mb-6">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+            <TowerCraneIcon className="w-10 h-10 sm:w-12 sm:h-12 text-blue-600 shrink-0" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900">
+              Kran mieten in Deutschland
+            </h1>
+          </div>
+          <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">
             {anbieterCount}+ Anbieter vergleichen. Preise sehen. Kostenlos Angebote anfragen.
           </p>
           <SearchBox />
-          <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+
+          {/* Crane type pills — mobile horizontal scroll */}
+          <div className="sm:hidden -mx-4 px-4 mt-4 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2 whitespace-nowrap pb-1">
+              {craneTypes.map((ct) => (
+                <Link
+                  key={ct.slug}
+                  href={`/${ct.slug}`}
+                  className="inline-flex items-center bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors shrink-0"
+                >
+                  {ct.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
             <Link
               href="/kostenrechner"
-              className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-medium rounded-lg transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-white border-2 border-blue-600 hover:bg-blue-50 text-blue-600 text-[15px] font-medium rounded-lg transition-colors"
             >
               Kostenloses Angebot anfragen →
             </Link>

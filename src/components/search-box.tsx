@@ -188,22 +188,32 @@ export function SearchBox() {
   }
 
   return (
-    <div className="border border-gray-200 rounded-full max-w-2xl mx-auto bg-white shadow-lg">
-      <div className="flex flex-col sm:flex-row items-center">
-        <select
-          value={craneType}
-          onChange={(e) => setCraneType(e.target.value)}
-          className="w-full sm:flex-1 h-11 bg-transparent pl-5 pr-2 text-sm font-medium text-gray-900 focus:outline-none cursor-pointer appearance-none rounded-full"
-        >
-          <option value="" disabled>Krantyp wählen…</option>
-          {craneTypes.map((ct) => (
-            <option key={ct.slug} value={ct.slug}>{ct.name}</option>
-          ))}
-        </select>
+    <div className="max-w-2xl mx-auto sm:border sm:border-gray-200 sm:rounded-full sm:bg-white sm:shadow-lg">
+      <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-center">
+        {/* Krantyp field */}
+        <div className="w-full sm:flex-1 text-left">
+          <label className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
+            Krantyp
+          </label>
+          <select
+            value={craneType}
+            onChange={(e) => setCraneType(e.target.value)}
+            className="w-full h-12 sm:h-11 bg-white sm:bg-transparent pl-4 sm:pl-5 pr-3 text-[15px] sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:focus:ring-0 focus:border-blue-500 sm:focus:border-transparent cursor-pointer appearance-none rounded-lg sm:rounded-full border border-gray-300 sm:border-0"
+          >
+            <option value="" disabled>Krantyp wählen…</option>
+            {craneTypes.map((ct) => (
+              <option key={ct.slug} value={ct.slug}>{ct.name}</option>
+            ))}
+          </select>
+        </div>
 
         <div className="hidden sm:block w-px h-6 bg-gray-200 shrink-0" />
 
-        <div ref={wrapperRef} className="relative w-full sm:flex-1">
+        {/* Stadt / PLZ field */}
+        <div ref={wrapperRef} className="relative w-full sm:flex-1 text-left">
+          <label className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
+            Stadt oder PLZ
+          </label>
           <div className="relative">
             <input
               type="text"
@@ -213,7 +223,7 @@ export function SearchBox() {
               onFocus={() => { if (results.length > 0) setIsOpen(true) }}
               placeholder="Stadt oder PLZ…"
               autoComplete="off"
-              className="w-full h-11 bg-transparent px-4 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
+              className="w-full h-12 sm:h-11 bg-white sm:bg-transparent px-4 text-[15px] sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:focus:ring-0 rounded-lg sm:rounded-none border border-gray-300 sm:border-0"
             />
             {isLoading && (
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -242,19 +252,20 @@ export function SearchBox() {
           )}
         </div>
 
+        {/* Search button */}
         <button
           onClick={handleSearch}
           disabled={!craneType}
-          className="sm:m-1 w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-full px-6 h-9 text-sm font-medium transition-colors flex items-center justify-center gap-2 shrink-0"
+          className="sm:m-1 mt-1 sm:mt-0 w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white rounded-lg sm:rounded-full px-6 h-12 sm:h-9 text-[15px] sm:text-sm font-semibold sm:font-medium transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm sm:shadow-none"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           Suchen
         </button>
       </div>
       {hint && (
-        <p className="text-[12px] text-gray-400 mt-1 px-5 pb-2">{hint}</p>
+        <p className="text-[12px] text-gray-400 mt-1 px-1 sm:px-5 sm:pb-2">{hint}</p>
       )}
     </div>
   )
