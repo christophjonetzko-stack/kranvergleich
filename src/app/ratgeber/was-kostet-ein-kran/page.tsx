@@ -88,7 +88,7 @@ export default async function WasKostetEinKranPage() {
       {/* TOC */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
-        <ul className="flex flex-col gap-1">
+        <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#kaufpreise" className="text-[13px] text-blue-600 hover:underline">Was kostet ein Kran zum Kauf?</a></li>
           <li><a href="#laufende-kosten" className="text-[13px] text-blue-600 hover:underline">Versteckte Kosten beim Kranbesitz</a></li>
           <li><a href="#break-even" className="text-[13px] text-blue-600 hover:underline">Break-even: Ab wann lohnt sich der Kauf?</a></li>

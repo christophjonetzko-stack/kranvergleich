@@ -181,7 +181,7 @@ export default async function KrantypenPage() {
       {/* Table of Contents */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
-        <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-1 sm:gap-x-4">
+        <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#vergleich" className="text-[13px] text-blue-600 hover:underline">Vergleichstabelle (alle 8 Typen)</a></li>
           <li><a href="#details" className="text-[13px] text-blue-600 hover:underline">Krantypen im Detail</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen</a></li>

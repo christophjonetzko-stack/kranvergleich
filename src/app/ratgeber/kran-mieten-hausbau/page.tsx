@@ -84,7 +84,7 @@ export default async function KranMietenHausbauPage() {
       {/* TOC */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
-        <ul className="flex flex-col gap-1">
+        <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#ueberblick" className="text-[13px] text-blue-600 hover:underline">1. Überblick: Kran-Bedarf nach Bauphase</a></li>
           <li><a href="#rohbau" className="text-[13px] text-blue-600 hover:underline">2. Rohbau: Autokran für Decken & Fertigteile</a></li>
           <li><a href="#dachstuhl" className="text-[13px] text-blue-600 hover:underline">3. Dachstuhl: Der Klassiker für den Autokran</a></li>

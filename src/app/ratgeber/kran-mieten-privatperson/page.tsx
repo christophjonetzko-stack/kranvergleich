@@ -71,7 +71,7 @@ export default async function KranMietenPrivatpersonPage() {
       {/* Table of contents */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
-        <ul className="flex flex-col gap-1">
+        <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#welche-krane" className="text-[13px] text-blue-600 hover:underline">Welche Krane kann ich als Privatperson mieten?</a></li>
           <li><a href="#kosten" className="text-[13px] text-blue-600 hover:underline">Was kostet ein Kran f&uuml;r Privatpersonen?</a></li>
           <li><a href="#fuehrerschein" className="text-[13px] text-blue-600 hover:underline">Brauche ich einen F&uuml;hrerschein?</a></li>
