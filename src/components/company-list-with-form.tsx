@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { CompanyCard } from './company-card'
 import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
@@ -76,6 +77,17 @@ export function CompanyListWithForm({
       setUserCoords(null)
       setPlzLabel('')
     }
+  }, [])
+
+  // Pre-fill PLZ from URL (?plz=12345) on mount — used by SearchBox redirect
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    const plz = searchParams.get('plz')
+    if (plz && /^\d{5}$/.test(plz) && !plzInput) {
+      setPlzInput(plz)
+      lookupPlz(plz)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Distance map: company id → km (only when userCoords set)

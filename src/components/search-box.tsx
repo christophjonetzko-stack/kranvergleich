@@ -14,64 +14,6 @@ interface CityResult {
   label: string
 }
 
-// Haversine distance in km
-function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371
-  const dLat = ((lat2 - lat1) * Math.PI) / 180
-  const dLng = ((lng2 - lng1) * Math.PI) / 180
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-}
-
-// Coordinates of seoCities (cities with company pages)
-const SEO_CITY_COORDS: Record<string, { lat: number; lng: number; name: string }> = {
-  berlin: { lat: 52.52, lng: 13.405, name: 'Berlin' },
-  hamburg: { lat: 53.5511, lng: 9.9937, name: 'Hamburg' },
-  duesseldorf: { lat: 51.2277, lng: 6.7735, name: 'Düsseldorf' },
-  koeln: { lat: 50.9375, lng: 6.9603, name: 'Köln' },
-  dortmund: { lat: 51.5136, lng: 7.4653, name: 'Dortmund' },
-  leipzig: { lat: 51.3397, lng: 12.3731, name: 'Leipzig' },
-  bremen: { lat: 53.0793, lng: 8.8017, name: 'Bremen' },
-  mannheim: { lat: 49.4875, lng: 8.4660, name: 'Mannheim' },
-  hannover: { lat: 52.3759, lng: 9.7320, name: 'Hannover' },
-  potsdam: { lat: 52.3906, lng: 13.0645, name: 'Potsdam' },
-  karlsruhe: { lat: 49.0069, lng: 8.4037, name: 'Karlsruhe' },
-  nuernberg: { lat: 49.4521, lng: 11.0767, name: 'Nürnberg' },
-  stuttgart: { lat: 48.7758, lng: 9.1829, name: 'Stuttgart' },
-  brandenburg: { lat: 52.4125, lng: 12.5316, name: 'Brandenburg' },
-  augsburg: { lat: 48.3705, lng: 10.8978, name: 'Augsburg' },
-  braunschweig: { lat: 52.2689, lng: 10.5268, name: 'Braunschweig' },
-  'frankfurt-am-main': { lat: 50.1109, lng: 8.6821, name: 'Frankfurt am Main' },
-  essen: { lat: 51.4556, lng: 7.0116, name: 'Essen' },
-  muenchen: { lat: 48.1351, lng: 11.5820, name: 'München' },
-  dresden: { lat: 51.0504, lng: 13.7373, name: 'Dresden' },
-  ulm: { lat: 48.4011, lng: 9.9876, name: 'Ulm' },
-  wiesbaden: { lat: 50.0782, lng: 8.2398, name: 'Wiesbaden' },
-  wuppertal: { lat: 51.2562, lng: 7.1508, name: 'Wuppertal' },
-  duisburg: { lat: 51.4344, lng: 6.7624, name: 'Duisburg' },
-  muenster: { lat: 51.9607, lng: 7.6261, name: 'Münster' },
-  cottbus: { lat: 51.7563, lng: 14.3329, name: 'Cottbus' },
-  ingolstadt: { lat: 48.7665, lng: 11.4258, name: 'Ingolstadt' },
-  hildesheim: { lat: 52.1508, lng: 9.9509, name: 'Hildesheim' },
-  krefeld: { lat: 51.3388, lng: 6.5853, name: 'Krefeld' },
-  moenchengladbach: { lat: 51.1805, lng: 6.4428, name: 'Mönchengladbach' },
-  herne: { lat: 51.5369, lng: 7.2000, name: 'Herne' },
-  neubrandenburg: { lat: 53.5574, lng: 13.2614, name: 'Neubrandenburg' },
-}
-
-function findNearestSeoCity(lat: number, lng: number): { slug: string; name: string; distance: number } {
-  let best = { slug: 'berlin', name: 'Berlin', distance: Infinity }
-  for (const [slug, coords] of Object.entries(SEO_CITY_COORDS)) {
-    const d = distanceKm(lat, lng, coords.lat, coords.lng)
-    if (d < best.distance) {
-      best = { slug, name: coords.name, distance: d }
-    }
-  }
-  return best
-}
-
 export function SearchBox() {
   const router = useRouter()
   const [craneType, setCraneType] = useState('')
@@ -135,6 +77,15 @@ export function SearchBox() {
     if (!craneType) return
     setHint('')
 
+    const typed = cityQuery.trim()
+    const isPlz = /^\d{5}$/.test(typed)
+
+    // PLZ flow — user typed 5 digits, show nationwide listing sorted by distance
+    if (isPlz) {
+      router.push(`/${craneType}?plz=${typed}`)
+      return
+    }
+
     if (selectedCity) {
       // Check if city has a dedicated page (is in seoCities)
       const seoCity = seoCities.find(
@@ -145,15 +96,13 @@ export function SearchBox() {
         // Direct match — go to city page
         router.push(`/${craneType}/${seoCity.slug}`)
       } else {
-        // No page for this city — find nearest city with companies
-        const nearest = findNearestSeoCity(selectedCity.lat, selectedCity.lng)
-        setHint(`Für ${selectedCity.name} zeigen wir Anbieter in ${nearest.name} (${Math.round(nearest.distance)} km entfernt).`)
-        router.push(`/${craneType}/${nearest.slug}`)
+        // No SEO page for this city — fall back to distance-sorted listing by PLZ
+        router.push(`/${craneType}?plz=${selectedCity.plz}`)
       }
-    } else if (cityQuery.trim()) {
-      // Text typed but no autocomplete selection — try exact match
+    } else if (typed) {
+      // Text typed but no autocomplete selection — try exact city match
       const seoCity = seoCities.find(
-        (c) => c.name.toLowerCase() === cityQuery.trim().toLowerCase()
+        (c) => c.name.toLowerCase() === typed.toLowerCase()
       )
       if (seoCity) {
         router.push(`/${craneType}/${seoCity.slug}`)
