@@ -118,6 +118,34 @@ export async function POST(request: Request) {
     const safeDesc = escapeHtml(projectDescription)
     const companyCount = companyIds.length
 
+    // Fetch selected companies upfront — used by both the owner notification
+    // (company list) and the downstream per-company lead emails.
+    let selectedCompanies: { id: string; name: string; email: string | null }[] = []
+    if (companyIds.length > 0) {
+      const sb = getServiceSupabase()
+      const { data } = await sb
+        .from('companies')
+        .select('id, name, email')
+        .in('id', companyIds)
+      selectedCompanies = data ?? []
+    }
+    const companiesWithEmail = selectedCompanies.filter((c) => c.email)
+    const companiesWithoutEmail = selectedCompanies.filter((c) => !c.email)
+
+    const companyListHtml = selectedCompanies.length > 0
+      ? `<ul style="margin:4px 0 0 0;padding-left:18px;font-size:13px;color:#1a1a1a;">
+          ${selectedCompanies
+            .map((c) => {
+              const hasEmail = !!c.email
+              const status = hasEmail
+                ? '<span style="color:#16a34a;">✉️ E-Mail gesendet</span>'
+                : '<span style="color:#dc2626;">⚠️ keine E-Mail — manuell weiterleiten</span>'
+              return `<li style="margin-bottom:2px;"><strong>${escapeHtml(c.name)}</strong> — ${status}</li>`
+            })
+            .join('')}
+        </ul>`
+      : '<span style="color:#9ca3af;">keine</span>'
+
     // Send notification email to owner
     await resend.emails.send({
       from: FROM_EMAIL,
@@ -132,7 +160,7 @@ export async function POST(request: Request) {
           <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Stadt</td><td>${safeCity}</td></tr>
           <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Wunschtermin</td><td>${safeDate}</td></tr>
           <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Mietdauer</td><td>${durationDays ? `${durationDays} Tage` : '–'}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Anbieter</td><td>${companyCount} ausgewählt</td></tr>
+          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;vertical-align:top;">Anbieter</td><td>${companyCount} ausgewählt (${companiesWithEmail.length} mit E-Mail, ${companiesWithoutEmail.length} ohne)${companyListHtml}</td></tr>
         </table>
         ${safeDesc ? `<p style="margin-top:12px;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;">${safeDesc}</p>` : ''}
         <p style="margin-top:16px;font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
@@ -170,20 +198,10 @@ export async function POST(request: Request) {
       console.error('Resend confirmation error:', err)
     })
 
-    // Send lead email to selected companies
-    if (companyIds.length > 0) {
-      const sb = getServiceSupabase()
-      const { data: companies } = await sb
-        .from('companies')
-        .select('id, name, email')
-        .in('id', companyIds)
-
-      if (companies && companies.length > 0) {
-        const companiesWithEmail = companies.filter((c) => c.email)
-        const companiesWithoutEmail = companies.filter((c) => !c.email)
-
-        // Send to each company that has an email
-        for (const company of companiesWithEmail) {
+    // Send lead email to selected companies (reuses selectedCompanies fetched above)
+    if (selectedCompanies.length > 0) {
+      // Send to each company that has an email
+      for (const company of companiesWithEmail) {
           resend.emails.send({
             from: FROM_EMAIL,
             to: company.email!,
@@ -230,10 +248,9 @@ export async function POST(request: Request) {
               <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
               <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
             `,
-          }).catch((err) => {
-            console.error('Resend missing-email notification error:', err)
-          })
-        }
+        }).catch((err) => {
+          console.error('Resend missing-email notification error:', err)
+        })
       }
     }
 
