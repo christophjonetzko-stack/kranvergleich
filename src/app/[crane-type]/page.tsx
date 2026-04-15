@@ -53,15 +53,18 @@ export async function generateMetadata({
 
 export default async function CraneTypePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ 'crane-type': string }>
+  searchParams: Promise<{ plz?: string }>
 }) {
   const { 'crane-type': craneTypeSlug } = await params
+  const { plz } = await searchParams
   const craneType = await getCraneTypeBySlug(craneTypeSlug)
   if (!craneType) notFound()
 
   const [companies, cities] = await Promise.all([
-    getCompaniesForCraneType(craneType.id),
+    getCompaniesForCraneType(craneType.id, plz),
     getCities(),
   ])
 

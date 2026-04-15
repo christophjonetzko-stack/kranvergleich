@@ -223,9 +223,14 @@ export async function getCitiesWithMinCompanies(
 /**
  * Get top companies that offer a given crane type (for landing page).
  * Limited to 50 to avoid URL length issues with Supabase REST API.
+ *
+ * When `nearPlz` is provided, sort by geodistance from that PLZ first, then
+ * take the 50 nearest (instead of top-rated). Used when user lands here via
+ * the homepage SearchBox with a PLZ — nearest firms are the relevant ones.
  */
 export async function getCompaniesForCraneType(
-  craneTypeId: string
+  craneTypeId: string,
+  nearPlz?: string
 ): Promise<CompanyWithCranes[]> {
   const { data: craneData } = await supabase
     .from('company_cranes')
@@ -235,11 +240,46 @@ export async function getCompaniesForCraneType(
   if (!craneData || craneData.length === 0) return []
 
   const companyIds = [...new Set(craneData.map(c => c.company_id))]
+  const limit = 50
 
-  // Fetch in batches of 50 to avoid URL length limits
-  const batchSize = 50
-  const firstBatch = companyIds.slice(0, batchSize)
+  // PLZ-near path: load ALL matching companies (in batches), sort by distance,
+  // then return the 50 nearest. Only triggers when nearPlz is a valid 5-digit
+  // code that resolves to a city in german-cities.json.
+  if (nearPlz && /^\d{5}$/.test(nearPlz)) {
+    const citiesJson = (await import('@/data/german-cities.json')).default as Array<{
+      p: string; n: string; s: string; la: number; ln: number
+    }>
+    const plzCity = citiesJson.find((c) => c.p === nearPlz)
 
+    if (plzCity) {
+      const refLat = plzCity.la
+      const refLng = plzCity.ln
+      const batchSize = 100
+      const all: CompanyWithCranes[] = []
+      for (let i = 0; i < companyIds.length; i += batchSize) {
+        const batch = companyIds.slice(i, i + batchSize)
+        const { data } = await supabase
+          .from('companies')
+          .select(`*, company_cranes (*)`)
+          .in('id', batch)
+          .eq('is_active', true)
+          .eq('is_relevant', true)
+        if (data) all.push(...data)
+      }
+      // Haversine-ish distance (flat-earth approximation is fine for ranking)
+      const withDist = all.map((c) => {
+        if (c.lat == null || c.lng == null) return { c, dist: Number.POSITIVE_INFINITY }
+        const dlat = (c.lat - refLat) * 111
+        const dlng = (c.lng - refLng) * 111 * Math.cos((refLat * Math.PI) / 180)
+        return { c, dist: Math.sqrt(dlat * dlat + dlng * dlng) }
+      })
+      withDist.sort((a, b) => a.dist - b.dist)
+      return withDist.slice(0, limit).map((x) => x.c)
+    }
+  }
+
+  // Default path: top-rated first batch (existing behaviour for SEO pages).
+  const firstBatch = companyIds.slice(0, limit)
   const { data, error } = await supabase
     .from('companies')
     .select(`
