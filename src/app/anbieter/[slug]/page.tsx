@@ -399,16 +399,33 @@ export default async function CompanyPage({
         })()}
 
         {/* Opening hours */}
-        {company.opening_hours && (
-          <section className="border border-gray-200 rounded-lg p-5">
-            <h2 className="text-sm font-semibold text-gray-900 mb-3">Öffnungszeiten</h2>
-            <div className="space-y-1">
-              {company.opening_hours.split(/\s*\|\s*/).map((line, i) => (
-                <p key={i} className="text-[14px] text-gray-700">{line.trim()}</p>
-              ))}
-            </div>
-          </section>
-        )}
+        {company.opening_hours && (() => {
+          // Two stored formats: JSON object like {"Mo": "07:30-16:00", ...}
+          // or pipe-separated string like "Mo-Fr 07:30-16:00 | Sa geschlossen".
+          const raw = company.opening_hours.trim()
+          const DAY_ORDER = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
+          let lines: string[] = []
+          if (raw.startsWith('{')) {
+            try {
+              const obj = JSON.parse(raw) as Record<string, string>
+              lines = DAY_ORDER.filter((d) => obj[d]).map((d) => `${d}: ${obj[d]}`)
+            } catch {
+              lines = [raw]
+            }
+          } else {
+            lines = raw.split(/\s*\|\s*/).map((l) => l.trim()).filter(Boolean)
+          }
+          return (
+            <section className="border border-gray-200 rounded-lg p-5">
+              <h2 className="text-sm font-semibold text-gray-900 mb-3">Öffnungszeiten</h2>
+              <div className="space-y-1">
+                {lines.map((line, i) => (
+                  <p key={i} className="text-[14px] text-gray-700">{line}</p>
+                ))}
+              </div>
+            </section>
+          )
+        })()}
 
         {/* Service area */}
         {(company.service_regions?.length || company.service_radius_km) && (
