@@ -1,7 +1,19 @@
 'use client'
 
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+
+// Reads ?plz=XXXXX from URL on mount. Isolated in its own component so the
+// useSearchParams() CSR bailout only suspends this tiny subtree, not the page.
+function PlzFromUrl({ onPlz }: { onPlz: (plz: string) => void }) {
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    const plz = searchParams.get('plz')
+    if (plz && /^\d{5}$/.test(plz)) onPlz(plz)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  return null
+}
 import { CompanyCard } from './company-card'
 import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
@@ -79,16 +91,13 @@ export function CompanyListWithForm({
     }
   }, [])
 
-  // Pre-fill PLZ from URL (?plz=12345) on mount — used by SearchBox redirect
-  const searchParams = useSearchParams()
-  useEffect(() => {
-    const plz = searchParams.get('plz')
-    if (plz && /^\d{5}$/.test(plz) && !plzInput) {
-      setPlzInput(plz)
+  const handlePlzFromUrl = useCallback((plz: string) => {
+    setPlzInput((prev) => {
+      if (prev) return prev
       lookupPlz(plz)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+      return plz
+    })
+  }, [lookupPlz])
 
   // Distance map: company id → km (only when userCoords set)
   const distanceMap = useMemo(() => {
@@ -185,6 +194,9 @@ export function CompanyListWithForm({
 
   return (
     <div>
+      <Suspense fallback={null}>
+        <PlzFromUrl onPlz={handlePlzFromUrl} />
+      </Suspense>
       {/* Filter & sort bar */}
       {companies.length > 1 && (
         <div className="flex flex-wrap items-center gap-2 mb-3">
