@@ -147,6 +147,17 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
             )}
           </div>
         )}
+
+        {/* Line 5: Price note (firm-provided pricing hint) */}
+        {company.price_note && (
+          <p
+            className="text-[12px] text-gray-500 mt-1.5 line-clamp-1"
+            title={company.price_note}
+          >
+            <span className="text-gray-400">Preishinweis:</span>{' '}
+            {company.price_note}
+          </p>
+        )}
       </div>
 
       {/* CTA buttons */}
