@@ -266,11 +266,27 @@ export async function getCompaniesForCraneType(
           .eq('is_relevant', true)
         if (data) all.push(...data)
       }
+      // Build PLZ→coords map for fallback when company has no lat/lng (~39 firms).
+      // First match on 5-digit zip; if that fails use the leading 2 digits.
+      const plzMap = new Map<string, { la: number; ln: number }>()
+      const plz2Map = new Map<string, { la: number; ln: number }>()
+      for (const c of citiesJson) {
+        if (!plzMap.has(c.p)) plzMap.set(c.p, { la: c.la, ln: c.ln })
+        const p2 = c.p.slice(0, 2)
+        if (!plz2Map.has(p2)) plz2Map.set(p2, { la: c.la, ln: c.ln })
+      }
+
       // Haversine-ish distance (flat-earth approximation is fine for ranking)
       const withDist = all.map((c) => {
-        if (c.lat == null || c.lng == null) return { c, dist: Number.POSITIVE_INFINITY }
-        const dlat = (c.lat - refLat) * 111
-        const dlng = (c.lng - refLng) * 111 * Math.cos((refLat * Math.PI) / 180)
+        let lat = c.lat
+        let lng = c.lng
+        if (lat == null || lng == null) {
+          const fallback = (c.zip && plzMap.get(c.zip)) || (c.zip && plz2Map.get(c.zip.slice(0, 2)))
+          if (fallback) { lat = fallback.la; lng = fallback.ln }
+        }
+        if (lat == null || lng == null) return { c, dist: Number.POSITIVE_INFINITY }
+        const dlat = (lat - refLat) * 111
+        const dlng = (lng - refLng) * 111 * Math.cos((refLat * Math.PI) / 180)
         return { c, dist: Math.sqrt(dlat * dlat + dlng * dlng) }
       })
       withDist.sort((a, b) => a.dist - b.dist)
