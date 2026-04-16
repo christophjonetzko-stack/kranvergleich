@@ -1,13 +1,16 @@
 import type { MetadataRoute } from 'next'
-import { getCraneTypes, getCities } from '@/lib/queries'
+import { getCraneTypes, getCitiesWithMinCompanies } from '@/lib/queries'
 import { supabase } from '@/lib/supabase'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://kranvergleich.de'
 
-  const [craneTypes, cities, companiesResult] = await Promise.all([
+  // indexableCities mirrors the >=3 active companies threshold used by
+  // generateStaticParams + page metadata noindex — keeps sitemap free of
+  // URLs that would resolve to noindex (avoids "Crawled, currently not indexed").
+  const [craneTypes, indexableCities, companiesResult] = await Promise.all([
     getCraneTypes(),
-    getCities(),
+    getCitiesWithMinCompanies('', 3),
     supabase
       .from('companies')
       .select('slug')
@@ -74,9 +77,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  // Programmatic SEO pages: crane-type x city
+  // Programmatic SEO pages: crane-type x city — only cities with >=3 active firms
   const cityPages: MetadataRoute.Sitemap = craneTypes.flatMap((ct) =>
-    cities.map((city) => ({
+    indexableCities.map((city) => ({
       url: `${baseUrl}/${ct.slug}/${city.slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,

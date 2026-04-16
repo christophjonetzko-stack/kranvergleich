@@ -190,16 +190,20 @@ export async function getCitiesWithMinCompanies(
   _craneTypeId: string,
   minCompanies: number = 3
 ): Promise<City[]> {
-  // Get all company_regions and count companies per city
-  // (no longer filtered by crane type — most companies lack crane type data)
-  const { data: allRegions } = await supabase
-    .from('company_regions')
-    .select('company_id, city_id')
+  // Count only active+relevant companies — matches page-level noindex threshold,
+  // so sitemap (which uses this) does not advertise URLs that will be noindexed.
+  const [regionsRes, activeRes] = await Promise.all([
+    supabase.from('company_regions').select('company_id, city_id'),
+    supabase.from('companies').select('id').eq('is_active', true).eq('is_relevant', true),
+  ])
 
-  if (!allRegions || allRegions.length === 0) return []
+  const allRegions = regionsRes.data ?? []
+  const activeIds = new Set((activeRes.data ?? []).map(c => c.id))
+  if (allRegions.length === 0 || activeIds.size === 0) return []
 
   const cityCounts = new Map<string, Set<string>>()
   for (const r of allRegions) {
+    if (!activeIds.has(r.company_id)) continue
     if (!cityCounts.has(r.city_id)) cityCounts.set(r.city_id, new Set())
     cityCounts.get(r.city_id)!.add(r.company_id)
   }
