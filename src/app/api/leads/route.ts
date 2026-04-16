@@ -50,8 +50,11 @@ function isRateLimited(ip: string): boolean {
 
 export async function POST(request: Request) {
   try {
-    // Rate limit by IP
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    // Rate limit by IP — prefer CF-Connecting-IP (Cloudflare sets authoritatively, can't be spoofed)
+    const ip =
+      request.headers.get('cf-connecting-ip') ||
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      'unknown'
     if (isRateLimited(ip)) {
       return NextResponse.json(
         { error: 'Zu viele Anfragen. Bitte versuchen Sie es in einer Minute erneut.' },
