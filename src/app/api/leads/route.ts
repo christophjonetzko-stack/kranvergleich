@@ -3,7 +3,22 @@ import { Resend } from 'resend'
 import { submitLead } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy init — avoid instantiating at module load so builds work without env.
+let resendInstance: Resend | null = null
+function getResend(): Resend {
+  if (!resendInstance) {
+    const key = process.env.RESEND_API_KEY
+    if (!key) throw new Error('RESEND_API_KEY environment variable is required')
+    resendInstance = new Resend(key)
+  }
+  return resendInstance
+}
+
+function getNotificationEmail(): string {
+  const email = process.env.NOTIFICATION_EMAIL
+  if (!email) throw new Error('NOTIFICATION_EMAIL environment variable is required')
+  return email
+}
 
 // --- Input sanitization ---
 const MAX_TEXT_LENGTH = 500
@@ -22,10 +37,6 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
   return typeof str === 'string' ? str.slice(0, max) : ''
 }
 
-const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL!
-if (!process.env.NOTIFICATION_EMAIL) {
-  throw new Error('NOTIFICATION_EMAIL environment variable is required')
-}
 const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 
 // --- Rate limiting: max 5 requests per minute per IP ---
@@ -150,9 +161,9 @@ export async function POST(request: Request) {
       : '<span style="color:#9ca3af;">keine</span>'
 
     // Send notification email to owner
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
-      to: NOTIFICATION_EMAIL,
+      to: getNotificationEmail(),
       subject: `Neue Anfrage: ${safeName} — ${safeCity}`,
       html: `
         <h2>Neue Kranvermietungs-Anfrage</h2>
@@ -173,7 +184,7 @@ export async function POST(request: Request) {
     })
 
     // Send confirmation email to customer
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: customerEmail,
       subject: `Ihre Anfrage bei KranVergleich.de — ${companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
@@ -205,7 +216,7 @@ export async function POST(request: Request) {
     if (selectedCompanies.length > 0) {
       // Send to each company that has an email
       for (const company of companiesWithEmail) {
-          resend.emails.send({
+          getResend().emails.send({
             from: FROM_EMAIL,
             to: company.email!,
             replyTo: customerEmail,
@@ -240,9 +251,9 @@ export async function POST(request: Request) {
         // Forward leads for companies without email to owner
         if (companiesWithoutEmail.length > 0) {
           const missingNames = companiesWithoutEmail.map((c) => escapeHtml(c.name)).join(', ')
-          resend.emails.send({
+          getResend().emails.send({
             from: FROM_EMAIL,
-            to: NOTIFICATION_EMAIL,
+            to: getNotificationEmail(),
             subject: `⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
             html: `
               <h3>Firmen ohne E-Mail-Adresse — manuelle Weiterleitung nötig</h3>

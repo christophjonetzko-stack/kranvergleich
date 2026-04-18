@@ -2,7 +2,17 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy init — avoid instantiating at module load so builds work without env.
+let resendInstance: Resend | null = null
+function getResend(): Resend {
+  if (!resendInstance) {
+    const key = process.env.RESEND_API_KEY
+    if (!key) throw new Error('RESEND_API_KEY environment variable is required')
+    resendInstance = new Resend(key)
+  }
+  return resendInstance
+}
+
 const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 
 export async function POST(request: Request) {
@@ -26,7 +36,7 @@ export async function POST(request: Request) {
       .upsert({ email, source: 'kostenrechner' }, { onConflict: 'email' })
 
     // Send result email
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: `Ihr Kran-Kostenvergleich: ${craneName} — ${priceEstimate}`,
