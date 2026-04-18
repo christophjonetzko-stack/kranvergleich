@@ -1,7 +1,22 @@
 import type { Metadata } from 'next'
+import { Fraunces, JetBrains_Mono } from 'next/font/google'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import './globals.css'
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  display: 'swap',
+  axes: ['opsz', 'SOFT'],
+  style: ['normal', 'italic'],
+})
+
+const jbMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jb-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -26,7 +41,7 @@ export default function RootLayout({
   return (
     <html
       lang="de"
-      className="h-full antialiased"
+      className={`h-full antialiased ${fraunces.variable} ${jbMono.variable}`}
     >
       <body className="min-h-full flex flex-col">
         <Header />

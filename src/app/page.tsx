@@ -50,68 +50,188 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-white py-6 sm:py-12 lg:py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-            <TowerCraneIcon className="w-10 h-10 sm:w-12 sm:h-12 text-blue-600 shrink-0" />
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900">
-              Kran mieten in Deutschland
-            </h1>
+      {/* Hero — Editorial / Broadsheet */}
+      <section className="bg-[#fafaf7] text-neutral-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
+          {/* Top folio strip — newspaper masthead metadata */}
+          <div className="flex items-center justify-between py-2.5 text-[10px] sm:text-[11px] font-[var(--font-editorial-mono)] uppercase tracking-[0.18em] text-neutral-500">
+            <span className="flex items-center gap-2 sm:gap-3">
+              <span className="text-[#c8200d] font-medium">№ 04 / 2026</span>
+              <span aria-hidden className="text-neutral-300">·</span>
+              <span className="hidden sm:inline">Frühjahrsausgabe</span>
+              <span className="sm:hidden">Frühjahr</span>
+            </span>
+            <span className="flex items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline">Kalenderwoche 16</span>
+              <span aria-hidden className="text-neutral-300 hidden sm:inline">·</span>
+              <span>17. April 2026</span>
+            </span>
           </div>
-          <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">
-            {anbieterCount}+ Anbieter vergleichen. Preise sehen. Kostenlos Angebote anfragen.
-          </p>
-          <SearchBox />
 
-          {/* Crane type pills — mobile horizontal scroll */}
-          <div className="sm:hidden -mx-4 px-4 mt-4 overflow-x-auto scrollbar-hide">
-            <div className="flex gap-2 whitespace-nowrap pb-1">
-              {craneTypes.map((ct) => (
-                <Link
-                  key={ct.slug}
-                  href={`/${ct.slug}`}
-                  className="inline-flex items-center bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors shrink-0"
+          {/* Double rule — broadsheet signature */}
+          <div className="border-t-[3px] border-double border-neutral-900 pt-1">
+            <div className="border-t border-neutral-900" />
+          </div>
+
+          {/* Main editorial grid — 12 cols, 8/4 split on lg */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 lg:gap-x-12 pt-8 sm:pt-12 lg:pt-16 pb-10 sm:pb-14">
+            {/* LEFT — kicker, H1, lead, search */}
+            <div className="lg:col-span-8 lg:pr-10 lg:border-r lg:border-neutral-300">
+              {/* Kicker / Rubrik */}
+              <div className="flex items-center gap-3 font-[var(--font-editorial-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.22em] text-neutral-700 mb-5 sm:mb-7">
+                <span className="inline-block w-6 sm:w-10 h-px bg-neutral-900" aria-hidden />
+                <span>Kranvermietung · Deutschland</span>
+              </div>
+
+              {/* H1 — display serif, italic accent on the verb */}
+              <h1
+                className="font-[var(--font-display)] font-light text-neutral-900 leading-[0.92] tracking-[-0.025em] text-[48px] sm:text-[72px] md:text-[88px] lg:text-[104px]"
+                style={{ fontVariationSettings: '"opsz" 144, "SOFT" 30' }}
+              >
+                Kran{' '}
+                <em
+                  className="italic font-normal text-[#c8200d]"
+                  style={{ fontVariationSettings: '"opsz" 144, "SOFT" 100' }}
                 >
-                  {ct.name}
-                </Link>
-              ))}
-            </div>
-          </div>
+                  mieten
+                </em>
+                <br />
+                in Deutschland.
+              </h1>
 
-          <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
-            <Link
-              href="/kostenrechner"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-white border-2 border-blue-600 hover:bg-blue-50 text-blue-600 text-[15px] font-medium rounded-lg transition-colors"
-            >
-              Kostenloses Angebot anfragen →
-            </Link>
-            <span className="text-[13px] text-gray-400">Unverbindlich & in 2 Minuten</span>
-          </div>
-        </div>
-      </section>
+              {/* Editorial byline strip */}
+              <div className="mt-7 sm:mt-9 flex items-center gap-3 text-[11px] sm:text-[12px] font-[var(--font-editorial-mono)] uppercase tracking-[0.18em] text-neutral-500">
+                <span>Von der Redaktion</span>
+                <span aria-hidden className="text-neutral-300">·</span>
+                <span>Lesezeit 2 Min.</span>
+                <span aria-hidden className="text-neutral-300 hidden sm:inline">·</span>
+                <span className="hidden sm:inline">Aktualisiert 17.04.2026</span>
+              </div>
 
-      {/* Trust bar */}
-      <section className="bg-gray-50 border-y border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div>
-              <p className="text-xl font-semibold text-gray-900">{anbieterCount}+</p>
-              <p className="text-xs text-gray-500">Anbieter deutschlandweit</p>
-            </div>
-            <div>
-              <p className="text-xl font-semibold text-gray-900">{staedteCount}+</p>
-              <p className="text-xs text-gray-500">Städte abgedeckt</p>
-            </div>
-            <div>
-              <p className="text-xl font-semibold text-amber-600">
-                {avgRating} <span className="text-amber-500">&#9733;</span>
+              {/* Lead paragraph with drop cap */}
+              <p className="mt-5 sm:mt-6 text-[15px] sm:text-[17px] leading-[1.55] text-neutral-700 max-w-[58ch]">
+                <span
+                  className="float-left mr-3 mt-1 font-[var(--font-display)] font-normal text-[#c8200d] leading-[0.78] text-[64px] sm:text-[78px]"
+                  style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50' }}
+                  aria-hidden
+                >
+                  V
+                </span>
+                om 250-€-Minikran für die Innenhof-Montage bis zum 800-€-Raupenkran für den
+                Industrie­einsatz: <strong className="font-semibold text-neutral-900">{anbieterCount}+ geprüfte
+                Kranvermieter</strong> in Deutschland, transparente Tagespreise und unverbindliche
+                Angebote — kostenfrei in zwei Minuten verglichen.
               </p>
-              <p className="text-xs text-gray-500">Ø Google-Bewertung</p>
+
+              {/* Hairline before action area */}
+              <div className="mt-9 sm:mt-11 mb-5 flex items-center gap-3">
+                <span className="font-[var(--font-editorial-mono)] text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-500">
+                  Angebot anfragen
+                </span>
+                <span className="flex-1 h-px bg-neutral-300" aria-hidden />
+                <span className="font-[var(--font-editorial-mono)] text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-400">
+                  Kostenfrei · 2 Min.
+                </span>
+              </div>
+
+              {/* SearchBox — kept intact */}
+              <SearchBox />
+
+              {/* Secondary CTA */}
+              <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+                <Link
+                  href="/kostenrechner"
+                  className="group inline-flex items-center gap-2 font-[var(--font-editorial-mono)] text-[12px] uppercase tracking-[0.18em] text-neutral-900 border-b border-neutral-900 pb-1 self-start hover:text-[#c8200d] hover:border-[#c8200d] transition-colors"
+                >
+                  Kostenrechner öffnen
+                  <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+                </Link>
+                <span className="text-[12px] text-neutral-400 italic font-[var(--font-display)]">
+                  Vier Schritte. Sofortiger Richtpreis.
+                </span>
+              </div>
             </div>
-            <div>
-              <p className="text-xl font-semibold text-gray-900">{totalReviews.toLocaleString('de-DE')}+</p>
-              <p className="text-xs text-gray-500">Google-Rezensionen</p>
+
+            {/* RIGHT — In Zahlen sidebar (the "by the numbers" block) */}
+            <aside className="lg:col-span-4 mt-12 lg:mt-0 lg:pl-2 relative">
+              {/* Tower crane mark — decorative, top right corner */}
+              <TowerCraneIcon className="hidden lg:block absolute -top-3 right-0 w-10 h-10 text-neutral-300" />
+
+              <div className="font-[var(--font-editorial-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.22em] text-neutral-700 mb-5 sm:mb-7 flex items-center gap-3">
+                <span className="inline-block w-6 sm:w-10 h-px bg-neutral-900" aria-hidden />
+                <span>In Zahlen</span>
+              </div>
+
+              <dl className="grid grid-cols-2 lg:grid-cols-1 gap-x-6 gap-y-6 lg:gap-y-7">
+                {[
+                  {
+                    figure: `${anbieterCount.toLocaleString('de-DE')}`,
+                    label: 'Geprüfte Kranvermieter',
+                    sub: 'deutschlandweit gelistet',
+                  },
+                  {
+                    figure: `${staedteCount}`,
+                    label: 'Städte abgedeckt',
+                    sub: 'mit eigenem Stadtprofil',
+                  },
+                  {
+                    figure: avgRating.toString().replace('.', ','),
+                    label: 'Ø Google-Bewertung',
+                    sub: 'auf 5,0 Sternen',
+                    star: true,
+                  },
+                  {
+                    figure: totalReviews.toLocaleString('de-DE'),
+                    label: 'Google-Rezensionen',
+                    sub: 'redaktionell geprüft',
+                  },
+                ].map((stat, i) => (
+                  <div key={i} className="border-t border-neutral-900 pt-3 lg:pt-4">
+                    <dt className="font-[var(--font-editorial-mono)] text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-neutral-500 mb-1.5 sm:mb-2 order-2">
+                      {stat.label}
+                    </dt>
+                    <dd
+                      className="font-[var(--font-display)] font-light text-neutral-900 leading-none tabular-nums text-[40px] sm:text-[48px] lg:text-[54px]"
+                      style={{ fontVariationSettings: '"opsz" 144, "SOFT" 30' }}
+                    >
+                      {stat.figure}
+                      {stat.star && (
+                        <span className="ml-1.5 text-[#c8200d] text-[26px] sm:text-[30px] align-top">★</span>
+                      )}
+                    </dd>
+                    <p className="mt-1.5 text-[11px] sm:text-[12px] text-neutral-500 italic font-[var(--font-display)]">
+                      {stat.sub}
+                    </p>
+                  </div>
+                ))}
+              </dl>
+
+              {/* Source note — newspaper credibility marker */}
+              <p className="mt-6 lg:mt-8 pt-3 border-t border-neutral-300 font-[var(--font-editorial-mono)] text-[10px] uppercase tracking-[0.18em] text-neutral-400">
+                Quelle: Eigene Datenbank · Google
+              </p>
+            </aside>
+          </div>
+
+          {/* Bottom rule + section nav (newspaper "in dieser Ausgabe") */}
+          <div className="border-t border-neutral-900">
+            <div className="flex items-center gap-4 py-4 sm:py-5 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide">
+              <span className="shrink-0 font-[var(--font-editorial-mono)] text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-500">
+                In dieser Ausgabe ›
+              </span>
+              <div className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
+                {craneTypes.map((ct, i) => (
+                  <span key={ct.slug} className="flex items-center gap-1 sm:gap-2 shrink-0">
+                    {i > 0 && <span aria-hidden className="text-neutral-300">·</span>}
+                    <Link
+                      href={`/${ct.slug}`}
+                      className="font-[var(--font-display)] italic text-[13px] sm:text-[14px] text-neutral-800 hover:text-[#c8200d] transition-colors"
+                    >
+                      {ct.name}
+                    </Link>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
