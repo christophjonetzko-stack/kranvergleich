@@ -166,36 +166,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Crane types grid — 2 columns */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid gap-3 sm:grid-cols-2">
-          {craneTypes.map((ct) => {
-            const priceFrom = getPriceFrom(ct.slug)
-            const Icon = getCraneIcon(ct.slug)
-            return (
-              <Link
-                key={ct.slug}
-                href={`/${ct.slug}`}
-                className="flex gap-3 p-3 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors overflow-hidden"
-              >
-                <div className="w-16 h-16 rounded-md shrink-0 flex items-center justify-center text-gray-600">
-                  <Icon className="w-14 h-14" />
-                </div>
-                <div className="min-w-0 flex flex-col justify-center">
-                  <p className="font-medium text-[15px] text-gray-900">{ct.name}</p>
-                  <p className="text-[13px] text-gray-500 truncate">{ct.desc}</p>
-                  {priceFrom && (
-                    <span className="text-[12px] font-medium text-blue-700 mt-1">
-                      ab {priceFrom.toLocaleString('de-DE')}€/Tag
-                    </span>
-                  )}
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-      </section>
-
       {/* Top Städte — pills. Rotate crane-type slug across cities so internal links distribute across type pages */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Kran mieten in Ihrer Stadt</h2>
