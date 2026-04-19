@@ -11,15 +11,30 @@ import { NewsletterSignup } from '@/components/newsletter-signup'
 
 export const revalidate = 86400
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/' },
-  openGraph: {
-    title: 'KranVergleich.de — Kranvermietung in Deutschland vergleichen',
-    description:
-      'Finden und vergleichen Sie Kranvermietungen in ganz Deutschland. Minikrane, Autokrane, Dachdeckerkrane — Preise, Bewertungen und kostenlose Angebote.',
-    type: 'website',
-    url: '/',
-  },
+// Dynamic metadata — pulls live anbieterCount into the title/description so
+// the SERP snippet carries a concrete trust number. Home was sitting at pos 32
+// with CTR 0.09% (vs. ~0.5% expected at that position) because the default
+// title "KranVergleich.de — …" led with the unknown brand instead of the
+// keyword phrase "Kran mieten".
+export async function generateMetadata(): Promise<Metadata> {
+  const { anbieterCount } = await getSiteStats()
+  const count = anbieterCount.toLocaleString('de-DE')
+  // Use absolute title to bypass the layout's "%s | KranVergleich.de" template
+  // — Google only shows ~60 chars of the title, so we bake the brand into the
+  // string ourselves and keep the keyword phrase up front.
+  const title = `Kran mieten 2026 — ${count} Anbieter ab 150€/Tag | KranVergleich.de`
+  const description = `Kranvermietung in Deutschland vergleichen: ${count} geprüfte Anbieter, 8 Krantypen ab 150€/Tag. Kostenlos 3 Angebote in 2 Minuten.`
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: '/' },
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: '/',
+    },
+  }
 }
 
 function getPriceFrom(slug: string): number | null {
