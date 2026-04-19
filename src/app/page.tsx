@@ -127,7 +127,7 @@ export default async function HomePage() {
                 <Link
                   key={ct.slug}
                   href={`/${ct.slug}`}
-                  className="group relative flex flex-col justify-between gap-4 p-4 bg-white border border-neutral-200 hover:border-neutral-900 transition-colors min-h-[124px]"
+                  className="group relative flex items-center justify-between gap-3 p-4 bg-white border border-neutral-200 hover:border-neutral-900 transition-colors min-h-[124px]"
                 >
                   {/* Left yellow edge — slides in on hover */}
                   <span
@@ -135,17 +135,8 @@ export default async function HomePage() {
                     className="absolute inset-y-0 left-0 w-0 group-hover:w-1 bg-[#FFD100] transition-all"
                   />
 
-                  <div className="flex items-start justify-between">
-                    <Icon className="w-10 h-10 text-neutral-800 shrink-0" />
-                    <span
-                      aria-hidden
-                      className="text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-lg"
-                    >
-                      →
-                    </span>
-                  </div>
-
-                  <div>
+                  {/* Text column — name + price + hover arrow */}
+                  <div className="flex flex-col min-w-0">
                     <p className="font-semibold text-[14px] sm:text-[15px] text-neutral-900 leading-tight">
                       {ct.name}
                     </p>
@@ -158,7 +149,16 @@ export default async function HomePage() {
                         /Tag
                       </p>
                     )}
+                    <span
+                      aria-hidden
+                      className="mt-2 text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-base"
+                    >
+                      →
+                    </span>
                   </div>
+
+                  {/* Icon — right side, filling vertical space */}
+                  <Icon className="w-16 h-16 md:w-20 md:h-20 text-neutral-800 shrink-0" />
                 </Link>
               )
             })}
