@@ -1,7 +1,48 @@
 import type { NextConfig } from "next";
 
+// All crane-type slugs — constrains :craneType param in city-level redirects
+// so arbitrary /foo-mieten/<city> strings don't hijack the rewrite.
+const CRANE_TYPES =
+  'minikran-mieten|autokran-mieten|dachdeckerkran-mieten|raupenkran-mieten|anhaengerkran-mieten|mobilkran-mieten|baukran-mieten|ladekran-mieten';
+
+// Compound-slug short forms: Supabase stores the long slug, but users and
+// Google Request Indexing often guess the short one (observed as a wave of
+// 404s on /{type}/frankfurt). Only include names where the short form is a
+// plausible guess; skip twin-town slugs (fredersdorf-vogelsdorf,
+// blankenfelde-mahlow) where nobody truncates the name.
+const compoundSlugMap: Record<string, string> = {
+  frankfurt: 'frankfurt-am-main',
+  landsberg: 'landsberg-am-lech',
+  woerth: 'woerth-am-rhein',
+};
+
+// Lazy-ASCII → real slug for seoCities with proper-transliterated umlauts
+// (ä→ae, ö→oe, ü→ue). Users and Google Request Indexing often drop the
+// umlaut vowel ("munchen") instead of transliterating ("muenchen"),
+// producing 404s on real city×type pages. Only includes cities with pages
+// in seoCities (i.e. resolve to 200 after redirect).
+const umlautCityMap: Record<string, string> = {
+  dusseldorf: 'duesseldorf',
+  koln: 'koeln',
+  nurnberg: 'nuernberg',
+  munchen: 'muenchen',
+  monchengladbach: 'moenchengladbach',
+  lubeck: 'luebeck',
+  munster: 'muenster',
+  luneburg: 'lueneburg',
+  rudersdorf: 'ruedersdorf',
+};
+
 const nextConfig: NextConfig = {
   async redirects() {
+    const citySlugRedirects = Object.entries({ ...compoundSlugMap, ...umlautCityMap }).map(
+      ([short, real]) => ({
+        source: `/:craneType(${CRANE_TYPES})/${short}`,
+        destination: `/:craneType/${real}`,
+        permanent: true,
+      })
+    );
+
     return [
       // hebekran mieten (500/mies.) → synonym for Minikran/Mobilkran
       {
@@ -61,27 +102,9 @@ const nextConfig: NextConfig = {
         destination: '/dachdeckerkran-mieten',
         permanent: true,
       },
-      // City slug mismatch: Supabase stores compound slugs ("frankfurt-am-main",
-      // "landsberg-am-lech", "woerth-am-rhein") but users and Google Request
-      // Indexing often guess the short form. Redirect short → real slug across
-      // all crane types. Twin-town slugs (fredersdorf-vogelsdorf,
-      // blankenfelde-mahlow) are NOT redirected — nobody truncates them.
-      {
-        source: '/:craneType(minikran-mieten|autokran-mieten|dachdeckerkran-mieten|raupenkran-mieten|anhaengerkran-mieten|mobilkran-mieten|baukran-mieten|ladekran-mieten)/frankfurt',
-        destination: '/:craneType/frankfurt-am-main',
-        permanent: true,
-      },
-      {
-        source: '/:craneType(minikran-mieten|autokran-mieten|dachdeckerkran-mieten|raupenkran-mieten|anhaengerkran-mieten|mobilkran-mieten|baukran-mieten|ladekran-mieten)/landsberg',
-        destination: '/:craneType/landsberg-am-lech',
-        permanent: true,
-      },
-      {
-        source: '/:craneType(minikran-mieten|autokran-mieten|dachdeckerkran-mieten|raupenkran-mieten|anhaengerkran-mieten|mobilkran-mieten|baukran-mieten|ladekran-mieten)/woerth',
-        destination: '/:craneType/woerth-am-rhein',
-        permanent: true,
-      },
-    ]
+      // City slug shorthand → real slug (compound + umlaut-lazy variants)
+      ...citySlugRedirects,
+    ];
   },
 };
 
