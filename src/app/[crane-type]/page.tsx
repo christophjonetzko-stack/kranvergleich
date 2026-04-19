@@ -142,6 +142,21 @@ export default async function CraneTypePage({
             Karte
           </a>
         )}
+        {ratgeber?.sizeClasses && ratgeber.sizeClasses.length > 0 && (
+          <a href="#tragkraft" className="text-[13px] text-blue-600 hover:underline">
+            Tragkraftklassen
+          </a>
+        )}
+        {ratgeber?.brands && ratgeber.brands.length > 0 && (
+          <a href="#marken" className="text-[13px] text-blue-600 hover:underline">
+            Marken &amp; Modelle
+          </a>
+        )}
+        {ratgeber?.alternatives && ratgeber.alternatives.length > 0 && (
+          <a href="#alternativen" className="text-[13px] text-blue-600 hover:underline">
+            Alternativen
+          </a>
+        )}
         {craneType.slug === 'baukran-mieten' && (
           <a href="#schnellbaukran" className="text-[13px] text-blue-600 hover:underline">
             Schnellbaukran
@@ -255,6 +270,78 @@ export default async function CraneTypePage({
             Alle Preise netto, zzgl. MwSt. Richtwerte — die tatsächlichen {craneType.name}-Mietpreise hängen von Tragkraft, Einsatzdauer und Standort ab.
             {' '}Transport (An-/Abfahrt) kommt je nach Entfernung hinzu (ca. 150–500€).
           </p>
+        </section>
+      )}
+
+      {/* Tragkraft-Klassen — which size for which project (long-tail "autokran 30 tonnen" queries) */}
+      {ratgeber?.sizeClasses && ratgeber.sizeClasses.length > 0 && (
+        <section id="tragkraft" className="mb-10 scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            {craneType.name} nach Tragkraft — welche Klasse für welches Projekt?
+          </h2>
+          <p className="text-[14px] text-gray-500 mb-4 leading-relaxed">
+            {craneType.name}e werden in Tragkraftklassen unterteilt. Die benötigte Tragkraft ergibt
+            sich aus dem Gewicht der Last <em>plus</em> der erforderlichen Ausladung — bei voller
+            Reichweite sinkt die Nennlast oft auf 25–40%. Faustregel: lieber eine Klasse größer
+            wählen als zu knapp dimensionieren.
+          </p>
+          <div className="overflow-x-auto border border-gray-200 rounded-lg">
+            <table className="w-full text-[13px]">
+              <thead className="bg-gray-50 text-left text-gray-500">
+                <tr>
+                  <th className="px-3 py-2 font-medium">Klasse</th>
+                  <th className="px-3 py-2 font-medium whitespace-nowrap">Tragkraft</th>
+                  <th className="px-3 py-2 font-medium whitespace-nowrap">Reichweite</th>
+                  <th className="px-3 py-2 font-medium">Typische Einsätze</th>
+                  <th className="px-3 py-2 font-medium whitespace-nowrap">Tagespreis</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ratgeber.sizeClasses.map((sc) => (
+                  <tr key={sc.label} className="border-t border-gray-100 align-top">
+                    <td className="px-3 py-2.5 font-medium text-gray-900">{sc.label}</td>
+                    <td className="px-3 py-2.5 text-gray-700 whitespace-nowrap tabular-nums">{sc.tonnage}</td>
+                    <td className="px-3 py-2.5 text-gray-500 whitespace-nowrap tabular-nums">{sc.reach ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-gray-600 leading-relaxed">{sc.useCase}</td>
+                    <td className="px-3 py-2.5 text-gray-700 whitespace-nowrap tabular-nums font-mono text-[12px]">{sc.priceRange}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-[11px] text-gray-400 mt-3">
+            Preise sind Richtwerte netto, zzgl. MwSt. Die tatsächliche Miete hängt von Region,
+            Anfahrtsentfernung, Mietdauer und Auslastung ab — fordern Sie immer verbindliche Angebote an.
+          </p>
+        </section>
+      )}
+
+      {/* Marken & Modelle — factual reference for branded long-tail queries */}
+      {ratgeber?.brands && ratgeber.brands.length > 0 && (
+        <section id="marken" className="mb-10 scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            {craneType.name} — Marken und Modelle in deutschen Vermietflotten
+          </h2>
+          <p className="text-[14px] text-gray-500 mb-4 leading-relaxed">
+            Deutsche {craneType.name}-Vermieter setzen überwiegend auf eine Handvoll Hersteller. Die
+            folgende Übersicht zeigt die gängigsten Modellreihen und ihre Positionierung im Markt —
+            als Orientierung, nicht als Empfehlung.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {ratgeber.brands.map((b) => (
+              <div key={b.name} className="border border-gray-200 rounded-lg p-4">
+                <p className="font-semibold text-gray-900 mb-1 text-[14px]">{b.name}</p>
+                {b.models.length > 0 && (
+                  <p className="text-[12px] text-gray-500 font-mono mb-2 leading-relaxed">
+                    {b.models.join(' · ')}
+                  </p>
+                )}
+                {b.note && (
+                  <p className="text-[13px] text-gray-600 leading-relaxed">{b.note}</p>
+                )}
+              </div>
+            ))}
+          </div>
         </section>
       )}
 
@@ -381,6 +468,35 @@ export default async function CraneTypePage({
             <li>Bauzeit unter 6 Monaten — kein Fundament spart 1.000–3.000 €</li>
             <li>Wochen- oder Monatsmiete gewünscht (typisch 1.900–4.000 €/Monat)</li>
           </ul>
+        </section>
+      )}
+
+      {/* Alternativen — when a different crane type fits better, with internal links */}
+      {ratgeber?.alternatives && ratgeber.alternatives.length > 0 && (
+        <section id="alternativen" className="mb-10 scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            Alternativen zum {craneType.name} — wann lohnt sich ein anderer Krantyp?
+          </h2>
+          <p className="text-[14px] text-gray-500 mb-4 leading-relaxed">
+            Nicht jedes Hebeprojekt braucht einen {craneType.name}. Je nach Tragkraft, Untergrund,
+            Einsatzort und Mietdauer kann ein anderer Krantyp besser passen — oft bei deutlich
+            niedrigeren Kosten.
+          </p>
+          <div className="space-y-3">
+            {ratgeber.alternatives.map((alt) => (
+              <Link
+                key={alt.slug}
+                href={`/${alt.slug}`}
+                className="block border border-gray-200 hover:border-gray-900 rounded-lg p-4 transition-colors group"
+              >
+                <p className="font-semibold text-gray-900 mb-1 text-[14px]">
+                  {alt.name} mieten
+                  <span className="text-gray-300 group-hover:text-gray-900 ml-1 transition-colors">→</span>
+                </p>
+                <p className="text-[13px] text-gray-600 leading-relaxed">{alt.whenBetter}</p>
+              </Link>
+            ))}
+          </div>
         </section>
       )}
 

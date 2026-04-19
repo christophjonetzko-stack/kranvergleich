@@ -9,6 +9,46 @@ export interface CraneRatgeberUseCase {
   description: string
 }
 
+/**
+ * Tragkraft class — one row in the size-class matrix.
+ * Captures the long-tail "autokran 30 tonnen" / "mobilkran 100t" queries
+ * without spinning up new thin pages.
+ */
+export interface CraneSizeClass {
+  /** Headline like "Kompakt-Autokran 25–35t" */
+  label: string
+  /** Short display tonnage, e.g. "25–35t" */
+  tonnage: string
+  /** Typical reach / hook height, e.g. "30–35m" */
+  reach?: string
+  /** One-liner describing who typically rents this class */
+  useCase: string
+  /** Typical day-rate range for this class */
+  priceRange: string
+}
+
+/**
+ * Manufacturer reference — reporting, not endorsement.
+ * Covers the "liebherr autokran mieten" / "böcker dachdeckerkran" branded queries.
+ */
+export interface CraneBrand {
+  name: string
+  /** Most commonly rented model lines for this brand */
+  models: string[]
+  /** Short factual note — market position, country, product family */
+  note?: string
+}
+
+/**
+ * Alternative crane type for the "when not this, then what" question.
+ * Drives internal linking to sibling type pages.
+ */
+export interface CraneAlternative {
+  name: string
+  slug: string
+  whenBetter: string
+}
+
 export interface CraneRatgeber {
   /** Things typically included in the daily rental price */
   included: string[]
@@ -18,6 +58,12 @@ export interface CraneRatgeber {
   tips: string[]
   /** Optional: typical use cases with project size and price examples */
   useCases?: CraneRatgeberUseCase[]
+  /** Tragkraft matrix — one row per typical size class */
+  sizeClasses?: CraneSizeClass[]
+  /** Manufacturer/model reference for branded long-tail */
+  brands?: CraneBrand[]
+  /** Sibling crane types and when to prefer them */
+  alternatives?: CraneAlternative[]
 }
 
 export const craneRatgeber: Record<string, CraneRatgeber> = {
@@ -193,6 +239,99 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         title: 'Windkraft & Infrastruktur',
         description: 'Windkraftanlagen errichten, Brückenteile setzen, Stahlkonstruktionen montieren. Typisch: 250–500t, mehrere Tage.',
+      },
+    ],
+    sizeClasses: [
+      {
+        label: 'Kompakt-Autokran bis 15t',
+        tonnage: 'bis 15t',
+        reach: '20–27m',
+        useCase: 'Einfamilienhäuser, Pool- und Gartenhausmontage, Kleinbaustellen in engen Wohngebieten',
+        priceRange: '350–550€/Tag',
+      },
+      {
+        label: 'Standard-Autokran 25–35t',
+        tonnage: '25–35t',
+        reach: '30–35m',
+        useCase: 'Dachstuhl bei Ein- und Mehrfamilienhäusern, Hallenbau, Klimaanlagen auf Flachdächern — die in Deutschland am häufigsten vermietete Klasse',
+        priceRange: '500–800€/Tag',
+      },
+      {
+        label: 'Mittelklasse 50–60t',
+        tonnage: '50–60t',
+        reach: '40–50m',
+        useCase: 'Industriemontage, mittlerer Stahlbau, Fertigteilhäuser, Brunnenbohrgeräte und Kompressorstationen setzen',
+        priceRange: '800–1.200€/Tag',
+      },
+      {
+        label: 'Schwere Klasse 80–100t',
+        tonnage: '80–100t',
+        reach: '50–60m',
+        useCase: 'Große Dachstühle, Hallendachbinder, Beton-Fertigteile, Photovoltaik-Großanlagen, Mittelspannungs-Transformatoren',
+        priceRange: '1.200–1.800€/Tag',
+      },
+      {
+        label: 'Heavy 130–160t',
+        tonnage: '130–160t',
+        reach: '60–70m',
+        useCase: 'Kraftwerkskomponenten, Brückenbauteile, industrielle Stahlkonstruktionen, Silos und Kessel',
+        priceRange: '1.800–2.800€/Tag',
+      },
+      {
+        label: 'Großkran ab 250t',
+        tonnage: 'ab 250t',
+        reach: '80m und mehr',
+        useCase: 'Windkraftanlagen, Schwerlastmontage, Brückenträger, Stadionüberdachungen — meist mehrtägige Projekte',
+        priceRange: 'ab 3.000€/Tag',
+      },
+    ],
+    brands: [
+      {
+        name: 'Liebherr',
+        models: ['LTM 1030', 'LTM 1060', 'LTM 1090', 'LTM 1130', 'LTM 1250', 'LTM 1500'],
+        note: 'Marktführer in Deutschland mit Werk in Ehingen. Die LTM-Serie deckt 20 bis 1.200 Tonnen ab und stellt einen Großteil der deutschen Vermietflotten.',
+      },
+      {
+        name: 'Tadano',
+        models: ['ATF 50G-3', 'ATF 110G-5', 'ATF 220G-5', 'ATF 400G-6'],
+        note: 'Japanischer Hersteller mit deutschem Werk in Zweibrücken (ehemals Demag / Faun). Die ATF-Serie ist in allen Tragkraftklassen bis 400t im Einsatz.',
+      },
+      {
+        name: 'Grove',
+        models: ['GMK 3060', 'GMK 5150L', 'GMK 6400', 'GMK 7550'],
+        note: 'Teil der Manitowoc-Gruppe, US-amerikanischer Marktauftritt. Die GMK-Serie ist vor allem im mittleren und schweren Segment verbreitet.',
+      },
+      {
+        name: 'Terex',
+        models: ['AC 35', 'AC 100/4L', 'AC 250-1'],
+        note: 'Deutscher Hersteller, hat den Mobilkranmarkt 2021 verlassen. Viele AC-Modelle sind noch in Vermietflotten im Einsatz und über den Gebrauchtmarkt verfügbar.',
+      },
+    ],
+    alternatives: [
+      {
+        name: 'Mobilkran',
+        slug: 'mobilkran-mieten',
+        whenBetter: 'Ab 100t Tragkraft oder bei echten All-Terrain-Einsätzen mit langen Anfahrten über unbefestigte Wege. In der Vermietpraxis werden die Begriffe oft synonym verwendet — entscheidend sind Tragkraft und Fahrwerkstyp, nicht die Bezeichnung.',
+      },
+      {
+        name: 'Raupenkran',
+        slug: 'raupenkran-mieten',
+        whenBetter: 'Bei weichem Untergrund (Moor, aufgeweichte Baustelle), Lasten über 500t oder wenn der Kran mit Last fahren können muss. Ein Raupenkran kann die Last beim Verfahren halten, ein Autokran nicht.',
+      },
+      {
+        name: 'Dachdeckerkran',
+        slug: 'dachdeckerkran-mieten',
+        whenBetter: 'Bei reinen Dacharbeiten bis 30m Hakenhöhe. Deutlich günstiger (60–70% Ersparnis) und benötigt keinen Kranführerschein — eine 30-minütige Einweisung reicht.',
+      },
+      {
+        name: 'Minikran',
+        slug: 'minikran-mieten',
+        whenBetter: 'Bei Innenhöfen, Toren unter 2m Durchfahrtsbreite, Kellerabgängen oder Einsätzen im Gebäude. Ein Autokran kommt dort nicht hin; Mini-/Spinnenkrane fahren auch durch Standard-Türen.',
+      },
+      {
+        name: 'Ladekran',
+        slug: 'ladekran-mieten',
+        whenBetter: 'Bei reinem Transport mit Kurzeinsatz am Ziel — Paletten vom LKW abladen, Container be- und entladen. Der Ladekran ist fest am LKW montiert und im Transportpreis inkludiert.',
       },
     ],
   },
