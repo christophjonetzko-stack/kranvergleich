@@ -20,8 +20,10 @@ export interface ExtendedCity {
   nearestSlug: string | null  // null = has own companies, otherwise slug of nearest city with firms
 }
 
-// allCities defined after seoCities (below)
-const _extraCities: ExtendedCity[] = [
+// allCities defined after seoCities (below).
+// Exported for next.config.ts redirect generation — direct URLs to these
+// cities 404 (no Supabase row), so we route them to nearestSlug via 307.
+export const _extraCities: ExtendedCity[] = [
   { name: 'Aachen', slug: 'aachen', state: 'Nordrhein-Westfalen', nearestSlug: 'koeln' },
   { name: 'Bielefeld', slug: 'bielefeld', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Bochum', slug: 'bochum', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },

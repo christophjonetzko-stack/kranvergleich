@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { _extraCities, seoCities } from "./src/data/cities-static";
 
 // All crane-type slugs — constrains :craneType param in city-level redirects
 // so arbitrary /foo-mieten/<city> strings don't hijack the rewrite.
@@ -7,8 +8,8 @@ const CRANE_TYPES =
 
 // Compound-slug short forms: Supabase stores the long slug, but users and
 // Google Request Indexing often guess the short one (observed as a wave of
-// 404s on /{type}/frankfurt). Only include names where the short form is a
-// plausible guess; skip twin-town slugs (fredersdorf-vogelsdorf,
+// 404s on /{type}/frankfurt this week). Only include names where the short
+// form is a plausible guess; skip twin-town slugs (fredersdorf-vogelsdorf,
 // blankenfelde-mahlow) where nobody truncates the name.
 const compoundSlugMap: Record<string, string> = {
   frankfurt: 'frankfurt-am-main',
@@ -21,7 +22,7 @@ const compoundSlugMap: Record<string, string> = {
 // umlaut vowel ("munchen") instead of transliterating ("muenchen"),
 // producing 404s on real city×type pages. Only includes cities with pages
 // in seoCities (i.e. resolve to 200 after redirect).
-const umlautCityMap: Record<string, string> = {
+const seoCityUmlautMap: Record<string, string> = {
   dusseldorf: 'duesseldorf',
   koln: 'koeln',
   nurnberg: 'nuernberg',
@@ -33,15 +34,52 @@ const umlautCityMap: Record<string, string> = {
   rudersdorf: 'ruedersdorf',
 };
 
+// _extraCities: 45 cities with frontend autocomplete entries but no Supabase
+// row, so direct URLs currently 404. Each carries a nearestSlug pointing at
+// the closest city with firms. Use 307 (permanent: false) so we can promote
+// any of these to a real seoCity later without fighting a cached permanent
+// redirect. Skip any slug that also appears in seoCities (Lübeck is in both
+// lists — that's a separate data bug tracked in memory).
+const seoCitySlugs = new Set(seoCities.map((c) => c.slug));
+const extraCityNearestMap: Record<string, string> = Object.fromEntries(
+  _extraCities
+    .filter((c) => c.nearestSlug !== null && !seoCitySlugs.has(c.slug))
+    .map((c) => [c.slug, c.nearestSlug as string])
+);
+
+// Lazy-ASCII variants for _extraCities with umlaut-transliterated slugs.
+// Point at the same nearestSlug as the proper slug. Hand-curated because
+// generic "ue→u / oe→o / ae→a" would over-transform slugs like "moers"
+// where the vowel pair is native spelling, not a transliteration.
+const extraCityUmlautMap: Record<string, string> = {
+  gottingen: 'hannover',     // Göttingen → goettingen → hannover
+  mulheim: 'essen',          // Mülheim → muelheim → essen
+  osnabruck: 'hannover',     // Osnabrück → osnabrueck → hannover
+  saarbrucken: 'mannheim',   // Saarbrücken → saarbruecken → mannheim
+  wurzburg: 'nuernberg',     // Würzburg → wuerzburg → nuernberg
+};
+
 const nextConfig: NextConfig = {
   async redirects() {
-    const citySlugRedirects = Object.entries({ ...compoundSlugMap, ...umlautCityMap }).map(
-      ([short, real]) => ({
-        source: `/:craneType(${CRANE_TYPES})/${short}`,
-        destination: `/:craneType/${real}`,
-        permanent: true,
-      })
-    );
+    // Permanent 308 — consolidates short forms into real seoCity pages.
+    const citySlugPermanentRedirects = Object.entries({
+      ...compoundSlugMap,
+      ...seoCityUmlautMap,
+    }).map(([short, real]) => ({
+      source: `/:craneType(${CRANE_TYPES})/${short}`,
+      destination: `/:craneType/${real}`,
+      permanent: true,
+    }));
+
+    // Temporary 307 — _extraCities without own page fall back to nearestSlug.
+    const extraCityTempRedirects = Object.entries({
+      ...extraCityNearestMap,
+      ...extraCityUmlautMap,
+    }).map(([slug, nearest]) => ({
+      source: `/:craneType(${CRANE_TYPES})/${slug}`,
+      destination: `/:craneType/${nearest}`,
+      permanent: false,
+    }));
 
     return [
       // hebekran mieten (500/mies.) → synonym for Minikran/Mobilkran
@@ -103,7 +141,9 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       // City slug shorthand → real slug (compound + umlaut-lazy variants)
-      ...citySlugRedirects,
+      ...citySlugPermanentRedirects,
+      // _extraCities → nearest city with a real page (temporary redirect)
+      ...extraCityTempRedirects,
     ];
   },
 };
