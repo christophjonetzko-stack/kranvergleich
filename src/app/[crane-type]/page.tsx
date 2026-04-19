@@ -31,11 +31,16 @@ export async function generateMetadata({
   const count = companies.length
   const priceStr = craneType.price_day_from ? `ab ${craneType.price_day_from}€/Tag` : ''
 
-  const ctInfo = craneTypesList.find((c) => c.slug === craneTypeSlug)
-  const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
+  // Title: ≤60 Zeichen, mit Preis + Anbieterzahl (Google-Snippet-optimiert)
+  const title = priceStr
+    ? `${craneType.name} mieten — ${priceStr} | ${count} Anbieter vergleichen`
+    : `${craneType.name} mieten — Preise 2026 | ${count} Anbieter vergleichen`
 
-  const title = `${craneType.name} mieten ${priceStr ? `Kosten ${priceStr}` : '— Preisliste 2026'} | ${count} Anbieter vergleichen`
-  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten: ${priceStr ? `Kosten ${priceStr}. ` : ''}${count} Anbieter vergleichen. ${craneType.description} Preisliste 2026 mit Tages-, Wochen- & Monatspreisen. Kostenlos Angebote anfragen.`
+  // Description: ≤155 Zeichen, damit Google nicht abschneidet. Konkrete Zahlen, klarer CTA.
+  const description = priceStr
+    ? `${craneType.name} mieten 2026: ${priceStr} bei ${count} geprüften Anbietern. Tages-, Wochen- & Monatspreise vergleichen. Kostenlos 3 Angebote anfragen.`
+    : `${craneType.name} mieten 2026: Preise von ${count} geprüften Anbietern. Tages-, Wochen- & Monatspreise vergleichen. Kostenlos 3 Angebote anfragen.`
+
   const canonical = `/${craneTypeSlug}`
 
   return {
