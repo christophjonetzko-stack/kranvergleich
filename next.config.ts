@@ -61,6 +61,26 @@ const nextConfig: NextConfig = {
         destination: '/dachdeckerkran-mieten',
         permanent: true,
       },
+      // City slug mismatch: Supabase stores compound slugs ("frankfurt-am-main",
+      // "landsberg-am-lech", "woerth-am-rhein") but users and Google Request
+      // Indexing often guess the short form. Redirect short → real slug across
+      // all crane types. Twin-town slugs (fredersdorf-vogelsdorf,
+      // blankenfelde-mahlow) are NOT redirected — nobody truncates them.
+      {
+        source: '/:craneType(minikran-mieten|autokran-mieten|dachdeckerkran-mieten|raupenkran-mieten|anhaengerkran-mieten|mobilkran-mieten|baukran-mieten|ladekran-mieten)/frankfurt',
+        destination: '/:craneType/frankfurt-am-main',
+        permanent: true,
+      },
+      {
+        source: '/:craneType(minikran-mieten|autokran-mieten|dachdeckerkran-mieten|raupenkran-mieten|anhaengerkran-mieten|mobilkran-mieten|baukran-mieten|ladekran-mieten)/landsberg',
+        destination: '/:craneType/landsberg-am-lech',
+        permanent: true,
+      },
+      {
+        source: '/:craneType(minikran-mieten|autokran-mieten|dachdeckerkran-mieten|raupenkran-mieten|anhaengerkran-mieten|mobilkran-mieten|baukran-mieten|ladekran-mieten)/woerth',
+        destination: '/:craneType/woerth-am-rhein',
+        permanent: true,
+      },
     ]
   },
 };
