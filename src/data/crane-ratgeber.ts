@@ -157,6 +157,94 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
   },
 
   'mobilkran-mieten': {
+    sizeClasses: [
+      {
+        label: 'Stadtkran 25–40t',
+        tonnage: '25–40t',
+        reach: '30–40m',
+        useCase: 'Kompakte 3-Achser für Innenstadtbaustellen, enge Zufahrten, kurze Standzeiten — die kleinste Mobilkran-Klasse, oft als Autokran bezeichnet',
+        priceRange: '500–800€/Tag',
+      },
+      {
+        label: 'Standard-Mobilkran 55–80t',
+        tonnage: '55–80t',
+        reach: '40–55m',
+        useCase: 'Standardmontagen in Gewerbe und Industrie — 4-Achser, All-Terrain-Fahrwerk, der häufigste Mobilkran im mittleren Segment',
+        priceRange: '900–1.400€/Tag',
+      },
+      {
+        label: 'Mittelschwer 100–130t',
+        tonnage: '100–130t',
+        reach: '55–70m',
+        useCase: 'Industriemontage, Betonfertigteile, Brückenteile, Mittelspannungs-Trafos — 5-Achser, ab hier typische Grenze zwischen Autokran- und Mobilkran-Miete',
+        priceRange: '1.400–2.200€/Tag',
+      },
+      {
+        label: 'Schwer 200–250t',
+        tonnage: '200–250t',
+        reach: '70–85m',
+        useCase: 'Stahlbauhallen, Hochregallager, kleine Windkraftanlagen, Klärwerkskomponenten — 5-6-Achser, bei Anfahrt oft Schwertransportgenehmigung nötig',
+        priceRange: '2.200–3.500€/Tag',
+      },
+      {
+        label: 'Großkran 300–400t',
+        tonnage: '300–400t',
+        reach: '80–100m',
+        useCase: 'Windkraftanlagen bis 120m Nabenhöhe, Brückenträger, Petrochemie-Komponenten — 6-7-Achser, mehrtägige Projekte mit eigenem Aufbau-Team',
+        priceRange: '3.500–6.000€/Tag',
+      },
+      {
+        label: 'Schwerstkran ab 500t',
+        tonnage: 'ab 500t',
+        reach: '100m und mehr',
+        useCase: 'Megastruktur-Montage: Offshore-Vorbereitung, Raffinerie-Kolonnen, 160m+ Windkraft-Onshore — 7-9-Achser, oberhalb von ~500t oft Raupenkran wirtschaftlicher',
+        priceRange: 'ab 6.000€/Tag',
+      },
+    ],
+    brands: [
+      {
+        name: 'Liebherr',
+        models: ['LTM 1050-3.1', 'LTM 1100-5.2', 'LTM 1230-5.1', 'LTM 1400-7.1', 'LTM 1750-9.1'],
+        note: 'Marktführer im deutschen Mobilkran-Segment mit Werk in Ehingen. Die LTM-Serie (L = Luftgefederter Teleskopkran, T = Teleskopausleger, M = Mobilkran) deckt 20 bis 1.200 Tonnen ab.',
+      },
+      {
+        name: 'Grove',
+        models: ['GMK 3060L', 'GMK 4100L-1', 'GMK 5150L', 'GMK 6400-1', 'GMK 7450'],
+        note: 'Teil der Manitowoc-Gruppe. Die GMK-Serie (Grove Mobile Kran) ist besonders im 4-5-Achser-Segment präsent; die Siebenachser der 7000er-Reihe konkurrieren direkt mit Liebherr.',
+      },
+      {
+        name: 'Tadano',
+        models: ['AC 3.055L-1', 'AC 4.100L-1', 'AC 5.250-1', 'AC 7.450-1'],
+        note: 'Japanischer Hersteller mit Werk in Zweibrücken (übernommen von Demag 2019). Die AC-Serie (All-Terrain Crane) ist der direkte Gegenspieler zu Liebherr LTM, besonders stark von 100 bis 450 Tonnen.',
+      },
+      {
+        name: 'Manitowoc',
+        models: ['MLC 100', 'MLC 150-1', 'MLC 300'],
+        note: 'US-amerikanische Muttergesellschaft von Grove. Eigene Manitowoc-Modelle sind in Deutschland seltener; meist trifft man die Marke über Grove-Maschinen in deutschen Vermietflotten.',
+      },
+    ],
+    alternatives: [
+      {
+        name: 'Autokran',
+        slug: 'autokran-mieten',
+        whenBetter: 'Unter 100t Tragkraft oder bei kürzeren Projekten mit einfacher Anfahrt auf befestigten Straßen. Autokran und Mobilkran werden oft synonym verwendet — entscheidend sind Tragkraft und Fahrwerk, nicht die Bezeichnung.',
+      },
+      {
+        name: 'Raupenkran',
+        slug: 'raupenkran-mieten',
+        whenBetter: 'Ab 500t Tragkraft, auf weichem Untergrund (Moor, aufgeschütteter Bauboden) oder wenn der Kran die Last fahrend versetzen muss. Raupenkrane sind bei Langzeit-Projekten wirtschaftlicher — kein täglicher An- und Abbau.',
+      },
+      {
+        name: 'Minikran',
+        slug: 'minikran-mieten',
+        whenBetter: 'Bei Innenhöfen, Durchfahrten unter 2m oder Einsätzen im Gebäudeinneren. Ein Mobilkran ab 25t benötigt mindestens 3×8m Stellfläche und 3m Durchfahrtshöhe — in der Stadt oft nicht vorhanden.',
+      },
+      {
+        name: 'Dachdeckerkran',
+        slug: 'dachdeckerkran-mieten',
+        whenBetter: 'Bei reinen Dacharbeiten bis 30m Hakenhöhe. 60–70% günstiger als ein kleiner Mobilkran und benötigt keine Schwertransport-Genehmigung für die Anfahrt.',
+      },
+    ],
     included: [
       'Ausgebildeter Kranführer (gesetzlich vorgeschrieben)',
       'Bei Großkranen ab 250t: meist mehrere Kranführer + Einweiser',
