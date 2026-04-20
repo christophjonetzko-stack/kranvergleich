@@ -110,6 +110,87 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         description: 'Lager-, Produktionshallen, Logistikzentren. Typisch: mittlerer Obendreher, 4–8 Monate, oft kombiniert mit Autokran-Einsätzen für Stahlbau.',
       },
     ],
+    sizeClasses: [
+      {
+        label: 'Schnellmontagekran 18–25m (Untendreher)',
+        tonnage: '1,5–2,5t max. Traglast',
+        reach: '18–25m Hakenhöhe',
+        useCase: 'Einfamilien- und Doppelhäuser, Gartenvillen, kleine Gewerbegebäude — Untendreher mit faltbarem Turm, kein Fundament nötig, Aufbauzeit unter einem Tag',
+        priceRange: '2.500–4.500€/Monat',
+      },
+      {
+        label: 'Standard-Obendreher 30–40m',
+        tonnage: '4–5t am Auslegerende',
+        reach: '30–40m Hakenhöhe, 35–45m Ausladung',
+        useCase: 'Mehrfamilienhäuser mit 3 Vollgeschossen, Reihenhauszeilen, Gewerbebauten mittlerer Größe — die in Deutschland am häufigsten gemietete Baukran-Klasse',
+        priceRange: '4.000–7.500€/Monat + Montage',
+      },
+      {
+        label: 'Mittelklasse-Obendreher 45–55m',
+        tonnage: '6–8t am Auslegerende',
+        reach: '45–55m Hakenhöhe, 50–60m Ausladung',
+        useCase: 'Mehrfamilienhäuser 4–6 Geschosse, größere Hotels, Logistik- und Lagerhallen, Parkhäuser',
+        priceRange: '7.500–14.000€/Monat + Montage',
+      },
+      {
+        label: 'Großobendreher 55–70m',
+        tonnage: '10–12t am Auslegerende',
+        reach: '55–70m Hakenhöhe, 60–75m Ausladung',
+        useCase: 'Hochhäuser bis 20 Geschosse, Krankenhaus-Neubauten, Einkaufszentren, große Hotels und Klinikkomplexe',
+        priceRange: '14.000–22.000€/Monat + Montage',
+      },
+      {
+        label: 'Riesenkran ab 70m',
+        tonnage: 'ab 16t am Auslegerende',
+        reach: '70–110m Hakenhöhe, 75m+ Ausladung',
+        useCase: 'Hochhäuser ab 25 Geschosse, Kraftwerksbau, Raffinerien, Windkraft-Fundamente — bei dieser Klasse werden Kletterkräne (mitwachsend) eingesetzt',
+        priceRange: 'ab 22.000€/Monat + Montage',
+      },
+    ],
+    brands: [
+      {
+        name: 'Liebherr',
+        models: ['125 EC-B 6', '172 EC-B 8', '280 EC-H 12', '357 HC-L 8/16', 'K 78'],
+        note: 'Marktführer im deutschen Turmdrehkranmarkt mit Werk in Biberach. Die EC-B-Serie sind Untendreher für Schnellmontage, die EC-H- und HC-L-Serien sind Obendreher. Die K-Serie (Kompaktkran) deckt den Einsteigerbereich ab.',
+      },
+      {
+        name: 'Potain',
+        models: ['MDT 139', 'MDT 189', 'MDT 249', 'IGO M 14', 'Hup 32-27'],
+        note: 'Teil der Manitowoc-Gruppe. Französischer Hersteller mit starker Präsenz in Deutschland. Die MDT-Serie (Manitowoc Drum Top) sind klassische Obendreher bis 70m; die IGO- und Hup-Serien bedienen den Selbstaufbauenden-Markt.',
+      },
+      {
+        name: 'WOLFFKRAN',
+        models: ['6031.8 Clear', '7032.12 Clear', '355 B', '630 B'],
+        note: 'Deutscher Premiumhersteller mit Sitz in Heilbronn, spezialisiert auf Obendreher für Großbaustellen. Die Clear-Serie zeichnet sich durch starken Hub und präzise Positionierung aus — oft bei Hochhausprojekten im Einsatz.',
+      },
+      {
+        name: 'Wilbert',
+        models: ['WT 180 e.tronic', 'WT 420 e.tronic', 'TDK 420 L18'],
+        note: 'Familienunternehmen aus Waldlaubersheim (Rheinland-Pfalz). Die WT-Serie sind moderne Obendreher mit elektronischer Steuerung; TDK-Kräne sind mitwachsende Turmdrehkräne (Kletterkräne) für Hochhausbau.',
+      },
+    ],
+    alternatives: [
+      {
+        name: 'Autokran',
+        slug: 'autokran-mieten',
+        whenBetter: 'Bei Projekten unter 3 Monaten oder wenn täglich nur 1–2 Hebeeinsätze nötig sind. Autokran kommt, erledigt den Einsatz, fährt wieder ab — keine Montage, keine Genehmigung. Ab 15–20 Einzeleinsätzen lohnt sich der Baukran wirtschaftlich.',
+      },
+      {
+        name: 'Mobilkran',
+        slug: 'mobilkran-mieten',
+        whenBetter: 'Für einmalige Schwerlasthübe (Stahlträger, Fertigteile, Betonelemente) die über der Tragkraft des aufgestellten Baukrans liegen. Mobilkran wird ergänzend zum Baukran eingesetzt, nicht als Ersatz.',
+      },
+      {
+        name: 'Minikran',
+        slug: 'minikran-mieten',
+        whenBetter: 'Bei innen liegenden Arbeiten, im Gebäude selbst oder bei Feinmontagen nach Rohbauende. Minikran ersetzt den Baukran nicht, aber viele Rohbau-Nachläuferarbeiten brauchen keinen großen Kran mehr.',
+      },
+      {
+        name: 'Raupenkran',
+        slug: 'raupenkran-mieten',
+        whenBetter: 'Bei Industriebauten mit schweren Stahlkonstruktionen oder auf weichem Untergrund, wo ein Baukran-Fundament schwierig zu stellen wäre. Raupenkran ist mobil und kann die Baustelle mit Last verfahren.',
+      },
+    ],
   },
 
   'dachdeckerkran-mieten': {
