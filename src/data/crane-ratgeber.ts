@@ -154,6 +154,87 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         description: 'Substrat, Pflanzkassetten, Drainageschichten oder Außengeräte aufs Flachdach heben. Typisch: 1–2 Tage, 200–600€.',
       },
     ],
+    sizeClasses: [
+      {
+        label: 'Kompakt-Dachdeckerkran bis 10m',
+        tonnage: 'bis 500kg',
+        reach: '8–10m Hakenhöhe',
+        useCase: 'Garagen, Carports, niedrige Anbauten, Gartenhäuser — kleinste Klasse für Tagesprojekte auf Einzelobjekten',
+        priceRange: '120–220€/Tag',
+      },
+      {
+        label: 'Standard-Dachdeckerkran 15–18m',
+        tonnage: 'bis 800kg',
+        reach: '15–18m Hakenhöhe',
+        useCase: 'Einfamilienhaus mit 1–2 Vollgeschossen und Satteldach — die in Deutschland am häufigsten gemietete Klasse für Dachsanierung und PV-Montage',
+        priceRange: '200–320€/Tag',
+      },
+      {
+        label: 'Mittelhoch 20–25m',
+        tonnage: 'bis 1.000kg',
+        reach: '20–25m Hakenhöhe',
+        useCase: 'Reihenhäuser, Mehrfamilienhäuser mit 3 Vollgeschossen, Bungalow mit Firsthöhe über 10m, gewerbliche Flachdächer mittlerer Höhe',
+        priceRange: '280–420€/Tag',
+      },
+      {
+        label: 'Hochleistungsklasse 27–30m',
+        tonnage: 'bis 1.500kg',
+        reach: '27–30m Hakenhöhe',
+        useCase: 'Mehrfamilienhäuser mit 4–5 Vollgeschossen, ältere Gründerzeithäuser, Dachsanierung im städtischen Bestand — die Obergrenze des klassischen Dachdeckerkran-Segments',
+        priceRange: '380–520€/Tag',
+      },
+      {
+        label: 'Profi-Klasse ab 32m',
+        tonnage: '1.500–2.500kg',
+        reach: '32–40m Hakenhöhe',
+        useCase: 'Hohe Mehrfamilienhäuser, Gewerbeimmobilien, Schornstein- und Kirchendacharbeiten. Ab dieser Klasse ist ein Autokran oft wirtschaftlicher — bitte im Einzelfall vergleichen',
+        priceRange: '450–700€/Tag',
+      },
+    ],
+    brands: [
+      {
+        name: 'Böcker',
+        models: ['AK 37', 'AK 42', 'AK 46', 'AHK 30', 'AHK 36'],
+        note: 'Marktführer im deutschen Dachdeckerkran-Segment mit Werk in Werne (NRW). Die AK-Serie (Auto-Kran auf LKW-Fahrgestell) dominiert im Handwerker-Verleih; die AHK-Serie (Anhänger-Kran) wird häufig ohne Führerschein-Klasse CE bewegt.',
+      },
+      {
+        name: 'Klaas',
+        models: ['K 27', 'K 35', 'K 42', 'K 1550'],
+        note: 'Familienunternehmen aus Ascheberg (NRW). Die K-Serie bietet LKW-Aufbaukrane und Anhängerkrane mit 27–42m Hakenhöhe und gilt als direkte Alternative zu Böcker — viele Handwerker wechseln nach Modellreihe, nicht nach Hersteller.',
+      },
+      {
+        name: 'Paus',
+        models: ['MK 501', 'MK 601', 'MK 701'],
+        note: 'Hersteller aus Emsbüren (Niedersachsen), spezialisiert auf Schrägaufzüge und kompakte Dachdeckerkrane. MK-Serie wird häufig im Bau-Baumarkt-Verleih (Stundenmiete) angeboten und deckt den Einstiegsbereich bis 10m ab.',
+      },
+      {
+        name: 'GEDA',
+        models: ['GEDA 500 Z/ZP', 'GEDA 200 Z', 'GEDA Solar Lift'],
+        note: 'Hersteller aus Asbach-Bäumenheim (Bayern). Bekannt für Schrägaufzüge und Solarlifte bis 14m Höhe — günstigste Alternative für reinen Materialtransport ohne Schwenkarm, oft unter 100€/Tag.',
+      },
+    ],
+    alternatives: [
+      {
+        name: 'Autokran',
+        slug: 'autokran-mieten',
+        whenBetter: 'Ab 30m Hakenhöhe oder wenn Lasten über 2,5t gehoben werden müssen. Für Kirchendächer, Schornsteine und hohe Gewerbegebäude ist der Autokran trotz höherer Kosten die richtige Wahl.',
+      },
+      {
+        name: 'Anhängerkran',
+        slug: 'anhaengerkran-mieten',
+        whenBetter: 'Bei kurzen Einsätzen mit eigenem Zugfahrzeug und Anhängerkupplung. Der Anhängerkran ist günstiger in der Miete und kann oft ohne CE-Führerschein gezogen werden — praktisch für selbstnutzende Bauherren.',
+      },
+      {
+        name: 'Minikran',
+        slug: 'minikran-mieten',
+        whenBetter: 'Bei Innenhöfen, Durchfahrten unter 2m oder Einsätzen im Gebäudeinneren. Ein Dachdeckerkran braucht ca. 2,5×6m freie Stellfläche an der Straße — wo das nicht geht, ist ein Spinnenkran die einzige Option.',
+      },
+      {
+        name: 'Ladekran',
+        slug: 'ladekran-mieten',
+        whenBetter: 'Wenn Material nur vom LKW abgeladen und am Boden abgesetzt werden soll — ohne Präzisionshub aufs Dach. Der Ladekran ist fest am Transport-LKW montiert und spart die separate Kran-Anmietung bei reiner Anlieferung.',
+      },
+    ],
   },
 
   'mobilkran-mieten': {

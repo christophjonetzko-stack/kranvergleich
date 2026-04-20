@@ -13,7 +13,7 @@ const TYPE_CONTENT_DATES: Record<string, string> = {
   'autokran-mieten': '2026-04-19', // +3 sections: Tragkraft, Marken, Alternativen
   'mobilkran-mieten': '2026-04-19', // +3 sections: Tragkraft, Marken, Alternativen
   'baukran-mieten': '2026-03-15',
-  'dachdeckerkran-mieten': '2026-03-15',
+  'dachdeckerkran-mieten': '2026-04-20', // +3 sections: Tragkraftklassen, Marken, Alternativen
   'minikran-mieten': '2026-03-15',
   'raupenkran-mieten': '2026-03-15',
   'anhaengerkran-mieten': '2026-03-15',
