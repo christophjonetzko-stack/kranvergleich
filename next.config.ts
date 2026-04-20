@@ -18,9 +18,7 @@ const compoundSlugMap: Record<string, string> = {
 };
 
 // Umlaut lazy-ASCII → proper slug of a real page. 308 permanent — consolidates
-// short typo forms into the real page. Covers seoCities plus the handful of
-// _extraCities that were promoted to Supabase during 2026-04-18 but never
-// moved out of _extraCities (saarbruecken below).
+// short typo forms into the real page. All targets are seoCities entries.
 const permanentUmlautLazyMap: Record<string, string> = {
   dusseldorf: 'duesseldorf',
   koln: 'koeln',
@@ -31,35 +29,18 @@ const permanentUmlautLazyMap: Record<string, string> = {
   munster: 'muenster',
   luneburg: 'lueneburg',
   rudersdorf: 'ruedersdorf',
-  saarbrucken: 'saarbruecken', // promoted to Supabase, stayed in _extraCities
+  saarbrucken: 'saarbruecken',
 };
 
-// _extraCities slugs that despite being in the _extraCities list DO have a
-// live Supabase row and pre-rendered page (confirmed via production sitemap
-// 2026-04-19). These were promoted during the 2026-04-18 SEO city expansion
-// but stayed in _extraCities. Treat them as real pages — do NOT redirect
-// them to nearestSlug, that would destroy existing indexation.
-const preservedExtraCitySlugs = new Set([
-  'aachen', 'bielefeld', 'bochum', 'bonn', 'erfurt',
-  'freiburg', 'kiel', 'magdeburg', 'mainz', 'rostock',
-  'saarbruecken',
-]);
-
-// Remaining _extraCities with no Supabase row. Each carries a nearestSlug
-// pointing at the closest city with firms. Use 307 (permanent: false) so
-// we can promote any of these to a real seoCity later without fighting a
-// cached permanent redirect. Skip any slug that also appears in seoCities
-// (Lübeck is in both lists — separate data bug tracked in memory) or is
-// already preserved above.
+// _extraCities with no Supabase row. Each carries a nearestSlug pointing at
+// the closest city with firms. Use 307 (permanent: false) so we can promote
+// any of these to a real seoCity later without fighting a cached permanent
+// redirect. Defensive seoCitySlugs filter guards against the list getting
+// out of sync if a slug gets added to both arrays.
 const seoCitySlugs = new Set(seoCities.map((c) => c.slug));
 const extraCityNearestMap: Record<string, string> = Object.fromEntries(
   _extraCities
-    .filter(
-      (c) =>
-        c.nearestSlug !== null &&
-        !seoCitySlugs.has(c.slug) &&
-        !preservedExtraCitySlugs.has(c.slug)
-    )
+    .filter((c) => c.nearestSlug !== null && !seoCitySlugs.has(c.slug))
     .map((c) => [c.slug, c.nearestSlug as string])
 );
 
