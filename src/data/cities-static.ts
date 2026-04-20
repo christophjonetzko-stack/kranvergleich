@@ -24,30 +24,22 @@ export interface ExtendedCity {
 // Exported for next.config.ts redirect generation — direct URLs to these
 // cities 404 (no Supabase row), so we route them to nearestSlug via 307.
 export const _extraCities: ExtendedCity[] = [
-  { name: 'Chemnitz', slug: 'chemnitz', state: 'Sachsen', nearestSlug: 'dresden' },
   { name: 'Darmstadt', slug: 'darmstadt', state: 'Hessen', nearestSlug: 'frankfurt-am-main' },
   { name: 'Ehingen', slug: 'ehingen', state: 'Baden-Württemberg', nearestSlug: 'ulm' },
   { name: 'Erlangen', slug: 'erlangen', state: 'Bayern', nearestSlug: 'nuernberg' },
   { name: 'Flensburg', slug: 'flensburg', state: 'Schleswig-Holstein', nearestSlug: 'hamburg' },
-  { name: 'Gelsenkirchen', slug: 'gelsenkirchen', state: 'Nordrhein-Westfalen', nearestSlug: 'essen' },
   { name: 'Göttingen', slug: 'goettingen', state: 'Niedersachsen', nearestSlug: 'hannover' },
-  { name: 'Hagen', slug: 'hagen', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Halle', slug: 'halle', state: 'Sachsen-Anhalt', nearestSlug: 'leipzig' },
   { name: 'Hamm', slug: 'hamm', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Heidelberg', slug: 'heidelberg', state: 'Baden-Württemberg', nearestSlug: 'mannheim' },
-  { name: 'Jena', slug: 'jena', state: 'Thüringen', nearestSlug: 'leipzig' },
   { name: 'Kassel', slug: 'kassel', state: 'Hessen', nearestSlug: 'hannover' },
   { name: 'Koblenz', slug: 'koblenz', state: 'Rheinland-Pfalz', nearestSlug: 'koeln' },
-  { name: 'Leverkusen', slug: 'leverkusen', state: 'Nordrhein-Westfalen', nearestSlug: 'koeln' },
   { name: 'Ludwigshafen', slug: 'ludwigshafen', state: 'Rheinland-Pfalz', nearestSlug: 'mannheim' },
   { name: 'Moers', slug: 'moers', state: 'Nordrhein-Westfalen', nearestSlug: 'duisburg' },
   { name: 'Mülheim', slug: 'muelheim', state: 'Nordrhein-Westfalen', nearestSlug: 'essen' },
-  { name: 'Oberhausen', slug: 'oberhausen', state: 'Nordrhein-Westfalen', nearestSlug: 'essen' },
   { name: 'Offenbach', slug: 'offenbach', state: 'Hessen', nearestSlug: 'frankfurt-am-main' },
   { name: 'Osnabrück', slug: 'osnabrueck', state: 'Niedersachsen', nearestSlug: 'hannover' },
-  { name: 'Paderborn', slug: 'paderborn', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Pforzheim', slug: 'pforzheim', state: 'Baden-Württemberg', nearestSlug: 'karlsruhe' },
-  { name: 'Recklinghausen', slug: 'recklinghausen', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Remscheid', slug: 'remscheid', state: 'Nordrhein-Westfalen', nearestSlug: 'wuppertal' },
   { name: 'Salzgitter', slug: 'salzgitter', state: 'Niedersachsen', nearestSlug: 'braunschweig' },
   { name: 'Schwerin', slug: 'schwerin', state: 'Mecklenburg-Vorpommern', nearestSlug: 'hamburg' },
@@ -55,7 +47,6 @@ export const _extraCities: ExtendedCity[] = [
   { name: 'Solingen', slug: 'solingen', state: 'Nordrhein-Westfalen', nearestSlug: 'wuppertal' },
   { name: 'Trier', slug: 'trier', state: 'Rheinland-Pfalz', nearestSlug: 'mannheim' },
   { name: 'Wolfsburg', slug: 'wolfsburg', state: 'Niedersachsen', nearestSlug: 'braunschweig' },
-  { name: 'Würzburg', slug: 'wuerzburg', state: 'Bayern', nearestSlug: 'nuernberg' },
 ]
 
 export const seoCities: CityInfo[] = [
@@ -129,6 +120,16 @@ export const seoCities: CityInfo[] = [
   { slug: 'mainz', name: 'Mainz', state: 'Rheinland-Pfalz', companyCount: 1 },
   { slug: 'rostock', name: 'Rostock', state: 'Mecklenburg-Vorpommern', companyCount: 1 },
   { slug: 'saarbruecken', name: 'Saarbrücken', state: 'Saarland', companyCount: 1 },
+  // 2026-04-20 expansion — 9 _extraCities promoted after diagnostic showed ≥1 home + ≥8 declared firms (Göttingen/Osnabrück deferred — too thin after normalize)
+  { slug: 'chemnitz', name: 'Chemnitz', state: 'Sachsen', companyCount: 2 },
+  { slug: 'wuerzburg', name: 'Würzburg', state: 'Bayern', companyCount: 1 },
+  { slug: 'gelsenkirchen', name: 'Gelsenkirchen', state: 'Nordrhein-Westfalen', companyCount: 1 },
+  { slug: 'hagen', name: 'Hagen', state: 'Nordrhein-Westfalen', companyCount: 1 },
+  { slug: 'oberhausen', name: 'Oberhausen', state: 'Nordrhein-Westfalen', companyCount: 1 },
+  { slug: 'leverkusen', name: 'Leverkusen', state: 'Nordrhein-Westfalen', companyCount: 1 },
+  { slug: 'paderborn', name: 'Paderborn', state: 'Nordrhein-Westfalen', companyCount: 2 },
+  { slug: 'recklinghausen', name: 'Recklinghausen', state: 'Nordrhein-Westfalen', companyCount: 1 },
+  { slug: 'jena', name: 'Jena', state: 'Thüringen', companyCount: 1 },
 ]
 
 export const allCities: ExtendedCity[] = [
