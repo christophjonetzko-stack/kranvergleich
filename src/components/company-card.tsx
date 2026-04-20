@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getCraneTypeNameById } from '@/data/crane-types'
+import { TrackedLink } from '@/components/track'
 
 interface CompanyCardProps {
   company: CompanyWithCranes
@@ -9,6 +10,10 @@ interface CompanyCardProps {
   referencePrice?: string | null
   /** Distance in km from user's PLZ (if provided) */
   distanceKm?: number
+  /** City slug for firm_events context — attached to phone_click on this card. */
+  cityContext?: string | null
+  /** Crane-type slug for firm_events context. */
+  typeContext?: string | null
 }
 
 const INITIALS_COLORS = [
@@ -38,7 +43,7 @@ function getColorClass(name: string): string {
   return INITIALS_COLORS[Math.abs(hash) % INITIALS_COLORS.length]
 }
 
-export function CompanyCard({ company, onRequestQuote, referencePrice, distanceKm }: CompanyCardProps) {
+export function CompanyCard({ company, onRequestQuote, referencePrice, distanceKm, cityContext, typeContext }: CompanyCardProps) {
   const initials = getInitials(company.name)
   const colorClass = getColorClass(company.name)
 
@@ -170,13 +175,17 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
             Angebot anfragen
           </button>
         ) : company.phone ? (
-          <a
+          <TrackedLink
+            firmId={company.id}
+            eventType="phone_click"
+            cityContext={cityContext}
+            typeContext={typeContext}
             href={`tel:${company.phone}`}
             className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[12px] font-medium rounded-md transition-colors text-center whitespace-nowrap"
             aria-label={`Rufen Sie ${company.name} an: ${company.phone}`}
           >
             {company.phone}
-          </a>
+          </TrackedLink>
         ) : null}
         <Link
           href={`/anbieter/${company.slug}`}
@@ -196,12 +205,16 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
             Anfragen
           </button>
         ) : company.phone ? (
-          <a
+          <TrackedLink
+            firmId={company.id}
+            eventType="phone_click"
+            cityContext={cityContext}
+            typeContext={typeContext}
             href={`tel:${company.phone}`}
             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-medium rounded-md transition-colors text-center"
           >
             Anrufen
-          </a>
+          </TrackedLink>
         ) : null}
         <Link
           href={`/anbieter/${company.slug}`}

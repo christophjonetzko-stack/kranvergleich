@@ -225,6 +225,7 @@ export default async function CraneTypePage({
             centerLat={51.1657}
             centerLng={10.4515}
             referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
+            typeContext={craneType.slug}
           />
         </section>
       )}

@@ -196,6 +196,48 @@ export default function DatenschutzPage() {
           </p>
         </section>
 
+        <section>
+          <h2 className="text-xl font-semibold">9. Anbieter-Interaktionsstatistik</h2>
+          <p>
+            Zur Qualitätssicherung unseres Vergleichsportals und zur transparenten Abrechnung
+            unserer Leistungen gegenüber gelisteten Kranvermietern erfassen wir in aggregierter
+            Form, wie häufig Anbieterprofile aufgerufen und wie oft Kontaktlinks (Telefon,
+            E-Mail, Website) zu einem bestimmten Anbieter angeklickt werden.
+          </p>
+          <p>
+            <strong>Was wir speichern:</strong> Anbieter-Kennung, Art des Ereignisses
+            (Profilaufruf / Telefonklick / E-Mail-Klick / Website-Klick), ggf. der Kontext
+            (Stadt- und Krantyp-Seite, von der der Besuch kam), ein tagesweise wechselnder
+            pseudonymisierter Hashwert Ihrer IP-Adresse sowie das Datum. Es werden weder
+            Cookies gesetzt noch Zugriffe auf Ihr Endgerät vorgenommen; die Erfassung erfolgt
+            ausschließlich serverseitig.
+          </p>
+          <p>
+            <strong>Was wir nicht speichern:</strong> Ihre IP-Adresse im Klartext, Ihren
+            Browser-Fingerabdruck, Ihre E-Mail-Adresse oder weitere identifizierende Merkmale.
+            Eine Nachverfolgung einzelner Nutzer über mehrere Tage oder Websites hinweg
+            findet nicht statt.
+          </p>
+          <p>
+            <strong>Rechtsgrundlage:</strong> Die Verarbeitung erfolgt auf Grundlage von
+            Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Nutzungsstatistiken und
+            Abrechnungstransparenz gegenüber Anbietern). § 25 TDDDG findet keine Anwendung,
+            da keine Informationen auf Ihrem Endgerät gespeichert oder aus diesem ausgelesen
+            werden.
+          </p>
+          <p>
+            <strong>Speicherdauer:</strong> 24 Monate ab Erfassung; danach automatische
+            Löschung.
+          </p>
+          <p>
+            <strong>Ihr Widerspruchsrecht:</strong> Sie können der Erfassung gemäß Art. 21
+            Abs. 1 DSGVO jederzeit widersprechen. Richten Sie Ihren Widerspruch formlos an{' '}
+            <a href="mailto:datenschutz@kranvergleich.de" className="underline hover:text-foreground">
+              datenschutz@kranvergleich.de
+            </a>.
+          </p>
+        </section>
+
         <div className="border-t pt-4 mt-8">
           <p className="text-xs text-muted-foreground">
             Stand: April 2026

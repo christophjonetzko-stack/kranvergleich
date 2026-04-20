@@ -15,6 +15,8 @@ interface CompanySectionProps {
   centerLat: number
   centerLng: number
   referencePrice?: string | null
+  cityContext?: string | null
+  typeContext?: string | null
 }
 
 export function CompanySection({
@@ -27,6 +29,8 @@ export function CompanySection({
   centerLat,
   centerLng,
   referencePrice,
+  cityContext,
+  typeContext,
 }: CompanySectionProps) {
   const [mapCompanies, setMapCompanies] = useState(() =>
     companies
@@ -67,6 +71,8 @@ export function CompanySection({
         showCraneTypeFilter={showCraneTypeFilter}
         onFilteredChange={handleFilteredChange}
         referencePrice={referencePrice}
+        cityContext={cityContext}
+        typeContext={typeContext}
       />
 
       {mapCompanies.length > 0 && (

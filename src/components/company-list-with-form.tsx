@@ -47,6 +47,10 @@ interface CompanyListWithFormProps {
   onFilteredChange?: (companies: CompanyWithCranes[]) => void
   /** Reference price label for companies without own pricing */
   referencePrice?: string | null
+  /** City slug passed to firm_events when a card's phone link is clicked */
+  cityContext?: string | null
+  /** Crane-type slug passed to firm_events for the same reason */
+  typeContext?: string | null
 }
 
 export function CompanyListWithForm({
@@ -58,6 +62,8 @@ export function CompanyListWithForm({
   showCraneTypeFilter = false,
   onFilteredChange,
   referencePrice,
+  cityContext,
+  typeContext,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
@@ -285,6 +291,8 @@ export function CompanyListWithForm({
             onRequestQuote={addCompany}
             referencePrice={referencePrice}
             distanceKm={distanceMap.get(company.id)}
+            cityContext={cityContext}
+            typeContext={typeContext}
           />
         ))}
       </div>
