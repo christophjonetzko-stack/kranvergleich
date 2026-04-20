@@ -59,6 +59,9 @@ export async function generateMetadata({
       type: 'website',
       url: canonical,
     },
+    // Thin content (~250 words): deindex to free crawl budget for city×type pages.
+    // `follow` keeps link equity flowing to the city×type destinations.
+    robots: { index: false, follow: true },
   }
 }
 
