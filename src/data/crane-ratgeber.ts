@@ -151,7 +151,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Liebherr',
         models: ['125 EC-B 6', '172 EC-B 8', '280 EC-H 12', '357 HC-L 8/16', 'K 78'],
-        note: 'Marktführer im deutschen Turmdrehkranmarkt mit Werk in Biberach. Die EC-B-Serie sind Untendreher für Schnellmontage, die EC-H- und HC-L-Serien sind Obendreher. Die K-Serie (Kompaktkran) deckt den Einsteigerbereich ab.',
+        note: 'Einer der am häufigsten verliehenen Hersteller im deutschen Turmdrehkranmarkt, mit Werk in Biberach. Die EC-B-Serie sind Untendreher für Schnellmontage, die EC-H- und HC-L-Serien sind Obendreher. Die K-Serie (Kompaktkran) deckt den Einsteigerbereich ab.',
       },
       {
         name: 'Potain',
@@ -276,7 +276,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Böcker',
         models: ['AK 37', 'AK 42', 'AK 46', 'AHK 30', 'AHK 36'],
-        note: 'Marktführer im deutschen Dachdeckerkran-Segment mit Werk in Werne (NRW). Die AK-Serie (Auto-Kran auf LKW-Fahrgestell) dominiert im Handwerker-Verleih; die AHK-Serie (Anhänger-Kran) wird häufig ohne Führerschein-Klasse CE bewegt.',
+        note: 'Eine der am häufigsten verliehenen Marken im Dachdeckerkran-Segment, mit Werk in Werne (NRW). Die AK-Serie (Auto-Kran auf LKW-Fahrgestell) ist im Handwerker-Verleih verbreitet; die AHK-Serie (Anhänger-Kran) wird häufig ohne Führerschein-Klasse CE bewegt.',
       },
       {
         name: 'Klaas',
@@ -367,7 +367,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Liebherr',
         models: ['LTM 1050-3.1', 'LTM 1100-5.2', 'LTM 1230-5.1', 'LTM 1400-7.1', 'LTM 1750-9.1'],
-        note: 'Marktführer im deutschen Mobilkran-Segment mit Werk in Ehingen. Die LTM-Serie (L = Luftgefederter Teleskopkran, T = Teleskopausleger, M = Mobilkran) deckt 20 bis 1.200 Tonnen ab.',
+        note: 'Einer der am häufigsten verliehenen Hersteller im deutschen Mobilkran-Segment, mit Werk in Ehingen. Die LTM-Serie (L = Luftgefederter Teleskopkran, T = Teleskopausleger, M = Mobilkran) deckt 20 bis 1.200 Tonnen ab.',
       },
       {
         name: 'Grove',
@@ -539,7 +539,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Liebherr',
         models: ['LTM 1030', 'LTM 1060', 'LTM 1090', 'LTM 1130', 'LTM 1250', 'LTM 1500'],
-        note: 'Marktführer in Deutschland mit Werk in Ehingen. Die LTM-Serie deckt 20 bis 1.200 Tonnen ab und stellt einen Großteil der deutschen Vermietflotten.',
+        note: 'Verbreiteter deutscher Hersteller mit Werk in Ehingen. Die LTM-Serie deckt 20 bis 1.200 Tonnen ab und stellt einen Großteil der deutschen Vermietflotten.',
       },
       {
         name: 'Tadano',

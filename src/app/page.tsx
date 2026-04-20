@@ -348,7 +348,7 @@ export default async function HomePage() {
                 name: 'Wie finde ich den besten Kranvermieter in meiner Nähe?',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Auf KranVergleich.de können Sie über 800 Kranvermieter in ganz Deutschland nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an.',
+                  text: `Auf KranVergleich.de können Sie ${anbieterCount} Kranvermieter in ganz Deutschland nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an.`,
                 },
               },
             ],

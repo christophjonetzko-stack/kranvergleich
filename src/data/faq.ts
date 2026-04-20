@@ -121,7 +121,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Welche Dachdeckerkran-Marken gibt es zum Mieten?',
-      answer: 'Die gängigsten Dachdeckerkran-Marken in Deutschland sind Böcker (Marktführer, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf KranVergleich.de bieten Böcker-Dachdeckerkrane an — sie gelten als besonders zuverlässig und einfach zu bedienen.',
+      answer: 'Die gängigsten Dachdeckerkran-Marken in Deutschland sind Böcker (häufig im Verleih, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf KranVergleich.de bieten Böcker-Dachdeckerkrane an — sie gelten als besonders zuverlässig und einfach zu bedienen.',
     },
   ],
   'raupenkran-mieten': [
@@ -153,7 +153,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Welche Anhängerkran-Marken kann man mieten?',
-      answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (Marktführer in Deutschland), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet — viele Vermieter auf KranVergleich.de bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
+      answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (eine der am häufigsten verliehenen Marken in Deutschland), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet — viele Vermieter auf KranVergleich.de bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
     },
     {
       question: 'Was ist ein PKW-Anhänger mit Kran?',

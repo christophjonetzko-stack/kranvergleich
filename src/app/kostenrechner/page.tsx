@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CostCalculator } from '@/components/cost-calculator'
 import { FAQSection } from '@/components/faq-section'
+import { getSiteStats } from '@/lib/queries'
+
+export const revalidate = 86400
 
 export const metadata: Metadata = {
   title: 'Kostenrechner — Wie viel kostet ein Kran für mein Projekt?',
@@ -40,7 +43,9 @@ const faqs = [
   },
 ]
 
-export default function KostenrechnerPage() {
+export default async function KostenrechnerPage() {
+  const { anbieterCount } = await getSiteStats()
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
@@ -78,7 +83,7 @@ export default function KostenrechnerPage() {
           geplante Mietdauer.
         </p>
         <p className="mb-3">
-          Die Preise basieren auf einer Marktanalyse von über 800 Kranvermietungen in Deutschland
+          Die Preise basieren auf einer Marktanalyse von {anbieterCount} Kranvermietungen in Deutschland
           (Stand 2026). Für ein verbindliches Angebot können Sie über KranVergleich.de kostenlos
           bei mehreren Anbietern gleichzeitig anfragen.
         </p>
