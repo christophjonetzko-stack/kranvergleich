@@ -54,6 +54,11 @@
     <div>Zugeordnet: <span id="found">0</span></div>
     <div>Übersprungen: <span id="skipped">0</span></div>
     <div>Entfernt: <span id="removed">0</span></div>
+    <div style="margin-left:auto;">
+      <button onclick="resetSkipList()" style="font-size:11px;color:#757575;border:1px solid #e0e0e0;padding:3px 8px;border-radius:4px;cursor:pointer;">
+        Reset Skip-Liste (<span id="skipCount">0</span>)
+      </button>
+    </div>
   </div>
 
   <div id="cardArea"></div>
@@ -99,17 +104,32 @@ async function supabaseFetch(path, options = {}) {
 }
 
 async function loadCompanies() {
-  // Get all company IDs that already have crane types
-  const existingCranes = await supabaseFetch('company_cranes?select=company_id');
+  // Get all company IDs that already have crane types.
+  // IMPORTANT: Supabase REST default limit is 1000 — with 500+ firms × 2-3 types
+  // we easily exceed this. Must paginate or set high limit.
+  let existingCranes = [];
+  let offset = 0;
+  const pageSize = 1000;
+  while (true) {
+    const batch = await supabaseFetch(
+      `company_cranes?select=company_id&limit=${pageSize}&offset=${offset}`
+    );
+    existingCranes = existingCranes.concat(batch);
+    if (batch.length < pageSize) break;
+    offset += pageSize;
+  }
   const hasTypes = new Set(existingCranes.map(r => r.company_id));
+
+  // Also load locally-skipped IDs (persisted so they don't reappear after F5)
+  const skippedIds = new Set(JSON.parse(localStorage.getItem('craneTool_skipped') || '[]'));
 
   // Get active companies with websites
   const allCompanies = await supabaseFetch(
     'companies?select=id,name,website,phone,city,state&is_active=eq.true&is_relevant=eq.true&website=not.is.null&order=google_reviews_count.desc.nullslast&limit=1000'
   );
 
-  // Filter to companies WITHOUT crane types
-  companies = allCompanies.filter(c => !hasTypes.has(c.id));
+  // Filter to companies WITHOUT crane types AND not locally skipped
+  companies = allCompanies.filter(c => !hasTypes.has(c.id) && !skippedIds.has(c.id));
   document.getElementById('total').textContent = companies.length;
   showCompany();
 }
@@ -239,6 +259,15 @@ async function saveTypes() {
 }
 
 function skipCompany() {
+  // Persist skip to localStorage so it survives F5
+  const c = companies[index];
+  if (c) {
+    const skippedIds = JSON.parse(localStorage.getItem('craneTool_skipped') || '[]');
+    if (!skippedIds.includes(c.id)) {
+      skippedIds.push(c.id);
+      localStorage.setItem('craneTool_skipped', JSON.stringify(skippedIds));
+    }
+  }
   skipped++;
   index++;
   showCompany();
@@ -266,6 +295,17 @@ function showToast(msg, type) {
   toast.className = `toast ${type} show`;
   setTimeout(() => toast.className = 'toast', 2000);
 }
+
+function resetSkipList() {
+  if (confirm('Skip-Liste zurücksetzen? Alle übersprungenen Firmen erscheinen wieder.')) {
+    localStorage.removeItem('craneTool_skipped');
+    location.reload();
+  }
+}
+
+// Show skip count on load
+document.getElementById('skipCount').textContent =
+  JSON.parse(localStorage.getItem('craneTool_skipped') || '[]').length;
 
 loadCompanies();
 </script>
