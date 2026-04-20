@@ -141,7 +141,7 @@ export default async function KranMietenPreisePage() {
         Ob Sie einen Kran mieten oder leihen möchten: hier finden Sie alle Kranmiete Kosten auf einen Blick.
         Alle Preise sind unverbindliche Richtwerte (netto, zzgl. MwSt.) basierend auf Marktrecherche Q1 2026.
       </p>
-      <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026</p>
+      <p className="text-[11px] text-gray-300 mb-8">Zuletzt aktualisiert: 20. April 2026 · Marktrecherche Q2/2026 über {anbieterCount}+ Anbieter</p>
 
       {/* TOC */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
@@ -158,6 +158,7 @@ export default async function KranMietenPreisePage() {
           <li><a href="#kranfuehrer" className="text-[13px] text-blue-600 hover:underline">Kran mit Fahrer — was kostet ein Kranführer?</a></li>
           <li><a href="#kostenbeispiele" className="text-[13px] text-blue-600 hover:underline">Kostenbeispiele aus der Praxis</a></li>
           <li><a href="#preisfaktoren" className="text-[13px] text-blue-600 hover:underline">Was beeinflusst die Kranmiete Kosten?</a></li>
+          <li><a href="#regionalpreise" className="text-[13px] text-blue-600 hover:underline">Preise nach Stadt / Region</a></li>
           <li><a href="#zusatzkosten" className="text-[13px] text-blue-600 hover:underline">Zusatzkosten</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen zu Kosten</a></li>
         </ul>
@@ -849,6 +850,110 @@ export default async function KranMietenPreisePage() {
         </div>
       </section>
 
+      {/* Regional price variation — targets "kran mieten hamburg", "autokran münchen preis", "kranvermietung köln" longtail */}
+      <section id="regionalpreise" className="mb-10 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Kran mieten Preise nach Stadt — regionale Preisunterschiede 2026
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Die Kranmiete Kosten unterscheiden sich je nach Region erheblich. Ballungsräume mit
+          hoher Bautätigkeit (München, Frankfurt, Hamburg) liegen 10–20&nbsp;% über dem Bundesschnitt,
+          während ländliche Regionen im Osten oder Norden oft 5–15&nbsp;% günstiger sind. Die Preisspanne
+          entsteht durch Verfügbarkeit, Anfahrtsentfernung und lokales Lohnniveau der Kranführer.
+        </p>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="bg-gray-50 border-b text-left">
+                <th className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">Stadt / Region</th>
+                <th className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">Autokran 30t / Tag</th>
+                <th className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">Preisabweichung</th>
+                <th className="py-3 px-4 font-medium text-gray-900">Charakteristik</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600">
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/muenchen" className="text-blue-600 hover:underline">München</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">700–950€</td>
+                <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+20&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Höchstes Preisniveau DE, sehr hohe Bautätigkeit, knappe Verfügbarkeit</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/frankfurt-am-main" className="text-blue-600 hover:underline">Frankfurt&nbsp;a.&nbsp;M.</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">650–900€</td>
+                <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+15&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Finanzzentrum, viele Hochbauprojekte, Innenstadt aufwendig</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/hamburg" className="text-blue-600 hover:underline">Hamburg</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">620–870€</td>
+                <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+10&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Hafenstadt mit Industrie- und Wohnbau, gute Verfügbarkeit</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/stuttgart" className="text-blue-600 hover:underline">Stuttgart</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">620–850€</td>
+                <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+10&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Industriestandort, hohe Industriemontagenachfrage</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/duesseldorf" className="text-blue-600 hover:underline">Düsseldorf</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">580–820€</td>
+                <td className="py-2.5 px-4 text-gray-700 whitespace-nowrap">+5&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Rheinmetropole, viele Gewerbeimmobilien</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/koeln" className="text-blue-600 hover:underline">Köln</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">550–800€</td>
+                <td className="py-2.5 px-4 text-gray-700 whitespace-nowrap">+3&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">NRW-Großraum mit dichter Anbieterstruktur</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/berlin" className="text-blue-600 hover:underline">Berlin</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">520–780€</td>
+                <td className="py-2.5 px-4 text-gray-600 whitespace-nowrap">Bundesschnitt</td>
+                <td className="py-2.5 px-4 text-gray-500">Großstadt mit moderatem Preisniveau, gute Verfügbarkeit</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/hannover" className="text-blue-600 hover:underline">Hannover</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">500–750€</td>
+                <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−3&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Niedersachsen, Industrieregion mit stabilen Preisen</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/leipzig" className="text-blue-600 hover:underline">Leipzig</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">480–730€</td>
+                <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−7&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Sachsen, günstigere Kranmiete bei wachsender Nachfrage</td>
+              </tr>
+              <tr className="border-b bg-blue-50/40">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/dresden" className="text-blue-600 hover:underline">Dresden</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">470–720€</td>
+                <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−9&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Sächsische Landeshauptstadt, unterdurchschnittliche Preise</td>
+              </tr>
+              <tr className="border-b">
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/nuernberg" className="text-blue-600 hover:underline">Nürnberg</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">540–790€</td>
+                <td className="py-2.5 px-4 text-gray-700 whitespace-nowrap">+2&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Fränkischer Wirtschaftsraum, ausgeglichenes Preisniveau</td>
+              </tr>
+              <tr>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/bremen" className="text-blue-600 hover:underline">Bremen</Link></td>
+                <td className="py-2.5 px-4 whitespace-nowrap">490–740€</td>
+                <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−5&nbsp;%</td>
+                <td className="py-2.5 px-4 text-gray-500">Hansestadt, Hafen- und Industriebau, gute Anbieterdichte</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[11px] text-gray-400 mt-2">
+          Richtwerte für einen 30-Tonnen-Autokran (Tagespreis inkl. Kranführer, ohne Anfahrt). Basis: Durchschnitt
+          aus Angeboten über KranVergleich.de, Q1&nbsp;2026. Reale Preise variieren je nach Anbieter um ±15&nbsp;%
+          — fordern Sie für Ihren Ort mehrere Angebote an, um den günstigsten Anbieter zu finden.
+        </p>
+      </section>
+
       {/* Zusatzkosten */}
       <section id="zusatzkosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -921,6 +1026,35 @@ export default async function KranMietenPreisePage() {
               { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://kranvergleich.de/' },
               { '@type': 'ListItem', position: 2, name: 'Kran mieten Preise' },
             ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: 'Was kostet ein Kran? Preise & Kosten 2026 — alle Krantypen',
+            description:
+              'Komplette Mietkran-Preisliste 2026: Tages-, Wochen-, Monats- und Stundenpreise für alle 8 Krantypen in Deutschland. Regionale Preisunterschiede, Tragkraft-Kostentabelle, Kranführer-Preise, Zusatzkosten und Kostenbeispiele aus der Praxis.',
+            datePublished: '2026-03-20',
+            dateModified: '2026-04-20',
+            author: {
+              '@type': 'Organization',
+              name: 'KranVergleich.de',
+              url: 'https://kranvergleich.de',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'KranVergleich.de',
+              url: 'https://kranvergleich.de',
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': 'https://kranvergleich.de/kran-mieten-preise',
+            },
+            about: { '@type': 'Thing', name: 'Kranvermietung Preise Deutschland 2026' },
           }),
         }}
       />

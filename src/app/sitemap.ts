@@ -12,7 +12,7 @@ export const revalidate = 86400
 const TYPE_CONTENT_DATES: Record<string, string> = {
   'autokran-mieten': '2026-04-19', // +3 sections: Tragkraft, Marken, Alternativen
   'mobilkran-mieten': '2026-04-19', // +3 sections: Tragkraft, Marken, Alternativen
-  'baukran-mieten': '2026-03-15',
+  'baukran-mieten': '2026-04-20', // +3 sections: Tragkraftklassen, Marken, Alternativen
   'dachdeckerkran-mieten': '2026-04-20', // +3 sections: Tragkraftklassen, Marken, Alternativen
   'minikran-mieten': '2026-03-15',
   'raupenkran-mieten': '2026-03-15',
@@ -23,7 +23,7 @@ const DATE_CITY_REFRESH = '2026-04-18' // seoCities expansion + normalize_servic
 const DATE_HOME = '2026-04-19'          // tile layout + icon redesign
 const DATE_KRANVERLEIH = '2026-04-18'   // seoCities expansion
 const DATE_KOSTENRECHNER = '2026-03-12'
-const DATE_PRICES = '2026-03-20'
+const DATE_PRICES = '2026-04-20' // +Regionalpreise section, +Article schema
 const DATE_RATGEBER = '2026-03-01'
 const DATE_LEGAL = '2026-01-01'
 
