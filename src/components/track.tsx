@@ -13,6 +13,8 @@ type EventType =
   | 'phone_click'
   | 'email_click'
   | 'website_click'
+  | 'map_click'
+  | 'form_submit'
 
 interface TrackingContext {
   firmId: string

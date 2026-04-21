@@ -12,7 +12,10 @@ const EVENT_TYPES = new Set([
   'phone_click',
   'email_click',
   'website_click',
+  'map_click',
 ])
+// form_submit is intentionally absent: /api/track accepts only client-fired
+// events. form_submit is written server-side from /api/leads.
 
 // Fixed salt base. The real de-identification comes from combining it with
 // the event date so hashes rotate daily; the base itself does not need to

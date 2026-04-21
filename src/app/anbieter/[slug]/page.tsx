@@ -482,14 +482,16 @@ export default async function CompanyPage({
               centerLat={company.lat}
               centerLng={company.lng}
             />
-            <a
+            <TrackedLink
+              firmId={company.id}
+              eventType="map_click"
               href={`https://www.google.com/maps/dir/?api=1&destination=${company.lat},${company.lng}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center mt-3 text-[13px] text-blue-600 hover:underline"
             >
               Route planen &rarr;
-            </a>
+            </TrackedLink>
           </section>
         )}
 

@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server'
+import { createHash } from 'node:crypto'
 import { Resend } from 'resend'
 import { submitLead } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
+
+// Must match the salt base used by /api/track so a single visitor's events
+// hash identically on the same day (enables cross-event user journey queries).
+const FIRM_EVENTS_SALT_BASE = 'kranvergleich-firm-events-v1'
 
 // Lazy init — avoid instantiating at module load so builds work without env.
 let resendInstance: Resend | null = null
@@ -145,6 +150,34 @@ export async function POST(request: Request) {
     }
     const companiesWithEmail = selectedCompanies.filter((c) => c.email)
     const companiesWithoutEmail = selectedCompanies.filter((c) => !c.email)
+
+    // Log a firm_events row per selected company. Server-side (not a client
+    // beacon) because this is the most important conversion signal and must
+    // not be lost to navigation/beacon failure. Fire-and-forget — never block
+    // the lead response on tracking. See migration 007.
+    if (companyIds.length > 0) {
+      const eventDate = new Date().toISOString().slice(0, 10)
+      const ipHash = createHash('sha256')
+        .update(`${ip}|${eventDate}|${FIRM_EVENTS_SALT_BASE}`)
+        .digest('hex')
+      const rows = companyIds.map((firmId) => ({
+        firm_id: firmId,
+        event_type: 'form_submit',
+        city_context: null,
+        type_context: null,
+        ip_hash: ipHash,
+        event_date: eventDate,
+      }))
+      getServiceSupabase()
+        .from('firm_events')
+        .upsert(rows, {
+          onConflict: 'firm_id,ip_hash,event_type,event_date',
+          ignoreDuplicates: true,
+        })
+        .then(({ error }) => {
+          if (error) console.error('firm_events form_submit insert error:', error)
+        })
+    }
 
     const companyListHtml = selectedCompanies.length > 0
       ? `<ul style="margin:4px 0 0 0;padding-left:18px;font-size:13px;color:#1a1a1a;">
