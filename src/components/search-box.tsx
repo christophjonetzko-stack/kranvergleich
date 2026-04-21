@@ -217,11 +217,13 @@ export function SearchBox() {
           )}
         </div>
 
-        {/* Search button */}
+        {/* Search button — editorial/navigation CTA (black). Transaction CTAs
+            across the site ("Angebot anfragen", form submit) stay blue as a
+            deliberate two-tier signal: black = discovery, blue = commitment. */}
         <button
           onClick={handleSearch}
           disabled={!craneType}
-          className="sm:m-1 mt-1 sm:mt-0 w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white rounded-lg sm:rounded-full px-6 h-12 sm:h-9 text-[15px] sm:text-sm font-semibold sm:font-medium transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm sm:shadow-none"
+          className="sm:m-1 mt-1 sm:mt-0 w-full sm:w-auto bg-neutral-950 hover:bg-neutral-800 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed text-white rounded-lg sm:rounded-full px-6 h-12 sm:h-9 text-[15px] sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm sm:shadow-none"
         >
           <svg className="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

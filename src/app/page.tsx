@@ -84,6 +84,13 @@ export default async function HomePage() {
             <SearchBox />
           </div>
 
+          {/* Procedural hint — addresses "what happens after Suchen" (gap left
+              by H1/subline/trust-bar). Mono typeface + hairline dots match the
+              spec-sheet eyebrow above the H1. */}
+          <p className="mt-3 sm:mt-4 text-[12px] text-neutral-500 font-[var(--font-mono)] tracking-[0.02em]">
+            Anbieter vergleichen · Preise sehen · anfragen in 1 Klick
+          </p>
+
           {/* Trust bar — inline list with hairline separators */}
           <ul className="mt-5 sm:mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-neutral-600">
             <li className="inline-flex items-center gap-1.5">
