@@ -6,7 +6,7 @@ import { getCraneTypeNameById } from '@/data/crane-types'
 import { getCraneIconByName } from '@/components/crane-icons'
 import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { LeadForm } from '@/components/lead-form'
-import { TrackProfileView, TrackedLink } from '@/components/track'
+import { TrackProfileView, TrackedLink, RevealablePhone } from '@/components/track'
 
 export const revalidate = 86400
 
@@ -179,15 +179,15 @@ export default async function CompanyPage({
                   Angebot anfragen
                 </a>
               ) : company.phone ? (
-                <TrackedLink
+                <RevealablePhone
                   firmId={company.id}
-                  eventType="phone_click"
-                  href={`tel:${company.phone}`}
+                  phone={company.phone}
                   className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+                  icon={<svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>}
+                  revealedPrefix="Rufen Sie an: "
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
-                  Rufen Sie an: {company.phone}
-                </TrackedLink>
+                  Telefonnummer anzeigen
+                </RevealablePhone>
               ) : null}
               {company.website && (
                 <TrackedLink
@@ -202,14 +202,14 @@ export default async function CompanyPage({
                 </TrackedLink>
               )}
               {canInquire && company.phone && (
-                <TrackedLink
+                <RevealablePhone
                   firmId={company.id}
-                  eventType="phone_click"
-                  href={`tel:${company.phone}`}
+                  phone={company.phone}
                   className="inline-flex items-center px-4 py-2 border border-gray-100 hover:border-gray-200 text-[13px] text-gray-600 rounded-md transition-colors"
+                  revealedPrefix="Anrufen: "
                 >
-                  Anrufen: {company.phone}
-                </TrackedLink>
+                  Telefonnummer anzeigen
+                </RevealablePhone>
               )}
             </div>
           </div>
@@ -335,15 +335,15 @@ export default async function CompanyPage({
                 Angebot anfragen
               </a>
             ) : company.phone ? (
-              <TrackedLink
+              <RevealablePhone
                 firmId={company.id}
-                eventType="phone_click"
-                href={`tel:${company.phone}`}
+                phone={company.phone}
                 className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium rounded-md transition-colors"
+                icon={<svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>}
+                revealedPrefix="Rufen Sie an: "
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
-                Rufen Sie an: {company.phone}
-              </TrackedLink>
+                Telefonnummer anzeigen
+              </RevealablePhone>
             ) : null}
             {company.website && (
               <TrackedLink

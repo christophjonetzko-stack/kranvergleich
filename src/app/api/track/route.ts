@@ -8,6 +8,7 @@ import { getServiceSupabase } from '@/lib/supabase'
 
 const EVENT_TYPES = new Set([
   'profile_view',
+  'phone_reveal',
   'phone_click',
   'email_click',
   'website_click',

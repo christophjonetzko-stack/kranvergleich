@@ -292,6 +292,7 @@ def esc(s):
 
 EVENT_LABELS = {
     "profile_view": "Profilaufrufe",
+    "phone_reveal": "Telefonnummer angezeigt",
     "phone_click": "Telefon-Klicks",
     "email_click": "E-Mail-Klicks",
     "website_click": "Website-Klicks",
@@ -319,7 +320,7 @@ def engagement_section_html() -> str:
         )
 
     # Total tiles per event type
-    tile_order = ["profile_view", "phone_click", "email_click", "website_click"]
+    tile_order = ["profile_view", "phone_reveal", "phone_click", "email_click", "website_click"]
     tiles = "".join(
         f"<div class='kpi'><div class='kpi-val'>{events_by_type.get(et, 0):,}</div>"
         f"<div class='kpi-label'>{EVENT_LABELS[et]}</div></div>"
@@ -337,6 +338,7 @@ def engagement_section_html() -> str:
         city_rows_html = "".join(
             f"<tr><td>{esc(city_slug)}</td>"
             f"<td>{events_by_type_city['profile_view'].get(city_slug, 0):,}</td>"
+            f"<td>{events_by_type_city['phone_reveal'].get(city_slug, 0):,}</td>"
             f"<td>{events_by_type_city['phone_click'].get(city_slug, 0):,}</td>"
             f"<td>{events_by_type_city['email_click'].get(city_slug, 0):,}</td>"
             f"<td>{events_by_type_city['website_click'].get(city_slug, 0):,}</td>"
@@ -348,7 +350,7 @@ def engagement_section_html() -> str:
             "Herkunft der Interaktionen (Top-Städte)</h3>"
             "<table>"
             "<thead><tr><th>Stadt</th>"
-            "<th>Profilaufrufe</th><th>Telefon</th><th>E-Mail</th><th>Website</th><th>Summe</th></tr></thead>"
+            "<th>Profilaufrufe</th><th>Tel. angezeigt</th><th>Telefon</th><th>E-Mail</th><th>Website</th><th>Summe</th></tr></thead>"
             f"<tbody>{city_rows_html}</tbody></table>"
         )
     else:

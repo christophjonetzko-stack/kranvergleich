@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getCraneTypeNameById } from '@/data/crane-types'
-import { TrackedLink } from '@/components/track'
+import { RevealablePhone } from '@/components/track'
 
 interface CompanyCardProps {
   company: CompanyWithCranes
@@ -175,17 +175,15 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
             Angebot anfragen
           </button>
         ) : company.phone ? (
-          <TrackedLink
+          <RevealablePhone
             firmId={company.id}
-            eventType="phone_click"
+            phone={company.phone}
             cityContext={cityContext}
             typeContext={typeContext}
-            href={`tel:${company.phone}`}
             className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[12px] font-medium rounded-md transition-colors text-center whitespace-nowrap"
-            aria-label={`Rufen Sie ${company.name} an: ${company.phone}`}
           >
-            {company.phone}
-          </TrackedLink>
+            Telefonnummer anzeigen
+          </RevealablePhone>
         ) : null}
         <Link
           href={`/anbieter/${company.slug}`}
@@ -205,16 +203,15 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
             Anfragen
           </button>
         ) : company.phone ? (
-          <TrackedLink
+          <RevealablePhone
             firmId={company.id}
-            eventType="phone_click"
+            phone={company.phone}
             cityContext={cityContext}
             typeContext={typeContext}
-            href={`tel:${company.phone}`}
             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-medium rounded-md transition-colors text-center"
           >
             Anrufen
-          </TrackedLink>
+          </RevealablePhone>
         ) : null}
         <Link
           href={`/anbieter/${company.slug}`}
