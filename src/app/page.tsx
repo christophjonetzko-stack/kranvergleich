@@ -47,6 +47,12 @@ export default async function HomePage() {
   ])
   const { anbieterCount, staedteCount, avgRating, totalReviews } = siteStats
   const topCities = seoCities.slice(0, 12)
+  // Sort table rows by Anbieter count descending — descending coverage reads
+  // as "expanding catalog" rather than making the niche types (Dachdeckerkran,
+  // Ladekran) look like gaps next to Autokran/Minikran at the top.
+  const tableCraneTypes = [...craneTypes].sort(
+    (a, b) => (companyCounts.get(b.id) ?? 0) - (companyCounts.get(a.id) ?? 0)
+  )
 
   return (
     <div>
@@ -154,7 +160,7 @@ export default async function HomePage() {
               <span className="w-5" aria-hidden />
             </div>
 
-            {craneTypes.map((ct, i) => {
+            {tableCraneTypes.map((ct, i) => {
               const priceFrom = getPriceFrom(ct.slug) ?? ct.price_day_from
               const count = companyCounts.get(ct.id) ?? 0
               return (
