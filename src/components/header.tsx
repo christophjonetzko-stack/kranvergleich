@@ -14,51 +14,6 @@ interface CityResult {
   lng: number
 }
 
-function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371
-  const dLat = ((lat2 - lat1) * Math.PI) / 180
-  const dLng = ((lng2 - lng1) * Math.PI) / 180
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-}
-
-const COMPACT_COORDS: Record<string, { lat: number; lng: number }> = {
-  berlin: { lat: 52.52, lng: 13.405 },
-  hamburg: { lat: 53.5511, lng: 9.9937 },
-  duesseldorf: { lat: 51.2277, lng: 6.7735 },
-  koeln: { lat: 50.9375, lng: 6.9603 },
-  dortmund: { lat: 51.5136, lng: 7.4653 },
-  leipzig: { lat: 51.3397, lng: 12.3731 },
-  bremen: { lat: 53.0793, lng: 8.8017 },
-  mannheim: { lat: 49.4875, lng: 8.466 },
-  hannover: { lat: 52.3759, lng: 9.732 },
-  potsdam: { lat: 52.3906, lng: 13.0645 },
-  karlsruhe: { lat: 49.0069, lng: 8.4037 },
-  nuernberg: { lat: 49.4521, lng: 11.0767 },
-  stuttgart: { lat: 48.7758, lng: 9.1829 },
-  brandenburg: { lat: 52.4125, lng: 12.5316 },
-  augsburg: { lat: 48.3705, lng: 10.8978 },
-  braunschweig: { lat: 52.2689, lng: 10.5268 },
-  'frankfurt-am-main': { lat: 50.1109, lng: 8.6821 },
-  essen: { lat: 51.4556, lng: 7.0116 },
-  muenchen: { lat: 48.1351, lng: 11.582 },
-  dresden: { lat: 51.0504, lng: 13.7373 },
-  ulm: { lat: 48.4011, lng: 9.9876 },
-  wiesbaden: { lat: 50.0782, lng: 8.2398 },
-  wuppertal: { lat: 51.2562, lng: 7.1508 },
-  duisburg: { lat: 51.4344, lng: 6.7624 },
-  muenster: { lat: 51.9607, lng: 7.6261 },
-  cottbus: { lat: 51.7563, lng: 14.3329 },
-  ingolstadt: { lat: 48.7665, lng: 11.4258 },
-  hildesheim: { lat: 52.1508, lng: 9.9509 },
-  krefeld: { lat: 51.3388, lng: 6.5853 },
-  moenchengladbach: { lat: 51.1805, lng: 6.4428 },
-  herne: { lat: 51.5369, lng: 7.2 },
-  neubrandenburg: { lat: 53.5574, lng: 13.2614 },
-}
-
 function CompactSearch() {
   const router = useRouter()
   const [craneType, setCraneType] = useState('')
@@ -106,30 +61,31 @@ function CompactSearch() {
     setIsOpen(false)
   }
 
-  function findNearestSeoCity(lat: number, lng: number) {
-    let best = { slug: 'berlin', name: 'Berlin', distance: Infinity }
-    for (const sc of seoCities) {
-      // Use rough city center coords from a lookup
-      const coords = COMPACT_COORDS[sc.slug]
-      if (!coords) continue
-      const d = distanceKm(lat, lng, coords.lat, coords.lng)
-      if (d < best.distance) best = { slug: sc.slug, name: sc.name, distance: d }
-    }
-    return best
-  }
-
   function handleSearch() {
     if (!craneType) return
+
+    const typed = cityQuery.trim()
+    const isPlz = /^\d{5}$/.test(typed)
+
+    // PLZ flow — user typed 5 digits, show nationwide listing sorted by distance.
+    // Matches SearchBox on home so the header search behaves the same.
+    if (isPlz) {
+      router.push(`/${craneType}?plz=${typed}`)
+      setCityQuery('')
+      setSelectedCity(null)
+      return
+    }
+
     if (selectedCity) {
       const seoCity = seoCities.find((c) => c.name.toLowerCase() === selectedCity.name.toLowerCase())
       if (seoCity) {
         router.push(`/${craneType}/${seoCity.slug}`)
       } else {
-        const nearest = findNearestSeoCity(selectedCity.lat, selectedCity.lng)
-        router.push(`/${craneType}/${nearest.slug}`)
+        // No SEO page — fall back to distance-sorted listing by PLZ
+        router.push(`/${craneType}?plz=${selectedCity.plz}`)
       }
-    } else if (cityQuery.trim()) {
-      const seoCity = seoCities.find((c) => c.name.toLowerCase() === cityQuery.trim().toLowerCase())
+    } else if (typed) {
+      const seoCity = seoCities.find((c) => c.name.toLowerCase() === typed.toLowerCase())
       if (seoCity) {
         router.push(`/${craneType}/${seoCity.slug}`)
       } else {
