@@ -1,12 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SearchBox } from '@/components/search-box'
-import { getCraneIcon } from '@/components/crane-icons'
 import { PriceTable } from '@/components/price-table'
-import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
-import { getSiteStats } from '@/lib/queries'
+import { getSiteStats, getCraneTypes, getCompanyCountsPerCraneType } from '@/lib/queries'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 
 export const revalidate = 86400
@@ -42,7 +40,12 @@ function getPriceFrom(slug: string): number | null {
 }
 
 export default async function HomePage() {
-  const { anbieterCount, staedteCount, avgRating, totalReviews } = await getSiteStats()
+  const [siteStats, craneTypes, companyCounts] = await Promise.all([
+    getSiteStats(),
+    getCraneTypes(),
+    getCompanyCountsPerCraneType(),
+  ])
+  const { anbieterCount, staedteCount, avgRating, totalReviews } = siteStats
   const topCities = seoCities.slice(0, 12)
 
   return (
@@ -137,16 +140,30 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Crane-type grid — all 8 types, internal SEO links, tabular price */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
-            {craneTypes.map((ct) => {
-              const priceFrom = getPriceFrom(ct.slug)
-              const Icon = getCraneIcon(ct.slug)
+          {/* Crane-type table — editorial spec-sheet style, entity-rich for SEO/AEO.
+              Full row is a Link; mono-font numbers + hairline borders match
+              the rest of the industrial hero language. */}
+          <div className="bg-white border border-neutral-200">
+            {/* Header row — desktop only; mobile stacks per row */}
+            <div className="hidden sm:grid grid-cols-[1.4fr_1fr_1fr_0.9fr_0.9fr_auto] gap-4 px-5 py-3 border-b border-neutral-200 text-[11px] uppercase tracking-[0.15em] font-semibold text-neutral-500 font-[var(--font-mono)]">
+              <span>Krantyp</span>
+              <span>Tragkraft</span>
+              <span>Hakenhöhe</span>
+              <span className="text-right">ab €/Tag</span>
+              <span className="text-right">Anbieter</span>
+              <span className="w-5" aria-hidden />
+            </div>
+
+            {craneTypes.map((ct, i) => {
+              const priceFrom = getPriceFrom(ct.slug) ?? ct.price_day_from
+              const count = companyCounts.get(ct.id) ?? 0
               return (
                 <Link
                   key={ct.slug}
                   href={`/${ct.slug}`}
-                  className="group relative flex items-center justify-between gap-3 p-4 bg-white border border-neutral-200 hover:border-neutral-900 transition-colors min-h-[124px]"
+                  className={`group relative grid grid-cols-2 sm:grid-cols-[1.4fr_1fr_1fr_0.9fr_0.9fr_auto] gap-x-4 gap-y-1 px-5 py-4 hover:bg-neutral-50 transition-colors ${
+                    i > 0 ? 'border-t border-neutral-100' : ''
+                  }`}
                 >
                   {/* Left yellow edge — slides in on hover */}
                   <span
@@ -154,30 +171,44 @@ export default async function HomePage() {
                     className="absolute inset-y-0 left-0 w-0 group-hover:w-1 bg-[#FFD100] transition-all"
                   />
 
-                  {/* Text column — name + price + hover arrow */}
-                  <div className="flex flex-col min-w-0">
-                    <p className="font-semibold text-[14px] sm:text-[15px] text-neutral-900 leading-tight">
-                      {ct.name}
-                    </p>
-                    {priceFrom && (
-                      <p className="mt-1 text-[12px] text-neutral-500 font-[var(--font-mono)] tabular-nums">
-                        ab{' '}
-                        <span className="text-neutral-900 font-semibold">
-                          {priceFrom.toLocaleString('de-DE')} €
-                        </span>
-                        /Tag
-                      </p>
-                    )}
-                    <span
-                      aria-hidden
-                      className="mt-2 text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-base"
-                    >
-                      →
-                    </span>
-                  </div>
+                  <span className="col-span-2 sm:col-span-1 font-semibold text-[15px] text-neutral-900">
+                    {ct.name}
+                  </span>
 
-                  {/* Icon — right side, filling vertical space */}
-                  <Icon className="w-16 h-16 md:w-20 md:h-20 text-neutral-800 shrink-0" />
+                  <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
+                    Tragkraft
+                  </span>
+                  <span className="text-[13px] text-neutral-600 font-[var(--font-mono)] tabular-nums text-right sm:text-left">
+                    {ct.typical_capacity_kg ?? '—'}
+                  </span>
+
+                  <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
+                    Hakenhöhe
+                  </span>
+                  <span className="text-[13px] text-neutral-600 font-[var(--font-mono)] tabular-nums text-right sm:text-left">
+                    {ct.typical_height_m ?? '—'}
+                  </span>
+
+                  <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
+                    ab €/Tag
+                  </span>
+                  <span className="text-[13px] text-neutral-900 font-semibold font-[var(--font-mono)] tabular-nums text-right">
+                    {priceFrom ? `${priceFrom.toLocaleString('de-DE')} €` : '—'}
+                  </span>
+
+                  <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
+                    Anbieter
+                  </span>
+                  <span className="text-[13px] text-neutral-600 font-[var(--font-mono)] tabular-nums text-right">
+                    {count.toLocaleString('de-DE')}
+                  </span>
+
+                  <span
+                    aria-hidden
+                    className="hidden sm:inline-flex items-center text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-base w-5 justify-end"
+                  >
+                    →
+                  </span>
                 </Link>
               )
             })}

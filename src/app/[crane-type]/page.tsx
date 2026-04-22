@@ -10,7 +10,6 @@ import { getFAQsForCraneType } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
 import { getRatgeberForCraneType } from '@/data/crane-ratgeber'
-import { getCraneIcon } from '@/components/crane-icons'
 
 export const revalidate = 86400
 
@@ -92,16 +91,7 @@ export default async function CraneTypePage({
       </nav>
 
       {/* Hero mini */}
-      <div className="mb-8 flex items-start gap-4">
-        {(() => {
-          const Icon = getCraneIcon(craneType.slug)
-          return (
-            <div className="shrink-0 hidden sm:block text-gray-600">
-              <Icon className="w-16 h-16" />
-            </div>
-          )
-        })()}
-        <div>
+      <div className="mb-8">
         <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[1.0] tracking-[-0.02em] text-[28px] sm:text-[36px] lg:text-[40px] mb-2">
           {craneType.name} mieten
           {craneType.price_day_from && (
@@ -139,7 +129,6 @@ export default async function CraneTypePage({
           <li aria-hidden className="text-neutral-300">·</li>
           <li>Kostenlos &amp; unverbindlich</li>
         </ul>
-        </div>
       </div>
 
       <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>

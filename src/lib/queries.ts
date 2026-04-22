@@ -232,6 +232,28 @@ export async function getCitiesWithMinCompanies(
  * take the 50 nearest (instead of top-rated). Used when user lands here via
  * the homepage SearchBox with a PLZ — nearest firms are the relevant ones.
  */
+/** Distinct active-company count per crane_type, keyed by crane_type_id.
+ * Used to fill the "Anbieter" column in the home-page crane-type table.
+ * One batch query — cheaper than N calls to getCompaniesForCraneType just
+ * to read .length. */
+export async function getCompanyCountsPerCraneType(): Promise<Map<string, number>> {
+  const { data } = await supabase
+    .from('company_cranes')
+    .select('crane_type_id, company_id, companies!inner(is_active, is_relevant)')
+    .eq('companies.is_active', true)
+    .eq('companies.is_relevant', true)
+
+  const perType = new Map<string, Set<string>>()
+  for (const row of (data ?? []) as Array<{ crane_type_id: string; company_id: string }>) {
+    const set = perType.get(row.crane_type_id) ?? new Set<string>()
+    set.add(row.company_id)
+    perType.set(row.crane_type_id, set)
+  }
+  const out = new Map<string, number>()
+  for (const [k, v] of perType) out.set(k, v.size)
+  return out
+}
+
 export async function getCompaniesForCraneType(
   craneTypeId: string,
   nearPlz?: string

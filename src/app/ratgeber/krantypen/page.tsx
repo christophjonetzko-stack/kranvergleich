@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getCraneIcon } from '@/components/crane-icons'
 import { cranePrices } from '@/data/crane-prices'
 import { getSiteStats } from '@/lib/queries'
 
@@ -265,23 +264,17 @@ export default async function KrantypenPage() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {craneTypeData.map((ct) => {
-            const Icon = getCraneIcon(ct.slug)
             const price = cranePrices.find((p) => p.craneTypeSlug === ct.slug)
             return (
               <article key={ct.slug} className="border border-gray-200 rounded-lg p-5">
-                <div className="flex items-start gap-3 mb-2">
-                  <div className="shrink-0 text-gray-500">
-                    <Icon className="w-12 h-12" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-[16px] font-semibold text-gray-900">
-                      <Link href={`/${ct.slug}`} className="hover:text-blue-600">{ct.name}</Link>
-                    </h3>
-                    <p className="text-[11px] text-gray-400 mb-1">Auch: {ct.also}</p>
-                    <p className="text-[12px] font-medium text-blue-600">
-                      {price ? `ab ${price.dayFrom}€/Tag` : '—'} · {ct.capacity}
-                    </p>
-                  </div>
+                <div className="mb-3">
+                  <h3 className="text-[16px] font-semibold text-gray-900">
+                    <Link href={`/${ct.slug}`} className="hover:text-blue-600">{ct.name}</Link>
+                  </h3>
+                  <p className="text-[11px] text-gray-400 mb-1">Auch: {ct.also}</p>
+                  <p className="text-[12px] font-medium text-blue-600">
+                    {price ? `ab ${price.dayFrom}€/Tag` : '—'} · {ct.capacity}
+                  </p>
                 </div>
                 <p className="text-[13px] text-gray-500 leading-relaxed mb-3">{ct.shortDesc}</p>
                 <p className="text-[12px] text-gray-400 mb-3">

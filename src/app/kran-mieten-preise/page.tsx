@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PriceTable } from '@/components/price-table'
-import { getCraneIcon } from '@/components/crane-icons'
 import { cranePrices } from '@/data/crane-prices'
 import { craneTypes } from '@/data/crane-types'
 import { FAQSection } from '@/components/faq-section'
@@ -618,36 +617,29 @@ export default async function KranMietenPreisePage() {
           if (!ct) return null
           return (
             <div key={p.craneTypeSlug} className="border border-gray-200 rounded-lg p-4">
-              <div className="flex gap-4 items-start">
-                <div className="w-16 h-16 rounded-md shrink-0 hidden sm:flex items-center justify-center text-gray-600">
-                  {(() => { const Icon = getCraneIcon(ct.slug); return <Icon className="w-14 h-14" /> })()}
+              <Link href={`/${ct.slug}`} className="hover:underline">
+                <h3 className="font-medium text-[15px] text-gray-900 mb-1">
+                  {ct.name} mieten — ab {p.dayFrom.toLocaleString('de-DE')}€/Tag
+                </h3>
+              </Link>
+              <p className="text-[13px] text-gray-500 mb-2">{ct.desc}</p>
+              <div className="grid grid-cols-3 gap-2 text-[12px]">
+                <div className="bg-gray-50 rounded p-2">
+                  <span className="text-gray-400">Tag</span>
+                  <p className="font-medium text-gray-900">{p.dayFrom.toLocaleString('de-DE')}–{p.dayTo.toLocaleString('de-DE')}€</p>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <Link href={`/${ct.slug}`} className="hover:underline">
-                    <h3 className="font-medium text-[15px] text-gray-900 mb-1">
-                      {ct.name} mieten — ab {p.dayFrom.toLocaleString('de-DE')}€/Tag
-                    </h3>
-                  </Link>
-                  <p className="text-[13px] text-gray-500 mb-2">{ct.desc}</p>
-                  <div className="grid grid-cols-3 gap-2 text-[12px]">
-                    <div className="bg-gray-50 rounded p-2">
-                      <span className="text-gray-400">Tag</span>
-                      <p className="font-medium text-gray-900">{p.dayFrom.toLocaleString('de-DE')}–{p.dayTo.toLocaleString('de-DE')}€</p>
-                    </div>
-                    <div className="bg-gray-50 rounded p-2">
-                      <span className="text-gray-400">Woche</span>
-                      <p className="font-medium text-gray-900">{p.weekFrom.toLocaleString('de-DE')}–{p.weekTo.toLocaleString('de-DE')}€</p>
-                    </div>
-                    <div className="bg-gray-50 rounded p-2">
-                      <span className="text-gray-400">Monat</span>
-                      <p className="font-medium text-gray-900">{p.monthFrom.toLocaleString('de-DE')}–{p.monthTo.toLocaleString('de-DE')}€</p>
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-gray-400 mt-2">
-                    {p.includesOperator ? 'Kranführer inklusive.' : 'Ohne Kranführer.'} {p.notes}
-                  </p>
+                <div className="bg-gray-50 rounded p-2">
+                  <span className="text-gray-400">Woche</span>
+                  <p className="font-medium text-gray-900">{p.weekFrom.toLocaleString('de-DE')}–{p.weekTo.toLocaleString('de-DE')}€</p>
+                </div>
+                <div className="bg-gray-50 rounded p-2">
+                  <span className="text-gray-400">Monat</span>
+                  <p className="font-medium text-gray-900">{p.monthFrom.toLocaleString('de-DE')}–{p.monthTo.toLocaleString('de-DE')}€</p>
                 </div>
               </div>
+              <p className="text-[11px] text-gray-400 mt-2">
+                {p.includesOperator ? 'Kranführer inklusive.' : 'Ohne Kranführer.'} {p.notes}
+              </p>
             </div>
           )
         })}
