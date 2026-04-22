@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { craneTypes } from '@/data/crane-types'
-import { seoCities } from '@/data/cities-static'
+import { resolveSearchTarget } from '@/lib/search'
 
 interface CityResult {
   plz: string
@@ -84,45 +84,10 @@ export function SearchBox() {
   }
 
   function handleSearch() {
-    if (!craneType) return
-    setHint('')
-
-    const typed = cityQuery.trim()
-    const isPlz = /^\d{5}$/.test(typed)
-
-    // PLZ flow — user typed 5 digits, show nationwide listing sorted by distance
-    if (isPlz) {
-      router.push(`/${craneType}?plz=${typed}`)
-      return
-    }
-
-    if (selectedCity) {
-      // Check if city has a dedicated page (is in seoCities)
-      const seoCity = seoCities.find(
-        (c) => c.name.toLowerCase() === selectedCity.name.toLowerCase()
-      )
-
-      if (seoCity) {
-        // Direct match — go to city page
-        router.push(`/${craneType}/${seoCity.slug}`)
-      } else {
-        // No SEO page for this city — fall back to distance-sorted listing by PLZ
-        router.push(`/${craneType}?plz=${selectedCity.plz}`)
-      }
-    } else if (typed) {
-      // Text typed but no autocomplete selection — try exact city match
-      const seoCity = seoCities.find(
-        (c) => c.name.toLowerCase() === typed.toLowerCase()
-      )
-      if (seoCity) {
-        router.push(`/${craneType}/${seoCity.slug}`)
-      } else {
-        setHint(`Für "${cityQuery}" haben wir noch keine Anbieter. Zeige alle Anbieter deutschlandweit.`)
-        router.push(`/${craneType}`)
-      }
-    } else {
-      router.push(`/${craneType}`)
-    }
+    const target = resolveSearchTarget({ craneType, cityQuery, selectedCity })
+    if (!target) return
+    setHint(target.hint ?? '')
+    router.push(target.url)
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {

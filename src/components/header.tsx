@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { craneTypes } from '@/data/crane-types'
-import { seoCities } from '@/data/cities-static'
+import { resolveSearchTarget } from '@/lib/search'
 
 interface CityResult {
   plz: string
@@ -62,38 +62,9 @@ function CompactSearch() {
   }
 
   function handleSearch() {
-    if (!craneType) return
-
-    const typed = cityQuery.trim()
-    const isPlz = /^\d{5}$/.test(typed)
-
-    // PLZ flow — user typed 5 digits, show nationwide listing sorted by distance.
-    // Matches SearchBox on home so the header search behaves the same.
-    if (isPlz) {
-      router.push(`/${craneType}?plz=${typed}`)
-      setCityQuery('')
-      setSelectedCity(null)
-      return
-    }
-
-    if (selectedCity) {
-      const seoCity = seoCities.find((c) => c.name.toLowerCase() === selectedCity.name.toLowerCase())
-      if (seoCity) {
-        router.push(`/${craneType}/${seoCity.slug}`)
-      } else {
-        // No SEO page — fall back to distance-sorted listing by PLZ
-        router.push(`/${craneType}?plz=${selectedCity.plz}`)
-      }
-    } else if (typed) {
-      const seoCity = seoCities.find((c) => c.name.toLowerCase() === typed.toLowerCase())
-      if (seoCity) {
-        router.push(`/${craneType}/${seoCity.slug}`)
-      } else {
-        router.push(`/${craneType}`)
-      }
-    } else {
-      router.push(`/${craneType}`)
-    }
+    const target = resolveSearchTarget({ craneType, cityQuery, selectedCity })
+    if (!target) return
+    router.push(target.url)
     setCityQuery('')
     setSelectedCity(null)
   }
