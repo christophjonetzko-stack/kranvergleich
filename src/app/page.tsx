@@ -7,7 +7,7 @@ import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats } from '@/lib/queries'
-import { NewsletterSignup } from '@/components/newsletter-signup'
+import { NewsletterPanel } from '@/components/newsletter-panel'
 
 export const revalidate = 86400
 
@@ -49,13 +49,10 @@ export default async function HomePage() {
     <div>
       {/* Hero — Industrial · Search-first */}
       <section className="relative bg-white">
-        {/* Top safety stripe */}
-        <div className="h-1 bg-[#FFD100]" aria-hidden />
-
         {/* Engineering-grid background — desktop only, very subtle */}
         <div
           aria-hidden
-          className="absolute inset-0 top-1 pointer-events-none hidden lg:block opacity-[0.04] [background-image:linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] [background-size:56px_56px]"
+          className="absolute inset-0 pointer-events-none hidden lg:block opacity-[0.04] [background-image:linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] [background-size:56px_56px]"
         />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-16 pb-10 sm:pb-14">
@@ -295,20 +292,7 @@ export default async function HomePage() {
       </section>
 
       {/* Newsletter holding pattern */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 sm:p-8 text-center">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">
-            Aktuelle Kran-Preise & Tipps per E-Mail
-          </h2>
-          <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-            Erhalten Sie monatlich aktuelle Marktpreise, Spar-Tipps und neue Anbieter in Ihrer Region — kostenlos und jederzeit abbestellbar.
-          </p>
-          <NewsletterSignup />
-          <p className="text-[11px] text-gray-400 mt-3">
-            Kein Spam. Max. 2 E-Mails/Monat. Abmeldung jederzeit möglich.
-          </p>
-        </div>
-      </section>
+      <NewsletterPanel />
 
       {/* Schema.org structured data */}
       <script

@@ -9,10 +9,12 @@ import {
   getCompaniesForCraneAndCity,
   getCitiesWithMinCompanies,
   getCompanyCountsPerCity,
+  getSiteStats,
 } from '@/lib/queries'
 import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
+import { NewsletterPanel } from '@/components/newsletter-panel'
 import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
@@ -88,9 +90,10 @@ export default async function CraneCityPage({
 
   if (!craneType || !city) notFound()
 
-  const [companies, allCities] = await Promise.all([
+  const [companies, allCities, siteStats] = await Promise.all([
     getCompaniesForCraneAndCity(craneType.id, city.id),
     getCities(),
+    getSiteStats(),
   ])
   // Manually written city FAQ (from Supabase) takes priority over template FAQ.
   // Override is city-wide (not crane-type-specific) — local info like permits, costs, logistics.
@@ -121,6 +124,7 @@ export default async function CraneCityPage({
   const nearbyCityCounts = await getCompanyCountsPerCity(nearbyCities.map((c) => c.id))
 
   return (
+    <>
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
       <nav className="text-[13px] text-gray-400 mb-6">
@@ -144,16 +148,38 @@ export default async function CraneCityPage({
           )
         })()}
         <div>
-          <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
+          <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[1.0] tracking-[-0.02em] text-[28px] sm:text-[36px] lg:text-[40px] mb-2">
             {craneType.name} mieten {city.name}
             {price && <span className="text-blue-600"> — ab {price.dayFrom}€/Tag</span>}
             {companies.length > 0 && (
-              <span className="text-gray-500 font-normal"> | {companies.length} Anbieter</span>
+              <span className="text-neutral-500 font-normal"> | {companies.length} Anbieter</span>
             )}
           </h1>
-          <p className="text-[15px] text-gray-500 mb-1">
+          <p className="text-[15px] text-neutral-600 mb-3">
             Mietpreise &amp; Bewertungen von Kranvermietern in {city.name} und Umgebung vergleichen
           </p>
+          {/* Trust bar — scoped to city, same visual language as home hero */}
+          <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-neutral-600 mb-2">
+            {companies.length > 0 && (
+              <>
+                <li className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
+                  {companies.length} Anbieter in {city.name}
+                </li>
+                <li aria-hidden className="text-neutral-300">·</li>
+              </>
+            )}
+            <li className="inline-flex items-center gap-1.5">
+              <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
+              <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
+                {siteStats.avgRating.toString().replace('.', ',')}
+              </span>
+              <span>Google</span>
+            </li>
+            <li aria-hidden className="text-neutral-300">·</li>
+            <li>DSGVO-konform</li>
+            <li aria-hidden className="text-neutral-300">·</li>
+            <li>Kostenlos &amp; unverbindlich</li>
+          </ul>
           <nav className="flex items-center gap-1 text-[12px] text-gray-400 flex-wrap">
             {companies.length > 0 && <><a href="#anbieter" className="hover:text-gray-600">Anbieter</a><span>·</span></>}
             {companies.some((c) => c.lat != null && c.lng != null) && <><a href="#karte" className="hover:text-gray-600">Karte</a><span>·</span></>}
@@ -332,5 +358,7 @@ export default async function CraneCityPage({
         />
       )}
     </div>
+    <NewsletterPanel />
+    </>
   )
 }

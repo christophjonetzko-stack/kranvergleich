@@ -50,6 +50,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Header />
+        <div className="h-1 bg-[#FFD100]" aria-hidden />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
