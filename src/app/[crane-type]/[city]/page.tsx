@@ -13,7 +13,7 @@ import {
 import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
-import { getFAQsForCraneAndCity } from '@/data/faq'
+import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
 import { getCraneIcon } from '@/components/crane-icons'
@@ -99,7 +99,7 @@ export default async function CraneCityPage({
     question: f.question.replace('{craneName}', craneType.name),
     answer: f.answer.replace(/{craneName}/g, craneType.name),
   }))
-  const faqs = [...cityOverrideFaqs, ...templateFaqs]
+  const faqs = dedupeFaqs([...cityOverrideFaqs, ...templateFaqs])
   const price = getPriceForCraneType(craneType.slug)
 
   // Cross-links: other crane types in this city

@@ -259,6 +259,25 @@ export function getFAQsForCraneType(slug: string): FAQItem[] {
   return typeFAQs[slug] ?? []
 }
 
+/** Deduplicate FAQs by normalized question. First occurrence wins — so when
+ * city_faq_override (Supabase) is spread before templateFaqs, override replaces
+ * any template entry with the same question. */
+export function dedupeFaqs(items: FAQItem[]): FAQItem[] {
+  const seen = new Set<string>()
+  const out: FAQItem[] = []
+  for (const item of items) {
+    const key = item.question
+      .toLowerCase()
+      .replace(/[?.!]+$/, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(item)
+  }
+  return out
+}
+
 export function getFAQsForCraneAndCity(craneSlug: string, cityName: string, craneName?: string): FAQItem[] {
   const name = craneName ?? craneSlug.replace('-mieten', '').replace(/^./, c => c.toUpperCase())
 
