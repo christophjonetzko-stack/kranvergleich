@@ -159,6 +159,20 @@ export async function POST(request: Request) {
     const safeDesc = escapeHtml(projectDescription)
     const companyCount = companyIds.length
 
+    // Look up crane type name so firm emails can show "Krantyp: Autokran"
+    // — the single most important piece of info for a firm to triage a lead.
+    let craneTypeName: string | null = null
+    if (body.crane_type_id) {
+      const sb = getServiceSupabase()
+      const { data: ct } = await sb
+        .from('crane_types')
+        .select('name')
+        .eq('id', body.crane_type_id)
+        .maybeSingle()
+      craneTypeName = ct?.name ?? null
+    }
+    const safeCraneType = craneTypeName ? escapeHtml(craneTypeName) : null
+
     // Fetch selected companies upfront — used by both the owner notification
     // (company list) and the downstream per-company lead emails.
     let selectedCompanies: { id: string; name: string; email: string | null }[] = []
@@ -206,10 +220,14 @@ export async function POST(request: Request) {
     const buildCompanyEmailHtml = (companyName: string) => `
             <div style="font-family:system-ui;max-width:560px;">
               <h2 style="font-size:18px;color:#1a1a1a;">Neue Anfrage über KranVergleich.de</h2>
+              <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:0 0 6px 0;">
+                Sehr geehrtes Team von <strong>${escapeHtml(companyName)}</strong>,
+              </p>
               <p style="color:#4b5563;font-size:14px;line-height:1.6;">
-                Ein potenzieller Kunde hat über KranVergleich.de eine Anfrage an <strong>${escapeHtml(companyName)}</strong> gesendet.
+                ein potenzieller Kunde hat über KranVergleich.de eine Anfrage an Sie gesendet.
               </p>
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
+                ${safeCraneType ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Name</td><td><strong>${safeName}</strong></td></tr>
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
                 ${safePhone !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Telefon</td><td>${safePhone}</td></tr>` : ''}
