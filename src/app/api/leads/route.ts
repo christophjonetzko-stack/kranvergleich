@@ -236,7 +236,7 @@ export async function POST(request: Request) {
           from: FROM_EMAIL,
           to: company.email!,
           replyTo: customerEmail,
-          subject: `Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
+          subject: `KranVergleich.de - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
           html: buildCompanyEmailHtml(company.name),
         })
         return { company_id: company.id, ok: result.ok }
@@ -282,7 +282,7 @@ export async function POST(request: Request) {
     await sendResendEmail('notification', {
       from: FROM_EMAIL,
       to: getNotificationEmail(),
-      subject: `Neue Anfrage: ${safeName} — ${safeCity}`,
+      subject: `KranVergleich.de - Neue Anfrage: ${safeName} — ${safeCity}`,
       html: `
         <h2>Neue Kranvermietungs-Anfrage</h2>
         <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
@@ -332,7 +332,7 @@ export async function POST(request: Request) {
       await sendResendEmail('missing-email notification', {
         from: FROM_EMAIL,
         to: getNotificationEmail(),
-        subject: `⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
+        subject: `KranVergleich.de - ⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
         html: `
             <h3>Firmen ohne E-Mail-Adresse — manuelle Weiterleitung nötig</h3>
             <p>Folgende Firmen wurden vom Kunden ausgewählt, haben aber keine E-Mail in der Datenbank:</p>
