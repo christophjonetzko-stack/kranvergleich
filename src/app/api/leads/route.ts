@@ -13,12 +13,20 @@ const FIRM_EVENTS_SALT_BASE = 'kranvergleich-firm-events-v1'
 // rate-limit errors. Always inspect `error` and log it; also wrap the call
 // in try/catch for SDK-level throws (network, SDK bugs). Without this,
 // Resend failures look identical to success in Vercel logs.
-async function sendResendEmail(label: string, options: CreateEmailOptions): Promise<void> {
+async function sendResendEmail(
+  label: string,
+  options: CreateEmailOptions,
+): Promise<{ ok: boolean; error?: unknown }> {
   try {
     const { error } = await getResend().emails.send(options)
-    if (error) console.error(`Resend ${label} error:`, error)
+    if (error) {
+      console.error(`Resend ${label} error:`, error)
+      return { ok: false, error }
+    }
+    return { ok: true }
   } catch (err) {
     console.error(`Resend ${label} threw:`, err)
+    return { ok: false, error: err }
   }
 }
 
@@ -193,21 +201,84 @@ export async function POST(request: Request) {
         })
     }
 
+    // Per-company email template. Defined before sending so the same HTML is
+    // reused by every firm email and (if needed) a retry script.
+    const buildCompanyEmailHtml = (companyName: string) => `
+            <div style="font-family:system-ui;max-width:560px;">
+              <h2 style="font-size:18px;color:#1a1a1a;">Neue Anfrage über KranVergleich.de</h2>
+              <p style="color:#4b5563;font-size:14px;line-height:1.6;">
+                Ein potenzieller Kunde hat über KranVergleich.de eine Anfrage an <strong>${escapeHtml(companyName)}</strong> gesendet.
+              </p>
+              <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
+                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Name</td><td><strong>${safeName}</strong></td></tr>
+                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+                ${safePhone !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Telefon</td><td>${safePhone}</td></tr>` : ''}
+                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Stadt</td><td>${safeCity}</td></tr>
+                ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
+                ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
+              </table>
+              ${safeDesc ? `<p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>${safeDesc}</p>` : ''}
+              <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
+              <p style="font-size:12px;color:#9ca3af;">
+                Diese Anfrage wurde über <a href="https://kranvergleich.de" style="color:#2563eb;">KranVergleich.de</a> vermittelt.
+              </p>
+            </div>
+          `
+
+    // Send per-company emails FIRST so the owner notification can report the
+    // REAL delivery status per firm (not optimistic labels). Parallel send
+    // via Promise.all is safe because sendResendEmail never throws.
+    // MAX_COMPANY_IDS = 10 keeps this well below Resend's rate limit.
+    const firmResults: { company_id: string; ok: boolean }[] = await Promise.all(
+      companiesWithEmail.map(async (company) => {
+        const result = await sendResendEmail(`company email (${company.name})`, {
+          from: FROM_EMAIL,
+          to: company.email!,
+          replyTo: customerEmail,
+          subject: `Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
+          html: buildCompanyEmailHtml(company.name),
+        })
+        return { company_id: company.id, ok: result.ok }
+      }),
+    )
+
+    // Mark lead_companies.sent_at for successful deliveries. Service role
+    // bypasses RLS. One UPDATE with .in() filter handles all successes at once.
+    const successCompanyIds = firmResults.filter((r) => r.ok).map((r) => r.company_id)
+    if (successCompanyIds.length > 0) {
+      const sb = getServiceSupabase()
+      const { error: updateErr } = await sb
+        .from('lead_companies')
+        .update({ sent_at: new Date().toISOString() })
+        .eq('lead_id', lead.id)
+        .in('company_id', successCompanyIds)
+      if (updateErr) console.error('lead_companies.sent_at update error:', updateErr)
+    }
+
+    // Build owner notification's company list with REAL per-firm delivery
+    // status. Was optimistic ("gesendet" whenever company has an email) — now
+    // distinguishes gesendet / fehlgeschlagen / keine E-Mail.
     const companyListHtml = selectedCompanies.length > 0
       ? `<ul style="margin:4px 0 0 0;padding-left:18px;font-size:13px;color:#1a1a1a;">
           ${selectedCompanies
             .map((c) => {
-              const hasEmail = !!c.email
-              const status = hasEmail
-                ? '<span style="color:#16a34a;">✉️ E-Mail gesendet</span>'
-                : '<span style="color:#dc2626;">⚠️ keine E-Mail — manuell weiterleiten</span>'
+              let status: string
+              if (!c.email) {
+                status = '<span style="color:#dc2626;">⚠️ keine E-Mail — manuell weiterleiten</span>'
+              } else {
+                const r = firmResults.find((fr) => fr.company_id === c.id)
+                status = r?.ok
+                  ? '<span style="color:#16a34a;">✉️ E-Mail gesendet</span>'
+                  : '<span style="color:#dc2626;">❌ E-Mail fehlgeschlagen — manuell weiterleiten</span>'
+              }
               return `<li style="margin-bottom:2px;"><strong>${escapeHtml(c.name)}</strong> — ${status}</li>`
             })
             .join('')}
         </ul>`
       : '<span style="color:#9ca3af;">keine</span>'
 
-    // Send notification email to owner
+    // Send notification email to owner (now with real delivery status)
     await sendResendEmail('notification', {
       from: FROM_EMAIL,
       to: getNotificationEmail(),
@@ -255,56 +326,21 @@ export async function POST(request: Request) {
       `,
     })
 
-    // Send lead email to selected companies (reuses selectedCompanies fetched above)
-    if (selectedCompanies.length > 0) {
-      // Send to each company that has an email
-      for (const company of companiesWithEmail) {
-        sendResendEmail(`company email (${company.name})`, {
-          from: FROM_EMAIL,
-          to: company.email!,
-          replyTo: customerEmail,
-          subject: `Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
-          html: `
-            <div style="font-family:system-ui;max-width:560px;">
-              <h2 style="font-size:18px;color:#1a1a1a;">Neue Anfrage über KranVergleich.de</h2>
-              <p style="color:#4b5563;font-size:14px;line-height:1.6;">
-                Ein potenzieller Kunde hat über KranVergleich.de eine Anfrage an <strong>${escapeHtml(company.name)}</strong> gesendet.
-              </p>
-              <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
-                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Name</td><td><strong>${safeName}</strong></td></tr>
-                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
-                ${safePhone !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Telefon</td><td>${safePhone}</td></tr>` : ''}
-                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Stadt</td><td>${safeCity}</td></tr>
-                ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
-                ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
-              </table>
-              ${safeDesc ? `<p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>${safeDesc}</p>` : ''}
-              <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
-              <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
-              <p style="font-size:12px;color:#9ca3af;">
-                Diese Anfrage wurde über <a href="https://kranvergleich.de" style="color:#2563eb;">KranVergleich.de</a> vermittelt.
-              </p>
-            </div>
-          `,
-        })
-      }
-
-      // Forward leads for companies without email to owner
-      if (companiesWithoutEmail.length > 0) {
-        const missingNames = companiesWithoutEmail.map((c) => escapeHtml(c.name)).join(', ')
-        sendResendEmail('missing-email notification', {
-          from: FROM_EMAIL,
-          to: getNotificationEmail(),
-          subject: `⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
-          html: `
+    // Forward leads for companies without email to owner
+    if (companiesWithoutEmail.length > 0) {
+      const missingNames = companiesWithoutEmail.map((c) => escapeHtml(c.name)).join(', ')
+      await sendResendEmail('missing-email notification', {
+        from: FROM_EMAIL,
+        to: getNotificationEmail(),
+        subject: `⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
+        html: `
             <h3>Firmen ohne E-Mail-Adresse — manuelle Weiterleitung nötig</h3>
             <p>Folgende Firmen wurden vom Kunden ausgewählt, haben aber keine E-Mail in der Datenbank:</p>
             <ul>${companiesWithoutEmail.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
             <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
             <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
           `,
-        })
-      }
+      })
     }
 
     return NextResponse.json({ success: true, id: lead.id })
