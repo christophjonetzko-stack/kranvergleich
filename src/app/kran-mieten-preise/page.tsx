@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PriceTable } from '@/components/price-table'
+import { CostCalculator } from '@/components/cost-calculator'
 import { cranePrices } from '@/data/crane-prices'
 import { craneTypes } from '@/data/crane-types'
 import { FAQSection } from '@/components/faq-section'
@@ -195,6 +196,18 @@ export default async function KranMietenPreisePage() {
           Kran mieten Preisliste — alle Krantypen 2026
         </h2>
         <PriceTable showAll />
+      </section>
+
+      {/* Cost calculator — interactive estimate for the visitor's specific project */}
+      <section id="kostenrechner" className="mb-10 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Was kostet Ihr Projekt? Kostenrechner in 4 Schritten
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          Beantworten Sie vier kurze Fragen zu Ihrem Vorhaben und erhalten Sie
+          eine unverbindliche Kostenschätzung plus Empfehlung für den passenden Krantyp.
+        </p>
+        <CostCalculator page="/kran-mieten-preise" />
       </section>
 
       {/* Autokran prices — day + hourly */}

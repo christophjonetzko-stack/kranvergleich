@@ -346,6 +346,41 @@ export default async function CraneCityPage({
           }}
         />
       )}
+      {/* Product + AggregateOffer — AEO-citable regional price range */}
+      {price && companies.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Product',
+              name: `${craneType.name} mieten ${city.name}`,
+              description: `${craneType.name} in ${city.name} mieten. ${companies.length} Anbieter im Vergleich, Preise ab ${price.dayFrom}€/Tag.`,
+              category: 'Kranvermietung',
+              brand: { '@type': 'Brand', name: 'KranVergleich.de' },
+              areaServed: { '@type': 'City', name: city.name },
+              offers: {
+                '@type': 'AggregateOffer',
+                priceCurrency: 'EUR',
+                lowPrice: price.dayFrom,
+                highPrice: price.dayTo,
+                offerCount: companies.length,
+                availability: 'https://schema.org/InStock',
+                priceSpecification: {
+                  '@type': 'UnitPriceSpecification',
+                  price: price.dayFrom,
+                  priceCurrency: 'EUR',
+                  referenceQuantity: {
+                    '@type': 'QuantitativeValue',
+                    value: 1,
+                    unitCode: 'DAY',
+                  },
+                },
+              },
+            }),
+          }}
+        />
+      )}
     </div>
     <NewsletterPanel />
     </>

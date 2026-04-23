@@ -18,7 +18,7 @@ const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { email, craneName, reason, priceEstimate, includesOperator, slug } = body
+    const { email, craneName, reason, priceEstimate, includesOperator, slug, answers, page } = body
 
     if (!email || !craneName) {
       return NextResponse.json({ error: 'E-Mail und Ergebnis sind erforderlich.' }, { status: 400 })
@@ -29,11 +29,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Ungültige E-Mail-Adresse.' }, { status: 400 })
     }
 
-    // Save to newsletter_subscribers (upsert to handle duplicates)
+    // Save to newsletter_subscribers (upsert to handle duplicates).
+    // context = Kostenrechner inputs (answers) + derived result; enables
+    // future analysis of which project types drive subscriptions.
+    const context = {
+      answers: answers ?? null,
+      result: { craneName, reason, priceEstimate, includesOperator, slug },
+      page: page ?? null,
+    }
     const sb = getServiceSupabase()
     await sb
       .from('newsletter_subscribers')
-      .upsert({ email, source: 'kostenrechner' }, { onConflict: 'email' })
+      .upsert({ email, source: 'kostenrechner', context }, { onConflict: 'email' })
 
     // Send result email
     await getResend().emails.send({

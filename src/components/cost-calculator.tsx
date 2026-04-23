@@ -159,7 +159,13 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
 
 // --- Component ---
 
-export function CostCalculator() {
+interface CostCalculatorProps {
+  // Page path where the calculator is embedded; stored in newsletter_subscribers.context
+  // so we can later attribute which landing page drove each conversion.
+  page?: string
+}
+
+export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps = {}) {
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [result, setResult] = useState<Recommendation | null>(null)
@@ -205,6 +211,8 @@ export function CostCalculator() {
           priceEstimate: result.priceEstimate,
           includesOperator: result.includesOperator,
           slug: result.slug,
+          answers, // raw Kostenrechner inputs for context jsonb
+          page, // landing page attribution
         }),
       })
       if (res.ok) setEmailSent(true)
@@ -223,53 +231,71 @@ export function CostCalculator() {
           <h3 className="text-lg font-semibold text-gray-900">Unsere Empfehlung</h3>
         </div>
 
+        {/* Crane name + reason — always visible (teaser) */}
         <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
           <p className="text-xl font-semibold text-gray-900 mb-1">{result.name}</p>
           <p className="text-[14px] text-gray-500 mb-3">{result.reason}</p>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
-              <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
-              <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. MwSt.</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-[12px] text-gray-400">Kranführer</p>
-              <p className="text-lg font-semibold text-gray-900">
-                {result.includesOperator ? 'Inklusive' : 'Optional'}
-              </p>
-              <p className="text-[11px] text-gray-400">
-                {result.includesOperator ? 'Im Preis enthalten' : 'Separat buchbar'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Link
-            href={`/${result.slug}`}
-            className="flex-1 text-center bg-blue-600 text-white text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            {result.name}-Anbieter vergleichen
-          </Link>
-          <button
-            onClick={handleReset}
-            className="text-[13px] text-gray-500 hover:text-gray-700 py-2 px-4 transition-colors"
-          >
-            Neu berechnen
-          </button>
-        </div>
-
-        {/* Email capture */}
-        <div className="border border-gray-200 rounded-lg p-4 mt-4">
           {emailSent ? (
-            <p className="text-[13px] text-green-700 font-medium">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
+                <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
+                <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. MwSt.</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-[12px] text-gray-400">Kranführer</p>
+                <p className="text-lg font-semibold text-gray-900">
+                  {result.includesOperator ? 'Inklusive' : 'Optional'}
+                </p>
+                <p className="text-[11px] text-gray-400">
+                  {result.includesOperator ? 'Im Preis enthalten' : 'Separat buchbar'}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-gray-50 rounded-lg p-3 text-[13px] text-gray-600">
+              Den vollständigen Kostenvoranschlag mit Preisrahmen und Anbieter-Vergleich
+              senden wir Ihnen kostenlos per E-Mail.
+            </div>
+          )}
+        </div>
+
+        {emailSent ? (
+          <>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Link
+                href={`/${result.slug}`}
+                className="flex-1 text-center bg-blue-600 text-white text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                {result.name}-Anbieter vergleichen
+              </Link>
+              <button
+                onClick={handleReset}
+                className="text-[13px] text-gray-500 hover:text-gray-700 py-2 px-4 transition-colors"
+              >
+                Neu berechnen
+              </button>
+            </div>
+
+            <p className="text-[13px] text-green-700 font-medium mt-4">
               ✓ Kostenvergleich wurde an Ihre E-Mail gesendet.
             </p>
-          ) : (
+
+            <p className="text-[11px] text-gray-400 mt-3">
+              * Preise sind unverbindliche Richtwerte basierend auf Marktdurchschnitt 2026.
+              Zusatzkosten für Transport, Montage und Genehmigungen können anfallen.
+            </p>
+          </>
+        ) : (
+          <div className="border border-gray-200 bg-white rounded-lg p-4">
             <form onSubmit={handleSendEmail}>
-              <p className="text-[13px] font-medium text-gray-700 mb-2">
-                Ergebnis per E-Mail erhalten
+              <p className="text-[13px] font-medium text-gray-700 mb-1">
+                Kostenvoranschlag + 3 Spartipps per E-Mail erhalten
+              </p>
+              <p className="text-[12px] text-gray-500 mb-3">
+                Sofort: vollständiger Preisrahmen für Ihren {result.name} + Anbieter-Vergleich.
+                Danach: 3 kurze Mails mit Spartipps (Tag 1, 3 und 7). Jederzeit abbestellbar.
               </p>
               <div className="flex gap-2">
                 <input
@@ -284,20 +310,23 @@ export function CostCalculator() {
                   disabled={emailSending}
                   className="text-[13px] font-medium bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors whitespace-nowrap"
                 >
-                  {emailSending ? 'Senden…' : 'Senden'}
+                  {emailSending ? 'Senden…' : 'Kostenvoranschlag anfordern'}
                 </button>
               </div>
               <p className="text-[11px] text-gray-400 mt-2">
-                Ihre E-Mail wird nur für den Versand des Kostenvergleichs verwendet. Keine Werbung.
+                Mit dem Versand willigen Sie in die Nutzung Ihrer E-Mail für Kostenvergleich und
+                Spartipps-Serie ein (<Link href="/datenschutz" className="underline hover:text-gray-600">Datenschutz</Link>).
               </p>
             </form>
-          )}
-        </div>
 
-        <p className="text-[11px] text-gray-400 mt-3">
-          * Preise sind unverbindliche Richtwerte basierend auf Marktdurchschnitt 2026.
-          Zusatzkosten für Transport, Montage und Genehmigungen können anfallen.
-        </p>
+            <button
+              onClick={handleReset}
+              className="text-[12px] text-gray-400 hover:text-gray-600 mt-3 transition-colors"
+            >
+              ← Neu berechnen
+            </button>
+          </div>
+        )}
       </div>
     )
   }

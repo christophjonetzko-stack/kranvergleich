@@ -575,6 +575,42 @@ export default async function CraneTypePage({
           }),
         }}
       />
+      {/* Product + AggregateOffer — AEO-citable price range per crane type */}
+      {price && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Product',
+              name: `${craneType.name} mieten`,
+              description: craneType.description,
+              category: 'Kranvermietung',
+              brand: { '@type': 'Brand', name: 'KranVergleich.de' },
+              offers: {
+                '@type': 'AggregateOffer',
+                priceCurrency: 'EUR',
+                lowPrice: price.dayFrom,
+                highPrice: price.dayTo,
+                ...(companies.length > 0 && {
+                  offerCount: companies.length,
+                  availability: 'https://schema.org/InStock',
+                }),
+                priceSpecification: {
+                  '@type': 'UnitPriceSpecification',
+                  price: price.dayFrom,
+                  priceCurrency: 'EUR',
+                  referenceQuantity: {
+                    '@type': 'QuantitativeValue',
+                    value: 1,
+                    unitCode: 'DAY',
+                  },
+                },
+              },
+            }),
+          }}
+        />
+      )}
     </div>
     <NewsletterPanel />
     </>
