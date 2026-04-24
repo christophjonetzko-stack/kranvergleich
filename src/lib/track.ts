@@ -1,0 +1,48 @@
+// Client-side helper for firing page-scope engagement events to /api/track-page.
+//
+// Fire-and-forget contract. `navigator.sendBeacon` is preferred so events land
+// even when the user navigates away or closes the tab immediately (form submit,
+// link click). Falls back to `fetch({ keepalive: true })` for browsers without
+// Beacon support. Silently no-ops during SSR and under `?dryrun=1` so debug
+// test sessions don't pollute the analytics table.
+
+export type PageEventType =
+  | 'calculator_step_completed'
+  | 'calculator_recommendation_shown'
+  | 'calculator_lead_submit_attempt'
+  | 'calculator_lead_submit_success'
+  | 'inline_sammelanfrage_submit'
+  | 'scroll_depth_75'
+  | 'click_city_link'
+  | 'click_type_link'
+
+export function trackPageEvent(
+  eventType: PageEventType,
+  context?: Record<string, string | number | boolean>,
+): void {
+  if (typeof window === 'undefined') return
+  // Skip in dry-run mode so debug submits don't inflate analytics.
+  if (new URLSearchParams(window.location.search).get('dryrun') === '1') return
+
+  const body = JSON.stringify({
+    event_type: eventType,
+    page_path: window.location.pathname,
+    context: context ?? null,
+  })
+
+  try {
+    if (navigator.sendBeacon) {
+      const blob = new Blob([body], { type: 'application/json' })
+      navigator.sendBeacon('/api/track-page', blob)
+      return
+    }
+    fetch('/api/track-page', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+      keepalive: true,
+    }).catch(() => {})
+  } catch {
+    // Never let tracking errors leak into the user flow.
+  }
+}

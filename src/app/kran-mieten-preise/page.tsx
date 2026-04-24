@@ -5,7 +5,8 @@ import { CostCalculator } from '@/components/cost-calculator'
 import { cranePrices } from '@/data/crane-prices'
 import { craneTypes } from '@/data/crane-types'
 import { FAQSection } from '@/components/faq-section'
-import { LeadForm } from '@/components/lead-form'
+import { InlineSammelanfrageForm } from '@/components/inline-sammelanfrage-form'
+import { PageEventTracker } from '@/components/page-event-tracker'
 import { getSiteStats } from '@/lib/queries'
 
 export const revalidate = 86400
@@ -125,6 +126,7 @@ export default async function KranMietenPreisePage() {
   const { anbieterCount } = await getSiteStats()
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <PageEventTracker />
       {/* Breadcrumb */}
       <nav className="text-[13px] text-gray-400 mb-6">
         <Link href="/" className="hover:text-gray-600">Startseite</Link>
@@ -226,7 +228,7 @@ export default async function KranMietenPreisePage() {
             an passende Anbieter in Ihrer Region. Kostenlos, unverbindlich.
           </p>
         </div>
-        <LeadForm />
+        <InlineSammelanfrageForm />
       </section>
 
       {/* Autokran prices — day + hourly */}
@@ -897,73 +899,73 @@ export default async function KranMietenPreisePage() {
             </thead>
             <tbody className="text-gray-600">
               <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/muenchen" className="text-blue-600 hover:underline">München</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/muenchen" data-track-city="muenchen" data-track-type="autokran" className="text-blue-600 hover:underline">München</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">700–950€</td>
                 <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+20&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Höchstes Preisniveau DE, sehr hohe Bautätigkeit, knappe Verfügbarkeit</td>
               </tr>
               <tr className="border-b bg-blue-50/40">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/frankfurt-am-main" className="text-blue-600 hover:underline">Frankfurt&nbsp;a.&nbsp;M.</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/frankfurt-am-main" data-track-city="frankfurt-am-main" data-track-type="autokran" className="text-blue-600 hover:underline">Frankfurt&nbsp;a.&nbsp;M.</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">650–900€</td>
                 <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+15&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Finanzzentrum, viele Hochbauprojekte, Innenstadt aufwendig</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/hamburg" className="text-blue-600 hover:underline">Hamburg</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/hamburg" data-track-city="hamburg" data-track-type="autokran" className="text-blue-600 hover:underline">Hamburg</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">620–870€</td>
                 <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+10&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Hafenstadt mit Industrie- und Wohnbau, gute Verfügbarkeit</td>
               </tr>
               <tr className="border-b bg-blue-50/40">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/stuttgart" className="text-blue-600 hover:underline">Stuttgart</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/stuttgart" data-track-city="stuttgart" data-track-type="autokran" className="text-blue-600 hover:underline">Stuttgart</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">620–850€</td>
                 <td className="py-2.5 px-4 text-amber-700 whitespace-nowrap">+10&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Industriestandort, hohe Industriemontagenachfrage</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/duesseldorf" className="text-blue-600 hover:underline">Düsseldorf</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/duesseldorf" data-track-city="duesseldorf" data-track-type="autokran" className="text-blue-600 hover:underline">Düsseldorf</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">580–820€</td>
                 <td className="py-2.5 px-4 text-gray-700 whitespace-nowrap">+5&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Rheinmetropole, viele Gewerbeimmobilien</td>
               </tr>
               <tr className="border-b bg-blue-50/40">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/koeln" className="text-blue-600 hover:underline">Köln</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/koeln" data-track-city="koeln" data-track-type="autokran" className="text-blue-600 hover:underline">Köln</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">550–800€</td>
                 <td className="py-2.5 px-4 text-gray-700 whitespace-nowrap">+3&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">NRW-Großraum mit dichter Anbieterstruktur</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/berlin" className="text-blue-600 hover:underline">Berlin</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/berlin" data-track-city="berlin" data-track-type="autokran" className="text-blue-600 hover:underline">Berlin</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">520–780€</td>
                 <td className="py-2.5 px-4 text-gray-600 whitespace-nowrap">Bundesschnitt</td>
                 <td className="py-2.5 px-4 text-gray-500">Großstadt mit moderatem Preisniveau, gute Verfügbarkeit</td>
               </tr>
               <tr className="border-b bg-blue-50/40">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/hannover" className="text-blue-600 hover:underline">Hannover</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/hannover" data-track-city="hannover" data-track-type="autokran" className="text-blue-600 hover:underline">Hannover</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">500–750€</td>
                 <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−3&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Niedersachsen, Industrieregion mit stabilen Preisen</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/leipzig" className="text-blue-600 hover:underline">Leipzig</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/leipzig" data-track-city="leipzig" data-track-type="autokran" className="text-blue-600 hover:underline">Leipzig</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">480–730€</td>
                 <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−7&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Sachsen, günstigere Kranmiete bei wachsender Nachfrage</td>
               </tr>
               <tr className="border-b bg-blue-50/40">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/dresden" className="text-blue-600 hover:underline">Dresden</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/dresden" data-track-city="dresden" data-track-type="autokran" className="text-blue-600 hover:underline">Dresden</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">470–720€</td>
                 <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−9&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Sächsische Landeshauptstadt, unterdurchschnittliche Preise</td>
               </tr>
               <tr className="border-b">
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/nuernberg" className="text-blue-600 hover:underline">Nürnberg</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/nuernberg" data-track-city="nuernberg" data-track-type="autokran" className="text-blue-600 hover:underline">Nürnberg</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">540–790€</td>
                 <td className="py-2.5 px-4 text-gray-700 whitespace-nowrap">+2&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Fränkischer Wirtschaftsraum, ausgeglichenes Preisniveau</td>
               </tr>
               <tr>
-                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/bremen" className="text-blue-600 hover:underline">Bremen</Link></td>
+                <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten/bremen" data-track-city="bremen" data-track-type="autokran" className="text-blue-600 hover:underline">Bremen</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">490–740€</td>
                 <td className="py-2.5 px-4 text-green-700 whitespace-nowrap">−5&nbsp;%</td>
                 <td className="py-2.5 px-4 text-gray-500">Hansestadt, Hafen- und Industriebau, gute Anbieterdichte</td>
@@ -1031,6 +1033,7 @@ export default async function KranMietenPreisePage() {
             <Link
               key={ct.slug}
               href={`/${ct.slug}`}
+              data-track-type={ct.slug.replace(/-mieten$/, '')}
               className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1.5 transition-colors"
             >
               {ct.name} mieten Preise

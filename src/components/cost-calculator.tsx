@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getCraneTypeIdBySlug } from '@/data/crane-types'
+import { trackPageEvent } from '@/lib/track'
 
 // --- Step definitions ---
 
@@ -237,10 +238,16 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     const newAnswers = { ...answers, [step.id]: value }
     setAnswers(newAnswers)
 
+    trackPageEvent('calculator_step_completed', { step: currentStep + 1, value })
+
     if (currentStep < STEPS.length - 1) {
       setCurrentStep(currentStep + 1)
     } else {
-      setResult(getRecommendation(newAnswers))
+      const rec = getRecommendation(newAnswers)
+      setResult(rec)
+      trackPageEvent('calculator_recommendation_shown', {
+        crane_type: rec.slug.replace(/-mieten$/, ''),
+      })
     }
   }
 
@@ -285,6 +292,12 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     setLeadSending(true)
     setLeadError(null)
 
+    trackPageEvent('calculator_lead_submit_attempt', {
+      crane_type: result.slug.replace(/-mieten$/, ''),
+      project_details_filled: userDetails.length > 0,
+      project_details_length: userDetails.length,
+    })
+
     // Debug helper: visit the page with `?dryrun=1` to exercise the delivery
     // pipeline (owner notification + customer confirmation + email_delivery
     // response) without sending real emails to construction firms. Reads from
@@ -315,9 +328,18 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
         throw new Error(err.error || 'Fehler beim Senden.')
       }
       const json = await res.json()
+      const matchedCount = Array.isArray(json.matched_companies) ? json.matched_companies.length : 0
+      const radiusKm = typeof json.radius_used_km === 'number' ? json.radius_used_km : null
+      trackPageEvent('calculator_lead_submit_success', {
+        crane_type: result.slug.replace(/-mieten$/, ''),
+        matched_count: matchedCount,
+        ...(radiusKm !== null ? { radius_km: radiusKm } : {}),
+        project_details_filled: userDetails.length > 0,
+        project_details_length: userDetails.length,
+      })
       setLeadSuccess({
         matched: Array.isArray(json.matched_companies) ? json.matched_companies : [],
-        radiusKm: typeof json.radius_used_km === 'number' ? json.radius_used_km : null,
+        radiusKm,
         locationLabel: typeof json.resolved_label === 'string' && json.resolved_label ? json.resolved_label : location,
         customerConfirmationSent: json.email_delivery?.customer_confirmation !== false,
       })

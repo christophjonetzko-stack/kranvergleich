@@ -15,6 +15,10 @@ interface LeadFormProps {
   cityName?: string
   companies?: CompanyWithCranes[]
   selectedCompanyIds?: string[]
+  // Optional callback fired after a successful /api/leads submission. Used on
+  // /kran-mieten-preise to track `inline_sammelanfrage_submit` for Phase B
+  // analytics; other callers (anbieter profile pages) simply don't pass it.
+  onSubmitted?: () => void
 }
 
 export function LeadForm({
@@ -23,6 +27,7 @@ export function LeadForm({
   cityName,
   companies = [],
   selectedCompanyIds: initialSelected = [],
+  onSubmitted,
 }: LeadFormProps) {
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>(initialSelected)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
@@ -72,6 +77,7 @@ export function LeadForm({
 
       if (!response.ok) throw new Error('Fehler beim Senden')
       setIsSubmitted(true)
+      onSubmitted?.()
     } catch {
       setError('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
     } finally {
