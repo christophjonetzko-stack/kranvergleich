@@ -332,8 +332,7 @@ export async function POST(request: Request) {
     }
 
     // Build owner notification's company list with REAL per-firm delivery
-    // status. Was optimistic ("gesendet" whenever company has an email) — now
-    // distinguishes gesendet / fehlgeschlagen / keine E-Mail.
+    // status. Distinguishes gesendet / fehlgeschlagen / keine E-Mail / dry-run.
     const companyListHtml = selectedCompanies.length > 0
       ? `<ul style="margin:4px 0 0 0;padding-left:18px;font-size:13px;color:#1a1a1a;">
           ${selectedCompanies
@@ -341,6 +340,8 @@ export async function POST(request: Request) {
               let status: string
               if (!c.email) {
                 status = '<span style="color:#dc2626;">⚠️ keine E-Mail — manuell weiterleiten</span>'
+              } else if (dryRun) {
+                status = '<span style="color:#d97706;">🧪 Dry-Run — nicht gesendet (nur Test)</span>'
               } else {
                 const r = firmResults.find((fr) => fr.company_id === c.id)
                 status = r?.ok
@@ -363,7 +364,7 @@ export async function POST(request: Request) {
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `KranVergleich.de - Neue Anfrage: ${safeName} — ${safeCity}`,
+        subject: `KranVergleich.de - ${dryRun ? '[DRY-RUN] ' : ''}Neue Anfrage: ${safeName} — ${safeCity}`,
         html: `
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
