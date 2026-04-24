@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
 import { Resend, type CreateEmailOptions } from 'resend'
-import { submitLead, getCompaniesForCraneTypeNearPlz } from '@/lib/queries'
+import { submitLead, getCompaniesForCraneTypeNearPlz, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
+import { getCraneTypeNameById } from '@/data/crane-types'
 
 // Must match the salt base used by /api/track so a single visitor's events
 // hash identically on the same day (enables cross-event user journey queries).
@@ -130,6 +131,7 @@ export async function POST(request: Request) {
     // Skipped when client already supplied `company_ids` explicitly.
     let companyIds: string[] = Array.isArray(body.company_ids) ? body.company_ids.slice(0, MAX_COMPANY_IDS) : []
     let autoSelectedRadiusKm: number | null = null
+    let autoSelectedMatches: FirmMatch[] | null = null
     if (
       companyIds.length === 0 &&
       body.auto_select_nearest === true &&
@@ -144,6 +146,7 @@ export async function POST(request: Request) {
         if (result && result.matches.length > 0) {
           companyIds = result.matches.map((m) => m.company.id)
           autoSelectedRadiusKm = result.radius_used_km
+          autoSelectedMatches = result.matches
         }
       } catch (err) {
         console.error('auto_select_nearest lookup failed:', err)
@@ -385,10 +388,42 @@ export async function POST(request: Request) {
       })
     }
 
+    // Rich matched_companies for the UI success card (avatars, rating, tags…).
+    // Auto-selected path reuses the FirmMatch data we already have in memory
+    // (includes distance_km + full company fields + crane types). Manual path
+    // falls back to the lighter `selectedCompanies` lookup used for emails.
+    const matchedCompaniesForClient = autoSelectedMatches
+      ? autoSelectedMatches.map((m) => ({
+          id: m.company.id,
+          name: m.company.name,
+          slug: m.company.slug,
+          city: m.company.city,
+          distance_km: Math.round(m.distance_km),
+          google_rating: m.company.google_rating,
+          google_reviews_count: m.company.google_reviews_count,
+          is_verified: m.company.is_verified,
+          crane_type_names: Array.from(
+            new Set(
+              (m.company.company_cranes ?? []).map((cc) => getCraneTypeNameById(cc.crane_type_id)),
+            ),
+          ),
+        }))
+      : selectedCompanies.map((c) => ({
+          id: c.id,
+          name: c.name,
+          slug: '',
+          city: '',
+          distance_km: null,
+          google_rating: null,
+          google_reviews_count: 0,
+          is_verified: false,
+          crane_type_names: [] as string[],
+        }))
+
     return NextResponse.json({
       success: true,
       id: lead.id,
-      matched_companies: selectedCompanies.map((c) => ({ id: c.id, name: c.name })),
+      matched_companies: matchedCompaniesForClient,
       radius_used_km: autoSelectedRadiusKm,
     })
   } catch {

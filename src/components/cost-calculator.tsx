@@ -58,6 +58,33 @@ const STEPS = [
   },
 ]
 
+// --- Presentation helpers for the success-state firm cards ---
+
+function firmInitials(name: string): string {
+  const cleaned = name.replace(/\b(GmbH|AG|KG|OHG|GbR|e\.K\.|UG|&amp;|&|\.)\b/gi, ' ').trim()
+  const parts = cleaned.split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '??'
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[1][0]).toUpperCase()
+}
+
+// Deterministic color per firm name — same firm → same avatar color on re-render.
+const AVATAR_PALETTE = [
+  'bg-blue-500',
+  'bg-emerald-500',
+  'bg-amber-500',
+  'bg-purple-500',
+  'bg-pink-500',
+  'bg-teal-500',
+  'bg-indigo-500',
+  'bg-rose-500',
+]
+function firmAvatarColor(name: string): string {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0
+  return AVATAR_PALETTE[Math.abs(hash) % AVATAR_PALETTE.length]
+}
+
 // --- Recommendation engine ---
 
 interface Recommendation {
@@ -173,7 +200,17 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
   const [leadSending, setLeadSending] = useState(false)
   const [leadError, setLeadError] = useState<string | null>(null)
   const [leadSuccess, setLeadSuccess] = useState<{
-    matched: Array<{ id: string; name: string }>
+    matched: Array<{
+      id: string
+      name: string
+      slug: string
+      city: string
+      distance_km: number | null
+      google_rating: number | null
+      google_reviews_count: number
+      is_verified: boolean
+      crane_type_names: string[]
+    }>
     radiusKm: number | null
     plz: string
   } | null>(null)
@@ -289,11 +326,61 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
             )}
           </p>
           {count > 0 && (
-            <ul className="bg-white border border-gray-200 rounded-lg divide-y divide-gray-100 mb-4 text-[13px] text-gray-700">
-              {leadSuccess.matched.map((c) => (
-                <li key={c.id} className="px-3 py-2">{c.name}</li>
-              ))}
-            </ul>
+            <div className="space-y-2 mb-4">
+              {leadSuccess.matched.map((c) => {
+                const hasRating = c.google_rating != null && c.google_rating > 0
+                const primaryTag = result.name
+                const otherTags = c.crane_type_names.filter((n) => n !== primaryTag).slice(0, 3)
+                return (
+                  <div
+                    key={c.id}
+                    className="bg-white border border-gray-200 rounded-lg p-3 flex items-start gap-3"
+                  >
+                    <div
+                      className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-white text-[13px] font-semibold ${firmAvatarColor(c.name)}`}
+                      aria-hidden="true"
+                    >
+                      {firmInitials(c.name)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[14px] font-semibold text-gray-900 truncate">{c.name}</p>
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12px] text-gray-500 mt-0.5">
+                        {c.city && <span>{c.city}</span>}
+                        {typeof c.distance_km === 'number' && (
+                          <span>{c.distance_km} km entfernt</span>
+                        )}
+                        {hasRating && (
+                          <span className="flex items-center gap-1">
+                            <span className="text-amber-500">★</span>
+                            <span className="text-gray-700 font-medium">{c.google_rating!.toFixed(1)}</span>
+                            {c.google_reviews_count > 0 && (
+                              <span className="text-gray-400">({c.google_reviews_count})</span>
+                            )}
+                          </span>
+                        )}
+                      </div>
+                      {c.crane_type_names.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {c.crane_type_names.includes(primaryTag) && (
+                            <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded font-medium">
+                              {primaryTag}
+                            </span>
+                          )}
+                          {otherTags.map((name) => (
+                            <span
+                              key={name}
+                              className="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded"
+                            >
+                              {name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           )}
           <div className="flex flex-col sm:flex-row gap-2">
             <Link
