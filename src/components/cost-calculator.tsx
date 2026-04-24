@@ -257,6 +257,15 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
       return
     }
 
+    // Project description = calculator recommendation as the baseline (so firms
+    // always know which crane the visitor settled on + why we recommended it)
+    // plus any free-text details the visitor added, clearly labelled.
+    const baseDescription = `Empfehlung Kostenrechner (${page}): ${result.name} — ${result.reason}`
+    const userDetails = String(form.get('project_details') || '').trim()
+    const projectDescription = userDetails
+      ? `${baseDescription}\n\nProjektdetails vom Kunden:\n${userDetails}`
+      : baseDescription
+
     setLeadSending(true)
     setLeadError(null)
 
@@ -272,7 +281,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
           customer_email: form.get('email'),
           customer_phone: form.get('phone'),
           preferred_date: form.get('date') || null,
-          project_description: `Empfehlung Kostenrechner (${page}): ${result.name} — ${result.reason}`,
+          project_description: projectDescription,
           dsgvo_consent: dsgvoConsent,
           auto_select_nearest: true,
           website_url: form.get('website_url') || '',
@@ -471,6 +480,19 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
               <div className="sm:col-span-2">
                 <label htmlFor="calc-date" className="block text-[12px] text-gray-600 mb-1">Wunschtermin (optional)</label>
                 <input id="calc-date" name="date" type="date" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="calc-project-details" className="block text-[12px] text-gray-600 mb-1">
+                  Projektdetails (optional) — was soll konkret gehoben werden?
+                </label>
+                <textarea
+                  id="calc-project-details"
+                  name="project_details"
+                  rows={3}
+                  placeholder={`z.B. 12 Dachfenster, Stahlträger 4 m, enge Zufahrt über Hinterhof… (Helfen Sie den ${result.name}-Anbietern, Ihnen ein präzises Angebot zu machen.)`}
+                  maxLength={2000}
+                  className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-y min-h-[72px]"
+                />
               </div>
             </div>
 
