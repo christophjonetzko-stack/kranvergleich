@@ -34,6 +34,11 @@ export function PageEventTracker() {
     window.addEventListener('scroll', onScroll, { passive: true })
 
     // --- Click delegation for city / type links ---
+    // Capture phase (third arg `true`) so this handler runs BEFORE Next.js
+    // Link's onClick at the React root. Without capture, a click on a <Link>
+    // would trigger router.push() first → current page starts unmounting →
+    // our cleanup removes the listener → the beacon never fires. Running in
+    // capture lets us queue the beacon before navigation even starts.
     const onClick = (e: MouseEvent) => {
       const target = e.target
       if (!(target instanceof Element)) return
@@ -52,11 +57,11 @@ export function PageEventTracker() {
         trackPageEvent('click_type_link', { crane_type: craneType })
       }
     }
-    document.addEventListener('click', onClick)
+    document.addEventListener('click', onClick, true)
 
     return () => {
       window.removeEventListener('scroll', onScroll)
-      document.removeEventListener('click', onClick)
+      document.removeEventListener('click', onClick, true)
     }
   }, [])
 

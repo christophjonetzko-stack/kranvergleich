@@ -31,10 +31,13 @@ export function trackPageEvent(
   })
 
   try {
+    // Try sendBeacon first — it's designed to survive page navigation. If the
+    // browser rejects it (returns false: queue full, payload too large,
+    // disabled-by-settings), fall through to fetch with keepalive so we still
+    // land the event before the page unloads.
     if (navigator.sendBeacon) {
       const blob = new Blob([body], { type: 'application/json' })
-      navigator.sendBeacon('/api/track-page', blob)
-      return
+      if (navigator.sendBeacon('/api/track-page', blob)) return
     }
     fetch('/api/track-page', {
       method: 'POST',
