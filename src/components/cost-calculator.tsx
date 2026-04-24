@@ -212,7 +212,10 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
       crane_type_names: string[]
     }>
     radiusKm: number | null
-    plz: string
+    // What the backend resolved the location input to — e.g. "10115 Berlin"
+    // when the user typed a PLZ or just "Berlin" when they typed a city name.
+    // Falls back to the raw input when the server didn't auto-select.
+    locationLabel: string
   } | null>(null)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
 
@@ -251,9 +254,9 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     }
 
     const form = new FormData(e.currentTarget)
-    const plz = String(form.get('plz') || '').trim()
-    if (!/^\d{5}$/.test(plz)) {
-      setLeadError('Bitte geben Sie eine gültige 5-stellige PLZ ein.')
+    const location = String(form.get('location') || '').trim()
+    if (location.length < 2) {
+      setLeadError('Bitte geben Sie eine PLZ oder Stadt ein.')
       return
     }
 
@@ -275,8 +278,8 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           crane_type_id: getCraneTypeIdBySlug(result.slug),
-          plz,
-          city: plz,
+          location,
+          city: location,
           customer_name: form.get('name'),
           customer_email: form.get('email'),
           customer_phone: form.get('phone'),
@@ -295,7 +298,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
       setLeadSuccess({
         matched: Array.isArray(json.matched_companies) ? json.matched_companies : [],
         radiusKm: typeof json.radius_used_km === 'number' ? json.radius_used_km : null,
-        plz,
+        locationLabel: typeof json.resolved_label === 'string' && json.resolved_label ? json.resolved_label : location,
       })
     } catch (err) {
       setLeadError(err instanceof Error ? err.message : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
@@ -322,13 +325,13 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
           <p className="text-[14px] text-gray-700 mb-3">
             {count > 0 ? (
               <>
-                Ihre Anfrage wurde an <strong>{count} {count === 1 ? 'Anbieter' : 'Anbieter'}</strong>
-                {leadSuccess.radiusKm ? <> im Umkreis von <strong>{leadSuccess.radiusKm} km</strong> um PLZ {leadSuccess.plz}</> : <> in der Region PLZ {leadSuccess.plz}</>}
+                Ihre Anfrage wurde an <strong>{count} Anbieter</strong>
+                {leadSuccess.radiusKm ? <> im Umkreis von <strong>{leadSuccess.radiusKm} km</strong> um {leadSuccess.locationLabel}</> : <> in der Region {leadSuccess.locationLabel}</>}
                 {' '}weitergeleitet. Die Anbieter melden sich direkt per E-Mail bei Ihnen.
               </>
             ) : (
               <>
-                Wir haben Ihre Anfrage erhalten. Aktuell finden wir für PLZ {leadSuccess.plz} keine
+                Wir haben Ihre Anfrage erhalten. Aktuell finden wir für {leadSuccess.locationLabel} keine
                 direkten {result.name}-Anbieter in der Nähe — wir prüfen manuell und melden uns
                 innerhalb von 1–2 Werktagen.
               </>
@@ -470,8 +473,8 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
                 <input id="calc-email" name="email" type="email" required placeholder="max@beispiel.de" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
               </div>
               <div>
-                <label htmlFor="calc-plz" className="block text-[12px] text-gray-600 mb-1">PLZ Einsatzort *</label>
-                <input id="calc-plz" name="plz" required pattern="\d{5}" maxLength={5} placeholder="z.B. 10115" inputMode="numeric" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+                <label htmlFor="calc-location" className="block text-[12px] text-gray-600 mb-1">PLZ oder Stadt Einsatzort *</label>
+                <input id="calc-location" name="location" required placeholder="z.B. 10115 oder Berlin" maxLength={80} className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
               </div>
               <div>
                 <label htmlFor="calc-phone" className="block text-[12px] text-gray-600 mb-1">Telefon (optional)</label>

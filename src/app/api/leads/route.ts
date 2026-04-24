@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
 import { Resend, type CreateEmailOptions } from 'resend'
-import { submitLead, getCompaniesForCraneTypeNearPlz, type FirmMatch } from '@/lib/queries'
+import { submitLead, getCompaniesForCraneTypeNearLocation, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { getCraneTypeNameById } from '@/data/crane-types'
 
@@ -127,25 +127,32 @@ export async function POST(request: Request) {
     }
 
     // Auto-select nearest firms when client requests it (cost calculator flow
-    // — user doesn't see a firm list, we pick for them based on craneType+PLZ).
-    // Skipped when client already supplied `company_ids` explicitly.
+    // — user doesn't see a firm list, we pick for them based on craneType +
+    // location). Skipped when client already supplied `company_ids` explicitly.
+    // `location` accepts either a 5-digit PLZ or a city name; `plz` is kept
+    // as a backwards-compat alias for older clients still sending that field.
     let companyIds: string[] = Array.isArray(body.company_ids) ? body.company_ids.slice(0, MAX_COMPANY_IDS) : []
     let autoSelectedRadiusKm: number | null = null
+    let autoSelectedResolvedLabel: string | null = null
     let autoSelectedMatches: FirmMatch[] | null = null
+    const locationInput: string | null =
+      (typeof body.location === 'string' && body.location.trim()) ||
+      (typeof body.plz === 'string' && body.plz.trim()) ||
+      null
     if (
       companyIds.length === 0 &&
       body.auto_select_nearest === true &&
       typeof body.crane_type_id === 'string' &&
-      typeof body.plz === 'string'
+      locationInput
     ) {
-      const plz = body.plz.trim()
       try {
-        const result = await getCompaniesForCraneTypeNearPlz(body.crane_type_id, plz, {
+        const result = await getCompaniesForCraneTypeNearLocation(body.crane_type_id, locationInput, {
           limit: MAX_COMPANY_IDS,
         })
         if (result && result.matches.length > 0) {
           companyIds = result.matches.map((m) => m.company.id)
           autoSelectedRadiusKm = result.radius_used_km
+          autoSelectedResolvedLabel = result.resolved_label
           autoSelectedMatches = result.matches
         }
       } catch (err) {
@@ -425,6 +432,7 @@ export async function POST(request: Request) {
       id: lead.id,
       matched_companies: matchedCompaniesForClient,
       radius_used_km: autoSelectedRadiusKm,
+      resolved_label: autoSelectedResolvedLabel,
     })
   } catch {
     return NextResponse.json(

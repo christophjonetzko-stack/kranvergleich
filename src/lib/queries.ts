@@ -353,24 +353,58 @@ export type FirmMatch = {
  * Returns null when the PLZ is not a valid 5-digit code or cannot be geocoded
  * from `german-cities.json`.
  */
-export async function getCompaniesForCraneTypeNearPlz(
+type CityRow = { p: string; n: string; s: string; la: number; ln: number }
+
+/** Cache the cities JSON module — it's ~1 MB and loaded once per process.
+ *  Named `getCitiesJson` to avoid clashing with the exported `getCities()`
+ *  above which returns the Supabase `cities` table rows.
+ *
+ *  The array is pre-sorted so cities with more PLZ entries come first. That
+ *  approximates "bigger city" and stops ambiguous city-name lookups from
+ *  resolving to the wrong place — e.g. "Frankfurt" resolves to Frankfurt am
+ *  Main (many PLZ) instead of Frankfurt (Oder) (few PLZ). */
+let _citiesJsonCache: CityRow[] | null = null
+async function getCitiesJson(): Promise<CityRow[]> {
+  if (_citiesJsonCache) return _citiesJsonCache
+  const raw = (await import('@/data/german-cities.json')).default as CityRow[]
+  const nameFreq = new Map<string, number>()
+  for (const c of raw) nameFreq.set(c.n, (nameFreq.get(c.n) ?? 0) + 1)
+  _citiesJsonCache = [...raw].sort(
+    (a, b) => (nameFreq.get(b.n) ?? 0) - (nameFreq.get(a.n) ?? 0),
+  )
+  return _citiesJsonCache
+}
+
+/**
+ * Normalise a German place name so "München", "Muenchen" and "Munchen" all
+ * collide. Returns two variants so we can try both (ä→ae transliteration
+ * covers correct spelling, pure diacritic strip covers sloppy spelling).
+ */
+function normalizeCityName(s: string): { withAe: string; diacriticStripped: string } {
+  const lower = s.toLowerCase().trim().replace(/\s+/g, ' ')
+  const withAe = lower
+    .replace(/ä/g, 'ae')
+    .replace(/ö/g, 'oe')
+    .replace(/ü/g, 'ue')
+    .replace(/ß/g, 'ss')
+  const diacriticStripped = lower
+    .normalize('NFD')
+    .replace(/[\u0300-\u036F]/g, '')
+    .replace(/ß/g, 'ss')
+  return { withAe, diacriticStripped }
+}
+
+/** Core: given reference coordinates, rank active firms offering craneTypeId
+ *  by distance and expand radius (50 → 100 → unlimited) until ≥3 matches. */
+async function _computeFirmMatchesFromCoords(
   craneTypeId: string,
-  plz: string,
-  opts?: { limit?: number },
-): Promise<{ matches: FirmMatch[]; radius_used_km: number } | null> {
-  const limit = opts?.limit ?? 10
+  refLat: number,
+  refLng: number,
+  cities: CityRow[],
+  limit: number,
+): Promise<{ matches: FirmMatch[]; radius_used_km: number }> {
   const minMatches = 3
   const tryRadii: number[] = [50, 100, Number.POSITIVE_INFINITY]
-
-  if (!/^\d{5}$/.test(plz)) return null
-
-  const citiesJson = (await import('@/data/german-cities.json')).default as Array<{
-    p: string; n: string; s: string; la: number; ln: number
-  }>
-  const plzCity = citiesJson.find((c) => c.p === plz)
-  if (!plzCity) return null
-  const refLat = plzCity.la
-  const refLng = plzCity.ln
 
   const { data: craneData } = await supabase
     .from('company_cranes')
@@ -395,7 +429,7 @@ export async function getCompaniesForCraneTypeNearPlz(
   // PLZ→coords fallback for the ~39 firms without lat/lng.
   const plzMap = new Map<string, { la: number; ln: number }>()
   const plz2Map = new Map<string, { la: number; ln: number }>()
-  for (const c of citiesJson) {
+  for (const c of cities) {
     if (!plzMap.has(c.p)) plzMap.set(c.p, { la: c.la, ln: c.ln })
     const p2 = c.p.slice(0, 2)
     if (!plz2Map.has(p2)) plz2Map.set(p2, { la: c.la, ln: c.ln })
@@ -430,6 +464,66 @@ export async function getCompaniesForCraneTypeNearPlz(
     }
   }
   return { matches: [], radius_used_km: 0 }
+}
+
+export async function getCompaniesForCraneTypeNearPlz(
+  craneTypeId: string,
+  plz: string,
+  opts?: { limit?: number },
+): Promise<{ matches: FirmMatch[]; radius_used_km: number } | null> {
+  if (!/^\d{5}$/.test(plz)) return null
+  const cities = await getCitiesJson()
+  const plzCity = cities.find((c) => c.p === plz)
+  if (!plzCity) return null
+  return _computeFirmMatchesFromCoords(craneTypeId, plzCity.la, plzCity.ln, cities, opts?.limit ?? 10)
+}
+
+/**
+ * Same as getCompaniesForCraneTypeNearPlz but accepts either a 5-digit PLZ
+ * OR a German city name (umlaut-tolerant: München / Muenchen / Munchen all
+ * match). Added for the Kostenrechner form where construction-site visitors
+ * often know the city but not the exact zip code.
+ *
+ * Returns `resolved_label` so the UI can confirm what we actually matched
+ * (e.g. "10115 Berlin" or "Berlin") — avoids showing the raw user input
+ * unchanged, which would be misleading when we did fuzzy matching.
+ */
+export async function getCompaniesForCraneTypeNearLocation(
+  craneTypeId: string,
+  location: string,
+  opts?: { limit?: number },
+): Promise<{ matches: FirmMatch[]; radius_used_km: number; resolved_label: string } | null> {
+  const trimmed = location.trim()
+  if (!trimmed) return null
+
+  const cities = await getCitiesJson()
+  const limit = opts?.limit ?? 10
+
+  // Path 1: exact 5-digit PLZ.
+  if (/^\d{5}$/.test(trimmed)) {
+    const plzCity = cities.find((c) => c.p === trimmed)
+    if (!plzCity) return null
+    const base = await _computeFirmMatchesFromCoords(craneTypeId, plzCity.la, plzCity.ln, cities, limit)
+    return { ...base, resolved_label: `${trimmed} ${plzCity.n}` }
+  }
+
+  // Path 2: city name. Try umlaut-transliterated match first (correct spelling),
+  // then pure diacritic-stripped match (sloppy spelling), then startsWith.
+  const needle = normalizeCityName(trimmed)
+  let cityMatch = cities.find((c) => {
+    const h = normalizeCityName(c.n)
+    return h.withAe === needle.withAe || h.diacriticStripped === needle.diacriticStripped
+  })
+  if (!cityMatch) {
+    cityMatch = cities.find((c) => {
+      const h = normalizeCityName(c.n)
+      return h.withAe.startsWith(needle.withAe) || h.diacriticStripped.startsWith(needle.diacriticStripped)
+    })
+  }
+  if (!cityMatch) return null
+
+  const base = await _computeFirmMatchesFromCoords(craneTypeId, cityMatch.la, cityMatch.ln, cities, limit)
+  return { ...base, resolved_label: cityMatch.n }
 }
 
 /**
