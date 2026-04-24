@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
+import { getCraneTypeIdBySlug } from '@/data/crane-types'
 
 // --- Step definitions ---
 
@@ -160,8 +161,8 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
 // --- Component ---
 
 interface CostCalculatorProps {
-  // Page path where the calculator is embedded; stored in newsletter_subscribers.context
-  // so we can later attribute which landing page drove each conversion.
+  // Page path where the calculator is embedded; forwarded into the lead's
+  // project_description so we can attribute which landing page drove the conversion.
   page?: string
 }
 
@@ -169,8 +170,14 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [result, setResult] = useState<Recommendation | null>(null)
-  const [emailSent, setEmailSent] = useState(false)
-  const [emailSending, setEmailSending] = useState(false)
+  const [leadSending, setLeadSending] = useState(false)
+  const [leadError, setLeadError] = useState<string | null>(null)
+  const [leadSuccess, setLeadSuccess] = useState<{
+    matched: Array<{ id: string; name: string }>
+    radiusKm: number | null
+    plz: string
+  } | null>(null)
+  const [dsgvoConsent, setDsgvoConsent] = useState(false)
 
   function handleSelect(value: string) {
     const step = STEPS[currentStep]
@@ -188,40 +195,129 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     setCurrentStep(0)
     setAnswers({})
     setResult(null)
-    setEmailSent(false)
-    setEmailSending(false)
+    setLeadSending(false)
+    setLeadError(null)
+    setLeadSuccess(null)
+    setDsgvoConsent(false)
   }
 
-  async function handleSendEmail(e: React.FormEvent<HTMLFormElement>) {
+  // Submit Sammelanfrage — /api/leads auto-selects up to 10 nearest firms
+  // for the recommended crane type within 50/100 km of the PLZ, so the user
+  // doesn't have to pick firms from a list (peak-intent UX, no extra step).
+  async function handleSubmitLead(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!result || emailSending) return
-    const form = new FormData(e.currentTarget)
-    const email = form.get('email') as string
-    if (!email) return
+    if (!result || leadSending) return
 
-    setEmailSending(true)
+    if (!dsgvoConsent) {
+      setLeadError('Bitte stimmen Sie der Datenschutzerklärung zu.')
+      return
+    }
+
+    const form = new FormData(e.currentTarget)
+    const plz = String(form.get('plz') || '').trim()
+    if (!/^\d{5}$/.test(plz)) {
+      setLeadError('Bitte geben Sie eine gültige 5-stellige PLZ ein.')
+      return
+    }
+
+    setLeadSending(true)
+    setLeadError(null)
+
     try {
-      const res = await fetch('/api/send-result', {
+      const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email,
-          craneName: result.name,
-          reason: result.reason,
-          priceEstimate: result.priceEstimate,
-          includesOperator: result.includesOperator,
-          slug: result.slug,
-          answers, // raw Kostenrechner inputs for context jsonb
-          page, // landing page attribution
+          crane_type_id: getCraneTypeIdBySlug(result.slug),
+          plz,
+          city: plz,
+          customer_name: form.get('name'),
+          customer_email: form.get('email'),
+          customer_phone: form.get('phone'),
+          preferred_date: form.get('date') || null,
+          project_description: `Empfehlung Kostenrechner (${page}): ${result.name} — ${result.reason}`,
+          dsgvo_consent: dsgvoConsent,
+          auto_select_nearest: true,
+          website_url: form.get('website_url') || '',
         }),
       })
-      if (res.ok) setEmailSent(true)
-    } catch { /* ignore */ }
-    setEmailSending(false)
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error || 'Fehler beim Senden.')
+      }
+      const json = await res.json()
+      setLeadSuccess({
+        matched: Array.isArray(json.matched_companies) ? json.matched_companies : [],
+        radiusKm: typeof json.radius_used_km === 'number' ? json.radius_used_km : null,
+        plz,
+      })
+    } catch (err) {
+      setLeadError(err instanceof Error ? err.message : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
+    } finally {
+      setLeadSending(false)
+    }
   }
 
   // --- Result screen ---
   if (result) {
+    // Success panel — shown after /api/leads successfully routed the Sammelanfrage
+    // to auto-selected nearest firms. Matched list is honest (real DB names +
+    // real radius used), never invented.
+    if (leadSuccess) {
+      const count = leadSuccess.matched.length
+      return (
+        <div className="border border-green-200 bg-green-50/60 rounded-xl p-5 sm:p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+              ✓
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Anfrage gesendet</h3>
+          </div>
+          <p className="text-[14px] text-gray-700 mb-3">
+            {count > 0 ? (
+              <>
+                Ihre Anfrage wurde an <strong>{count} {count === 1 ? 'Anbieter' : 'Anbieter'}</strong>
+                {leadSuccess.radiusKm ? <> im Umkreis von <strong>{leadSuccess.radiusKm} km</strong> um PLZ {leadSuccess.plz}</> : <> in der Region PLZ {leadSuccess.plz}</>}
+                {' '}weitergeleitet. Die Anbieter melden sich direkt per E-Mail bei Ihnen.
+              </>
+            ) : (
+              <>
+                Wir haben Ihre Anfrage erhalten. Aktuell finden wir für PLZ {leadSuccess.plz} keine
+                direkten {result.name}-Anbieter in der Nähe — wir prüfen manuell und melden uns
+                innerhalb von 1–2 Werktagen.
+              </>
+            )}
+          </p>
+          {count > 0 && (
+            <ul className="bg-white border border-gray-200 rounded-lg divide-y divide-gray-100 mb-4 text-[13px] text-gray-700">
+              {leadSuccess.matched.map((c) => (
+                <li key={c.id} className="px-3 py-2">{c.name}</li>
+              ))}
+            </ul>
+          )}
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Link
+              href={`/${result.slug}`}
+              className="flex-1 text-center bg-blue-600 text-white text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Alle {result.name}-Anbieter ansehen
+            </Link>
+            <button
+              onClick={handleReset}
+              className="text-[13px] text-gray-500 hover:text-gray-700 py-2 px-4 transition-colors"
+            >
+              Neu berechnen
+            </button>
+          </div>
+          <p className="text-[11px] text-gray-400 mt-3">
+            * Preise sind unverbindliche Richtwerte basierend auf Marktdurchschnitt 2026.
+            Zusatzkosten für Transport, Montage und Genehmigungen können anfallen.
+          </p>
+        </div>
+      )
+    }
+
+    // Recommendation + inline Sammelanfrage (no more email gate).
     return (
       <div className="border border-blue-200 bg-blue-50/50 rounded-xl p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
@@ -231,102 +327,109 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
           <h3 className="text-lg font-semibold text-gray-900">Unsere Empfehlung</h3>
         </div>
 
-        {/* Crane name + reason — always visible (teaser) */}
+        {/* Recommendation card — price + operator visible up-front, no gating. */}
         <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
           <p className="text-xl font-semibold text-gray-900 mb-1">{result.name}</p>
           <p className="text-[14px] text-gray-500 mb-3">{result.reason}</p>
-
-          {emailSent ? (
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-gray-50 rounded-lg p-3">
-                <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
-                <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
-                <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. MwSt.</p>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-3">
-                <p className="text-[12px] text-gray-400">Kranführer</p>
-                <p className="text-lg font-semibold text-gray-900">
-                  {result.includesOperator ? 'Inklusive' : 'Optional'}
-                </p>
-                <p className="text-[11px] text-gray-400">
-                  {result.includesOperator ? 'Im Preis enthalten' : 'Separat buchbar'}
-                </p>
-              </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
+              <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
+              <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. MwSt.</p>
             </div>
-          ) : (
-            <div className="bg-gray-50 rounded-lg p-3 text-[13px] text-gray-600">
-              Den vollständigen Kostenvoranschlag mit Preisrahmen und Anbieter-Vergleich
-              senden wir Ihnen kostenlos per E-Mail.
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-[12px] text-gray-400">Kranführer</p>
+              <p className="text-lg font-semibold text-gray-900">
+                {result.includesOperator ? 'Inklusive' : 'Optional'}
+              </p>
+              <p className="text-[11px] text-gray-400">
+                {result.includesOperator ? 'Im Preis enthalten' : 'Separat buchbar'}
+              </p>
             </div>
-          )}
+          </div>
         </div>
 
-        {emailSent ? (
-          <>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <Link
-                href={`/${result.slug}`}
-                className="flex-1 text-center bg-blue-600 text-white text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                {result.name}-Anbieter vergleichen
-              </Link>
-              <button
-                onClick={handleReset}
-                className="text-[13px] text-gray-500 hover:text-gray-700 py-2 px-4 transition-colors"
-              >
-                Neu berechnen
-              </button>
+        {/* Inline Sammelanfrage — POSTs to /api/leads with auto_select_nearest.
+            Server picks up to 10 nearest firms offering this crane type within
+            50/100 km of the PLZ and emails them directly. */}
+        <div className="border border-gray-200 bg-white rounded-lg p-4">
+          <p className="text-[14px] font-semibold text-gray-900 mb-1">
+            Konkrete Angebote für {result.name} — kostenlos &amp; unverbindlich
+          </p>
+          <p className="text-[12px] text-gray-500 mb-3">
+            Wir leiten Ihre Anfrage automatisch an die nächstgelegenen Anbieter weiter,
+            die den {result.name} im Angebot haben.
+          </p>
+
+          <form onSubmit={handleSubmitLead} className="space-y-3">
+            {/* Honeypot */}
+            <input type="text" name="website_url" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute opacity-0 h-0 w-0 overflow-hidden pointer-events-none" />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label htmlFor="calc-name" className="block text-[12px] text-gray-600 mb-1">Name *</label>
+                <input id="calc-name" name="name" required placeholder="Max Mustermann" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+              </div>
+              <div>
+                <label htmlFor="calc-email" className="block text-[12px] text-gray-600 mb-1">E-Mail *</label>
+                <input id="calc-email" name="email" type="email" required placeholder="max@beispiel.de" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+              </div>
+              <div>
+                <label htmlFor="calc-plz" className="block text-[12px] text-gray-600 mb-1">PLZ Einsatzort *</label>
+                <input id="calc-plz" name="plz" required pattern="\d{5}" maxLength={5} placeholder="z.B. 10115" inputMode="numeric" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+              </div>
+              <div>
+                <label htmlFor="calc-phone" className="block text-[12px] text-gray-600 mb-1">Telefon (optional)</label>
+                <input id="calc-phone" name="phone" type="tel" placeholder="+49 170 1234567" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="calc-date" className="block text-[12px] text-gray-600 mb-1">Wunschtermin (optional)</label>
+                <input id="calc-date" name="date" type="date" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+              </div>
             </div>
 
-            <p className="text-[13px] text-green-700 font-medium mt-4">
-              ✓ Kostenvergleich wurde an Ihre E-Mail gesendet.
-            </p>
+            <label className="flex gap-2 items-start cursor-pointer">
+              <input
+                type="checkbox"
+                checked={dsgvoConsent}
+                onChange={(e) => setDsgvoConsent(e.target.checked)}
+                className="mt-0.5 shrink-0"
+              />
+              <span className="text-[11px] text-gray-500 leading-relaxed">
+                Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
+                <Link href="/datenschutz" className="underline hover:text-gray-700" target="_blank" onClick={(e) => e.stopPropagation()}>Datenschutzerklärung</Link>{' '}
+                zu. Meine Daten werden zur Bearbeitung an passende Anbieter weitergeleitet. *
+              </span>
+            </label>
 
-            <p className="text-[11px] text-gray-400 mt-3">
-              * Preise sind unverbindliche Richtwerte basierend auf Marktdurchschnitt 2026.
-              Zusatzkosten für Transport, Montage und Genehmigungen können anfallen.
-            </p>
-          </>
-        ) : (
-          <div className="border border-gray-200 bg-white rounded-lg p-4">
-            <form onSubmit={handleSendEmail}>
-              <p className="text-[13px] font-medium text-gray-700 mb-1">
-                Kostenvoranschlag + 3 Spartipps per E-Mail erhalten
-              </p>
-              <p className="text-[12px] text-gray-500 mb-3">
-                Sofort: vollständiger Preisrahmen für Ihren {result.name} + Anbieter-Vergleich.
-                Danach: 3 kurze Mails mit Spartipps (Tag 1, 3 und 7). Jederzeit abbestellbar.
-              </p>
-              <div className="flex gap-2">
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="ihre@email.de"
-                  className="flex-1 text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400"
-                />
-                <button
-                  type="submit"
-                  disabled={emailSending}
-                  className="text-[13px] font-medium bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors whitespace-nowrap"
-                >
-                  {emailSending ? 'Senden…' : 'Kostenvoranschlag anfordern'}
-                </button>
-              </div>
-              <p className="text-[11px] text-gray-400 mt-2">
-                Mit dem Versand willigen Sie in die Nutzung Ihrer E-Mail für Kostenvergleich und
-                Spartipps-Serie ein (<Link href="/datenschutz" className="underline hover:text-gray-600">Datenschutz</Link>).
-              </p>
-            </form>
+            {leadError && (
+              <p className="text-[13px] text-red-600">{leadError}</p>
+            )}
 
             <button
-              onClick={handleReset}
-              className="text-[12px] text-gray-400 hover:text-gray-600 mt-3 transition-colors"
+              type="submit"
+              disabled={leadSending || !dsgvoConsent}
+              className="w-full text-[14px] font-medium bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
-              ← Neu berechnen
+              {leadSending ? 'Wird gesendet…' : `Kostenlose Angebote für ${result.name} anfragen`}
             </button>
-          </div>
-        )}
+
+            <p className="text-[11px] text-center text-gray-400">
+              Kostenlos · unverbindlich · keine versteckten Gebühren
+            </p>
+          </form>
+
+          <button
+            onClick={handleReset}
+            className="text-[12px] text-gray-400 hover:text-gray-600 mt-3 transition-colors"
+          >
+            ← Neu berechnen
+          </button>
+        </div>
+
+        <p className="text-[11px] text-gray-400 mt-3">
+          * Preise sind unverbindliche Richtwerte basierend auf Marktdurchschnitt 2026.
+          Zusatzkosten für Transport, Montage und Genehmigungen können anfallen.
+        </p>
       </div>
     )
   }

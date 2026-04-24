@@ -337,6 +337,101 @@ export async function getCompaniesForCraneType(
   return data ?? []
 }
 
+/** Nearest-firm match record — company plus its distance from the reference PLZ. */
+export type FirmMatch = {
+  company: CompanyWithCranes
+  distance_km: number
+}
+
+/**
+ * Auto-select up to `limit` nearest active companies offering `craneTypeId`,
+ * measured from a 5-digit PLZ. Expands the search radius when the initial 50 km
+ * circle has fewer than 3 matches (50 → 100 → unlimited). Used by the cost
+ * calculator Sammelanfrage to pre-populate `company_ids` without forcing the
+ * user to pick firms from a list — the visitor just wants offers fast.
+ *
+ * Returns null when the PLZ is not a valid 5-digit code or cannot be geocoded
+ * from `german-cities.json`.
+ */
+export async function getCompaniesForCraneTypeNearPlz(
+  craneTypeId: string,
+  plz: string,
+  opts?: { limit?: number },
+): Promise<{ matches: FirmMatch[]; radius_used_km: number } | null> {
+  const limit = opts?.limit ?? 10
+  const minMatches = 3
+  const tryRadii: number[] = [50, 100, Number.POSITIVE_INFINITY]
+
+  if (!/^\d{5}$/.test(plz)) return null
+
+  const citiesJson = (await import('@/data/german-cities.json')).default as Array<{
+    p: string; n: string; s: string; la: number; ln: number
+  }>
+  const plzCity = citiesJson.find((c) => c.p === plz)
+  if (!plzCity) return null
+  const refLat = plzCity.la
+  const refLng = plzCity.ln
+
+  const { data: craneData } = await supabase
+    .from('company_cranes')
+    .select('company_id')
+    .eq('crane_type_id', craneTypeId)
+  if (!craneData || craneData.length === 0) return { matches: [], radius_used_km: 0 }
+
+  const companyIds = [...new Set(craneData.map((c) => c.company_id))]
+  const batchSize = 100
+  const all: CompanyWithCranes[] = []
+  for (let i = 0; i < companyIds.length; i += batchSize) {
+    const batch = companyIds.slice(i, i + batchSize)
+    const { data } = await supabase
+      .from('companies')
+      .select(`*, company_cranes (*)`)
+      .in('id', batch)
+      .eq('is_active', true)
+      .eq('is_relevant', true)
+    if (data) all.push(...data)
+  }
+
+  // PLZ→coords fallback for the ~39 firms without lat/lng.
+  const plzMap = new Map<string, { la: number; ln: number }>()
+  const plz2Map = new Map<string, { la: number; ln: number }>()
+  for (const c of citiesJson) {
+    if (!plzMap.has(c.p)) plzMap.set(c.p, { la: c.la, ln: c.ln })
+    const p2 = c.p.slice(0, 2)
+    if (!plz2Map.has(p2)) plz2Map.set(p2, { la: c.la, ln: c.ln })
+  }
+
+  const withDist: FirmMatch[] = all.map((c) => {
+    let lat = c.lat
+    let lng = c.lng
+    if (lat == null || lng == null) {
+      const fallback = (c.zip && plzMap.get(c.zip)) || (c.zip && plz2Map.get(c.zip.slice(0, 2)))
+      if (fallback) { lat = fallback.la; lng = fallback.ln }
+    }
+    if (lat == null || lng == null) return { company: c, distance_km: Number.POSITIVE_INFINITY }
+    const dlat = (lat - refLat) * 111
+    const dlng = (lng - refLng) * 111 * Math.cos((refLat * Math.PI) / 180)
+    return { company: c, distance_km: Math.sqrt(dlat * dlat + dlng * dlng) }
+  })
+  withDist.sort((a, b) => a.distance_km - b.distance_km)
+
+  for (const r of tryRadii) {
+    const filtered = withDist.filter(
+      (m) => m.distance_km <= r && m.distance_km !== Number.POSITIVE_INFINITY,
+    )
+    const isLastRadius = r === tryRadii[tryRadii.length - 1]
+    if (filtered.length >= minMatches || isLastRadius) {
+      const capped = filtered.slice(0, limit)
+      // Honest radius: when we fell through to unlimited, report the farthest
+      // matched firm's distance (rounded up) instead of "∞".
+      const farthest = capped[capped.length - 1]?.distance_km ?? 0
+      const radius_used_km = r === Number.POSITIVE_INFINITY ? Math.ceil(farthest) : r
+      return { matches: capped, radius_used_km }
+    }
+  }
+  return { matches: [], radius_used_km: 0 }
+}
+
 /**
  * Get company count per city for a list of cities.
  * Returns a map of cityId → count.

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
 import { Resend, type CreateEmailOptions } from 'resend'
-import { submitLead } from '@/lib/queries'
+import { submitLead, getCompaniesForCraneTypeNearPlz } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 
 // Must match the salt base used by /api/track so a single visitor's events
@@ -125,8 +125,31 @@ export async function POST(request: Request) {
       )
     }
 
-    // Validate company_ids array size
-    const companyIds: string[] = Array.isArray(body.company_ids) ? body.company_ids.slice(0, MAX_COMPANY_IDS) : []
+    // Auto-select nearest firms when client requests it (cost calculator flow
+    // — user doesn't see a firm list, we pick for them based on craneType+PLZ).
+    // Skipped when client already supplied `company_ids` explicitly.
+    let companyIds: string[] = Array.isArray(body.company_ids) ? body.company_ids.slice(0, MAX_COMPANY_IDS) : []
+    let autoSelectedRadiusKm: number | null = null
+    if (
+      companyIds.length === 0 &&
+      body.auto_select_nearest === true &&
+      typeof body.crane_type_id === 'string' &&
+      typeof body.plz === 'string'
+    ) {
+      const plz = body.plz.trim()
+      try {
+        const result = await getCompaniesForCraneTypeNearPlz(body.crane_type_id, plz, {
+          limit: MAX_COMPANY_IDS,
+        })
+        if (result && result.matches.length > 0) {
+          companyIds = result.matches.map((m) => m.company.id)
+          autoSelectedRadiusKm = result.radius_used_km
+        }
+      } catch (err) {
+        console.error('auto_select_nearest lookup failed:', err)
+        // Fall through — lead still gets saved without company_ids, owner handles manually.
+      }
+    }
 
     // Truncate text fields
     const city = truncate(body.city || '')
@@ -362,7 +385,12 @@ export async function POST(request: Request) {
       })
     }
 
-    return NextResponse.json({ success: true, id: lead.id })
+    return NextResponse.json({
+      success: true,
+      id: lead.id,
+      matched_companies: selectedCompanies.map((c) => ({ id: c.id, name: c.name })),
+      radius_used_km: autoSelectedRadiusKm,
+    })
   } catch {
     return NextResponse.json(
       { error: 'Interner Serverfehler. Bitte versuchen Sie es später erneut.' },

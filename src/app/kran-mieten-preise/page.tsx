@@ -5,6 +5,7 @@ import { CostCalculator } from '@/components/cost-calculator'
 import { cranePrices } from '@/data/crane-prices'
 import { craneTypes } from '@/data/crane-types'
 import { FAQSection } from '@/components/faq-section'
+import { LeadForm } from '@/components/lead-form'
 import { getSiteStats } from '@/lib/queries'
 
 export const revalidate = 86400
@@ -208,6 +209,24 @@ export default async function KranMietenPreisePage() {
           eine unverbindliche Kostenschätzung plus Empfehlung für den passenden Krantyp.
         </p>
         <CostCalculator page="/kran-mieten-preise" />
+      </section>
+
+      {/* Backup path — Sammelanfrage ohne Kalkulator. Primary conversion happens
+          inside <CostCalculator /> above (auto-selects nearest firms); this
+          section catches visitors who already know what they need and want to
+          skip the 4-step calculator. */}
+      <section id="angebot-anfragen" className="mb-10 scroll-mt-20">
+        <div className="border-l-4 border-gray-300 bg-gray-50 rounded-r-lg p-5 mb-5">
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Sie wissen schon, was Sie brauchen? Sammelanfrage ohne Kalkulator
+          </h2>
+          <p className="text-[14px] text-gray-700 leading-relaxed">
+            Kein Kalkulator nötig — wenn Sie den passenden Krantyp bereits kennen,
+            stellen Sie direkt eine <strong>kostenlose Sammelanfrage</strong>. Ihre Anfrage geht
+            an passende Anbieter in Ihrer Region. Kostenlos, unverbindlich.
+          </p>
+        </div>
+        <LeadForm />
       </section>
 
       {/* Autokran prices — day + hourly */}

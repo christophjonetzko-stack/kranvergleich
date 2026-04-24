@@ -43,3 +43,15 @@ const CRANE_TYPE_ID_MAP: Record<string, string> = {
 export function getCraneTypeNameById(id: string): string {
   return CRANE_TYPE_ID_MAP[id] ?? id
 }
+
+/** slug (e.g. 'minikran-mieten') → UUID. Reverse of the slug→name→id chain. */
+const SLUG_TO_ID: Record<string, string> = Object.fromEntries(
+  craneTypes.map((ct) => {
+    const entry = Object.entries(CRANE_TYPE_ID_MAP).find(([, name]) => name === ct.name)
+    return [ct.slug, entry?.[0] ?? '']
+  }),
+)
+
+export function getCraneTypeIdBySlug(slug: string): string | null {
+  return SLUG_TO_ID[slug] || null
+}
