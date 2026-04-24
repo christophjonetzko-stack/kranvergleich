@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getCraneTypeIdBySlug } from '@/data/crane-types'
@@ -197,6 +197,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [result, setResult] = useState<Recommendation | null>(null)
+  const [isDryRunMode, setIsDryRunMode] = useState(false)
   const [leadSending, setLeadSending] = useState(false)
   const [leadError, setLeadError] = useState<string | null>(null)
   const [leadSuccess, setLeadSuccess] = useState<{
@@ -221,6 +222,15 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     customerConfirmationSent: boolean
   } | null>(null)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
+
+  // Pick up `?dryrun=1` after mount so we don't diverge between SSR and the
+  // client during hydration; a prerendered page can't read the URL, and the
+  // page is cached as static (ISR) on /kran-mieten-preise.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    setIsDryRunMode(params.get('dryrun') === '1')
+  }, [])
 
   function handleSelect(value: string) {
     const step = STEPS[currentStep]
@@ -275,6 +285,12 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     setLeadSending(true)
     setLeadError(null)
 
+    // Debug helper: visit the page with `?dryrun=1` to exercise the delivery
+    // pipeline (owner notification + customer confirmation + email_delivery
+    // response) without sending real emails to construction firms. Reads from
+    // state (populated by the mount-time effect) to stay hydration-safe.
+    const dryRun = isDryRunMode
+
     try {
       const res = await fetch('/api/leads', {
         method: 'POST',
@@ -290,6 +306,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
           project_description: projectDescription,
           dsgvo_consent: dsgvoConsent,
           auto_select_nearest: true,
+          dry_run: dryRun,
           website_url: form.get('website_url') || '',
         }),
       })
@@ -435,6 +452,11 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     // Recommendation + inline Sammelanfrage (no more email gate).
     return (
       <div className="border border-blue-200 bg-blue-50/50 rounded-xl p-5 sm:p-6">
+        {isDryRunMode && (
+          <div className="border border-amber-300 bg-amber-50 rounded-lg p-3 mb-4 text-[13px] text-amber-900">
+            <strong>⚠ Dry-run mode aktywny.</strong> Firmy NIE otrzymają e-maili. Tylko owner notification + customer confirmation + zapis w DB. Zdejmij <code>?dryrun=1</code> z URL, żeby wrócić do normalnego trybu.
+          </div>
+        )}
         <div className="flex items-center gap-2 mb-4">
           <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
             ✓

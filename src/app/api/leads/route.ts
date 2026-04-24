@@ -121,6 +121,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, id: 'ok' })
     }
 
+    // Dry-run mode: lead is persisted and owner/customer emails fire normally,
+    // but firm-facing emails + firm_events + lead_companies.sent_at are all
+    // skipped. Used to verify the delivery pipeline without spamming real
+    // construction companies with repeated test requests. Guarded to prevent
+    // accidental dry-runs from the main UI flow.
+    const dryRun = body.dry_run === true
+
     // Validate required fields
     if (!body.customer_email || !body.dsgvo_consent) {
       return NextResponse.json(
@@ -236,7 +243,7 @@ export async function POST(request: Request) {
     // beacon) because this is the most important conversion signal and must
     // not be lost to navigation/beacon failure. Fire-and-forget — never block
     // the lead response on tracking. See migration 007.
-    if (companyIds.length > 0) {
+    if (companyIds.length > 0 && !dryRun) {
       const eventDate = new Date().toISOString().slice(0, 10)
       const ipHash = createHash('sha256')
         .update(`${ip}|${eventDate}|${FIRM_EVENTS_SALT_BASE}`)
@@ -293,23 +300,28 @@ export async function POST(request: Request) {
     // REAL delivery status per firm (not optimistic labels). Parallel send
     // via Promise.all is safe because sendResendEmail never throws.
     // MAX_COMPANY_IDS = 10 keeps this well below Resend's rate limit.
-    const firmResults: { company_id: string; ok: boolean }[] = await Promise.all(
-      companiesWithEmail.map(async (company) => {
-        const result = await sendResendEmail(`company email (${company.name})`, {
-          from: FROM_EMAIL,
-          to: company.email!,
-          replyTo: customerEmail,
-          subject: `KranVergleich.de - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
-          html: buildCompanyEmailHtml(company.name),
-        })
-        return { company_id: company.id, ok: result.ok }
-      }),
-    )
+    // Dry-run mode returns an empty firmResults so downstream logic keeps
+    // working (companyListHtml shows 0 firms; owner/customer still fire).
+    const firmResults: { company_id: string; ok: boolean }[] = dryRun
+      ? []
+      : await Promise.all(
+          companiesWithEmail.map(async (company) => {
+            const result = await sendResendEmail(`company email (${company.name})`, {
+              from: FROM_EMAIL,
+              to: company.email!,
+              replyTo: customerEmail,
+              subject: `KranVergleich.de - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
+              html: buildCompanyEmailHtml(company.name),
+            })
+            return { company_id: company.id, ok: result.ok }
+          }),
+        )
+    if (dryRun) console.log('[leads] dry_run=true — skipped firm emails for', companyIds.length, 'companies')
 
     // Mark lead_companies.sent_at for successful deliveries. Service role
     // bypasses RLS. One UPDATE with .in() filter handles all successes at once.
     const successCompanyIds = firmResults.filter((r) => r.ok).map((r) => r.company_id)
-    if (successCompanyIds.length > 0) {
+    if (successCompanyIds.length > 0 && !dryRun) {
       const sb = getServiceSupabase()
       const { error: updateErr } = await sb
         .from('lead_companies')
@@ -454,6 +466,7 @@ export async function POST(request: Request) {
       matched_companies: matchedCompaniesForClient,
       radius_used_km: autoSelectedRadiusKm,
       resolved_label: autoSelectedResolvedLabel,
+      dry_run: dryRun,
       email_delivery: {
         firms_sent: successCompanyIds.length,
         firms_total: companiesWithEmail.length,
