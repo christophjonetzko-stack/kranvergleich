@@ -216,6 +216,9 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     // when the user typed a PLZ or just "Berlin" when they typed a city name.
     // Falls back to the raw input when the server didn't auto-select.
     locationLabel: string
+    // True when the server confirmed the customer confirmation email was sent.
+    // False → show a "check spam" hint; user emailed us but didn't get receipt.
+    customerConfirmationSent: boolean
   } | null>(null)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
 
@@ -299,6 +302,13 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
         matched: Array.isArray(json.matched_companies) ? json.matched_companies : [],
         radiusKm: typeof json.radius_used_km === 'number' ? json.radius_used_km : null,
         locationLabel: typeof json.resolved_label === 'string' && json.resolved_label ? json.resolved_label : location,
+        customerConfirmationSent: json.email_delivery?.customer_confirmation !== false,
+      })
+      // Scroll the success panel into view so the visitor actually sees the
+      // confirmation (earlier flow silently left them looking at the old form
+      // on mobile). Use requestAnimationFrame so React has re-rendered first.
+      requestAnimationFrame(() => {
+        document.getElementById('kostenrechner')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       })
     } catch (err) {
       setLeadError(err instanceof Error ? err.message : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
@@ -337,6 +347,12 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
               </>
             )}
           </p>
+          {leadSuccess.customerConfirmationSent && (
+            <p className="text-[12px] text-gray-500 mb-3">
+              Eine Bestätigung wurde an Ihre E-Mail gesendet — bitte prüfen Sie ggf. auch den Spam-Ordner
+              (Absender: <span className="font-mono">noreply@send.kranvergleich.de</span>).
+            </p>
+          )}
           {count > 0 && (
             <div className="space-y-2 mb-4">
               {leadSuccess.matched.map((c) => {
@@ -514,7 +530,11 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
             </label>
 
             {leadError && (
-              <p className="text-[13px] text-red-600">{leadError}</p>
+              <div className="border border-red-200 bg-red-50 rounded-lg p-3 text-[13px] text-red-700">
+                <strong>Anfrage konnte nicht gesendet werden.</strong>
+                <br />
+                {leadError} Bitte versuchen Sie es in ein paar Sekunden erneut oder kontaktieren Sie uns direkt.
+              </div>
             )}
 
             <button

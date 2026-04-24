@@ -48,6 +48,18 @@ function getNotificationEmail(): string {
   return email
 }
 
+// Non-throwing variant — use inside the request flow so a missing env var
+// doesn't short-circuit the whole lead pipeline (firms + customer confirmation
+// must still go through). Logs once per missing call for ops visibility.
+function getNotificationEmailOrNull(): string | null {
+  const email = process.env.NOTIFICATION_EMAIL
+  if (!email || !email.trim()) {
+    console.error('NOTIFICATION_EMAIL env var missing or empty — owner notification skipped')
+    return null
+  }
+  return email.trim()
+}
+
 // --- Input sanitization ---
 const MAX_TEXT_LENGTH = 500
 const MAX_COMPANY_IDS = 10
@@ -329,30 +341,38 @@ export async function POST(request: Request) {
         </ul>`
       : '<span style="color:#9ca3af;">keine</span>'
 
-    // Send notification email to owner (now with real delivery status)
-    await sendResendEmail('notification', {
-      from: FROM_EMAIL,
-      to: getNotificationEmail(),
-      subject: `KranVergleich.de - Neue Anfrage: ${safeName} — ${safeCity}`,
-      html: `
-        <h2>Neue Kranvermietungs-Anfrage</h2>
-        <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
-          ${safeCraneType ? `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Name</td><td><strong>${safeName}</strong></td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Telefon</td><td>${safePhone}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Stadt</td><td>${safeCity}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Wunschtermin</td><td>${safeDate}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Mietdauer</td><td>${durationDays ? `${durationDays} Tage` : '–'}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#6b7280;vertical-align:top;">Anbieter</td><td>${companyCount} ausgewählt (${companiesWithEmail.length} mit E-Mail, ${companiesWithoutEmail.length} ohne)${companyListHtml}</td></tr>
-        </table>
-        ${safeDesc ? `<p style="margin-top:12px;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;">${safeDesc}</p>` : ''}
-        <p style="margin-top:16px;font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
-      `,
-    })
+    // Send notification email to owner — wrapped in a null check so a missing
+    // NOTIFICATION_EMAIL env var doesn't kill the rest of the flow. Customer
+    // confirmation + 200 response must still fire even if the owner side is
+    // misconfigured. Track delivery so the response can surface it.
+    const ownerEmail = getNotificationEmailOrNull()
+    let ownerNotificationSent = false
+    if (ownerEmail) {
+      const notifRes = await sendResendEmail('notification', {
+        from: FROM_EMAIL,
+        to: ownerEmail,
+        subject: `KranVergleich.de - Neue Anfrage: ${safeName} — ${safeCity}`,
+        html: `
+          <h2>Neue Kranvermietungs-Anfrage</h2>
+          <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
+            ${safeCraneType ? `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Name</td><td><strong>${safeName}</strong></td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Telefon</td><td>${safePhone}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Stadt</td><td>${safeCity}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Wunschtermin</td><td>${safeDate}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Mietdauer</td><td>${durationDays ? `${durationDays} Tage` : '–'}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;vertical-align:top;">Anbieter</td><td>${companyCount} ausgewählt (${companiesWithEmail.length} mit E-Mail, ${companiesWithoutEmail.length} ohne)${companyListHtml}</td></tr>
+          </table>
+          ${safeDesc ? `<p style="margin-top:12px;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;">${safeDesc}</p>` : ''}
+          <p style="margin-top:16px;font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
+        `,
+      })
+      ownerNotificationSent = notifRes.ok
+    }
 
     // Send confirmation email to customer
-    await sendResendEmail('confirmation', {
+    const confirmRes = await sendResendEmail('confirmation', {
       from: FROM_EMAIL,
       to: customerEmail,
       subject: `Ihre Anfrage bei KranVergleich.de — ${companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
@@ -378,12 +398,13 @@ export async function POST(request: Request) {
       `,
     })
 
-    // Forward leads for companies without email to owner
-    if (companiesWithoutEmail.length > 0) {
+    // Forward leads for companies without email to owner — also wrapped in
+    // env-var safety net (reuses ownerEmail resolved above; no second lookup).
+    if (companiesWithoutEmail.length > 0 && ownerEmail) {
       const missingNames = companiesWithoutEmail.map((c) => escapeHtml(c.name)).join(', ')
       await sendResendEmail('missing-email notification', {
         from: FROM_EMAIL,
-        to: getNotificationEmail(),
+        to: ownerEmail,
         subject: `KranVergleich.de - ⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
         html: `
             <h3>Firmen ohne E-Mail-Adresse — manuelle Weiterleitung nötig</h3>
@@ -433,6 +454,12 @@ export async function POST(request: Request) {
       matched_companies: matchedCompaniesForClient,
       radius_used_km: autoSelectedRadiusKm,
       resolved_label: autoSelectedResolvedLabel,
+      email_delivery: {
+        firms_sent: successCompanyIds.length,
+        firms_total: companiesWithEmail.length,
+        owner_notification: ownerNotificationSent,
+        customer_confirmation: confirmRes.ok,
+      },
     })
   } catch {
     return NextResponse.json(
