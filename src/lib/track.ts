@@ -1,4 +1,4 @@
-// Client-side helper for firing page-scope engagement events to /api/track-page.
+// Client-side helper for firing page-scope engagement events to /api/beacon.
 //
 // Fire-and-forget contract. `navigator.sendBeacon` is preferred so events land
 // even when the user navigates away or closes the tab immediately (form submit,
@@ -37,9 +37,9 @@ export function trackPageEvent(
     // land the event before the page unloads.
     if (navigator.sendBeacon) {
       const blob = new Blob([body], { type: 'application/json' })
-      if (navigator.sendBeacon('/api/track-page', blob)) return
+      if (navigator.sendBeacon('/api/beacon', blob)) return
     }
-    fetch('/api/track-page', {
+    fetch('/api/beacon', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body,
