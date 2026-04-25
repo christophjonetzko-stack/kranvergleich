@@ -152,100 +152,63 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Crane-type table — editorial spec-sheet style, entity-rich for SEO/AEO.
-              Full row is a Link; mono-font numbers + hairline borders match
-              the rest of the industrial hero language. Portrait thumbnail acts
-              as visual anchor — preserves table scannability while giving each
-              row equipment-catalog identity. */}
-          <div className="bg-white border border-neutral-200">
-            {/* Header row — desktop only; mobile stacks per row. Empty leading
-                cell reserves space matching the row thumbnail width. */}
-            <div className="hidden sm:flex items-center gap-4 px-5 py-3 border-b border-neutral-200 text-[11px] uppercase tracking-[0.15em] font-semibold text-neutral-500 font-[var(--font-mono)]">
-              <span className="w-16 shrink-0" aria-hidden />
-              <div className="flex-1 grid grid-cols-[1.4fr_1fr_1fr_0.9fr_0.9fr_auto] gap-4">
-                <span>Krantyp</span>
-                <span>Tragkraft</span>
-                <span>Hakenhöhe</span>
-                <span className="text-right">ab €/Tag</span>
-                <span className="text-right">Anbieter</span>
-                <span className="w-5" aria-hidden />
-              </div>
-            </div>
-
+          {/* Crane-type tiles — equipment catalog grid, 2x4 on desktop, 4x2
+              on mobile. Portrait photos lead each tile; mono index plaques
+              (01-08, sorted by Anbieter count) preserve the spec-sheet rigor;
+              yellow #FFD100 underline slides up on hover to match the hero's
+              ruler-tick + yellow-accent vocabulary. */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {tableCraneTypes.map((ct, i) => {
               const priceFrom = getPriceFrom(ct.slug) ?? ct.price_day_from
               const count = companyCounts.get(ct.id) ?? 0
               const image = craneImageBySlug.get(ct.slug)
+              const idx = String(i + 1).padStart(2, '0')
               return (
                 <Link
                   key={ct.slug}
                   href={`/${ct.slug}`}
-                  className={`group relative block hover:bg-neutral-50 transition-colors ${
-                    i > 0 ? 'border-t border-neutral-100' : ''
-                  }`}
+                  className="group relative block bg-white border border-neutral-200 hover:border-neutral-900 transition-colors overflow-hidden"
                 >
-                  {/* Left yellow edge — slides in on hover */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-y-0 left-0 w-0 group-hover:w-1 bg-[#FFD100] transition-all z-10"
-                  />
+                  {/* Image — portrait 4:5. Idle saturate-[0.85] unifies
+                      divergent AI-photo styles; subtle scale + full color on
+                      hover for tactile feedback. */}
+                  <div className="relative aspect-[4/5] bg-neutral-50 overflow-hidden">
+                    {image && (
+                      <Image
+                        src={image}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1024px) 24vw, (min-width: 640px) 32vw, 48vw"
+                        className="object-cover saturate-[0.85] group-hover:saturate-100 group-hover:scale-[1.02] transition-all duration-500"
+                      />
+                    )}
+                    {/* Index plaque — popularity rank (Anbieter count desc) */}
+                    <span
+                      aria-hidden
+                      className="absolute top-2 left-2 text-[10px] font-[var(--font-mono)] tracking-[0.2em] font-semibold text-white bg-neutral-950/70 backdrop-blur-sm px-1.5 py-0.5"
+                    >
+                      {idx}
+                    </span>
+                  </div>
 
-                  <div className="flex items-center gap-4 px-5 py-3">
-                    {/* Thumbnail — portrait, hairline-bordered to match the
-                        engineering-grid eyebrow above the H1. Subtle grayscale
-                        on idle unifies divergent AI-generated photo styles;
-                        full color on hover for visual feedback. */}
-                    <div className="relative shrink-0 w-14 h-[70px] sm:w-16 sm:h-20 overflow-hidden bg-neutral-50 border border-neutral-200">
-                      {image && (
-                        <Image
-                          src={image}
-                          alt=""
-                          fill
-                          sizes="(min-width: 640px) 64px, 56px"
-                          className="object-cover saturate-[0.85] group-hover:saturate-100 transition-[filter] duration-300"
-                        />
-                      )}
-                    </div>
+                  {/* Placard */}
+                  <div className="relative p-3 sm:p-4 border-t border-neutral-200">
+                    {/* Yellow underline — slides up on hover */}
+                    <span
+                      aria-hidden
+                      className="absolute bottom-0 inset-x-0 h-0 group-hover:h-1 bg-[#FFD100] transition-all"
+                    />
 
-                    {/* Content — same grid as before, now flex-1 inside row */}
-                    <div className="flex-1 min-w-0 grid grid-cols-2 sm:grid-cols-[1.4fr_1fr_1fr_0.9fr_0.9fr_auto] gap-x-4 gap-y-1 items-center">
-                      <span className="col-span-2 sm:col-span-1 font-semibold text-[15px] text-neutral-900">
-                        {ct.name}
+                    <h3 className="font-semibold text-[14px] sm:text-[15px] text-neutral-950 leading-tight">
+                      {ct.name}
+                    </h3>
+                    <div className="mt-1.5 flex items-baseline gap-2 text-[11px] font-[var(--font-mono)] tabular-nums">
+                      <span className="font-semibold text-neutral-900">
+                        ab {priceFrom?.toLocaleString('de-DE') ?? '—'} €/Tag
                       </span>
-
-                      <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
-                        Tragkraft
-                      </span>
-                      <span className="text-[13px] text-neutral-600 font-[var(--font-mono)] tabular-nums text-right sm:text-left">
-                        {ct.typical_capacity_kg ?? '—'}
-                      </span>
-
-                      <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
-                        Hakenhöhe
-                      </span>
-                      <span className="text-[13px] text-neutral-600 font-[var(--font-mono)] tabular-nums text-right sm:text-left">
-                        {ct.typical_height_m ?? '—'}
-                      </span>
-
-                      <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
-                        ab €/Tag
-                      </span>
-                      <span className="text-[13px] text-neutral-900 font-semibold font-[var(--font-mono)] tabular-nums text-right">
-                        {priceFrom ? `${priceFrom.toLocaleString('de-DE')} €` : '—'}
-                      </span>
-
-                      <span className="text-[11px] sm:hidden uppercase tracking-wider text-neutral-400 font-[var(--font-mono)]">
-                        Anbieter
-                      </span>
-                      <span className="text-[13px] text-neutral-600 font-[var(--font-mono)] tabular-nums text-right">
-                        {count.toLocaleString('de-DE')}
-                      </span>
-
-                      <span
-                        aria-hidden
-                        className="hidden sm:inline-flex items-center text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-base w-5 justify-end"
-                      >
-                        →
+                      <span className="text-neutral-300" aria-hidden>·</span>
+                      <span className="text-neutral-500">
+                        {count.toLocaleString('de-DE')} Anbieter
                       </span>
                     </div>
                   </div>
