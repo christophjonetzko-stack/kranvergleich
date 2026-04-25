@@ -7,7 +7,8 @@ import { trackPageEvent } from '@/lib/track'
  * Drop-in analytics tracker for pillar content pages. Fires:
  *   - `scroll_depth_75` once when the visitor reaches 75% of scroll height.
  *   - `click_city_link` / `click_type_link` on anchors marked with
- *     `data-track-city` / `data-track-type` attributes.
+ *     `data-track-city` / `data-track-type` attributes (via `pointerdown`
+ *     capture — see the listener body for the navigation-timing rationale).
  *
  * Uses document-level delegation so a single listener covers all links on the
  * page — server-rendered anchors get tracked without needing to be refactored
@@ -33,13 +34,23 @@ export function PageEventTracker() {
     }
     window.addEventListener('scroll', onScroll, { passive: true })
 
-    // --- Click delegation for city / type links ---
-    // Capture phase (third arg `true`) so this handler runs BEFORE Next.js
-    // Link's onClick at the React root. Without capture, a click on a <Link>
-    // would trigger router.push() first → current page starts unmounting →
-    // our cleanup removes the listener → the beacon never fires. Running in
-    // capture lets us queue the beacon before navigation even starts.
-    const onClick = (e: MouseEvent) => {
+    // --- Pointerdown delegation for city / type links ---
+    // We listen on `pointerdown` (capture), not `click`. Reason: with `click`,
+    // the browser fires our handler in the same task that React runs Link's
+    // onClick → router.push() → starts unmounting the page. Even though
+    // sendBeacon is supposed to survive navigation, in practice Chrome was
+    // dropping the beacon on production (verified 2026-04-24 — capture-phase
+    // click was already in place but only server-side curl tests landed,
+    // zero rows from real users). `pointerdown` fires earlier in the input
+    // pipeline (pointerdown → pointerup → click), giving the beacon a clean
+    // tick to enqueue before any navigation starts. Trade-off: we count
+    // intent (press) instead of completed clicks, which slightly over-counts
+    // but is fine for relative city-popularity ranking.
+    const onPointerDown = (e: PointerEvent) => {
+      // Primary (left) and auxiliary (middle = open-in-new-tab) only.
+      // Skip right-click and other buttons — those are noise, not navigation.
+      if (e.button !== 0 && e.button !== 1) return
+
       const target = e.target
       if (!(target instanceof Element)) return
       const anchor = target.closest<HTMLAnchorElement>('a[data-track-city], a[data-track-type]')
@@ -57,11 +68,11 @@ export function PageEventTracker() {
         trackPageEvent('click_type_link', { crane_type: craneType })
       }
     }
-    document.addEventListener('click', onClick, true)
+    document.addEventListener('pointerdown', onPointerDown, true)
 
     return () => {
       window.removeEventListener('scroll', onScroll)
-      document.removeEventListener('click', onClick, true)
+      document.removeEventListener('pointerdown', onPointerDown, true)
     }
   }, [])
 
