@@ -30,6 +30,7 @@ export function Footer() {
                 <li key={ct.slug}>
                   <Link
                     href={`/${ct.slug}`}
+                    data-track-type={ct.slug.replace(/-mieten$/, '')}
                     className="text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     {ct.name} mieten
@@ -47,6 +48,8 @@ export function Footer() {
                 <li key={city.slug}>
                   <Link
                     href={`/${cityLinkBase}/${city.slug}`}
+                    data-track-city={city.slug}
+                    data-track-type={cityLinkBase.replace(/-mieten$/, '')}
                     className="text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     Kran mieten {city.name}

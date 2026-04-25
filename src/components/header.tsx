@@ -142,6 +142,7 @@ export function Header() {
                 <Link
                   key={ct.slug}
                   href={`/${ct.slug}`}
+                  data-track-type={ct.slug.replace(/-mieten$/, '')}
                   className="px-2.5 py-1.5 text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
                 >
                   {ct.name}
@@ -168,6 +169,7 @@ export function Header() {
                     <Link
                       key={ct.slug}
                       href={`/${ct.slug}`}
+                      data-track-type={ct.slug.replace(/-mieten$/, '')}
                       className="block px-4 py-2 text-[13px] text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors"
                     >
                       {ct.name} mieten
@@ -233,6 +235,7 @@ export function Header() {
                 key={ct.slug}
                 href={`/${ct.slug}`}
                 onClick={() => setMobileOpen(false)}
+                data-track-type={ct.slug.replace(/-mieten$/, '')}
                 className="block py-2 text-[14px] text-gray-500 hover:text-gray-900 transition-colors"
               >
                 {ct.name} mieten
