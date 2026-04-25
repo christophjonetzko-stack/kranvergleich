@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getSiteStats } from '@/lib/queries'
 import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
@@ -90,45 +91,65 @@ export default async function CraneTypePage({
         <span className="text-gray-900">{craneType.name} mieten</span>
       </nav>
 
-      {/* Hero mini */}
-      <div className="mb-8">
-        <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[1.0] tracking-[-0.02em] text-[28px] sm:text-[36px] lg:text-[40px] mb-2">
-          {craneType.name} mieten
-          {craneType.price_day_from && (
-            <span className="text-blue-600"> — ab {craneType.price_day_from.toLocaleString('de-DE')}€/Tag</span>
-          )}
-        </h1>
-        <p className="text-[15px] text-neutral-600 mb-3">
-          {craneType.description}
-        </p>
+      {/* Hero mini — portrait thumbnail anchors the left, copy flows right.
+          Same equipment-catalog vocabulary as the homepage tile grid: 4:5
+          ratio, hairline border, neutral-50 placeholder background. */}
+      <div className="mb-8 flex flex-row gap-4 sm:gap-6 items-start">
+        {(() => {
+          const image = craneTypesList.find((c) => c.slug === craneType.slug)?.image
+          return image ? (
+            <div className="relative shrink-0 w-28 sm:w-40 lg:w-48 aspect-[4/5] bg-neutral-50 border border-neutral-200 overflow-hidden">
+              <Image
+                src={image}
+                alt={craneType.name}
+                fill
+                sizes="(min-width: 1024px) 192px, (min-width: 640px) 160px, 112px"
+                className="object-cover"
+                priority
+              />
+            </div>
+          ) : null
+        })()}
 
-        {/* Specs inline */}
-        <div className="flex flex-wrap gap-4 text-[13px] text-neutral-500 mb-3">
-          {companies.length > 0 && (
-            <span>{companies.length} Anbieter</span>
-          )}
-          {craneType.typical_capacity_kg && (
-            <span>Tragkraft: {craneType.typical_capacity_kg}</span>
-          )}
-          {craneType.typical_height_m && (
-            <span>Hakenhöhe: {craneType.typical_height_m}</span>
-          )}
+        <div className="flex-1 min-w-0">
+          <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[1.0] tracking-[-0.02em] text-[28px] sm:text-[36px] lg:text-[40px] mb-2">
+            {craneType.name} mieten
+            {craneType.price_day_from && (
+              <span className="text-blue-600"> — ab {craneType.price_day_from.toLocaleString('de-DE')}€/Tag</span>
+            )}
+          </h1>
+          <p className="text-[15px] text-neutral-600 mb-3">
+            {craneType.description}
+          </p>
+
+          {/* Specs inline */}
+          <div className="flex flex-wrap gap-4 text-[13px] text-neutral-500 mb-3">
+            {companies.length > 0 && (
+              <span>{companies.length} Anbieter</span>
+            )}
+            {craneType.typical_capacity_kg && (
+              <span>Tragkraft: {craneType.typical_capacity_kg}</span>
+            )}
+            {craneType.typical_height_m && (
+              <span>Hakenhöhe: {craneType.typical_height_m}</span>
+            )}
+          </div>
+
+          {/* Trust bar — same visual language as home hero */}
+          <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-neutral-600">
+            <li className="inline-flex items-center gap-1.5">
+              <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
+              <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
+                {siteStats.avgRating.toString().replace('.', ',')}
+              </span>
+              <span>Google</span>
+            </li>
+            <li aria-hidden className="text-neutral-300">·</li>
+            <li>DSGVO-konform</li>
+            <li aria-hidden className="text-neutral-300">·</li>
+            <li>Kostenlos &amp; unverbindlich</li>
+          </ul>
         </div>
-
-        {/* Trust bar — same visual language as home hero */}
-        <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-neutral-600">
-          <li className="inline-flex items-center gap-1.5">
-            <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
-            <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
-              {siteStats.avgRating.toString().replace('.', ',')}
-            </span>
-            <span>Google</span>
-          </li>
-          <li aria-hidden className="text-neutral-300">·</li>
-          <li>DSGVO-konform</li>
-          <li aria-hidden className="text-neutral-300">·</li>
-          <li>Kostenlos &amp; unverbindlich</li>
-        </ul>
       </div>
 
       <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
