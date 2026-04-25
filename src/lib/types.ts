@@ -21,11 +21,14 @@ export interface CityFAQItem {
   answer: string
 }
 
+export type Country = 'DE' | 'AT'
+
 export interface City {
   id: string
   name: string
   slug: string
   state: string
+  country: Country
   population: number | null
   lat: number | null
   lng: number | null
@@ -43,6 +46,7 @@ export interface Company {
   address: string | null
   city: string
   state: string
+  country: Country
   zip: string | null
   lat: number | null
   lng: number | null
