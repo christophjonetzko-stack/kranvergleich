@@ -111,10 +111,12 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     slug = 'dachdeckerkran-mieten'
     name = 'Dachdeckerkran'
     reason = 'Optimal für Dacharbeiten — schneller Aufbau, kein Kranführerschein nötig.'
-  } else if (task === 'glas' && weight <= 5) {
+  } else if (task === 'glas' && weight <= 5 && height <= 20) {
+    // Minikran (with glass-sucker attachment) only for glass work up to ~18m;
+    // taller façade work falls through to Autokran/Mobilkran below.
     slug = 'minikran-mieten'
     name = 'Minikran'
-    reason = 'Minikrane mit Glassauger sind ideal für Glasmontage und Fassadenarbeiten.'
+    reason = 'Minikrane mit Glassauger sind ideal für Glasmontage und Fassadenarbeiten bis 18 m Höhe.'
   } else if (weight <= 1 && height <= 10) {
     slug = 'anhaengerkran-mieten'
     name = 'Anhängerkran'
@@ -127,7 +129,10 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     slug = 'minikran-mieten'
     name = 'Minikran'
     reason = 'Minikrane schaffen bis 3t Traglast und 18m Höhe — ideal für mittlere Projekte.'
-  } else if (weight <= 20 && height <= 30) {
+  } else if (weight <= 20 && height <= 40) {
+    // Autokran covers light-to-medium loads at all reachable heights up to 40m;
+    // bumping from height ≤ 30 to ≤ 40 prevents 1–5t jobs at 20–40m falling
+    // through to Mobilkran (physically capable but economically overkill).
     slug = 'autokran-mieten'
     name = 'Autokran'
     reason = 'Autokran — flexibel, schnell einsatzbereit, inkl. Kranführer.'

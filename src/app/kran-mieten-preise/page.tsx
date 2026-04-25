@@ -78,19 +78,11 @@ const costFAQs = [
   },
   {
     question: 'Was kostet ein 30-Tonnen-Kran?',
-    answer: 'Ein 30-Tonnen-Autokran kostet ca. 500–800€ pro Tag (inkl. Kranführer). Stundenpreise liegen bei 150–200€/h mit 4 Stunden Mindestmietdauer. Ideal für Baumontagen, Maschinentransport und mittelschwere Hebearbeiten. Transport zur Baustelle: ca. 150–400€ extra.',
-  },
-  {
-    question: 'Was kostet ein 30 Tonnen Kran pro Tag?',
-    answer: 'Ein 30 Tonnen Kran kostet pro Tag zwischen 500€ und 800€ netto, inklusive Kranführer (gesetzlich vorgeschrieben). Bei Wochenmiete zahlen Sie 2.500–4.000€, bei Monatsmiete 8.000–15.000€. Der 30-Tonner ist ein klassischer Autokran und der häufigste Krantyp im Hausbau, bei Dachstuhlmontagen und Maschinentransporten. Anfahrt zur Baustelle wird separat berechnet (ca. 2–4€/km, oft 150–400€ insgesamt).',
+    answer: 'Ein 30-Tonnen-Autokran kostet ca. 500–800€ pro Tag inklusive Kranführer (gesetzlich vorgeschrieben). Stundenweise Abrechnung: 150–200€/h, Mindestmietdauer 4 Stunden. Bei längeren Einsätzen: Wochenmiete 2.500–4.000€, Monatsmiete 8.000–15.000€. Der 30-Tonner ist der häufigste Krantyp im Hausbau und bei Dachstuhlmontagen — er deckt die meisten Rohbau-Einsätze ab. Anfahrt zur Baustelle wird separat berechnet (ca. 2–4€/km, meist 150–400€ insgesamt).',
   },
   {
     question: 'Was kostet ein 80-Tonnen-Kran?',
-    answer: 'Ein 80-Tonnen-Mobilkran kostet ca. 1.200–2.000€ pro Tag (inkl. Kranführer). Stundenpreise liegen bei 300–500€/h. Für Wocheneinsätze rechnen Sie mit 5.000–10.000€. Der Transport zur Baustelle kostet zusätzlich ca. 300–800€ je nach Entfernung.',
-  },
-  {
-    question: 'Was kostet ein 80 Tonnen Kran?',
-    answer: 'Ein 80 Tonnen Kran (Mobilkran oder schwerer Autokran) kostet zwischen 1.000€ und 1.500€ pro Tag inklusive Kranführer. Wochenmiete: 5.000–7.500€. Monatsmiete: 15.000–25.000€. Der 80-Tonner kommt bei Industriemontagen, Brückenteilen und schweren Stahlbauarbeiten zum Einsatz. Ab dieser Tragklasse fällt oft Schwertransport zur Baustelle an (1.000–3.000€ extra). Stundenweise Abrechnung möglich (ca. 250–400€/h, Mindestmietdauer 4h).',
+    answer: 'Ein 80-Tonnen-Mobilkran kostet ca. 1.000–2.000€ pro Tag inklusive Kranführer. Stundenpreise liegen bei 250–500€/h (Mindestmietdauer 4 Stunden). Wochenmiete: 5.000–10.000€, Monatsmiete: 15.000–25.000€. Der 80-Tonner kommt bei Industriemontagen, Brückenteilen und schweren Stahlbauarbeiten zum Einsatz. Ab dieser Tragklasse fällt häufig Schwertransport zur Baustelle an — je nach Entfernung 300–3.000€ extra.',
   },
   {
     question: 'Was kostet ein PKW-Anhänger mit Kran (Anhängerkran)?',
