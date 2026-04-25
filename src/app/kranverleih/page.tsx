@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
@@ -49,20 +50,63 @@ export default async function KranverleihPage() {
 
       <section className="mb-10">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Alle Krantypen im Überblick</h2>
+        {/* Equipment-catalog cards — portrait thumbnail anchors each card,
+            mono labels + tabular numerics + yellow hover edge match the
+            industrial spec-sheet language used on the homepage table. */}
         <div className="grid gap-3 sm:grid-cols-2">
           {craneTypes.map((ct) => {
             const priceFrom = getPriceFrom(ct.slug)
             return (
-              <Link key={ct.slug} href={`/${ct.slug}`} className="flex items-center justify-between gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
-                <div className="min-w-0">
-                  <p className="font-medium text-[15px] text-gray-900">{ct.name} leihen</p>
-                  <p className="text-[13px] text-gray-500 truncate">{ct.desc}</p>
+              <Link
+                key={ct.slug}
+                href={`/${ct.slug}`}
+                className="group relative flex bg-white border border-neutral-200 hover:border-neutral-900 transition-colors overflow-hidden"
+              >
+                {/* Yellow stripe slides in on hover */}
+                <span
+                  aria-hidden
+                  className="absolute inset-y-0 left-0 w-0 group-hover:w-1 bg-[#FFD100] transition-all z-10"
+                />
+
+                {/* Portrait thumbnail — 4:5, fills card height */}
+                <div className="relative shrink-0 w-28 sm:w-32 self-stretch bg-neutral-50 border-r border-neutral-200">
+                  <Image
+                    src={ct.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 640px) 128px, 112px"
+                    className="object-cover saturate-[0.9] group-hover:saturate-100 transition-[filter] duration-300"
+                  />
                 </div>
-                {priceFrom && (
-                  <span className="text-[12px] font-medium text-blue-700 bg-blue-50 px-2 py-1 rounded shrink-0">
-                    ab {priceFrom.toLocaleString('de-DE')}€/Tag
-                  </span>
-                )}
+
+                {/* Content */}
+                <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between min-w-0 gap-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.18em] font-semibold text-neutral-400 font-[var(--font-mono)] mb-1">
+                      Kranverleih
+                    </p>
+                    <h3 className="font-semibold text-[16px] sm:text-[17px] text-neutral-950 leading-tight">
+                      {ct.name} mieten
+                    </h3>
+                    <p className="text-[13px] text-neutral-500 mt-1 line-clamp-2">{ct.desc}</p>
+                  </div>
+                  <div className="flex items-end justify-between gap-2">
+                    {priceFrom ? (
+                      <span className="text-[13px] font-semibold text-neutral-900 font-[var(--font-mono)] tabular-nums">
+                        ab {priceFrom.toLocaleString('de-DE')} €
+                        <span className="text-neutral-400 font-normal">/Tag</span>
+                      </span>
+                    ) : (
+                      <span />
+                    )}
+                    <span
+                      aria-hidden
+                      className="text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-base"
+                    >
+                      →
+                    </span>
+                  </div>
+                </div>
               </Link>
             )
           })}
