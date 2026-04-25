@@ -297,25 +297,30 @@ export async function POST(request: Request) {
           `
 
     // Send per-company emails FIRST so the owner notification can report the
-    // REAL delivery status per firm (not optimistic labels). Parallel send
-    // via Promise.all is safe because sendResendEmail never throws.
-    // MAX_COMPANY_IDS = 10 keeps this well below Resend's rate limit.
+    // REAL delivery status per firm (not optimistic labels). Sends are
+    // SEQUENTIAL with a 200ms throttle to stay below Resend's 5 req/sec
+    // rate limit — the previous Promise.all (verified 2026-04-25, lead
+    // 057b86f3) fired 4 firm + owner + customer = 6 calls within ~250ms,
+    // and Resend 429'd the customer confirmation (last in the chain) so
+    // the user never got the confirmation while firms + owner did. Sequential
+    // pacing trades ~1.5s response latency for guaranteed delivery of every
+    // email in the pipeline.
     // Dry-run mode returns an empty firmResults so downstream logic keeps
     // working (companyListHtml shows 0 firms; owner/customer still fire).
-    const firmResults: { company_id: string; ok: boolean }[] = dryRun
-      ? []
-      : await Promise.all(
-          companiesWithEmail.map(async (company) => {
-            const result = await sendResendEmail(`company email (${company.name})`, {
-              from: FROM_EMAIL,
-              to: company.email!,
-              replyTo: customerEmail,
-              subject: `KranVergleich.de - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
-              html: buildCompanyEmailHtml(company.name),
-            })
-            return { company_id: company.id, ok: result.ok }
-          }),
-        )
+    const firmResults: { company_id: string; ok: boolean }[] = []
+    if (!dryRun) {
+      for (const company of companiesWithEmail) {
+        const result = await sendResendEmail(`company email (${company.name})`, {
+          from: FROM_EMAIL,
+          to: company.email!,
+          replyTo: customerEmail,
+          subject: `KranVergleich.de - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
+          html: buildCompanyEmailHtml(company.name),
+        })
+        firmResults.push({ company_id: company.id, ok: result.ok })
+        await new Promise((r) => setTimeout(r, 200))
+      }
+    }
     if (dryRun) console.log('[leads] dry_run=true — skipped firm emails for', companyIds.length, 'companies')
 
     // Mark lead_companies.sent_at for successful deliveries. Service role
