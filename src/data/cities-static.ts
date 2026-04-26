@@ -133,12 +133,28 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'jena', name: 'Jena', state: 'Thüringen', companyCount: 1 },
 ]
 
-// AT cities — populated together with their firms (tydzień 2 of the
-// kranvergleich.at launch). Stays empty until each AT city has ≥1 firm via
-// company_regions; pre-populating without firms creates thin city pages and
-// drags the whole AT domain quality signal down (Helpful Content Update).
-// Reference data for slug + state + coords lives in src/data/austrian-cities.json.
-const seoCitiesAT: CityInfo[] = []
+// AT cities — populated 2026-04-26 after Phase B firm enrichment landed 20
+// AT firms with crane_types. companyCount reflects unique active firms reachable
+// via company_regions JOIN (cross-region overlap is intentional — Felbermayr
+// Graz also serves Wien, hence wien=12 vs 8 raw inserts).
+//
+// Villach + St. Pölten left at 0 because the Outscraper Step 1 returned no
+// crane firms specifically for those queries; they stay in the array so the
+// SearchBox autocomplete still suggests them, but home tile grid + sitemap
+// city × type pages skip them via the existing thin-content gates
+// (getCitiesWithMinCompanies threshold).
+const seoCitiesAT: CityInfo[] = [
+  { slug: 'wien',          name: 'Wien',       state: 'Wien',             companyCount: 12 },
+  { slug: 'linz',          name: 'Linz',       state: 'Oberösterreich',   companyCount: 2 },
+  { slug: 'salzburg',      name: 'Salzburg',   state: 'Salzburg',         companyCount: 2 },
+  { slug: 'graz',          name: 'Graz',       state: 'Steiermark',       companyCount: 1 },
+  { slug: 'innsbruck',     name: 'Innsbruck',  state: 'Tirol',            companyCount: 1 },
+  { slug: 'klagenfurt',    name: 'Klagenfurt', state: 'Kärnten',          companyCount: 1 },
+  { slug: 'wels',          name: 'Wels',       state: 'Oberösterreich',   companyCount: 1 },
+  { slug: 'dornbirn',      name: 'Dornbirn',   state: 'Vorarlberg',       companyCount: 1 },
+  { slug: 'villach',       name: 'Villach',    state: 'Kärnten',          companyCount: 0 },
+  { slug: 'sankt-poelten', name: 'St. Pölten', state: 'Niederösterreich', companyCount: 0 },
+]
 const _extraCitiesAT: ExtendedCity[] = []
 
 // Country-aware exports. kranvergleich.de build (NEXT_PUBLIC_COUNTRY unset or 'DE')
