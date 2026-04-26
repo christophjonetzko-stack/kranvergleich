@@ -8,7 +8,10 @@ import { craneTypes as craneTypeStatic } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats, getCraneTypes, getCompanyCountsPerCraneType } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
+import { COUNTRY } from '@/lib/country'
 import { NewsletterPanel } from '@/components/newsletter-panel'
+
+const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
 
 // Slug → image lookup. Supabase crane_types has no image_url column, so the
 // thumbnails live in the static catalog (synced with /public/images/crane-types/).
@@ -80,7 +83,7 @@ export default async function HomePage() {
 
           {/* H1 — Archivo Narrow 800, compressed, left-aligned */}
           <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[0.95] tracking-[-0.02em] text-[40px] sm:text-[56px] lg:text-[64px] max-w-4xl">
-            Kran mieten — in 2 Minuten deutschlandweit vergleichen.
+            Kran mieten in 2 Minuten {COUNTRY_WIDE} vergleichen.
           </h1>
 
           {/* Subline — entity-rich for SEO, benefit-focused for humans */}

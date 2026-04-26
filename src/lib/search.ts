@@ -1,4 +1,7 @@
 import { seoCities } from '@/data/cities-static'
+import { COUNTRY } from '@/lib/country'
+
+const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
 
 interface CityHit {
   name: string
@@ -41,7 +44,7 @@ export function resolveSearchTarget(args: {
     if (seoCity) return { url: `/${craneType}/${seoCity.slug}` }
     return {
       url: `/${craneType}`,
-      hint: `Für "${cityQuery}" haben wir noch keine Anbieter. Zeige alle Anbieter deutschlandweit.`,
+      hint: `Für "${cityQuery}" haben wir noch keine Anbieter. Zeige alle Anbieter ${COUNTRY_WIDE}.`,
     }
   }
 
