@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
-import { COUNTRY_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, TAX_LABEL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
@@ -85,7 +85,7 @@ export default async function WasKostetEinKranPage() {
           gemietet oder über Leasing finanziert.
         </p>
       </div>
-      <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026 | Alle Preise netto zzgl. MwSt.</p>
+      <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026 | Alle Preise netto zzgl. {TAX_LABEL}</p>
 
       {/* TOC */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">

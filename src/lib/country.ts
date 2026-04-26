@@ -17,6 +17,10 @@ export const DOMAIN: string = COUNTRY === 'AT' ? 'kranvergleich.at' : 'kranvergl
 export const BRAND_NAME: string = COUNTRY === 'AT' ? 'KranVergleich.at' : 'KranVergleich.de'
 export const COUNTRY_LABEL: string = COUNTRY === 'AT' ? 'Österreich' : 'Deutschland'
 export const OG_LOCALE: string = COUNTRY === 'AT' ? 'de_AT' : 'de_DE'
+// VAT abbreviation: AT uses Umsatzsteuer (USt.) officially; DE uses Mehrwertsteuer (MwSt.) colloquially.
+// AT VAT rate is 20%, DE is 19% — currently we don't print the rate, only the label;
+// expand to include the rate if/when price-listing copy needs it.
+export const TAX_LABEL: string = COUNTRY === 'AT' ? 'USt.' : 'MwSt.'
 
 let _companyIdsCache: { ids: Set<string>; expires: number } | null = null
 const COMPANY_IDS_TTL_MS = 60_000

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getCraneTypeIdBySlug } from '@/data/crane-types'
 import { trackPageEvent } from '@/lib/track'
+import { TAX_LABEL } from '@/lib/country'
 
 // --- Step definitions ---
 
@@ -499,7 +500,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
             <div className="bg-gray-50 rounded-lg p-3">
               <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
               <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
-              <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. MwSt.</p>
+              <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. {TAX_LABEL}</p>
             </div>
             <div className="bg-gray-50 rounded-lg p-3">
               <p className="text-[12px] text-gray-400">Kranführer</p>

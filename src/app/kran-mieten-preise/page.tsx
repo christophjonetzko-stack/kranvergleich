@@ -9,7 +9,7 @@ import { InlineSammelanfrageForm } from '@/components/inline-sammelanfrage-form'
 import { PageEventTracker } from '@/components/page-event-tracker'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -31,7 +31,7 @@ const costFAQs = [
   {
     question: 'Was kostet ein Kran pro Tag?',
     answer:
-      'Die Tagesmiete variiert je nach Krantyp: Anhängerkran ab 150€, Minikran ab 250€, Dachdeckerkran ab 200€, Baukran ab 300€, Autokran ab 500€, Mobilkran ab 600€, Raupenkran ab 800€. Alle Preise netto zzgl. MwSt. Transport und Auf-/Abbau kommen je nach Anbieter hinzu.',
+      `Die Tagesmiete variiert je nach Krantyp: Anhängerkran ab 150€, Minikran ab 250€, Dachdeckerkran ab 200€, Baukran ab 300€, Autokran ab 500€, Mobilkran ab 600€, Raupenkran ab 800€. Alle Preise netto zzgl. ${TAX_LABEL} Transport und Auf-/Abbau kommen je nach Anbieter hinzu.`,
   },
   {
     question: 'Was kostet ein Autokran pro Stunde?',
@@ -96,7 +96,7 @@ const costFAQs = [
   },
   {
     question: 'Was kostet ein Kran am Tag?',
-    answer: 'Ein Kran kostet am Tag zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane zum Ausleihen: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Baukran ab 300€/Tag. Alle Tagespreise sind Richtwerte ohne MwSt.',
+    answer: `Ein Kran kostet am Tag zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane zum Ausleihen: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Baukran ab 300€/Tag. Alle Tagespreise sind Richtwerte ohne ${TAX_LABEL}`,
   },
   {
     question: 'Wie viel kostet ein Kran?',
@@ -136,7 +136,7 @@ export default async function KranMietenPreisePage() {
         Komplette Mietkran-Preisliste für alle 8 Krantypen in {COUNTRY_LABEL}: Tagespreise, Wochenpreise und
         Monatspreise im Überblick — von Minikran über Autokran (Kranwagen) bis Schwerlastkran.
         Ob Sie einen Kran mieten oder leihen möchten: hier finden Sie alle Kranmiete Kosten auf einen Blick.
-        Alle Preise sind unverbindliche Richtwerte (netto, zzgl. MwSt.) basierend auf Marktrecherche Q1 2026.
+        Alle Preise sind unverbindliche Richtwerte (netto, zzgl. {TAX_LABEL}) basierend auf Marktrecherche Q1 2026.
       </p>
       <p className="text-[11px] text-gray-300 mb-8">Zuletzt aktualisiert: 20. April 2026 · Marktrecherche Q2/2026 über {anbieterCount}+ Anbieter</p>
 
@@ -505,7 +505,7 @@ export default async function KranMietenPreisePage() {
           </table>
         </div>
         <p className="text-[11px] text-gray-400 mt-2">
-          Alle Preise netto, zzgl. MwSt. Kranführer bei Auto-, Mobil- und Raupenkran inklusive.
+          Alle Preise netto, zzgl. {TAX_LABEL} Kranführer bei Auto-, Mobil- und Raupenkran inklusive.
           Anfahrt (150–500€) und Schwertransport ab ca. 100t Tragkraft (1.000–10.000€) kommen separat hinzu.
           Wochenmiete spart 15–25%, Monatsmiete bis zu 40% gegenüber Einzeltagen.
         </p>
@@ -681,7 +681,7 @@ export default async function KranMietenPreisePage() {
         <p className="text-[14px] text-gray-500 mb-4">
           Abstrakte Preisspannen helfen nur bedingt — deshalb zeigen wir Ihnen vier
           typische Einsatzszenarien mit vollständiger Kostenaufstellung. Alle Preise sind Richtwerte
-          (netto, zzgl. MwSt.) und können je nach Region und Anbieter variieren.
+          (netto, zzgl. {TAX_LABEL}) und können je nach Region und Anbieter variieren.
         </p>
         <div className="grid gap-4 md:grid-cols-2">
           {/* Beispiel 1: Dachsanierung */}

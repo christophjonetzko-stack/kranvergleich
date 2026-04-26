@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getSiteStats } from '@/lib/queries'
-import { COUNTRY_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, TAX_LABEL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
@@ -252,7 +252,7 @@ export default async function KrantypenPage() {
           </table>
         </div>
         <p className="text-[11px] text-gray-400 mt-2">
-          Alle Preise netto zzgl. MwSt. Richtwerte basierend auf Marktrecherche Q1 2026.{' '}
+          Alle Preise netto zzgl. {TAX_LABEL} Richtwerte basierend auf Marktrecherche Q1 2026.{' '}
           <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
             Ausführliche Preisliste 2026 &rarr;
           </Link>

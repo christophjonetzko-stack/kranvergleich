@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
+import { TAX_LABEL } from '@/lib/country'
 
 // Lazy init — avoid instantiating at module load so builds work without env.
 let resendInstance: Resend | null = null
@@ -79,7 +80,7 @@ export async function POST(request: Request) {
           </a>
 
           <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
-            Preise sind unverbindliche Richtwerte (netto zzgl. MwSt.), basierend auf Marktanalyse 2026.<br>
+            Preise sind unverbindliche Richtwerte (netto zzgl. ${TAX_LABEL}), basierend auf Marktanalyse 2026.<br>
             KranVergleich.de — <a href="https://kranvergleich.de" style="color:#2563eb;">kranvergleich.de</a>
           </p>
 

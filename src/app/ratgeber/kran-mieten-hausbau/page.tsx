@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
-import { COUNTRY_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, TAX_LABEL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
@@ -175,7 +175,7 @@ export default async function KranMietenHausbauPage() {
           </div>
           <p className="text-[11px] text-gray-400 mt-2">
             Richtwerte für ein Einfamilienhaus mit 150 m² Wohnfläche, 2 Vollgeschossen und Standard-Dachstuhl.
-            Preise netto, zzgl. MwSt.
+            Preise netto, zzgl. {TAX_LABEL}
           </p>
         </section>
 

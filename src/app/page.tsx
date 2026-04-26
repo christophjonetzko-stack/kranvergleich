@@ -8,7 +8,7 @@ import { craneTypes as craneTypeStatic } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats, getCraneTypes, getCompanyCountsPerCraneType } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY, COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
+import { COUNTRY, COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL } from '@/lib/country'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 
 const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
@@ -283,7 +283,7 @@ export default async function HomePage() {
           </div>
         </div>
         <p className="text-[12px] text-gray-400 mt-3">
-          Alle Preise netto zzgl. MwSt. Richtwerte — verbindliche Angebote erhalten Sie direkt von den Anbietern.{' '}
+          Alle Preise netto zzgl. {TAX_LABEL} Richtwerte — verbindliche Angebote erhalten Sie direkt von den Anbietern.{' '}
           <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Ausführliche Preisliste &rarr;</Link>
         </p>
       </section>

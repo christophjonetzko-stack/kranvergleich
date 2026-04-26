@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL } from '@/lib/country'
 import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
@@ -298,7 +298,7 @@ export default async function CraneTypePage({
             </div>
           </div>
           <p className="text-[11px] text-gray-400 mt-3">
-            Alle Preise netto, zzgl. MwSt. Richtwerte — die tatsächlichen {craneType.name}-Mietpreise hängen von Tragkraft, Einsatzdauer und Standort ab.
+            Alle Preise netto, zzgl. {TAX_LABEL} Richtwerte — die tatsächlichen {craneType.name}-Mietpreise hängen von Tragkraft, Einsatzdauer und Standort ab.
             {' '}Transport (An-/Abfahrt) kommt je nach Entfernung hinzu (ca. 150–500€).
           </p>
         </section>
@@ -341,7 +341,7 @@ export default async function CraneTypePage({
             </table>
           </div>
           <p className="text-[11px] text-gray-400 mt-3">
-            Preise sind Richtwerte netto, zzgl. MwSt. Die tatsächliche Miete hängt von Region,
+            Preise sind Richtwerte netto, zzgl. {TAX_LABEL} Die tatsächliche Miete hängt von Region,
             Anfahrtsentfernung, Mietdauer und Auslastung ab — fordern Sie immer verbindliche Angebote an.
           </p>
         </section>

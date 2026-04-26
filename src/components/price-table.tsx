@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { TAX_LABEL } from '@/lib/country'
 
 interface PriceTableProps {
   craneTypeSlug?: string
@@ -78,7 +79,7 @@ export function PriceTable({ craneTypeSlug, showAll }: PriceTableProps) {
           </table>
         </div>
         <p className="text-xs text-muted-foreground mt-3">
-          Alle Preise netto zzgl. MwSt. Unverbindliche Richtwerte — die tatsächlichen Kosten
+          Alle Preise netto zzgl. {TAX_LABEL} Unverbindliche Richtwerte — die tatsächlichen Kosten
           hängen von Tragkraft, Einsatzdauer, Standort und Verfügbarkeit ab.
           {!showAll && prices[0] && ` ${prices[0].notes}`}
         </p>
