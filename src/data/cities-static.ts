@@ -144,16 +144,16 @@ const seoCitiesDE: CityInfo[] = [
 // city × type pages skip them via the existing thin-content gates
 // (getCitiesWithMinCompanies threshold).
 const seoCitiesAT: CityInfo[] = [
-  { slug: 'wien',          name: 'Wien',       state: 'Wien',             companyCount: 16 },
-  { slug: 'linz',          name: 'Linz',       state: 'Oberösterreich',   companyCount: 8 },
-  { slug: 'klagenfurt',    name: 'Klagenfurt', state: 'Kärnten',          companyCount: 4 },
-  { slug: 'sankt-poelten', name: 'St. Pölten', state: 'Niederösterreich', companyCount: 4 },
-  { slug: 'innsbruck',     name: 'Innsbruck',  state: 'Tirol',            companyCount: 3 },
-  { slug: 'salzburg',      name: 'Salzburg',   state: 'Salzburg',         companyCount: 2 },
-  { slug: 'wels',          name: 'Wels',       state: 'Oberösterreich',   companyCount: 2 },
-  { slug: 'dornbirn',      name: 'Dornbirn',   state: 'Vorarlberg',       companyCount: 2 },
-  { slug: 'graz',          name: 'Graz',       state: 'Steiermark',       companyCount: 1 },
-  { slug: 'villach',       name: 'Villach',    state: 'Kärnten',          companyCount: 1 },
+  { slug: 'wien',          name: 'Wien',       state: 'Wien',             companyCount: 56 },
+  { slug: 'sankt-poelten', name: 'St. Pölten', state: 'Niederösterreich', companyCount: 17 },
+  { slug: 'linz',          name: 'Linz',       state: 'Oberösterreich',   companyCount: 16 },
+  { slug: 'dornbirn',      name: 'Dornbirn',   state: 'Vorarlberg',       companyCount: 14 },
+  { slug: 'innsbruck',     name: 'Innsbruck',  state: 'Tirol',            companyCount: 10 },
+  { slug: 'klagenfurt',    name: 'Klagenfurt', state: 'Kärnten',          companyCount: 10 },
+  { slug: 'wels',          name: 'Wels',       state: 'Oberösterreich',   companyCount: 5 },
+  { slug: 'graz',          name: 'Graz',       state: 'Steiermark',       companyCount: 4 },
+  { slug: 'salzburg',      name: 'Salzburg',   state: 'Salzburg',         companyCount: 4 },
+  { slug: 'villach',       name: 'Villach',    state: 'Kärnten',          companyCount: 2 },
 ]
 const _extraCitiesAT: ExtendedCity[] = []
 

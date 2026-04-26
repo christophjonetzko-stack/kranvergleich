@@ -68,10 +68,16 @@ def main() -> int:
         default=",".join(DEFAULT_TEMPLATES),
         help='comma-separated query templates with {city}; e.g. "Kranverleih {city},Autokran {city}"',
     )
+    parser.add_argument(
+        "--cities",
+        default="",
+        help='comma-separated city overrides; if empty, uses the seoCitiesAT-aligned CITIES constant',
+    )
     args = parser.parse_args()
 
     templates = [t.strip() for t in args.templates.split(",") if t.strip()]
-    pairs = [(t, city) for t in templates for city in CITIES]
+    cities_to_query = [c.strip() for c in args.cities.split(",") if c.strip()] if args.cities else CITIES
+    pairs = [(t, city) for t in templates for city in cities_to_query]
 
     # Load existing results — append mode: skip queries already present so
     # re-runs with extra templates only pay for the new query strings.
@@ -89,7 +95,8 @@ def main() -> int:
     print("=" * 60)
     print("AT firm sourcing — Outscraper Google Maps search")
     print(f"  templates: {templates}")
-    print(f"  cities: {len(CITIES)}, limit per query: {args.limit}")
+    print(f"  cities ({len(cities_to_query)}): {cities_to_query}")
+    print(f"  limit per query: {args.limit}")
     print(f"  total query slots: {len(pairs)}; already fetched: {len(pairs) - len(pairs_to_fetch)}; new: {len(pairs_to_fetch)}")
     print("=" * 60)
 

@@ -60,6 +60,33 @@ MANUAL_TYPES: list[tuple[str, list[str]]] = [
     ("thaller-kran",            ["autokran-mieten", "mobilkran-mieten", "ladekran-mieten"]),
     # Single-Transport firm
     ("riegler-transporte",      ["ladekran-mieten"]),
+    # === A+B+C round expansion (2026-04-26) ===
+    # Baukran specialists
+    ("thp-baukraene",           ["baukran-mieten"]),
+    ("stirnimann",              ["baukran-mieten"]),  # Turmdrehkran specialist
+    ("baumgartner-kran",        ["autokran-mieten", "mobilkran-mieten"]),
+    # Generic Kran-named firms — typical autokran + mobilkran offering
+    ("kran-tec",                ["autokran-mieten", "mobilkran-mieten"]),
+    ("krantechnik-gesmbh",      ["autokran-mieten", "mobilkran-mieten"]),
+    ("greussing-kran-und-anlagentechnik", ["autokran-mieten"]),
+    ("kranverleih-",            ["autokran-mieten", "mobilkran-mieten"]),  # any "Kranverleih X"
+    ("lahofer-kranverleih",     ["autokran-mieten", "mobilkran-mieten"]),
+    # Kranservice / Kranarbeiten (truck-mounted operators)
+    ("kranservice-",            ["autokran-mieten", "mobilkran-mieten"]),
+    ("ofner-kranservice",       ["autokran-mieten", "mobilkran-mieten"]),
+    ("kuen-kranarbeiten",       ["autokran-mieten", "mobilkran-mieten"]),
+    # Multi-service firms (Bagger + Transport + Kranarbeiten)
+    ("michael-blematl-erdbau",  ["autokran-mieten", "ladekran-mieten"]),
+    ("rudolf-beutl-og-transporte", ["autokran-mieten", "ladekran-mieten"]),
+    ("internationale-transporte-und-kranarbeiten", ["ladekran-mieten", "autokran-mieten"]),
+    ("bautransport-und-kranservice", ["ladekran-mieten", "autokran-mieten"]),
+    ("ksw-kran-sondertransporte", ["autokran-mieten", "mobilkran-mieten"]),
+    # HKL Center — equipment rental chain, typically mini + auto
+    ("hkl-center",              ["minikran-mieten", "autokran-mieten"]),
+    # Generic Transport firms (default to ladekran)
+    ("pittl-transporte",        ["ladekran-mieten"]),
+    ("rent-a-laimer",           ["autokran-mieten"]),
+    ("lama-kran-transport",     ["autokran-mieten", "ladekran-mieten"]),
 ]
 
 

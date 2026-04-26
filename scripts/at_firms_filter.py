@@ -78,6 +78,14 @@ NAME_EXCLUSIONS = [
     "schwerlast spedition",
     # Generic trading houses
     "handels gmbh",      # W.K.S Handels GmbH and similar pure trading
+    # Hebebühne queries surfaced lots of car-lift / Mietwerkstatt entries —
+    # they have a Hebebühne for cars, not crane rental for construction.
+    "kfz hobbywerkstatt",
+    "mietwerkstatt",
+    "kfz farago",
+    "kfz erich",
+    "westend graz",
+    "tafrent station",
 ]
 
 
