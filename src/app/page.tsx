@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // Use absolute title to bypass the layout's "%s | KranVergleich.de" template
   // — Google only shows ~60 chars of the title, so we bake the brand into the
   // string ourselves and keep the keyword phrase up front.
-  const title = `Kran mieten 2026 — ${count} Anbieter ab 150€/Tag | KranVergleich.de`
+  const title = `Kran mieten 2026 — ${count} Anbieter ab 150€/Tag | ${BRAND_NAME}`
   const description = `Kranvermietung in ${COUNTRY_LABEL} vergleichen: ${count} geprüfte Anbieter, 8 Krantypen ab 150€/Tag. Kostenlos 3 Angebote in 2 Minuten.`
   return {
     title: { absolute: title },

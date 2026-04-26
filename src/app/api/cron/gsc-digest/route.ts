@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
-import { COUNTRY } from '@/lib/country'
+import { COUNTRY, BRAND_NAME } from '@/lib/country'
 
 export const dynamic = 'force-dynamic'
 
@@ -163,7 +163,7 @@ function buildDigestHtml(args: {
   return `
     <div style="font-family:system-ui,-apple-system,sans-serif;max-width:720px;margin:0 auto;padding:24px;color:#1f2937;">
       <div style="border-bottom:2px solid #FFD100;padding-bottom:12px;margin-bottom:20px;">
-        <p style="margin:0;font-family:ui-monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;">KranVergleich.de · Weekly GSC Digest</p>
+        <p style="margin:0;font-family:ui-monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;">${BRAND_NAME} · Weekly GSC Digest</p>
         <h1 style="margin:6px 0 0;font-size:22px;font-weight:700;color:#111827;">${latestPeriod} <span style="color:#9ca3af;font-weight:400;">vs.</span> ${prevPeriod}</h1>
       </div>
 
@@ -220,7 +220,7 @@ function buildDigestHtml(args: {
 
       <p style="margin:20px 0 0;font-size:11px;color:#9ca3af;">
         Rohdaten: <a href="https://search.google.com/search-console" style="color:#2563eb;">Google Search Console</a>
-        · Ambient agent #1 · KranVergleich.de
+        · Ambient agent #1 · ${BRAND_NAME}
       </p>
     </div>
   `

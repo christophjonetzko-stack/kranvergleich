@@ -18,6 +18,7 @@ import { NewsletterPanel } from '@/components/newsletter-panel'
 import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
+import { BRAND_NAME, BASE_URL } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -223,7 +224,7 @@ export default async function CraneCityPage({
               Sie möchten einen <strong className="text-gray-900">{craneType.name}</strong>
               {synonyms.length > 0 && <> ({synonyms.slice(0, 2).join(', ')})</>}
               {' '}mieten oder leihen in <strong className="text-gray-900">{city.name}</strong> ({city.state})?
-              Auf KranVergleich.de finden Sie {companies.length > 0 ? `${companies.length} ` : ''}
+              Auf {BRAND_NAME} finden Sie {companies.length > 0 ? `${companies.length} ` : ''}
               {craneType.name}-Vermieter in {city.name} und Umgebung — mit Preisen, Google-Bewertungen und direkter Kontaktmöglichkeit.
               {price && (
                 <> Die {craneType.name}-Kosten in {city.name} liegen bei ca. {price.dayFrom}€–{price.dayTo}€ pro Tag (Richtwerte, netto).
@@ -357,7 +358,7 @@ export default async function CraneCityPage({
               name: `${craneType.name} mieten ${city.name}`,
               description: `${craneType.name} in ${city.name} mieten. ${companies.length} Anbieter im Vergleich, Preise ab ${price.dayFrom}€/Tag.`,
               category: 'Kranvermietung',
-              brand: { '@type': 'Brand', name: 'KranVergleich.de' },
+              brand: { '@type': 'Brand', name: BRAND_NAME },
               areaServed: { '@type': 'City', name: city.name },
               offers: {
                 '@type': 'AggregateOffer',

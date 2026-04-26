@@ -59,7 +59,7 @@ export default async function UeberUnsPage() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Für Suchende: 100% kostenlos</h2>
           <p>
-            Die Nutzung von KranVergleich.de ist für Suchende komplett kostenlos. Sie können
+            Die Nutzung von {BRAND_NAME} ist für Suchende komplett kostenlos. Sie können
             Anbieter vergleichen, Profile ansehen und kostenlos Angebote anfragen — bei einem
             oder mehreren Anbietern gleichzeitig. Es gibt keine versteckten Kosten.
           </p>

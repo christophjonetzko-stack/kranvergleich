@@ -6,6 +6,7 @@ import { getCraneTypeNameById } from '@/data/crane-types'
 import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { LeadForm } from '@/components/lead-form'
 import { TrackProfileView, TrackedLink, RevealablePhone } from '@/components/track'
+import { BRAND_NAME } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -46,7 +47,7 @@ export async function generateMetadata({
   if (!company) return {}
 
   const title = `${company.name} — Kranvermietung ${company.city}`
-  const description = `${company.name} in ${company.city}: Kranvermietung mit ${company.google_rating ? `${company.google_rating} Sternen` : 'Top-Bewertungen'}. Angebot anfragen auf KranVergleich.de.`
+  const description = `${company.name} in ${company.city}: Kranvermietung mit ${company.google_rating ? `${company.google_rating} Sternen` : 'Top-Bewertungen'}. Angebot anfragen auf ${BRAND_NAME}.`
   const canonical = `/anbieter/${slug}`
 
   return {

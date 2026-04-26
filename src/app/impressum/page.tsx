@@ -91,7 +91,7 @@ export default function ImpressumPage() {
 
           <h3 className="text-lg font-medium mt-4">Haftung für Vermittlung</h3>
           <p>
-            KranVergleich.de vermittelt lediglich Kontakte zwischen Nutzern und Kranvermietungsunternehmen
+            {BRAND_NAME} vermittelt lediglich Kontakte zwischen Nutzern und Kranvermietungsunternehmen
             und übernimmt keine Haftung für die Qualität, Verfügbarkeit, Zuverlässigkeit oder Preise der
             gelisteten Anbieter. Alle Angaben zu Preisen und Leistungen sind unverbindliche Richtwerte.
             Verbindliche Angebote erhalten Sie direkt vom jeweiligen Anbieter.

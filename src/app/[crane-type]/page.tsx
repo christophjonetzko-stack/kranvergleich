@@ -216,7 +216,7 @@ export default async function CraneTypePage({
             </h2>
             <p className="text-[14px] text-gray-500 leading-relaxed">
               Ob Sie einen <strong className="text-gray-900">{craneType.name}</strong> mieten, leihen oder ausleihen möchten —
-              {' '}auf KranVergleich.de vergleichen Sie {plural}-Vermietung, {craneType.name}verleih und Anbieter im direkten Preisvergleich.
+              {' '}auf {BRAND_NAME} vergleichen Sie {plural}-Vermietung, {craneType.name}verleih und Anbieter im direkten Preisvergleich.
               {synonyms.length > 0 && (
                 <> Der {craneType.name} wird auch als <strong className="text-gray-900">{synonyms.slice(0, 4).join(', ')}</strong>
                 {synonyms.length > 4 ? ` oder ${synonyms[4]}` : ''} bezeichnet.</>
@@ -609,7 +609,7 @@ export default async function CraneTypePage({
               name: `${craneType.name} mieten`,
               description: craneType.description,
               category: 'Kranvermietung',
-              brand: { '@type': 'Brand', name: 'KranVergleich.de' },
+              brand: { '@type': 'Brand', name: BRAND_NAME },
               offers: {
                 '@type': 'AggregateOffer',
                 priceCurrency: 'EUR',

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { craneTypes } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
+import { BRAND_NAME } from '@/lib/country'
 
 function getCraneTypeSlugFromPath(pathname: string): string {
   // Extract crane type slug from paths like /autokran-mieten or /autokran-mieten/berlin
@@ -84,7 +85,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 pt-6 text-center text-[12px] text-gray-400">
-          &copy; {new Date().getFullYear()} KranVergleich.de — Alle Angaben ohne Gewähr.
+          &copy; {new Date().getFullYear()} {BRAND_NAME} — Alle Angaben ohne Gewähr.
         </div>
       </div>
     </footer>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
-import { COUNTRY_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
@@ -660,7 +660,7 @@ export default async function SolaranlageKranMietenPage() {
             headline: 'Solaranlage montieren: Welcher Kran für PV-Module? (PV-Kran-Guide 2026)',
             description:
               'PV-Module aufs Dach heben: Dachdeckerkran ab 200€/Tag für Standard-Einfamilienhäuser, Autokran für große Anlagen. Kosten pro kWp, Zeitplanung und Spezialausrüstung im Überblick.',
-            author: { '@type': 'Organization', name: 'KranVergleich.de', url: 'https://kranvergleich.de' },
+            author: { '@type': 'Organization', name: BRAND_NAME, url: BASE_URL },
             datePublished: '2026-04-11',
             dateModified: '2026-04-11',
           }),

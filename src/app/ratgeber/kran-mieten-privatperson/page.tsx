@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
+import { BRAND_NAME } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -262,7 +263,7 @@ export default async function KranMietenPrivatpersonPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-3">Anbieter finden</h2>
           <p className="mb-4">
             Vergleichen Sie Kranvermieter in Ihrer Region, die auch an Privatpersonen vermieten.
-            {' '}{anbieterCount}+ Anbieter in {staedteCount}+ St&auml;dten auf KranVergleich.de.
+            {' '}{anbieterCount}+ Anbieter in {staedteCount}+ St&auml;dten auf {BRAND_NAME}.
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             <Link href="/minikran-mieten" className="border border-gray-200 rounded-lg p-3 hover:border-gray-300 transition-colors">
@@ -292,7 +293,7 @@ export default async function KranMietenPrivatpersonPage() {
           Kran f&uuml;r Ihr Privatprojekt finden
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-xl mx-auto">
-          Viele der {anbieterCount}+ Kranvermieter auf KranVergleich.de vermieten auch an
+          Viele der {anbieterCount}+ Kranvermieter auf {BRAND_NAME} vermieten auch an
           Privatpersonen. Vergleichen Sie kostenlos Angebote in Ihrer Region.
         </p>
         <Link

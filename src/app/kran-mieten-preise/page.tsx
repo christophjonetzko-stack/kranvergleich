@@ -100,7 +100,7 @@ const costFAQs = [
   },
   {
     question: 'Wie viel kostet ein Kran?',
-    answer: 'Die Kosten für einen Mietkran hängen von Typ, Tragkraft und Mietdauer ab. Tagesmiete: 150–5.000€, Wochenmiete: 700–25.000€, Monatsmiete: 2.000–50.000€. Auf KranVergleich.de können Sie die Kranmiete Preise kostenlos vergleichen.',
+    answer: `Die Kosten für einen Mietkran hängen von Typ, Tragkraft und Mietdauer ab. Tagesmiete: 150–5.000€, Wochenmiete: 700–25.000€, Monatsmiete: 2.000–50.000€. Auf ${BRAND_NAME} können Sie die Kranmiete Preise kostenlos vergleichen.`,
   },
   {
     question: 'Wie teuer ist ein Kran im Monat?',
@@ -969,7 +969,7 @@ export default async function KranMietenPreisePage() {
         </div>
         <p className="text-[11px] text-gray-400 mt-2">
           Richtwerte für einen 30-Tonnen-Autokran (Tagespreis inkl. Kranführer, ohne Anfahrt). Basis: Durchschnitt
-          aus Angeboten über KranVergleich.de, Q1&nbsp;2026. Reale Preise variieren je nach Anbieter um ±15&nbsp;%
+          aus Angeboten über {BRAND_NAME}, Q1&nbsp;2026. Reale Preise variieren je nach Anbieter um ±15&nbsp;%
           — fordern Sie für Ihren Ort mehrere Angebote an, um den günstigsten Anbieter zu finden.
         </p>
       </section>

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
-import { COUNTRY } from '@/lib/country'
+import { COUNTRY, BRAND_NAME, BASE_URL, DOMAIN } from '@/lib/country'
 
 const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 
@@ -28,13 +28,13 @@ const DRIP_EMAILS = [
           <li><strong>Frühzeitig buchen</strong> — Kurzfristige Buchungen kosten oft 20-30% mehr</li>
         </ol>
 
-        <a href="https://kranvergleich.de/ratgeber/kran-mieten-tipps" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:16px 0;">
+        <a href="${BASE_URL}/ratgeber/kran-mieten-tipps" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:16px 0;">
           Alle Tipps lesen →
         </a>
 
         <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
-          KranVergleich.de — <a href="https://kranvergleich.de" style="color:#2563eb;">kranvergleich.de</a><br>
-          <a href="https://kranvergleich.de/datenschutz" style="color:#9ca3af;">Datenschutz</a>
+          ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
+          <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
         </p>
       </div>
     `,
@@ -71,13 +71,13 @@ const DRIP_EMAILS = [
           </tr>
         </table>
 
-        <a href="https://kranvergleich.de/ratgeber/welchen-kran-brauche-ich" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
+        <a href="${BASE_URL}/ratgeber/welchen-kran-brauche-ich" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
           Ausführlichen Ratgeber lesen →
         </a>
 
         <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
-          KranVergleich.de — <a href="https://kranvergleich.de" style="color:#2563eb;">kranvergleich.de</a><br>
-          <a href="https://kranvergleich.de/datenschutz" style="color:#9ca3af;">Datenschutz</a>
+          ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
+          <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
         </p>
       </div>
     `,
@@ -96,7 +96,7 @@ const DRIP_EMAILS = [
         </p>
 
         <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:16px 0;">
-          <p style="font-size:14px;color:#1a1a1a;margin:0 0 8px;font-weight:600;">Warum über KranVergleich.de?</p>
+          <p style="font-size:14px;color:#1a1a1a;margin:0 0 8px;font-weight:600;">Warum über ${BRAND_NAME}?</p>
           <ul style="margin:0;padding-left:18px;color:#4b5563;font-size:14px;line-height:1.8;">
             <li>740+ geprüfte Anbieter in 50+ Städten</li>
             <li>Echte Google-Bewertungen</li>
@@ -104,14 +104,14 @@ const DRIP_EMAILS = [
           </ul>
         </div>
 
-        <a href="https://kranvergleich.de" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
+        <a href="${BASE_URL}" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
           Jetzt Anbieter vergleichen →
         </a>
 
         <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
           Dies ist die letzte E-Mail unserer Tipps-Serie. Sie erhalten keine weiteren automatischen E-Mails.<br>
-          KranVergleich.de — <a href="https://kranvergleich.de" style="color:#2563eb;">kranvergleich.de</a><br>
-          <a href="https://kranvergleich.de/datenschutz" style="color:#9ca3af;">Datenschutz</a>
+          ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
+          <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
         </p>
       </div>
     `,

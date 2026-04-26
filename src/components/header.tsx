@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { craneTypes } from '@/data/crane-types'
 import { resolveSearchTarget } from '@/lib/search'
+import { BRAND_NAME } from '@/lib/country'
 
 interface CityResult {
   plz: string
@@ -131,7 +132,7 @@ export function Header() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 gap-3">
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="text-sm font-semibold text-gray-900">KranVergleich.de</span>
+            <span className="text-sm font-semibold text-gray-900">{BRAND_NAME}</span>
           </Link>
 
           {/* Desktop: search + nav */}

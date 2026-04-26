@@ -4,7 +4,7 @@ import { CostCalculator } from '@/components/cost-calculator'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -26,7 +26,7 @@ const faqs = [
   {
     question: 'Wie genau ist der Kostenrechner?',
     answer:
-      'Der Rechner liefert unverbindliche Richtwerte basierend auf Marktdurchschnitt 2026. Die tatsächlichen Kosten hängen von Anbieter, Region, Verfügbarkeit und Projektdetails ab. Für ein verbindliches Angebot empfehlen wir, über KranVergleich.de direkt bei Anbietern anzufragen.',
+      `Der Rechner liefert unverbindliche Richtwerte basierend auf Marktdurchschnitt 2026. Die tatsächlichen Kosten hängen von Anbieter, Region, Verfügbarkeit und Projektdetails ab. Für ein verbindliches Angebot empfehlen wir, über ${BRAND_NAME} direkt bei Anbietern anzufragen.`,
   },
   {
     question: 'Welche Kosten sind im Ergebnis enthalten?',
@@ -41,7 +41,7 @@ const faqs = [
   {
     question: 'Wie finde ich den passenden Anbieter?',
     answer:
-      'Nach der Berechnung zeigt der Rechner einen Link zu passenden Anbietern in Ihrer Region. Auf KranVergleich.de können Sie Preise, Bewertungen und Leistungen vergleichen und kostenlos Angebote anfragen.',
+      `Nach der Berechnung zeigt der Rechner einen Link zu passenden Anbietern in Ihrer Region. Auf ${BRAND_NAME} können Sie Preise, Bewertungen und Leistungen vergleichen und kostenlos Angebote anfragen.`,
   },
 ]
 
@@ -86,7 +86,7 @@ export default async function KostenrechnerPage() {
         </p>
         <p className="mb-3">
           Die Preise basieren auf einer Marktanalyse von {anbieterCount} Kranvermietungen in {COUNTRY_LABEL}
-          (Stand 2026). Für ein verbindliches Angebot können Sie über KranVergleich.de kostenlos
+          (Stand 2026). Für ein verbindliches Angebot können Sie über {BRAND_NAME} kostenlos
           bei mehreren Anbietern gleichzeitig anfragen.
         </p>
         <p>

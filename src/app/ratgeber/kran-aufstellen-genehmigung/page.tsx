@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
+import { BRAND_NAME } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -35,7 +36,7 @@ const faqs = [
   },
   {
     question: 'Wer beantragt die Genehmigung — ich oder der Kranvermieter?',
-    answer: 'Grundsätzlich ist der Auftraggeber (Bauherr) verantwortlich. In der Praxis helfen viele Kranvermieter bei der Antragstellung oder übernehmen sie komplett. Fragen Sie bei der Buchung danach — auf KranVergleich.de können Sie dies direkt in Ihrer Anfrage angeben.',
+    answer: `Grundsätzlich ist der Auftraggeber (Bauherr) verantwortlich. In der Praxis helfen viele Kranvermieter bei der Antragstellung oder übernehmen sie komplett. Fragen Sie bei der Buchung danach — auf ${BRAND_NAME} können Sie dies direkt in Ihrer Anfrage angeben.`,
   },
 ]
 
@@ -295,7 +296,7 @@ export default async function KranGenehmigungPage() {
           Kranvermieter finden, die bei Genehmigungen helfen
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-xl mx-auto">
-          Viele der {anbieterCount}+ Kranvermieter auf KranVergleich.de unterstützen Sie bei der
+          Viele der {anbieterCount}+ Kranvermieter auf {BRAND_NAME} unterstützen Sie bei der
           Antragstellung oder übernehmen die Genehmigung komplett. Fragen Sie einfach bei der Anfrage danach.
         </p>
         <Link

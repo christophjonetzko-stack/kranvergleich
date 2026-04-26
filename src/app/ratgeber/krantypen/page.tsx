@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getSiteStats } from '@/lib/queries'
-import { COUNTRY_LABEL, TAX_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, TAX_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
@@ -357,7 +357,7 @@ export default async function KrantypenPage() {
             '@type': 'Article',
             headline: 'Alle Krantypen im Überblick — welcher Kran für welchen Einsatz?',
             description: 'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze.',
-            author: { '@type': 'Organization', name: 'KranVergleich.de', url: 'https://kranvergleich.de' },
+            author: { '@type': 'Organization', name: BRAND_NAME, url: BASE_URL },
             datePublished: '2026-04-09',
             dateModified: '2026-04-11',
           }),

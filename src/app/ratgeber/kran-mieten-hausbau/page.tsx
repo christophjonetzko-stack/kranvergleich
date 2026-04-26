@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
-import { COUNTRY_LABEL, TAX_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, TAX_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
@@ -729,7 +729,7 @@ export default async function KranMietenHausbauPage() {
             headline: 'Kran mieten für den Hausbau: Welcher Kran für welche Bauphase? (Einfamilienhaus-Guide 2026)',
             description:
               'Hausbau-Guide für Bauherren: Welcher Kran für welche Bauphase (Rohbau, Dachstuhl, Dacheindeckung)? Kostenbeispiel für ein typisches Einfamilienhaus, Timing und Genehmigungen.',
-            author: { '@type': 'Organization', name: 'KranVergleich.de', url: 'https://kranvergleich.de' },
+            author: { '@type': 'Organization', name: BRAND_NAME, url: BASE_URL },
             datePublished: '2026-04-11',
             dateModified: '2026-04-11',
           }),

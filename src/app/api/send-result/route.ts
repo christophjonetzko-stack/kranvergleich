@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
-import { TAX_LABEL } from '@/lib/country'
+import { TAX_LABEL, BRAND_NAME, BASE_URL, DOMAIN } from '@/lib/country'
 
 // Lazy init — avoid instantiating at module load so builds work without env.
 let resendInstance: Resend | null = null
@@ -75,17 +75,17 @@ export async function POST(request: Request) {
             Vergleichen Sie jetzt Anbieter und holen Sie kostenlose Angebote ein:
           </p>
 
-          <a href="https://kranvergleich.de/${slug}" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
+          <a href="${BASE_URL}/${slug}" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
             ${craneName}-Anbieter vergleichen →
           </a>
 
           <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
             Preise sind unverbindliche Richtwerte (netto zzgl. ${TAX_LABEL}), basierend auf Marktanalyse 2026.<br>
-            KranVergleich.de — <a href="https://kranvergleich.de" style="color:#2563eb;">kranvergleich.de</a>
+            ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a>
           </p>
 
           <p style="font-size:11px;color:#9ca3af;margin-top:12px;">
-            Sie erhalten diese E-Mail, weil Sie den Kran-Kostenrechner auf KranVergleich.de genutzt haben.
+            Sie erhalten diese E-Mail, weil Sie den Kran-Kostenrechner auf ${BRAND_NAME} genutzt haben.
             Ihre E-Mail wird nur für den Versand des Kostenvergleichs verwendet.
           </p>
         </div>

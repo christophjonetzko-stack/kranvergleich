@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
-import { COUNTRY_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const metadata: Metadata = {
@@ -150,7 +150,7 @@ export default function KranOhneFuehrerscheinPage() {
         <p>
           Sie sind unsicher, ob Sie den Kran selbst bedienen dürfen?
           Die meisten Vermieter beraten Sie kostenlos. Nutzen Sie die{' '}
-          <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage auf KranVergleich.de</Link> und
+          <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage auf {BRAND_NAME}</Link> und
           fragen Sie direkt beim Anbieter nach.
         </p>
       </div>

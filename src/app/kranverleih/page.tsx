@@ -45,7 +45,7 @@ export default async function KranverleihPage() {
         Kranverleih — Krane mieten in ganz {COUNTRY_LABEL}
       </h1>
       <p className="text-[15px] text-gray-500 mb-8 max-w-3xl">
-        Sie suchen einen Kranverleih in Ihrer Nähe? Auf KranVergleich.de finden Sie über {anbieterCount}
+        Sie suchen einen Kranverleih in Ihrer Nähe? Auf {BRAND_NAME} finden Sie über {anbieterCount}
         {' '}Kranverleiher in ganz {COUNTRY_LABEL}. Ob Minikran, Autokran oder Baukran — vergleichen Sie
         Preise, lesen Sie Bewertungen und fragen Sie kostenlos Angebote an.
       </p>
