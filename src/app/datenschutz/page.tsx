@@ -238,6 +238,60 @@ export default function DatenschutzPage() {
           </p>
         </section>
 
+        <section>
+          <h2 className="text-xl font-semibold">10. Kostenrechner und Spartipps-E-Mail-Serie</h2>
+          <p>
+            Auf der Seite <a href="/kostenrechner" className="underline hover:text-foreground">/kostenrechner</a>{' '}
+            können Sie sich Ihren persönlichen Kostenvoranschlag per E-Mail zusenden lassen.
+            Wenn Sie Ihre E-Mail-Adresse angeben und auf „Senden" klicken, verarbeiten wir diese
+            für folgende Zwecke:
+          </p>
+          <ul className="list-disc list-inside">
+            <li>
+              <strong>Sofortversand</strong> des auf Ihren Angaben basierenden Kostenvoranschlags
+              (empfohlener Krantyp, geschätzte Mietkosten, Link zur Anbieterliste)
+            </li>
+            <li>
+              <strong>Spartipps-Serie:</strong> drei weiterführende E-Mails am Tag 1, 3 und 7 nach
+              Ihrer Anfrage mit praxisnahen Tipps zur Kranmiete und einem Krantypen-Überblick
+            </li>
+          </ul>
+          <p>
+            <strong>Rechtsgrundlage:</strong> Die Verarbeitung erfolgt auf Grundlage Ihrer
+            Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO. Die Einwilligung wird durch das
+            Absenden des Formulars erteilt und bezieht sich ausdrücklich sowohl auf den
+            Kostenvergleich als auch auf die anschließende Tipps-Serie.
+          </p>
+          <p>
+            <strong>Was wir speichern:</strong> Ihre E-Mail-Adresse, den Zeitpunkt der
+            Einwilligung, die Herkunft (Kostenrechner) sowie den Fortschritt innerhalb der
+            Tipps-Serie. Wir speichern keine weiteren identifizierenden Merkmale.
+          </p>
+          <p>
+            <strong>Versand-Dienstleister:</strong> Der E-Mail-Versand erfolgt über Resend
+            (Resend, Inc., 2261 Market Street #5039, San Francisco, CA 94114, USA). Mit Resend
+            besteht ein Auftragsverarbeitungsvertrag mit EU-Standardvertragsklauseln gemäß
+            Art. 46 Abs. 2 lit. c DSGVO. Weitere Informationen:{' '}
+            <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+              https://resend.com/legal/privacy-policy
+            </a>.
+          </p>
+          <p>
+            <strong>Speicherdauer:</strong> Ihre E-Mail-Adresse wird bis zum Widerruf Ihrer
+            Einwilligung gespeichert. Nach Abschluss der Tipps-Serie (Tag 7) erhalten Sie keine
+            weiteren automatischen E-Mails von uns.
+          </p>
+          <p>
+            <strong>Widerruf:</strong> Sie können Ihre Einwilligung jederzeit mit Wirkung für die
+            Zukunft widerrufen, indem Sie eine formlose Nachricht an{' '}
+            <a href="mailto:datenschutz@kranvergleich.de" className="underline hover:text-foreground">
+              datenschutz@kranvergleich.de
+            </a>{' '}
+            senden. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt
+            unberührt.
+          </p>
+        </section>
+
         <div className="border-t pt-4 mt-8">
           <p className="text-xs text-muted-foreground">
             Stand: April 2026
