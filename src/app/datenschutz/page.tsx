@@ -1,12 +1,22 @@
 import type { Metadata } from 'next'
+import { COUNTRY, BRAND_NAME } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
+
+// DSGVO is EU-wide so the substance is identical in DE and AT. The two deltas:
+// - Cookie/terminal-equipment statute: § 25 TDDDG (DE) vs § 165 TKG 2021 (AT)
+// - Aufsichtsbehörde: Landesbeauftragte / BfDI (DE) vs Datenschutzbehörde DSB (AT)
+const COOKIE_STATUTE = COUNTRY === 'AT' ? '§ 165 TKG 2021' : '§ 25 TDDDG'
+const SUPERVISORY_NOTE = COUNTRY === 'AT'
+  ? 'Zuständige Aufsichtsbehörde in Österreich: Datenschutzbehörde (DSB), Barichgasse 40-42, 1030 Wien (www.dsb.gv.at).'
+  : 'Zuständige Aufsichtsbehörde in Deutschland ist die Datenschutzbeauftragte des jeweiligen Bundeslandes oder die Bundesbeauftragte für den Datenschutz und die Informationsfreiheit (BfDI).'
 
 export const metadata: Metadata = {
   title: 'Datenschutzerklärung',
-  description: 'Datenschutzerklärung von KranVergleich.de — Informationen zur Verarbeitung personenbezogener Daten.',
-  alternates: { canonical: '/datenschutz' },
+  description: `Datenschutzerklärung von ${BRAND_NAME} — Informationen zur Verarbeitung personenbezogener Daten.`,
+  alternates: alternatesFor('/datenschutz'),
   openGraph: {
     title: 'Datenschutzerklärung',
-    description: 'Datenschutzerklärung von KranVergleich.de — Informationen zur Verarbeitung personenbezogener Daten.',
+    description: `Datenschutzerklärung von ${BRAND_NAME} — Informationen zur Verarbeitung personenbezogener Daten.`,
     type: 'website',
     url: '/datenschutz',
   },
@@ -169,7 +179,7 @@ export default function DatenschutzPage() {
           </p>
           <p>
             Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde über die Verarbeitung
-            Ihrer personenbezogenen Daten zu beschweren.
+            Ihrer personenbezogenen Daten zu beschweren. {SUPERVISORY_NOTE}
           </p>
         </section>
 
@@ -221,7 +231,7 @@ export default function DatenschutzPage() {
           <p>
             <strong>Rechtsgrundlage:</strong> Die Verarbeitung erfolgt auf Grundlage von
             Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Nutzungsstatistiken und
-            Abrechnungstransparenz gegenüber Anbietern). § 25 TDDDG findet keine Anwendung,
+            Abrechnungstransparenz gegenüber Anbietern). {COOKIE_STATUTE} findet keine Anwendung,
             da keine Informationen auf Ihrem Endgerät gespeichert oder aus diesem ausgelesen
             werden.
           </p>

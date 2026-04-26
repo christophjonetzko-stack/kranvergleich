@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { BASE_URL } from '@/lib/country'
 
 // AEO-first policy: explicitly allow AI crawlers and answer engines.
 // Strategic rationale: BAZA_WIEDZY_KATALOG_v3 §7 (AEO) and §19 (MCP/ambient
@@ -39,6 +40,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: '/api/',
       },
     ],
-    sitemap: 'https://kranvergleich.de/sitemap.xml',
+    sitemap: `${BASE_URL}/sitemap.xml`,
   }
 }

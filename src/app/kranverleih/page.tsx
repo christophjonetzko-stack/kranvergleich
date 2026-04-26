@@ -5,6 +5,7 @@ import { craneTypes } from '@/data/crane-types'
 import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats } from '@/lib/queries'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -13,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Kranverleih — Krane mieten in ganz Deutschland',
     description: `Kranverleih in Deutschland: ${anbieterCount}+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.`,
-    alternates: { canonical: '/kranverleih' },
+    alternates: alternatesFor('/kranverleih'),
     openGraph: {
       title: 'Kranverleih — Krane mieten in ganz Deutschland',
       description: `Kranverleih in Deutschland: ${anbieterCount}+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.`,

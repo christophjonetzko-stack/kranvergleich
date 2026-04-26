@@ -8,6 +8,16 @@ export type Country = 'DE' | 'AT'
 // inserts that stamp leads/events with their origin country.
 export const COUNTRY: Country = (process.env.NEXT_PUBLIC_COUNTRY === 'AT' ? 'AT' : 'DE')
 
+// Country-resolved presentation strings. Centralised so layout, sitemap, robots,
+// /api/leads emails, hreflang helpers etc. stay consistent. The `SISTER_*` pair
+// holds the OTHER country's values — useful for hreflang alternate URLs.
+export const BASE_URL: string = COUNTRY === 'AT' ? 'https://kranvergleich.at' : 'https://kranvergleich.de'
+export const SISTER_BASE_URL: string = COUNTRY === 'AT' ? 'https://kranvergleich.de' : 'https://kranvergleich.at'
+export const DOMAIN: string = COUNTRY === 'AT' ? 'kranvergleich.at' : 'kranvergleich.de'
+export const BRAND_NAME: string = COUNTRY === 'AT' ? 'KranVergleich.at' : 'KranVergleich.de'
+export const COUNTRY_LABEL: string = COUNTRY === 'AT' ? 'Österreich' : 'Deutschland'
+export const OG_LOCALE: string = COUNTRY === 'AT' ? 'de_AT' : 'de_DE'
+
 let _companyIdsCache: { ids: Set<string>; expires: number } | null = null
 const COMPANY_IDS_TTL_MS = 60_000
 

@@ -7,6 +7,7 @@ import { cranePrices } from '@/data/crane-prices'
 import { craneTypes as craneTypeStatic } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats, getCraneTypes, getCompanyCountsPerCraneType } from '@/lib/queries'
+import { alternatesFor } from '@/lib/alternates'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 
 // Slug → image lookup. Supabase crane_types has no image_url column, so the
@@ -31,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: '/' },
+    alternates: alternatesFor('/'),
     openGraph: {
       title,
       description,

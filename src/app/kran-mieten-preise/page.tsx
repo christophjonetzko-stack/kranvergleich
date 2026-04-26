@@ -8,6 +8,7 @@ import { FAQSection } from '@/components/faq-section'
 import { InlineSammelanfrageForm } from '@/components/inline-sammelanfrage-form'
 import { PageEventTracker } from '@/components/page-event-tracker'
 import { getSiteStats } from '@/lib/queries'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: 'Kran mieten Preisliste 2026 — ab 150€/Tag, alle 8 Krantypen',
   description:
     'Kran mieten Preise 2026: Tages-, Wochen-, Monatspreise für 8 Krantypen. Anhängerkran ab 150€, Autokran ab 500€. Kostenlos 3 Angebote vergleichen.',
-  alternates: { canonical: '/kran-mieten-preise' },
+  alternates: alternatesFor('/kran-mieten-preise'),
   openGraph: {
     title: 'Kran mieten Preisliste 2026 — ab 150€/Tag, alle 8 Krantypen',
     description:

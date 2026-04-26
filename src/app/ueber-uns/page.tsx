@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -9,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Über uns — KranVergleich.de',
     description: `KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte. Kostenlos und unverbindlich.`,
-    alternates: { canonical: '/ueber-uns' },
+    alternates: alternatesFor('/ueber-uns'),
     openGraph: {
       title: 'Über uns — KranVergleich.de',
       description: `KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte.`,

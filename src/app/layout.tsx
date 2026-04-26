@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Archivo, Archivo_Narrow, JetBrains_Mono } from 'next/font/google'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { BASE_URL, BRAND_NAME, COUNTRY_LABEL, OG_LOCALE } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
 import './globals.css'
 
 const archivo = Archivo({
@@ -25,16 +27,20 @@ const jbMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'KranVergleich.de — Kranvermietung in Deutschland vergleichen',
-    template: '%s | KranVergleich.de',
+    default: `${BRAND_NAME} — Kranvermietung in ${COUNTRY_LABEL} vergleichen`,
+    template: `%s | ${BRAND_NAME}`,
   },
   description:
-    'Kran mieten oder leihen in ganz Deutschland. Kranmiete Preise vergleichen: Minikrane, Autokrane, Dachdeckerkrane, Mobilkrane — Bewertungen und kostenlose Angebote. Mietkran Preisvergleich.',
-  metadataBase: new URL('https://kranvergleich.de'),
+    `Kran mieten oder leihen in ganz ${COUNTRY_LABEL}. Kranmiete Preise vergleichen: Minikrane, Autokrane, Dachdeckerkrane, Mobilkrane — Bewertungen und kostenlose Angebote. Mietkran Preisvergleich.`,
+  metadataBase: new URL(BASE_URL),
+  // Default hreflang for the home page; static pages override with their own path
+  // via `alternatesFor('/path')`. Dynamic city pages do not set languages — they
+  // have no cross-country equivalent.
+  alternates: alternatesFor('/'),
   openGraph: {
     type: 'website',
-    locale: 'de_DE',
-    siteName: 'KranVergleich.de',
+    locale: OG_LOCALE,
+    siteName: BRAND_NAME,
   },
 }
 

@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { Resend, type CreateEmailOptions } from 'resend'
 import { submitLead, getCompaniesForCraneTypeNearLocation, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
-import { COUNTRY } from '@/lib/country'
+import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById } from '@/data/crane-types'
 
 // Must match the salt base used by /api/track so a single visitor's events
@@ -82,14 +82,10 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
 // must have its DKIM/SPF/DMARC verified in Resend before kranvergleich.at goes live;
 // until then, AT lead submissions will fail at the email send step. AT domain hookup
 // is a tydzień 2-3 task per the launch plan.
+// BASE_URL/DOMAIN/BRAND_NAME/COUNTRY_LABEL are imported from @/lib/country (single source of truth).
 const FROM_EMAIL = COUNTRY === 'AT'
   ? 'KranVergleich <noreply@send.kranvergleich.at>'
   : 'KranVergleich <noreply@send.kranvergleich.de>'
-
-const BASE_URL = COUNTRY === 'AT' ? 'https://kranvergleich.at' : 'https://kranvergleich.de'
-const DOMAIN = COUNTRY === 'AT' ? 'kranvergleich.at' : 'kranvergleich.de'
-const BRAND_NAME = COUNTRY === 'AT' ? 'KranVergleich.at' : 'KranVergleich.de'
-const COUNTRY_LABEL = COUNTRY === 'AT' ? 'Österreich' : 'Deutschland'
 
 // --- Rate limiting: max 5 requests per minute per IP ---
 const RATE_LIMIT_WINDOW_MS = 60_000

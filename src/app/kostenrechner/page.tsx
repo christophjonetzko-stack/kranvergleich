@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { CostCalculator } from '@/components/cost-calculator'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Kostenrechner — Wie viel kostet ein Kran für mein Projekt?',
   description:
     'Kran-Kostenrechner: In 4 Schritten erfahren Sie, welchen Kran Sie brauchen und was er kostet. Minikran, Autokran, Baukran — unverbindliche Preisschätzung mit Anbietervergleich.',
-  alternates: { canonical: '/kostenrechner' },
+  alternates: alternatesFor('/kostenrechner'),
   openGraph: {
     title: 'Kostenrechner — Wie viel kostet ein Kran für mein Projekt?',
     description:

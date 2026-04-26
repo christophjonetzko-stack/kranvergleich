@@ -1,12 +1,36 @@
 import type { Metadata } from 'next'
+import { COUNTRY, BRAND_NAME } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
+
+// Country-aware statute references. Identity stays the same (Anita Jonetzko, Ehingen, DE)
+// per memory project_kranvergleich_at_priority_2026_04_23.md: cross-border ECG-AT
+// Impressum may point at the DE Sitz; no AT entity required. Only the cited statute
+// names change between deployments.
+const STATUTE = COUNTRY === 'AT'
+  ? {
+      base: '§ 5 ECG',
+      content_responsibility: '§ 24 MedienG',
+      service_provider_liability: '§§ 13–16 ECG',
+      service_provider_liability_short: '§ 13 ECG',
+      ranking_disclosure: '§ 2 UWG (AT)',
+      dispute: '§ 19 AStG',
+    }
+  : {
+      base: '§ 5 DDG',
+      content_responsibility: '§ 18 Abs. 2 MStV',
+      service_provider_liability: '§§ 8 bis 10 TMG',
+      service_provider_liability_short: '§ 7 Abs. 1 TMG',
+      ranking_disclosure: '§ 5a UWG',
+      dispute: '§ 36 VSBG',
+    }
 
 export const metadata: Metadata = {
   title: 'Impressum',
-  description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 DDG.',
-  alternates: { canonical: '/impressum' },
+  description: `Impressum von ${BRAND_NAME} — Angaben gemäß ${STATUTE.base}.`,
+  alternates: alternatesFor('/impressum'),
   openGraph: {
     title: 'Impressum',
-    description: 'Impressum von KranVergleich.de — Angaben gemäß § 5 DDG.',
+    description: `Impressum von ${BRAND_NAME} — Angaben gemäß ${STATUTE.base}.`,
     type: 'website',
     url: '/impressum',
   },
@@ -19,13 +43,19 @@ export default function ImpressumPage() {
 
       <div className="prose prose-sm max-w-none space-y-6">
         <section>
-          <h2 className="text-xl font-semibold">Angaben gemäß § 5 DDG</h2>
+          <h2 className="text-xl font-semibold">Angaben gemäß {STATUTE.base}</h2>
           <p>
             <strong>Anita Jonetzko</strong><br />
             Kapellenstraße 6/1<br />
             89584 Ehingen<br />
             Deutschland
           </p>
+          {COUNTRY === 'AT' && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Anbieter mit Sitz in Deutschland; das Angebot richtet sich auch an Nutzerinnen und Nutzer in Österreich.
+              Es gilt das Herkunftslandprinzip gemäß § 20 ECG.
+            </p>
+          )}
         </section>
 
         <section>
@@ -37,7 +67,7 @@ export default function ImpressumPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+          <h2 className="text-xl font-semibold">Verantwortlich für den Inhalt nach {STATUTE.content_responsibility}</h2>
           <p>
             Anita Jonetzko<br />
             Kapellenstraße 6/1<br />
@@ -52,8 +82,8 @@ export default function ImpressumPage() {
           <p>
             Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
             Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
-            Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten
-            nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als
+            Als Diensteanbieter sind wir gemäß {STATUTE.service_provider_liability_short} für eigene Inhalte auf diesen Seiten
+            nach den allgemeinen Gesetzen verantwortlich. Nach {STATUTE.service_provider_liability} sind wir als
             Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde
             Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige
             Tätigkeit hinweisen.
@@ -77,9 +107,9 @@ export default function ImpressumPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold">Wie unser Ranking entsteht (§ 5a UWG)</h2>
+          <h2 className="text-xl font-semibold">Wie unser Ranking entsteht ({STATUTE.ranking_disclosure})</h2>
           <p>
-            Die Reihenfolge der Anbieter auf KranVergleich.de basiert standardmäßig auf der
+            Die Reihenfolge der Anbieter auf {BRAND_NAME} basiert standardmäßig auf der
             Google-Bewertung (höchste zuerst). Nutzer können die Sortierung jederzeit ändern
             (z.&nbsp;B. nach Anzahl der Bewertungen oder Name A–Z). Die Reihenfolge wird
             durch keine bezahlte Platzierung beeinflusst. Sollten wir künftig bezahlte
@@ -88,7 +118,7 @@ export default function ImpressumPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold">Streitschlichtung (§ 36 VSBG)</h2>
+          <h2 className="text-xl font-semibold">Streitschlichtung ({STATUTE.dispute})</h2>
           <p>
             Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
             Verbraucherschlichtungsstelle teilzunehmen.
