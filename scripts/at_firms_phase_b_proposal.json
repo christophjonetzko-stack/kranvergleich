@@ -1,12 +1,12 @@
 {
   "summary": {
-    "total": 20,
-    "fetched_ok": 19,
+    "total": 38,
+    "fetched_ok": 36,
     "robots_blocked": 1,
     "fetch_failed": 0,
-    "no_crane_types_detected": 5,
-    "no_website": 0,
-    "email_extracted": 10
+    "no_crane_types_detected": 11,
+    "no_website": 1,
+    "email_extracted": 21
   },
   "proposals": [
     {
@@ -140,9 +140,7 @@
         ]
       },
       "supabase_updates": {
-        "companies_update": {
-          "email": "office@prangl.at"
-        },
+        "companies_update": {},
         "company_cranes_insert": [
           {
             "crane_type_slug": "baukran-mieten",
@@ -205,97 +203,6 @@
       }
     },
     {
-      "company_id": "74a939e9-bf9f-4261-a483-5b32214eae6b",
-      "slug": "prangl-wien",
-      "name": "Prangl GmbH Zentrale",
-      "website": "http://www.prangl.com/%3Flanguage%3D1",
-      "fetch_status": "ok",
-      "extracted": {
-        "email_candidates": [
-          "office@prangl.at"
-        ],
-        "crane_types_slugs": [
-          "autokran-mieten",
-          "mobilkran-mieten",
-          "baukran-mieten",
-          "raupenkran-mieten",
-          "ladekran-mieten"
-        ]
-      },
-      "supabase_updates": {
-        "companies_update": {
-          "email": "office@prangl.at"
-        },
-        "company_cranes_insert": [
-          {
-            "crane_type_slug": "autokran-mieten",
-            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
-          },
-          {
-            "crane_type_slug": "mobilkran-mieten",
-            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
-          },
-          {
-            "crane_type_slug": "baukran-mieten",
-            "crane_type_id": "f1f86ce7-14b8-48ce-9004-5db8dde53949"
-          },
-          {
-            "crane_type_slug": "raupenkran-mieten",
-            "crane_type_id": "0b61b867-53a6-4cf9-afbb-50c610dc4a2a"
-          },
-          {
-            "crane_type_slug": "ladekran-mieten",
-            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
-          }
-        ]
-      }
-    },
-    {
-      "company_id": "c6fc5b58-b193-452b-8e9f-ce69b6c87771",
-      "slug": "kranverleih-kampel",
-      "name": "Kranverleih Kampel",
-      "website": "https://kampel.at/",
-      "fetch_status": "ok",
-      "extracted": {
-        "email_candidates": [
-          "office@kampel.at"
-        ],
-        "crane_types_slugs": [
-          "mobilkran-mieten"
-        ]
-      },
-      "supabase_updates": {
-        "companies_update": {
-          "email": "office@kampel.at"
-        },
-        "company_cranes_insert": [
-          {
-            "crane_type_slug": "mobilkran-mieten",
-            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
-          }
-        ]
-      }
-    },
-    {
-      "company_id": "82d719c9-e08b-4887-8368-13e4ac43d720",
-      "slug": "xl-spedition-transporte-gmbh",
-      "name": "XL Spedition & Transporte GmbH",
-      "website": "http://www.xl-transporte.at/",
-      "fetch_status": "ok",
-      "extracted": {
-        "email_candidates": [
-          "office@xl-transporte.at"
-        ],
-        "crane_types_slugs": []
-      },
-      "supabase_updates": {
-        "companies_update": {
-          "email": "office@xl-transporte.at"
-        },
-        "company_cranes_insert": []
-      }
-    },
-    {
       "company_id": "230fc37d-cb07-4ac1-ae78-d32b088005fc",
       "slug": "boels-wels",
       "name": "Boels Maschinenverleih Österreich GmbH Wels",
@@ -322,6 +229,47 @@
       "slug": "scheffknecht-autokran-gmbh",
       "name": "Scheffknecht Autokran GmbH",
       "fetch_status": "robots_disallow"
+    },
+    {
+      "company_id": "c6fc5b58-b193-452b-8e9f-ce69b6c87771",
+      "slug": "kranverleih-kampel",
+      "name": "Kranverleih Kampel",
+      "website": "https://kampel.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@kampel.at"
+        ],
+        "crane_types_slugs": [
+          "mobilkran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "82d719c9-e08b-4887-8368-13e4ac43d720",
+      "slug": "xl-spedition-transporte-gmbh",
+      "name": "XL Spedition & Transporte GmbH",
+      "website": "http://www.xl-transporte.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@xl-transporte.at"
+        ],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": []
+      }
     },
     {
       "company_id": "a64c11de-f34b-4f71-b5a1-0b3424ac972b",
@@ -398,36 +346,6 @@
       }
     },
     {
-      "company_id": "45ec4b71-d12f-4da0-ad49-b4a25817e1ab",
-      "slug": "haider-kran-und-transporte",
-      "name": "HAIDER KRAN und Transporte",
-      "website": "http://www.haider.eu/",
-      "fetch_status": "ok",
-      "extracted": {
-        "email_candidates": [
-          "office@haider.eu",
-          "gerihaeuser@haider.eu",
-          "hartl@haider.eu",
-          "lang@haider.eu",
-          "krychl@herzer.at"
-        ],
-        "crane_types_slugs": [
-          "ladekran-mieten"
-        ]
-      },
-      "supabase_updates": {
-        "companies_update": {
-          "email": "office@haider.eu"
-        },
-        "company_cranes_insert": [
-          {
-            "crane_type_slug": "ladekran-mieten",
-            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
-          }
-        ]
-      }
-    },
-    {
       "company_id": "48361ced-00b1-4141-9757-b3b92c4cc7ff",
       "slug": "timi-kran-gmbh",
       "name": "Timi Kran GmbH",
@@ -440,90 +358,7 @@
         "crane_types_slugs": []
       },
       "supabase_updates": {
-        "companies_update": {
-          "email": "office@timi-trans.at"
-        },
-        "company_cranes_insert": []
-      }
-    },
-    {
-      "company_id": "ed7fdbf0-6ca8-48d3-981c-4d9444835467",
-      "slug": "w-reitinger-gmbh",
-      "name": "W. Reitinger GmbH",
-      "website": "https://www.w-reitinger.com/",
-      "fetch_status": "ok",
-      "extracted": {
-        "email_candidates": [
-          "office@w-reitinger.at",
-          "datenschutz@w-reitinger.at"
-        ],
-        "crane_types_slugs": [
-          "raupenkran-mieten",
-          "ladekran-mieten",
-          "minikran-mieten",
-          "mobilkran-mieten"
-        ]
-      },
-      "supabase_updates": {
-        "companies_update": {
-          "email": "office@w-reitinger.at"
-        },
-        "company_cranes_insert": [
-          {
-            "crane_type_slug": "raupenkran-mieten",
-            "crane_type_id": "0b61b867-53a6-4cf9-afbb-50c610dc4a2a"
-          },
-          {
-            "crane_type_slug": "ladekran-mieten",
-            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
-          },
-          {
-            "crane_type_slug": "minikran-mieten",
-            "crane_type_id": "1a7019bd-7fd3-401a-8713-7f6be6fbd827"
-          },
-          {
-            "crane_type_slug": "mobilkran-mieten",
-            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
-          }
-        ]
-      }
-    },
-    {
-      "company_id": "e760f921-fbae-477c-ab6a-ef6a206d3662",
-      "slug": "bmk-baumaschinen-services",
-      "name": "BMK Baumaschinen Services",
-      "website": "https://www.bmk-baumaschinen.at/",
-      "fetch_status": "ok",
-      "extracted": {
-        "email_candidates": [
-          "office@bmk-baumaschinen.at"
-        ],
-        "crane_types_slugs": []
-      },
-      "supabase_updates": {
-        "companies_update": {
-          "email": "office@bmk-baumaschinen.at"
-        },
-        "company_cranes_insert": []
-      }
-    },
-    {
-      "company_id": "b09fb15e-8273-454c-a02e-db98275810be",
-      "slug": "kranwien-gmbh",
-      "name": "KranWien GmbH",
-      "website": "http://www.kranwien.at/",
-      "fetch_status": "ok",
-      "extracted": {
-        "email_candidates": [
-          "kontakt@kranwien.at",
-          "office@kranwien.at"
-        ],
-        "crane_types_slugs": []
-      },
-      "supabase_updates": {
-        "companies_update": {
-          "email": "kontakt@kranwien.at"
-        },
+        "companies_update": {},
         "company_cranes_insert": []
       }
     },
@@ -565,6 +400,81 @@
       }
     },
     {
+      "company_id": "ed7fdbf0-6ca8-48d3-981c-4d9444835467",
+      "slug": "w-reitinger-gmbh",
+      "name": "W. Reitinger GmbH",
+      "website": "https://www.w-reitinger.com/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@w-reitinger.at",
+          "datenschutz@w-reitinger.at"
+        ],
+        "crane_types_slugs": [
+          "raupenkran-mieten",
+          "ladekran-mieten",
+          "minikran-mieten",
+          "mobilkran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "raupenkran-mieten",
+            "crane_type_id": "0b61b867-53a6-4cf9-afbb-50c610dc4a2a"
+          },
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          },
+          {
+            "crane_type_slug": "minikran-mieten",
+            "crane_type_id": "1a7019bd-7fd3-401a-8713-7f6be6fbd827"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "e760f921-fbae-477c-ab6a-ef6a206d3662",
+      "slug": "bmk-baumaschinen-services",
+      "name": "BMK Baumaschinen Services",
+      "website": "https://www.bmk-baumaschinen.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@bmk-baumaschinen.at"
+        ],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": []
+      }
+    },
+    {
+      "company_id": "b09fb15e-8273-454c-a02e-db98275810be",
+      "slug": "kranwien-gmbh",
+      "name": "KranWien GmbH",
+      "website": "http://www.kranwien.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "kontakt@kranwien.at",
+          "office@kranwien.at"
+        ],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": []
+      }
+    },
+    {
       "company_id": "6dcc5806-7253-43e6-af63-13af58d58f25",
       "slug": "schweighofer-kran-transport-bergheim-bei-salzburg",
       "name": "Schweighofer Kran & Transport Bergheim bei Salzburg",
@@ -582,9 +492,7 @@
         ]
       },
       "supabase_updates": {
-        "companies_update": {
-          "email": "office@n-schweighofer.at"
-        },
+        "companies_update": {},
         "company_cranes_insert": [
           {
             "crane_type_slug": "baukran-mieten",
@@ -601,6 +509,564 @@
           {
             "crane_type_slug": "mobilkran-mieten",
             "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "74a939e9-bf9f-4261-a483-5b32214eae6b",
+      "slug": "prangl-wien",
+      "name": "Prangl GmbH Zentrale",
+      "website": "http://www.prangl.com/%3Flanguage%3D1",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@prangl.at"
+        ],
+        "crane_types_slugs": [
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "baukran-mieten",
+          "raupenkran-mieten",
+          "ladekran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          },
+          {
+            "crane_type_slug": "baukran-mieten",
+            "crane_type_id": "f1f86ce7-14b8-48ce-9004-5db8dde53949"
+          },
+          {
+            "crane_type_slug": "raupenkran-mieten",
+            "crane_type_id": "0b61b867-53a6-4cf9-afbb-50c610dc4a2a"
+          },
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "45ec4b71-d12f-4da0-ad49-b4a25817e1ab",
+      "slug": "haider-kran-und-transporte",
+      "name": "HAIDER KRAN und Transporte",
+      "website": "http://www.haider.eu/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@haider.eu",
+          "gerihaeuser@haider.eu",
+          "hartl@haider.eu",
+          "lang@haider.eu",
+          "krychl@herzer.at"
+        ],
+        "crane_types_slugs": [
+          "ladekran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "5cb12c79-b8e9-484b-8892-9440c33fa863",
+      "slug": "felbermayr-transport-und-hebetechnik-gmbh-co-kg",
+      "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG",
+      "website": "https://www.felbermayr.cc/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [],
+        "crane_types_slugs": [
+          "minikran-mieten",
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "baukran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "minikran-mieten",
+            "crane_type_id": "1a7019bd-7fd3-401a-8713-7f6be6fbd827"
+          },
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          },
+          {
+            "crane_type_slug": "baukran-mieten",
+            "crane_type_id": "f1f86ce7-14b8-48ce-9004-5db8dde53949"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "d7ccbe38-dd43-4ef1-8d14-64de86eb6de4",
+      "slug": "trost-gmbh",
+      "name": "Trost GmbH",
+      "website": "https://www.trost.co.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [],
+        "crane_types_slugs": [
+          "baukran-mieten",
+          "ladekran-mieten",
+          "mobilkran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "baukran-mieten",
+            "crane_type_id": "f1f86ce7-14b8-48ce-9004-5db8dde53949"
+          },
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "c7a28bd7-f1d7-4931-9212-c8cbe38967ca",
+      "slug": "kuhn-ladetechnik",
+      "name": "Kuhn Ladetechnik",
+      "website": "https://www.kuhn.at/de/ladetechnik",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": []
+      }
+    },
+    {
+      "company_id": "06606358-b86e-4acb-8dea-05caa781689e",
+      "slug": "wieshofer-transporte",
+      "name": "Wieshofer Transporte",
+      "website": "http://www.wieshofer.com/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@wieshofer.com"
+        ],
+        "crane_types_slugs": [
+          "ladekran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@wieshofer.com"
+        },
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "35c98eb9-a3c4-4c3c-98b3-f5c55bd24190",
+      "slug": "prangl-sankt-poelten",
+      "name": "Prangl",
+      "website": "http://www.prangl.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@prangl.at",
+          "wien@prangl.at"
+        ],
+        "crane_types_slugs": [
+          "baukran-mieten",
+          "raupenkran-mieten",
+          "ladekran-mieten",
+          "mobilkran-mieten",
+          "autokran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@prangl.at"
+        },
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "baukran-mieten",
+            "crane_type_id": "f1f86ce7-14b8-48ce-9004-5db8dde53949"
+          },
+          {
+            "crane_type_slug": "raupenkran-mieten",
+            "crane_type_id": "0b61b867-53a6-4cf9-afbb-50c610dc4a2a"
+          },
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          },
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "b09ee788-bac3-4710-a28c-3ff1fd055416",
+      "slug": "maderboeck-glasakrobat-gmbh",
+      "name": "Maderböck Glasakrobat GmbH",
+      "website": "http://www.glasakrobat.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@glasakrobat.at"
+        ],
+        "crane_types_slugs": [
+          "raupenkran-mieten",
+          "minikran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@glasakrobat.at"
+        },
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "raupenkran-mieten",
+            "crane_type_id": "0b61b867-53a6-4cf9-afbb-50c610dc4a2a"
+          },
+          {
+            "crane_type_slug": "minikran-mieten",
+            "crane_type_id": "1a7019bd-7fd3-401a-8713-7f6be6fbd827"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "478a37d4-afc2-40f6-880a-906a0c2b9128",
+      "slug": "thaller-kran-sondertransporte",
+      "name": "Thaller Kran - Sondertransporte",
+      "website": "http://www.thaller-kran.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "info@thaller-kran.at",
+          "office@firmenabc.at"
+        ],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "info@thaller-kran.at"
+        },
+        "company_cranes_insert": []
+      }
+    },
+    {
+      "company_id": "5b20dcdd-b290-42f0-b39b-33e4780dafc5",
+      "slug": "riegler-transporte",
+      "name": "Riegler Transporte",
+      "website": "https://www.rieglertrans.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": []
+      }
+    },
+    {
+      "company_id": "206cade3-5f11-4abc-bd23-46b3ade921cf",
+      "slug": "spiegl-transport-gmbh-co-kg",
+      "name": "Spiegl Transport GmbH & Co KG",
+      "website": "https://www.spiegl-transporte.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@spiegl-transporte.at"
+        ],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@spiegl-transporte.at"
+        },
+        "company_cranes_insert": []
+      }
+    },
+    {
+      "company_id": "d11e2a88-68c5-4140-9486-f05994c3820b",
+      "slug": "markowitsch-franz-gmbh",
+      "name": "Markowitsch Franz GmbH",
+      "website": "http://www.markowitsch-kranverleih.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@markowitsch-kran.at"
+        ],
+        "crane_types_slugs": [
+          "ladekran-mieten",
+          "autokran-mieten",
+          "mobilkran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@markowitsch-kran.at"
+        },
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          },
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "88dce9a3-74b7-459e-aa9f-6c1eaf360d41",
+      "slug": "kogler-krantechnik-gmbh",
+      "name": "Kogler Krantechnik GmbH",
+      "website": "https://kogler-krantechnik.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@kogler-krantechnik.at",
+          "ffice@kogler-krantechnik.at"
+        ],
+        "crane_types_slugs": [
+          "ladekran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@kogler-krantechnik.at"
+        },
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "d0974ccf-fcde-424d-9048-557f40ae68e8",
+      "slug": "kran-trans-dienstleistungs-gmbh",
+      "name": "Kran + Trans - Dienstleistungs GmbH",
+      "website": "http://www.krantrans.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [],
+        "crane_types_slugs": [
+          "autokran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "81653194-5164-48e3-aeda-fc8880f47c9e",
+      "slug": "transporte-schneider-gmbh",
+      "name": "Transporte Schneider GmbH",
+      "website": "http://www.transporte-schneider.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@transporte-schneider.at"
+        ],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@transporte-schneider.at"
+        },
+        "company_cranes_insert": []
+      }
+    },
+    {
+      "company_id": "5b012fdd-d77f-4ab3-9c29-e1f70217622b",
+      "slug": "efem-transport-gmbh",
+      "name": "EFEM Transport GmbH",
+      "website": "http://www.efemtransport.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@efemtransport.at"
+        ],
+        "crane_types_slugs": []
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@efemtransport.at"
+        },
+        "company_cranes_insert": []
+      }
+    },
+    {
+      "company_id": "8dd091ff-7022-4f3b-a017-cceeca235a9c",
+      "slug": "prangl-gmbh",
+      "name": "Prangl GmbH",
+      "website": "http://www.prangl.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "office@prangl.at",
+          "wien@prangl.at"
+        ],
+        "crane_types_slugs": [
+          "baukran-mieten",
+          "raupenkran-mieten",
+          "ladekran-mieten",
+          "mobilkran-mieten",
+          "autokran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "office@prangl.at"
+        },
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "baukran-mieten",
+            "crane_type_id": "f1f86ce7-14b8-48ce-9004-5db8dde53949"
+          },
+          {
+            "crane_type_slug": "raupenkran-mieten",
+            "crane_type_id": "0b61b867-53a6-4cf9-afbb-50c610dc4a2a"
+          },
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          },
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "003b30fd-d19b-43fb-be39-52d067bb93bb",
+      "slug": "b-t-kranservice-gmbh",
+      "name": "B&T Kranservice GmbH",
+      "fetch_status": "no_website"
+    },
+    {
+      "company_id": "f42177eb-4b6e-428e-9d0a-9ae0c9ae347f",
+      "slug": "hft-kran-bagger-transporte-und-lkw-und-fahrzeugbergungen-in-kaernten",
+      "name": "HFT - Kran, Bagger, Transporte und LKW- und Fahrzeugbergungen in Kärnten",
+      "website": "http://www.cranetrans.at/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [
+          "kran@hft-trans.at"
+        ],
+        "crane_types_slugs": [
+          "ladekran-mieten",
+          "autokran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {
+          "email": "kran@hft-trans.at"
+        },
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "ladekran-mieten",
+            "crane_type_id": "a556dcad-e379-4ac3-8d72-6eed094900d1"
+          },
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          }
+        ]
+      }
+    },
+    {
+      "company_id": "796995cc-c83c-49ac-b453-97b787e41686",
+      "slug": "felbermayr-wels",
+      "name": "Felbermayr Transport- und Hebetechnik Kranvermietung",
+      "website": "https://www.felbermayr.cc/",
+      "fetch_status": "ok",
+      "extracted": {
+        "email_candidates": [],
+        "crane_types_slugs": [
+          "minikran-mieten",
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "baukran-mieten"
+        ]
+      },
+      "supabase_updates": {
+        "companies_update": {},
+        "company_cranes_insert": [
+          {
+            "crane_type_slug": "minikran-mieten",
+            "crane_type_id": "1a7019bd-7fd3-401a-8713-7f6be6fbd827"
+          },
+          {
+            "crane_type_slug": "autokran-mieten",
+            "crane_type_id": "ab511eea-d464-47b9-8ada-16931dab5078"
+          },
+          {
+            "crane_type_slug": "mobilkran-mieten",
+            "crane_type_id": "02dc05de-6699-4849-93fb-2b655177bfd9"
+          },
+          {
+            "crane_type_slug": "baukran-mieten",
+            "crane_type_id": "f1f86ce7-14b8-48ce-9004-5db8dde53949"
           }
         ]
       }

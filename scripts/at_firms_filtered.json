@@ -1,12 +1,34 @@
 {
-  "source_total": 75,
-  "after_dedupe": 74,
-  "after_filter": 48,
+  "source_total": 164,
+  "after_dedupe": 129,
+  "after_filter": 62,
   "drop_reasons": {
-    "not_relevant": 25,
-    "no_contact": 1
+    "not_relevant": 65,
+    "no_contact": 2
   },
   "candidates": [
+    {
+      "place_id": "ChIJ_Zem-EjHc0cRq2IwWvUYv48",
+      "name": "Maderböck Glasakrobat GmbH",
+      "category": "Kranvermietung",
+      "subtypes": "Kranservice, Kranvermietung, In­dus­t­rie­be­ra­ter, Vermietung von Anlagen und Maschinen, Transportunternehmen",
+      "address": "Albrecht-Dürer-Straße 1A, 4493 Wolfern",
+      "street": "Albrecht-Dürer-Straße 1A",
+      "postal_code": "4493",
+      "city": "Wolfern",
+      "country_code": "AT",
+      "latitude": 48.1117576,
+      "longitude": 14.353830199999999,
+      "phone": "+43 7253 20523",
+      "website": "http://www.glasakrobat.at/",
+      "rating": 5.0,
+      "reviews": 74,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Maderb%C3%B6ck+Glasakrobat+GmbH/@48.1117576,14.353830199999999,14z/data=!4m8!1m2!2m1!1sMaderb%C3%B6ck+Glasakrobat+GmbH!3m4!1s0x4773c748f8a697fd:0x8fbf18f55a3062ab!8m2!3d48.1117576!4d14.353830199999999",
+      "seen_in_queries": [
+        "Linz"
+      ]
+    },
     {
       "place_id": "ChIJkwAuiCgHbUcRvRV-5D4PRSc",
       "name": "BMK Baumaschinen Services",
@@ -48,6 +70,7 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Timi+Kran+GmbH/@48.2589057,16.4333726,14z/data=!4m8!1m2!2m1!1sTimi+Kran+GmbH!3m4!1s0x476d069ee0bb4385:0x813844a30d026685!8m2!3d48.2589057!4d16.4333726",
       "seen_in_queries": [
+        "Wien",
         "Wien"
       ]
     },
@@ -114,7 +137,30 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Sonderegger+Kranservice+GmbH/@47.463789999999996,9.72358,14z/data=!4m8!1m2!2m1!1sSonderegger+Kranservice+GmbH!3m4!1s0x479b1319589e4407:0x8a94ea7996a6af5!8m2!3d47.463789999999996!4d9.72358",
       "seen_in_queries": [
+        "Dornbirn",
         "Dornbirn"
+      ]
+    },
+    {
+      "place_id": "ChIJ09ZhIQDlckcRUssBkdwQEUY",
+      "name": "JTK ÖKran GmbH",
+      "category": "Kranvermietung",
+      "subtypes": "Kranvermietung, Bauausrüstungsverleih, Baumaschinenhändler, Baumaschinenvermietung, Kranhändler, Kranservice",
+      "address": "Jahrings 66, 3910 Zwettl",
+      "street": "Jahrings 66",
+      "postal_code": "3910",
+      "city": "Zwettl",
+      "country_code": "AT",
+      "latitude": 48.5861346,
+      "longitude": 15.095278899999999,
+      "phone": "+43 670 1931616",
+      "website": "http://www.oekran.at/",
+      "rating": 5.0,
+      "reviews": 7.0,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/JTK+%C3%96Kran+GmbH/@48.5861346,15.095278899999999,14z/data=!4m8!1m2!2m1!1sJTK+%C3%96Kran+GmbH!3m4!1s0x4772e5002161d6d3:0x461110dc9101cb52!8m2!3d48.5861346!4d15.095278899999999",
+      "seen_in_queries": [
+        "Linz"
       ]
     },
     {
@@ -136,73 +182,52 @@
       "verified": false,
       "google_maps_url": "https://www.google.com/maps/place/SMK+Vermietungs+GmbH/@47.8224932,13.0652596,14z/data=!4m8!1m2!2m1!1sSMK+Vermietungs+GmbH!3m4!1s0x47769a634e595555:0xe4ea7a3dcda81e82!8m2!3d47.8224932!4d13.0652596",
       "seen_in_queries": [
+        "Salzburg",
         "Salzburg"
       ]
     },
     {
-      "place_id": "ChIJZ6pDCs6pbUcRmeb-BH1-eU4",
-      "name": "Heinz Krane Ketten Hebezeuge",
-      "category": "Kranservice",
-      "subtypes": "Kranservice",
-      "address": "Alxingergasse 19, 1100 Wien",
-      "street": "Alxingergasse 19",
-      "postal_code": "1100",
-      "city": "Wien",
+      "place_id": "ChIJH9C75TE9dkcRZMItpni1OzA",
+      "name": "Harlander Kranverleih",
+      "category": "Bauausrüstungsverleih",
+      "subtypes": "Bauausrüstungsverleih",
+      "address": "Mühlgraben 49a, 6343 Erl",
+      "street": "Mühlgraben 49a",
+      "postal_code": "6343",
+      "city": "Erl",
       "country_code": "AT",
-      "latitude": 48.179069999999996,
-      "longitude": 16.36865,
-      "phone": "+43 1 6025723",
-      "website": "http://www.kettenheinz.at/",
+      "latitude": 47.6734533,
+      "longitude": 12.1784457,
+      "phone": "+43 676 7153381",
+      "website": "http://www.harlander-kranverleih.at/",
       "rating": 5.0,
-      "reviews": 3.0,
+      "reviews": 3,
       "verified": true,
-      "google_maps_url": "https://www.google.com/maps/place/Heinz+Krane+Ketten+Hebezeuge/@48.179069999999996,16.36865,14z/data=!4m8!1m2!2m1!1sHeinz+Krane+Ketten+Hebezeuge!3m4!1s0x476da9ce0a43aa67:0x4e797e7d04fee699!8m2!3d48.179069999999996!4d16.36865",
+      "google_maps_url": "https://www.google.com/maps/place/Harlander+Kranverleih/@47.6734533,12.1784457,14z/data=!4m8!1m2!2m1!1sHarlander+Kranverleih!3m4!1s0x47763d31e5bbd01f:0x303bb578a62dc264!8m2!3d47.6734533!4d12.1784457",
       "seen_in_queries": [
-        "Wien"
+        "Innsbruck"
       ]
     },
     {
-      "place_id": "ChIJg8-iAYGrbUcRwvqT8zJXn1w",
-      "name": "WOLFFKRAN Austria",
-      "category": "Kranhändler",
-      "subtypes": "Kranvermietung, Baumaschinenhandel, Kranhändler",
-      "address": "Neubaugasse 5, 2326 Lanzendorf",
-      "street": "Neubaugasse 5",
-      "postal_code": "2326",
-      "city": "Lanzendorf",
-      "country_code": "AT",
-      "latitude": 48.1028356,
-      "longitude": 16.4273193,
-      "phone": "+43 2235 420210",
-      "website": "http://www.wolffkran.at/",
-      "rating": 5.0,
-      "reviews": 3.0,
-      "verified": true,
-      "google_maps_url": "https://www.google.com/maps/place/WOLFFKRAN+Austria/@48.1028356,16.4273193,14z/data=!4m8!1m2!2m1!1sWOLFFKRAN+Austria!3m4!1s0x476dab8101a2cf83:0x5c9f5732f393fac2!8m2!3d48.1028356!4d16.4273193",
-      "seen_in_queries": [
-        "Wien"
-      ]
-    },
-    {
-      "place_id": "ChIJEeYfagCxbUcR-05LkXwck7A",
-      "name": "Hiab Austria GmbH",
+      "place_id": "ChIJ96q4VaRPcEcRKuzMHO9RF4A",
+      "name": "Wallner Cranetec GmbH",
       "category": "Kranservice",
       "subtypes": "Kranservice",
-      "address": "Handelsstraße 17, 2512 Traiskirchen",
-      "street": "Handelsstraße 17",
-      "postal_code": "2512",
-      "city": "Traiskirchen",
+      "address": "Klatteweg 5, 9020 Klagenfurt am Wörthersee",
+      "street": "Klatteweg 5",
+      "postal_code": "9020",
+      "city": "Klagenfurt am Wörthersee",
       "country_code": "AT",
-      "latitude": 47.9814499,
-      "longitude": 16.2819576,
-      "phone": "+43 800 223224",
-      "website": null,
+      "latitude": 46.665528599999995,
+      "longitude": 14.3144052,
+      "phone": "+43 664 5662602",
+      "website": "https://www.cranetec.at/",
       "rating": 5.0,
       "reviews": 3.0,
       "verified": true,
-      "google_maps_url": "https://www.google.com/maps/place/Hiab+Austria+GmbH/@47.9814499,16.2819576,14z/data=!4m8!1m2!2m1!1sHiab+Austria+GmbH!3m4!1s0x476db1006a1fe611:0xb0931c7c914b4efb!8m2!3d47.9814499!4d16.2819576",
+      "google_maps_url": "https://www.google.com/maps/place/Wallner+Cranetec+GmbH/@46.665528599999995,14.3144052,14z/data=!4m8!1m2!2m1!1sWallner+Cranetec+GmbH!3m4!1s0x47704fa455b8aaf7:0x801751ef1cccec2a!8m2!3d46.665528599999995!4d14.3144052",
       "seen_in_queries": [
-        "Wien"
+        "Klagenfurt"
       ]
     },
     {
@@ -272,6 +297,28 @@
       ]
     },
     {
+      "place_id": "ChIJMa8ZPzQVnUcR9X0JnTpkXig",
+      "name": "Baukranverleih Tirol - Martin Gstader",
+      "category": "Bauunternehmen",
+      "subtypes": "Bauunternehmen, Werkzeugverleih, Transportdienst",
+      "address": "Gewerbepark 14, 6094 Axams",
+      "street": "Gewerbepark 14",
+      "postal_code": "6094",
+      "city": "Axams",
+      "country_code": "AT",
+      "latitude": 47.237412899999995,
+      "longitude": 11.2748711,
+      "phone": "+43 664 4048725",
+      "website": "http://www.baukranverleih.net/",
+      "rating": 5.0,
+      "reviews": 2,
+      "verified": false,
+      "google_maps_url": "https://www.google.com/maps/place/Baukranverleih+Tirol+-+Martin+Gstader/@47.237412899999995,11.2748711,14z/data=!4m8!1m2!2m1!1sBaukranverleih+Tirol+-+Martin+Gstader!3m4!1s0x479d15343f19af31:0x285e643a9d097df5!8m2!3d47.237412899999995!4d11.2748711",
+      "seen_in_queries": [
+        "Innsbruck"
+      ]
+    },
+    {
       "place_id": "ChIJAQBQwPOnbUcR31yHvW8pud0",
       "name": "FILMKRAN",
       "category": "Crane rental agency",
@@ -312,6 +359,7 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Stach+Baukran+Gmbh/@46.606726699999996,14.330370499999999,14z/data=!4m8!1m2!2m1!1sStach+Baukran+Gmbh!3m4!1s0x477074b5b5c9e1bf:0xab2b672bb8e6d31c!8m2!3d46.606726699999996!4d14.330370499999999",
       "seen_in_queries": [
+        "Klagenfurt",
         "Klagenfurt"
       ]
     },
@@ -356,7 +404,8 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Kran+Riegler/@48.2677153,13.751041899999999,14z/data=!4m8!1m2!2m1!1sKran+Riegler!3m4!1s0x8076f6597250a733:0xc21ec673e7a09d91!8m2!3d48.2677153!4d13.751041899999999",
       "seen_in_queries": [
-        "Wels"
+        "Wels",
+        "Linz"
       ]
     },
     {
@@ -378,6 +427,8 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Scheffknecht+Autokran+GmbH/@47.44862,9.6642499,14z/data=!4m8!1m2!2m1!1sScheffknecht+Autokran+GmbH!3m4!1s0x479b13ef1590ff55:0xe84b482033f3e917!8m2!3d47.44862!4d9.6642499",
       "seen_in_queries": [
+        "Dornbirn",
+        "Dornbirn",
         "Dornbirn"
       ]
     },
@@ -404,25 +455,48 @@
       ]
     },
     {
-      "place_id": "ChIJ17G6aXeEbUcRYr9afhKFDRc",
-      "name": "W.K.S Handels GmbH",
+      "place_id": "ChIJL_6FxqFzcEcRguoWf8a0Qs8",
+      "name": "Kogler Krantechnik GmbH",
       "category": "Kranservice",
-      "subtypes": "Kranvermietung, Kranhändler, Kranservice",
-      "address": "Betrg. S Betriebsstr 25, 3071 Böheimkirchen",
-      "street": "Betrg. S Betriebsstr 25",
-      "postal_code": "3071",
-      "city": "Böheimkirchen",
+      "subtypes": "Kranservice",
+      "address": "Kranstraße 1, 9063 Maria Saal",
+      "street": "Kranstraße 1",
+      "postal_code": "9063",
+      "city": "Maria Saal",
       "country_code": "AT",
-      "latitude": 48.189472099999996,
-      "longitude": 15.778804,
-      "phone": "+43 2743 20254",
-      "website": "http://www.wkskrane.at/",
-      "rating": 4.9,
-      "reviews": 7.0,
+      "latitude": 46.6813705,
+      "longitude": 14.335908799999999,
+      "phone": "+43 4223 304300",
+      "website": "https://kogler-krantechnik.at/",
+      "rating": 4.8,
+      "reviews": 35.0,
       "verified": true,
-      "google_maps_url": "https://www.google.com/maps/place/W.K.S+Handels+GmbH/@48.189472099999996,15.778804,14z/data=!4m8!1m2!2m1!1sW.K.S+Handels+GmbH!3m4!1s0x476d847769bab1d7:0x170d85127e5abf62!8m2!3d48.189472099999996!4d15.778804",
+      "google_maps_url": "https://www.google.com/maps/place/Kogler+Krantechnik+GmbH/@46.6813705,14.335908799999999,14z/data=!4m8!1m2!2m1!1sKogler+Krantechnik+GmbH!3m4!1s0x477073a1c685fe2f:0xcf42b4c67f16ea82!8m2!3d46.6813705!4d14.335908799999999",
       "seen_in_queries": [
-        "Wien"
+        "Klagenfurt"
+      ]
+    },
+    {
+      "place_id": "ChIJWZZtVMQWnUcR7bB-dGLpIeQ",
+      "name": "Spiegl Transport GmbH & Co KG",
+      "category": "Transportunternehmen",
+      "subtypes": "Kranvermietung, Transportunternehmen, Transportdienst",
+      "address": "Doktor-Otto-Keimel-Weg 1, 6408 Pettnau",
+      "street": "Doktor-Otto-Keimel-Weg 1",
+      "postal_code": "6408",
+      "city": "Pettnau",
+      "country_code": "AT",
+      "latitude": 47.28443,
+      "longitude": 11.168569999999999,
+      "phone": "+43 5238 86180",
+      "website": "https://www.spiegl-transporte.at/",
+      "rating": 4.8,
+      "reviews": 32,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Spiegl+Transport+GmbH+%26+Co+KG/@47.28443,11.168569999999999,14z/data=!4m8!1m2!2m1!1sSpiegl+Transport+GmbH+%26+Co+KG!3m4!1s0x479d16c4546d9659:0xe421e962747eb0ed!8m2!3d47.28443!4d11.168569999999999",
+      "seen_in_queries": [
+        "Innsbruck",
+        "Innsbruck"
       ]
     },
     {
@@ -448,6 +522,28 @@
       ]
     },
     {
+      "place_id": "ChIJNR9f-856ckcR_jm2AWPoNbA",
+      "name": "W. Reitinger GmbH",
+      "category": "Baumaschinenvermietung",
+      "subtypes": "Kranvermietung, Baumaschinenhandel, Baumaschinenvermietung, Gabelstaplervermietung, Transportunternehmen",
+      "address": "Hürmer Str. 21, 3382 Loosdorf",
+      "street": "Hürmer Str. 21",
+      "postal_code": "3382",
+      "city": "Loosdorf",
+      "country_code": "AT",
+      "latitude": 48.1906004,
+      "longitude": 15.4072091,
+      "phone": "+43 2754 56789",
+      "website": "https://www.w-reitinger.com/",
+      "rating": 4.8,
+      "reviews": 26.0,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/W.+Reitinger+GmbH/@48.1906004,15.4072091,14z/data=!4m8!1m2!2m1!1sW.+Reitinger+GmbH!3m4!1s0x47727acefb5f1f35:0xb035e86301b639fe!8m2!3d48.1906004!4d15.4072091",
+      "seen_in_queries": [
+        "St. Pölten"
+      ]
+    },
+    {
       "place_id": "ChIJOUCdmvOadkcRb0UNoqnkrN0",
       "name": "Schweighofer Kran & Transport Bergheim bei Salzburg",
       "category": "Kranservice",
@@ -466,6 +562,8 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Schweighofer+Kran+%26+Transport+Bergheim+bei+Salzburg/@47.8360432,13.0581772,14z/data=!4m8!1m2!2m1!1sSchweighofer+Kran+%26+Transport+Bergheim+bei+Salzburg!3m4!1s0x47769af39a9d4039:0xddace4a9a20d456f!8m2!3d47.8360432!4d13.0581772",
       "seen_in_queries": [
+        "Salzburg",
+        "Salzburg",
         "Salzburg"
       ]
     },
@@ -488,29 +586,53 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Kran+%2B+Trans+-+Dienstleistungs+GmbH/@47.2992694,9.6234441,14z/data=!4m8!1m2!2m1!1sKran+%2B+Trans+-+Dienstleistungs+GmbH!3m4!1s0x479b3ebff170edaf:0x62076bae9bf67cf0!8m2!3d47.2992694!4d9.6234441",
       "seen_in_queries": [
+        "Dornbirn",
         "Dornbirn"
       ]
     },
     {
-      "place_id": "ChIJLeeiFwYEbUcREt3MoqVrDkY",
-      "name": "Schwerlast Spedition GesmbH Nfg KG",
-      "category": "Shipping company",
-      "subtypes": "Kranvermietung, Lageranbieter, Transportunternehmen, Gabelstaplervermietung, Frachtspeditionsdienst, Transportdienst, Lkw-Spedition",
-      "address": "Lichtblaustraße 16, 1220 Wien",
-      "street": "Lichtblaustraße 16",
-      "postal_code": "1220",
-      "city": "Wien",
+      "place_id": "ChIJ-ZJNQd6ZcEcRlNaEQwmwgWY",
+      "name": "HFT - Kran, Bagger, Transporte und LKW- und Fahrzeugbergungen in Kärnten",
+      "category": "Kranservice",
+      "subtypes": "Kranvermietung, Kranservice, Baggerunternehmen, Transportunternehmen",
+      "address": "Bergackerweg 24, 9873 Döbriach",
+      "street": "Bergackerweg 24",
+      "postal_code": "9873",
+      "city": "Döbriach",
       "country_code": "AT",
-      "latitude": 48.2673835,
-      "longitude": 16.4657276,
-      "phone": "+43 1 25667670",
-      "website": "http://www.schwerlast.at/",
+      "latitude": 46.7823095,
+      "longitude": 13.6485852,
+      "phone": "+43 699 18818888",
+      "website": "http://www.cranetrans.at/",
       "rating": 4.8,
-      "reviews": 13.0,
+      "reviews": 12,
       "verified": true,
-      "google_maps_url": "https://www.google.com/maps/place/Schwerlast+Spedition+GesmbH+Nfg+KG/@48.2673835,16.4657276,14z/data=!4m8!1m2!2m1!1sSchwerlast+Spedition+GesmbH+Nfg+KG!3m4!1s0x476d040617a2e72d:0x460e6ba5a2ccdd12!8m2!3d48.2673835!4d16.4657276",
+      "google_maps_url": "https://www.google.com/maps/place/HFT+-+Kran%2C+Bagger%2C+Transporte+und+LKW-+und+Fahrzeugbergungen+in+K%C3%A4rnten/@46.7823095,13.6485852,14z/data=!4m8!1m2!2m1!1sHFT+-+Kran%2C+Bagger%2C+Transporte+und+LKW-+und+Fahrzeugbergungen+in+K%C3%A4rnten!3m4!1s0x477099de414d92f9:0x6681b0094384d694!8m2!3d46.7823095!4d13.6485852",
       "seen_in_queries": [
-        "Wien"
+        "Villach",
+        "Villach"
+      ]
+    },
+    {
+      "place_id": "ChIJC30Qo0sLcEcRz0Ofs5swmPA",
+      "name": "Riegler Transporte",
+      "category": "Transportunternehmen",
+      "subtypes": "Kranservice, Lageranbieter, Transportunternehmen, Gabelstaplervermietung, Umzugs- und Lagerservice, Umzugsservice, Klavierumzugsdienst, Lager, Transportdienst, Lkw-Spedition",
+      "address": "Fallegasse 11, 9020 Klagenfurt am Wörthersee",
+      "street": "Fallegasse 11",
+      "postal_code": "9020",
+      "city": "Klagenfurt am Wörthersee",
+      "country_code": "AT",
+      "latitude": 46.6071312,
+      "longitude": 14.3386164,
+      "phone": "+43 463 32575",
+      "website": "https://www.rieglertrans.at/",
+      "rating": 4.7,
+      "reviews": 53.0,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Riegler+Transporte/@46.6071312,14.3386164,14z/data=!4m8!1m2!2m1!1sRiegler+Transporte!3m4!1s0x47700b4ba3107d0b:0xf098309bb39f43cf!8m2!3d46.6071312!4d14.3386164",
+      "seen_in_queries": [
+        "Klagenfurt"
       ]
     },
     {
@@ -532,6 +654,7 @@
       "verified": false,
       "google_maps_url": "https://www.google.com/maps/place/Prangl+Niederlassung+St.+Florian/@48.227047999999996,14.3924182,14z/data=!4m8!1m2!2m1!1sPrangl+Niederlassung+St.+Florian!3m4!1s0x4773bc1007143c2b:0x9dfaed95234e186a!8m2!3d48.227047999999996!4d14.3924182",
       "seen_in_queries": [
+        "Linz",
         "Linz"
       ]
     },
@@ -554,6 +677,8 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnenvermietung+%7C+Staplervermietung+%7C+Einbringung/@47.2756626,11.4720289,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnenvermietung+%7C+Staplervermietung+%7C+Einbringung!3m4!1s0x479d6f31b9870a37:0x2a38fe6e92398d21!8m2!3d47.2756626!4d11.4720289",
       "seen_in_queries": [
+        "Innsbruck",
+        "Innsbruck",
         "Innsbruck"
       ]
     },
@@ -580,6 +705,28 @@
       ]
     },
     {
+      "place_id": "ChIJxc95ri4McEcRQnNi4mXC3QI",
+      "name": "Prangl GmbH",
+      "category": "Kranservice",
+      "subtypes": "Kranservice",
+      "address": "Landesstraße 12, 9130 Poggersdorf",
+      "street": "Landesstraße 12",
+      "postal_code": "9130",
+      "city": "Poggersdorf",
+      "country_code": "AT",
+      "latitude": 46.6428174,
+      "longitude": 14.4520705,
+      "phone": "+43 50 9951 5000",
+      "website": "http://www.prangl.at/",
+      "rating": 4.7,
+      "reviews": 19.0,
+      "verified": false,
+      "google_maps_url": "https://www.google.com/maps/place/Prangl+GmbH/@46.6428174,14.4520705,14z/data=!4m8!1m2!2m1!1sPrangl+GmbH!3m4!1s0x47700c2eae79cfc5:0x2ddc265e2627342!8m2!3d46.6428174!4d14.4520705",
+      "seen_in_queries": [
+        "Klagenfurt"
+      ]
+    },
+    {
       "place_id": "ChIJNWlMxrrKb0cR_DnTQyWHXXU",
       "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Transport | Kran | Arbeitsbühnen und Stapler | Einbringung | Lagerei",
       "category": "Transportunternehmen",
@@ -599,6 +746,8 @@
       "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei/@47.0241822,15.4058456,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei!3m4!1s0x476fcabac64c6935:0x755d872543d339fc!8m2!3d47.0241822!4d15.4058456",
       "seen_in_queries": [
         "Wien",
+        "Graz",
+        "Graz",
         "Graz"
       ]
     },
@@ -621,7 +770,9 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei/@48.1023955,16.4259979,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei!3m4!1s0x476dab8101a2cf83:0x287749e69f4083dd!8m2!3d48.1023955!4d16.4259979",
       "seen_in_queries": [
-        "Wien"
+        "Wien",
+        "Wien",
+        "St. Pölten"
       ]
     },
     {
@@ -643,7 +794,31 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Transport+%7C+Hafenbetrieb+%7C+Lagerei/@48.2695259,14.347743999999999,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Transport+%7C+Hafenbetrieb+%7C+Lagerei!3m4!1s0x4773bd0ce3bdcd0b:0x10a5c16dc14b26a3!8m2!3d48.2695259!4d14.347743999999999",
       "seen_in_queries": [
+        "Linz",
+        "Linz",
         "Linz"
+      ]
+    },
+    {
+      "place_id": "ChIJ0eS109qLbUcRn6Iff6EAumc",
+      "name": "Trost GmbH",
+      "category": "Transportunternehmen",
+      "subtypes": "Kranvermietung, Transportunternehmen, Erdbauunternehmen, Lkw-Spedition",
+      "address": "Hainfelder Str. 28, 3160 Traisen",
+      "street": "Hainfelder Str. 28",
+      "postal_code": "3160",
+      "city": "Traisen",
+      "country_code": "AT",
+      "latitude": 48.0453537,
+      "longitude": 15.6144483,
+      "phone": "+43 2762 5140",
+      "website": "https://www.trost.co.at/",
+      "rating": 4.6,
+      "reviews": 54.0,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Trost+GmbH/@48.0453537,15.6144483,14z/data=!4m8!1m2!2m1!1sTrost+GmbH!3m4!1s0x476d8bdad3b5e4d1:0x67ba00a17f1fa29f!8m2!3d48.0453537!4d15.6144483",
+      "seen_in_queries": [
+        "St. Pölten"
       ]
     },
     {
@@ -665,7 +840,54 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kranvermietung+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung/@46.629981,14.3708549,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kranvermietung+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung!3m4!1s0x47700cbd39b0fad7:0x7e2e1ce18efc8858!8m2!3d46.629981!4d14.3708549",
       "seen_in_queries": [
+        "Klagenfurt",
+        "Klagenfurt",
         "Klagenfurt"
+      ]
+    },
+    {
+      "place_id": "ChIJpeAzT-cGdEcRX2tgLnkUnYs",
+      "name": "Kuhn Ladetechnik",
+      "category": "Kranhändler",
+      "subtypes": "Kranhändler",
+      "address": "Peter Anich-Straße 1, 4840 Vöcklabruck",
+      "street": "Peter Anich-Straße 1",
+      "postal_code": "4840",
+      "city": "Vöcklabruck",
+      "country_code": "AT",
+      "latitude": 48.0018974,
+      "longitude": 13.6791555,
+      "phone": "+43 7672 725320",
+      "website": "https://www.kuhn.at/de/ladetechnik",
+      "rating": 4.6,
+      "reviews": 28.0,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Kuhn+Ladetechnik/@48.0018974,13.6791555,14z/data=!4m8!1m2!2m1!1sKuhn+Ladetechnik!3m4!1s0x477406e74f33e0a5:0x8b9d14792e606b5f!8m2!3d48.0018974!4d13.6791555",
+      "seen_in_queries": [
+        "Linz"
+      ]
+    },
+    {
+      "place_id": "ChIJj5H3PKRrnUcRSVOm4S9ORxU",
+      "name": "Transporte Schneider GmbH",
+      "category": "Transportunternehmen",
+      "subtypes": "Kranvermietung, Lageranbieter, Transportunternehmen, Kranservice, Lager, Warenlager",
+      "address": "Josef-Franz-Huter-Straße 49a, 6020 Innsbruck",
+      "street": "Josef-Franz-Huter-Straße 49a",
+      "postal_code": "6020",
+      "city": "Innsbruck",
+      "country_code": "AT",
+      "latitude": 47.2528751,
+      "longitude": 11.3520243,
+      "phone": "+43 664 5027957",
+      "website": "http://www.transporte-schneider.at/",
+      "rating": 4.6,
+      "reviews": 25,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Transporte+Schneider+GmbH/@47.2528751,11.3520243,14z/data=!4m8!1m2!2m1!1sTransporte+Schneider+GmbH!3m4!1s0x479d6ba43cf7918f:0x15474e2fe1a65349!8m2!3d47.2528751!4d11.3520243",
+      "seen_in_queries": [
+        "Innsbruck",
+        "Innsbruck"
       ]
     },
     {
@@ -687,7 +909,30 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Markowitsch+Franz+GmbH/@48.1144791,16.287982,14z/data=!4m8!1m2!2m1!1sMarkowitsch+Franz+GmbH!3m4!1s0x476daf49460fb6c1:0xc89e582a2c714c40!8m2!3d48.1144791!4d16.287982",
       "seen_in_queries": [
+        "Wien",
         "Wien"
+      ]
+    },
+    {
+      "place_id": "ChIJyRDtPwe8c0cRr0ZfRSRTcgQ",
+      "name": "W. Reitinger GmbH",
+      "category": "Baumaschinenvermietung",
+      "subtypes": "Kranvermietung, Baumaschinenhandel, Baumaschinenvermietung, Gabelstaplervermietung, Transportunternehmen",
+      "address": "Westbahnstraße 4, 4490 St. Florian",
+      "street": "Westbahnstraße 4",
+      "postal_code": "4490",
+      "city": "St. Florian",
+      "country_code": "AT",
+      "latitude": 48.221318,
+      "longitude": 14.4014648,
+      "phone": "+43 7224 67196",
+      "website": "https://www.w-reitinger.com/",
+      "rating": 4.5,
+      "reviews": 85,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/W.+Reitinger+GmbH/@48.221318,14.4014648,14z/data=!4m8!1m2!2m1!1sW.+Reitinger+GmbH!3m4!1s0x4773bc073fed10c9:0x4725324455f46af!8m2!3d48.221318!4d14.4014648",
+      "seen_in_queries": [
+        "Linz"
       ]
     },
     {
@@ -713,6 +958,28 @@
       ]
     },
     {
+      "place_id": "ChIJEwxntj29c0cReQnISbOl_Ck",
+      "name": "Wieshofer Transporte",
+      "category": "Transportunternehmen",
+      "subtypes": "Kranservice, Transportunternehmen",
+      "address": "Linzer Str. 43, 4221 Steyregg",
+      "street": "Linzer Str. 43",
+      "postal_code": "4221",
+      "city": "Steyregg",
+      "country_code": "AT",
+      "latitude": 48.2833207,
+      "longitude": 14.361063,
+      "phone": "+43 732 641200",
+      "website": "http://www.wieshofer.com/",
+      "rating": 4.5,
+      "reviews": 25,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Wieshofer+Transporte/@48.2833207,14.361063,14z/data=!4m8!1m2!2m1!1sWieshofer+Transporte!3m4!1s0x4773bd3db6670c13:0x29fca5b349c80979!8m2!3d48.2833207!4d14.361063",
+      "seen_in_queries": [
+        "Linz"
+      ]
+    },
+    {
       "place_id": "ChIJc4pMStqEdkcRxCIFIOP9zDs",
       "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Einbringung | Kran | Arbeitsbühnenvermietung | Staplervermietung",
       "category": "Transportunternehmen",
@@ -735,28 +1002,6 @@
       ]
     },
     {
-      "place_id": "ChIJEQ0iViWvbUcRSEtQSNPPiQQ",
-      "name": "Konecranes and Demag GesmbH",
-      "category": "Kranservice",
-      "subtypes": "Kranservice",
-      "address": "Rennweg 87, 2345 Brunn am Gebirge",
-      "street": "Rennweg 87",
-      "postal_code": "2345",
-      "city": "Brunn am Gebirge",
-      "country_code": "AT",
-      "latitude": 48.10817,
-      "longitude": 16.30527,
-      "phone": "+43 59 302",
-      "website": "https://www.konecranes.com/de-at",
-      "rating": 4.5,
-      "reviews": 12.0,
-      "verified": true,
-      "google_maps_url": "https://www.google.com/maps/place/Konecranes+and+Demag+GesmbH/@48.10817,16.30527,14z/data=!4m8!1m2!2m1!1sKonecranes+and+Demag+GesmbH!3m4!1s0x476daf2556220d11:0x489cfd348504b48!8m2!3d48.10817!4d16.30527",
-      "seen_in_queries": [
-        "Wien"
-      ]
-    },
-    {
       "place_id": "ChIJRx-Gm6zzc0cR-Y9C5zAUNxQ",
       "name": "Felbermayr Transport- und Hebetechnik Kranvermietung | Arbeitsbühnen- und Staplervermietung | Sondertransport",
       "category": "Kranvermietung",
@@ -775,6 +1020,8 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+Kranvermietung+%7C+Arbeitsb%C3%BChnen-+und+Staplervermietung+%7C+Sondertransport/@48.1714601,13.986640399999999,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+Kranvermietung+%7C+Arbeitsb%C3%BChnen-+und+Staplervermietung+%7C+Sondertransport!3m4!1s0x4773f3ac9b861f47:0x14371430e7428ff9!8m2!3d48.1714601!4d13.986640399999999",
       "seen_in_queries": [
+        "Wels",
+        "Wels",
         "Wels"
       ]
     },
@@ -797,6 +1044,8 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Rachbauer-Kran+Ges.m.b.H./@47.820290299999996,13.013084399999999,14z/data=!4m8!1m2!2m1!1sRachbauer-Kran+Ges.m.b.H.!3m4!1s0x47769aa99fdad0bb:0x8835f8b1c0b050c!8m2!3d47.820290299999996!4d13.013084399999999",
       "seen_in_queries": [
+        "Salzburg",
+        "Salzburg",
         "Salzburg"
       ]
     },
@@ -819,7 +1068,30 @@
       "verified": false,
       "google_maps_url": "https://www.google.com/maps/place/Prangl+GmbH+Zentrale/@48.133060099999994,16.3599156,14z/data=!4m8!1m2!2m1!1sPrangl+GmbH+Zentrale!3m4!1s0x476daf30421414b5:0x5884e347e9515f4!8m2!3d48.133060099999994!4d16.3599156",
       "seen_in_queries": [
+        "Wien",
         "Wien"
+      ]
+    },
+    {
+      "place_id": "ChIJs4W0XhgTm0cRoBrFt9qeAT8",
+      "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Transport | Kranvermietung | Arbeitsbühnen und Stapler | Montagelogistik",
+      "category": "Transportunternehmen",
+      "subtypes": "Kranvermietung, Transportunternehmen, Kranservice, Bühne",
+      "address": "Bundesstraße 130, 6923 Lauterach",
+      "street": "Bundesstraße 130",
+      "postal_code": "6923",
+      "city": "Lauterach",
+      "country_code": "AT",
+      "latitude": 47.4615813,
+      "longitude": 9.7275028,
+      "phone": "+43 5574 67730",
+      "website": "https://www.felbermayr.cc/",
+      "rating": 4.4,
+      "reviews": 78.0,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kranvermietung+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Montagelogistik/@47.4615813,9.7275028,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kranvermietung+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Montagelogistik!3m4!1s0x479b13185eb485b3:0x3f019edab7c51aa0!8m2!3d47.4615813!4d9.7275028",
+      "seen_in_queries": [
+        "Linz"
       ]
     },
     {
@@ -885,7 +1157,32 @@
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/KranWien+GmbH/@48.2166941,16.3194289,14z/data=!4m8!1m2!2m1!1sKranWien+GmbH!3m4!1s0x476d0924dc755a1d:0x3a98ebecbe927bdf!8m2!3d48.2166941!4d16.3194289",
       "seen_in_queries": [
+        "Wien",
+        "Wien",
+        "Linz",
         "Wien"
+      ]
+    },
+    {
+      "place_id": "ChIJma1RKFEVm0cRwzE7s-aL0PU",
+      "name": "Rüf Josef - Kran & Greifarbeiten",
+      "category": "Baggerunternehmen",
+      "subtypes": "Baggerunternehmen",
+      "address": "Furchgasse 31, 6845 Hohenems",
+      "street": "Furchgasse 31",
+      "postal_code": "6845",
+      "city": "Hohenems",
+      "country_code": "AT",
+      "latitude": 47.3786919,
+      "longitude": 9.7104102,
+      "phone": "+43 664 3073488",
+      "website": "http://www.rueferdbewegung.at/",
+      "rating": 4.4,
+      "reviews": 7,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/R%C3%BCf+Josef+-+Kran+%26+Greifarbeiten/@47.3786919,9.7104102,14z/data=!4m8!1m2!2m1!1sR%C3%BCf+Josef+-+Kran+%26+Greifarbeiten!3m4!1s0x479b15512851ad99:0xf5d08be6b33b31c3!8m2!3d47.3786919!4d9.7104102",
+      "seen_in_queries": [
+        "Dornbirn"
       ]
     },
     {
@@ -907,6 +1204,7 @@
       "verified": false,
       "google_maps_url": "https://www.google.com/maps/place/Prangl/@48.230027,15.676617799999999,14z/data=!4m8!1m2!2m1!1sPrangl!3m4!1s0x476d80eada93ff21:0x4992ab960c930cab!8m2!3d48.230027!4d15.676617799999999",
       "seen_in_queries": [
+        "St. Pölten",
         "St. Pölten"
       ]
     },
@@ -928,28 +1226,6 @@
       "reviews": 48.0,
       "verified": true,
       "google_maps_url": "https://www.google.com/maps/place/Boels+Maschinenverleih+%C3%96sterreich+GmbH/@48.0791762,16.3300543,14z/data=!4m8!1m2!2m1!1sBoels+Maschinenverleih+%C3%96sterreich+GmbH!3m4!1s0x476daef35a518db9:0xdc367db5b5e48bb4!8m2!3d48.0791762!4d16.3300543",
-      "seen_in_queries": [
-        "Wien"
-      ]
-    },
-    {
-      "place_id": "ChIJRRJjVqCobUcRuH_eB7No4as",
-      "name": "ABUS Kransysteme - Ing Klaus Schneider GesmbH",
-      "category": "Kranservice",
-      "subtypes": "Kranservice, Baumaschinenhandel",
-      "address": "Lehnergasse 6, 1230 Wien",
-      "street": "Lehnergasse 6",
-      "postal_code": "1230",
-      "city": "Wien",
-      "country_code": "AT",
-      "latitude": 48.13908,
-      "longitude": 16.28343,
-      "phone": "+43 1 88856390",
-      "website": "https://www.schneiderkrane.at/",
-      "rating": 4.2,
-      "reviews": 5.0,
-      "verified": true,
-      "google_maps_url": "https://www.google.com/maps/place/ABUS+Kransysteme+-+Ing+Klaus+Schneider+GesmbH/@48.13908,16.28343,14z/data=!4m8!1m2!2m1!1sABUS+Kransysteme+-+Ing+Klaus+Schneider+GesmbH!3m4!1s0x476da8a056631245:0xabe168b307de7fb8!8m2!3d48.13908!4d16.28343",
       "seen_in_queries": [
         "Wien"
       ]
@@ -1062,6 +1338,72 @@
       "google_maps_url": "https://www.google.com/maps/place/ABUS+Kran/@48.1390859,16.2845799,14z/data=!4m8!1m2!2m1!1sABUS+Kran!3m4!1s0x476da8a1a8b8d34f:0xa3af3446b049dc60!8m2!3d48.1390859!4d16.2845799",
       "seen_in_queries": [
         "Wien"
+      ]
+    },
+    {
+      "place_id": "ChIJ_fHrhIlhdEcRtkiJtEtOVdU",
+      "name": "Baumgartner Kran GmbH",
+      "category": "Kranservice",
+      "subtypes": "Kranservice",
+      "address": "Achleiten 3, 4092 Esternberg",
+      "street": "Achleiten 3",
+      "postal_code": "4092",
+      "city": "Esternberg",
+      "country_code": "AT",
+      "latitude": 48.536925,
+      "longitude": 13.6297848,
+      "phone": "+43 7714 20015",
+      "website": "https://www.baukranverleih.at/",
+      "rating": null,
+      "reviews": null,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Baumgartner+Kran+GmbH/@48.536925,13.6297848,14z/data=!4m8!1m2!2m1!1sBaumgartner+Kran+GmbH!3m4!1s0x4774618984ebf1fd:0xd5554e4bb48948b6!8m2!3d48.536925!4d13.6297848",
+      "seen_in_queries": [
+        "Linz"
+      ]
+    },
+    {
+      "place_id": "ChIJz42SxySHbUcRfkqlRPSiZfw",
+      "name": "maltech Arbeitsbühnen GmbH",
+      "category": "Baumaschinenvermietung",
+      "subtypes": "Baumaschinenvermietung",
+      "address": "Ernst Maerker-Straße 20, 3100 St. Pölten",
+      "street": "Ernst Maerker-Straße 20",
+      "postal_code": "3100",
+      "city": "St. Pölten",
+      "country_code": "AT",
+      "latitude": 48.1586177,
+      "longitude": 15.6133204,
+      "phone": "+43 2742 22206",
+      "website": "https://www.maltech.com/",
+      "rating": null,
+      "reviews": null,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/maltech+Arbeitsb%C3%BChnen+GmbH/@48.1586177,15.6133204,14z/data=!4m8!1m2!2m1!1smaltech+Arbeitsb%C3%BChnen+GmbH!3m4!1s0x476d8724c7928dcf:0xfc65a2f444a54a7e!8m2!3d48.1586177!4d15.6133204",
+      "seen_in_queries": [
+        "St. Pölten"
+      ]
+    },
+    {
+      "place_id": "ChIJD2GEwbzVBkMRpf-YLlEWOdE",
+      "name": "Lama Kran Transport",
+      "category": "Transportation service",
+      "subtypes": "Transportdienst",
+      "address": "Feldhofgasse 20, 9020 Klagenfurt am Wörthersee",
+      "street": "Feldhofgasse 20",
+      "postal_code": "9020",
+      "city": "Klagenfurt am Wörthersee",
+      "country_code": "AT",
+      "latitude": 46.6134814,
+      "longitude": 14.303788899999999,
+      "phone": "+43 676 7717570",
+      "website": "https://lama-kran.at/",
+      "rating": null,
+      "reviews": null,
+      "verified": true,
+      "google_maps_url": "https://www.google.com/maps/place/Lama+Kran+Transport/@46.6134814,14.303788899999999,14z/data=!4m8!1m2!2m1!1sLama+Kran+Transport!3m4!1s0x4306d5bcc184610f:0xd13916512e98ffa5!8m2!3d46.6134814!4d14.303788899999999",
+      "seen_in_queries": [
+        "Klagenfurt"
       ]
     }
   ]

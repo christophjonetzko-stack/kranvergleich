@@ -54,7 +54,7 @@ CITIES = [
     "St. Pölten",
     "Dornbirn",
 ]
-QUERY_TEMPLATE = "Kranverleih {city}"
+DEFAULT_TEMPLATES = ["Kranverleih {city}"]
 OUTPUT_FILE = Path(__file__).parent / "at_firms_outscraper_raw.json"
 SLEEP_BETWEEN_QUERIES_SEC = 1.0  # be polite to the API
 
@@ -63,18 +63,43 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, default=50, help="results per city query")
     parser.add_argument("--dry-run", action="store_true", help="print queries, no API calls")
+    parser.add_argument(
+        "--templates",
+        default=",".join(DEFAULT_TEMPLATES),
+        help='comma-separated query templates with {city}; e.g. "Kranverleih {city},Autokran {city}"',
+    )
     args = parser.parse_args()
 
-    queries = [QUERY_TEMPLATE.format(city=city) for city in CITIES]
+    templates = [t.strip() for t in args.templates.split(",") if t.strip()]
+    pairs = [(t, city) for t in templates for city in CITIES]
+
+    # Load existing results — append mode: skip queries already present so
+    # re-runs with extra templates only pay for the new query strings.
+    existing_queries: list[dict] = []
+    if OUTPUT_FILE.exists():
+        try:
+            existing_queries = json.loads(OUTPUT_FILE.read_text(encoding="utf-8")).get("queries", [])
+        except Exception:
+            existing_queries = []
+    existing_query_strs = {q.get("query") for q in existing_queries}
+
+    pairs_to_fetch = [(t, city) for t, city in pairs if t.format(city=city) not in existing_query_strs]
+    queries = [t.format(city=city) for t, city in pairs_to_fetch]
 
     print("=" * 60)
     print("AT firm sourcing — Outscraper Google Maps search")
+    print(f"  templates: {templates}")
     print(f"  cities: {len(CITIES)}, limit per query: {args.limit}")
+    print(f"  total query slots: {len(pairs)}; already fetched: {len(pairs) - len(pairs_to_fetch)}; new: {len(pairs_to_fetch)}")
     print("=" * 60)
 
+    if not pairs_to_fetch:
+        print("Nothing new to fetch — all (template × city) pairs already present in raw JSON.")
+        return 0
+
     if args.dry_run:
-        for city, query in zip(CITIES, queries):
-            print(f"  {city:<14} → '{query}' (limit {args.limit})")
+        for (t, city), query in zip(pairs_to_fetch, queries):
+            print(f"  [{t}] {city:<14} → '{query}' (limit {args.limit})")
         print()
         print("Dry run — no API calls made. Re-run without --dry-run to fetch.")
         return 0
@@ -93,12 +118,12 @@ def main() -> int:
 
     client = ApiClient(api_key=api_key)
 
-    all_results = []
-    total_count = 0
+    all_results = list(existing_queries)  # carry forward old results
+    total_count = sum(q.get("results_count", 0) for q in existing_queries)
     started_at = _now_iso()
 
-    for i, (city, query) in enumerate(zip(CITIES, queries), start=1):
-        print(f"  [{i}/{len(CITIES)}] {query!r} ...", end=" ", flush=True)
+    for i, ((template, city), query) in enumerate(zip(pairs_to_fetch, queries), start=1):
+        print(f"  [{i}/{len(pairs_to_fetch)}] {query!r} ...", end=" ", flush=True)
         try:
             response = client.google_maps_search(
                 query=query,
@@ -116,6 +141,7 @@ def main() -> int:
             all_results.append({
                 "city": city,
                 "query": query,
+                "template": template,
                 "limit": args.limit,
                 "results_count": count,
                 "fetched_at": _now_iso(),
@@ -126,13 +152,14 @@ def main() -> int:
             all_results.append({
                 "city": city,
                 "query": query,
+                "template": template,
                 "limit": args.limit,
                 "results_count": 0,
                 "error": f"{type(e).__name__}: {e}",
                 "fetched_at": _now_iso(),
                 "results": [],
             })
-        if i < len(CITIES):
+        if i < len(pairs_to_fetch):
             time.sleep(SLEEP_BETWEEN_QUERIES_SEC)
 
     finished_at = _now_iso()

@@ -66,6 +66,18 @@ NAME_EXCLUSIONS = [
     "containerdienst",   # waste containers
     "klaviertransport",  # piano movers (Outscraper sometimes returns these)
     "abschlepp",         # towing services
+    # Crane MANUFACTURERS — they sell systems, don't rent. Also revealed in
+    # higher Outscraper queries on broader keywords (Autokran, Mobilkran).
+    "wolffkran",
+    "hiab austria",
+    "konecranes",
+    "abus krans",        # ABUS Kransysteme
+    "pfeifer seil",      # PFEIFER Seil- und Hebetechnik
+    "ketten hebezeuge",  # spare parts / hardware retailer (Heinz Krane Ketten)
+    # Heavy-haul logistics with no crane offering specifically
+    "schwerlast spedition",
+    # Generic trading houses
+    "handels gmbh",      # W.K.S Handels GmbH and similar pure trading
 ]
 
 
