@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 import { _extraCities, seoCities } from "./src/data/cities-static";
 
+// kranvergleich.de and kranvergleich.at build from the same repo; the cities-static
+// module is DE-only, so the city-slug redirect maps below (compound, umlaut-lazy,
+// extra-city fallbacks) only make sense on the DE deployment. The top-level synonym
+// redirects (hebekran/kranwagen → real type pages, ratgeber consolidations) are
+// language-shared and apply to both deployments.
+const IS_DE = process.env.NEXT_PUBLIC_COUNTRY !== 'AT'
+
 // All crane-type slugs — constrains :craneType param in city-level redirects
 // so arbitrary /foo-mieten/<city> strings don't hijack the rewrite.
 const CRANE_TYPES =
@@ -135,10 +142,13 @@ const nextConfig: NextConfig = {
         destination: '/dachdeckerkran-mieten',
         permanent: true,
       },
-      // City slug shorthand → real slug (compound + umlaut-lazy variants)
-      ...citySlugPermanentRedirects,
-      // _extraCities → nearest city with a real page (temporary redirect)
-      ...extraCityTempRedirects,
+      // City slug shorthand → real slug (compound + umlaut-lazy variants).
+      // DE-only — the maps reference DE city slugs (frankfurt, gottingen, ...)
+      // that have no AT analogue.
+      ...(IS_DE ? citySlugPermanentRedirects : []),
+      // _extraCities → nearest city with a real page (temporary redirect). Same
+      // DE-only gate as above.
+      ...(IS_DE ? extraCityTempRedirects : []),
     ];
   },
 };

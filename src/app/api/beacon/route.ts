@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
 import { getServiceSupabase } from '@/lib/supabase'
+import { COUNTRY } from '@/lib/country'
 
 // Page-level engagement tracking — see supabase/migrations/011_page_events.sql
 // for the DSGVO rationale. Same cookie-free, daily-salt, hashed-IP design as
@@ -121,6 +122,7 @@ export async function POST(request: Request) {
       context: sanitizeContext(body.context),
       ip_hash: ipHash,
       event_date: eventDate,
+      country: COUNTRY,
     })
 
     return new NextResponse(null, { status: 204 })

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
+import { COUNTRY } from '@/lib/country'
 
 const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 
@@ -122,6 +123,15 @@ export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // The kranvergleich.at deployment shares vercel.json with kranvergleich.de,
+  // so this cron fires on both projects. The DRIP_EMAILS templates are written
+  // for DE (links, copy, tone) and the newsletter_subscribers table is not yet
+  // country-scoped. Skip on AT until AT-localised drip content + a country
+  // column on newsletter_subscribers exist (deferred — no AT subscribers yet).
+  if (COUNTRY === 'AT') {
+    return NextResponse.json({ skipped: true, reason: 'drip-emails are DE-only until AT content + country scoping land' })
   }
 
   const sb = getServiceSupabase()

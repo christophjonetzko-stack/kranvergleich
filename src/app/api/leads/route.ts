@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 import { Resend, type CreateEmailOptions } from 'resend'
 import { submitLead, getCompaniesForCraneTypeNearLocation, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
+import { COUNTRY } from '@/lib/country'
 import { getCraneTypeNameById } from '@/data/crane-types'
 
 // Must match the salt base used by /api/track so a single visitor's events
@@ -77,7 +78,18 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
   return typeof str === 'string' ? str.slice(0, max) : ''
 }
 
-const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
+// Resend FROM address is country-aware. The AT subdomain (send.kranvergleich.at)
+// must have its DKIM/SPF/DMARC verified in Resend before kranvergleich.at goes live;
+// until then, AT lead submissions will fail at the email send step. AT domain hookup
+// is a tydzień 2-3 task per the launch plan.
+const FROM_EMAIL = COUNTRY === 'AT'
+  ? 'KranVergleich <noreply@send.kranvergleich.at>'
+  : 'KranVergleich <noreply@send.kranvergleich.de>'
+
+const BASE_URL = COUNTRY === 'AT' ? 'https://kranvergleich.at' : 'https://kranvergleich.de'
+const DOMAIN = COUNTRY === 'AT' ? 'kranvergleich.at' : 'kranvergleich.de'
+const BRAND_NAME = COUNTRY === 'AT' ? 'KranVergleich.at' : 'KranVergleich.de'
+const COUNTRY_LABEL = COUNTRY === 'AT' ? 'Österreich' : 'Deutschland'
 
 // --- Rate limiting: max 5 requests per minute per IP ---
 const RATE_LIMIT_WINDOW_MS = 60_000
@@ -271,12 +283,12 @@ export async function POST(request: Request) {
     // reused by every firm email and (if needed) a retry script.
     const buildCompanyEmailHtml = (companyName: string) => `
             <div style="font-family:system-ui;max-width:560px;">
-              <h2 style="font-size:18px;color:#1a1a1a;">Neue Anfrage über KranVergleich.de</h2>
+              <h2 style="font-size:18px;color:#1a1a1a;">Neue Anfrage über ${BRAND_NAME}</h2>
               <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:0 0 6px 0;">
                 Sehr geehrtes Team von <strong>${escapeHtml(companyName)}</strong>,
               </p>
               <p style="color:#4b5563;font-size:14px;line-height:1.6;">
-                ein potenzieller Kunde hat über KranVergleich.de eine Anfrage an Sie gesendet.
+                ein potenzieller Kunde hat über ${BRAND_NAME} eine Anfrage an Sie gesendet.
               </p>
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 ${safeCraneType ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
@@ -291,7 +303,7 @@ export async function POST(request: Request) {
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:12px;color:#9ca3af;">
-                Diese Anfrage wurde über <a href="https://kranvergleich.de" style="color:#2563eb;">KranVergleich.de</a> vermittelt.
+                Diese Anfrage wurde über <a href="${BASE_URL}" style="color:#2563eb;">${BRAND_NAME}</a> vermittelt.
               </p>
             </div>
           `
@@ -314,7 +326,7 @@ export async function POST(request: Request) {
           from: FROM_EMAIL,
           to: company.email!,
           replyTo: customerEmail,
-          subject: `KranVergleich.de - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
+          subject: `${BRAND_NAME} - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
           html: buildCompanyEmailHtml(company.name),
         })
         firmResults.push({ company_id: company.id, ok: result.ok })
@@ -369,7 +381,7 @@ export async function POST(request: Request) {
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `KranVergleich.de - ${dryRun ? '[DRY-RUN] ' : ''}Neue Anfrage: ${safeName} — ${safeCity}`,
+        subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}Neue Anfrage: ${safeName} — ${safeCity}`,
         html: `
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
@@ -393,7 +405,7 @@ export async function POST(request: Request) {
     const confirmRes = await sendResendEmail('confirmation', {
       from: FROM_EMAIL,
       to: customerEmail,
-      subject: `Ihre Anfrage bei KranVergleich.de — ${companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
+      subject: `Ihre Anfrage bei ${BRAND_NAME} — ${companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
       html: `
         <div style="font-family:system-ui;max-width:520px;">
           <h2 style="font-size:18px;">Vielen Dank für Ihre Anfrage!</h2>
@@ -409,8 +421,8 @@ export async function POST(request: Request) {
             ${durationDays ? `<tr><td style="padding:3px 10px 3px 0;color:#6b7280;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
           </table>
           <p style="font-size:13px;color:#9ca3af;margin-top:24px;">
-            KranVergleich.de — Kranvermietung in Deutschland vergleichen<br>
-            <a href="https://kranvergleich.de" style="color:#2563eb;">kranvergleich.de</a>
+            ${BRAND_NAME} — Kranvermietung in ${COUNTRY_LABEL} vergleichen<br>
+            <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a>
           </p>
         </div>
       `,
@@ -423,7 +435,7 @@ export async function POST(request: Request) {
       await sendResendEmail('missing-email notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `KranVergleich.de - ⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
+        subject: `${BRAND_NAME} - ⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
         html: `
             <h3>Firmen ohne E-Mail-Adresse — manuelle Weiterleitung nötig</h3>
             <p>Folgende Firmen wurden vom Kunden ausgewählt, haben aber keine E-Mail in der Datenbank:</p>

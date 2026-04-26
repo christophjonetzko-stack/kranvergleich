@@ -1,4 +1,5 @@
 import { supabase, getServiceSupabase } from './supabase'
+import { COUNTRY, getCompanyIdsInCountry } from './country'
 import type { CraneType, City, Company, CompanyWithCranes } from './types'
 
 // ============================================
@@ -15,16 +16,31 @@ export async function getSiteStats(): Promise<{
   avgRating: number
   totalReviews: number
 }> {
-  const [{ count: firmCount }, { count: cityCount }, { data: ratingData }] = await Promise.all([
-    supabase.from('companies').select('*', { count: 'exact', head: true }).eq('is_active', true).eq('is_relevant', true),
-    supabase.from('cities').select('*', { count: 'exact', head: true }).eq('is_active', true),
-    supabase
-      .from('companies')
-      .select('google_rating, google_reviews_count')
-      .eq('is_active', true)
-      .eq('is_relevant', true)
-      .not('google_rating', 'is', null),
+  // Country scoping: companies are filtered through company_regions -> cities.country
+  // (handles cross-country firms like Boels — Sitz DE, branches in AT). Cities count
+  // uses cities.country directly. Empty country (no AT data yet) short-circuits the
+  // company queries to avoid generating an invalid empty `IN ()` against PostgREST.
+  const inCountryIds = [...(await getCompanyIdsInCountry())]
+  const noCompanies = inCountryIds.length === 0
+
+  const [firmCountRes, cityCountRes, ratingDataRes] = await Promise.all([
+    noCompanies
+      ? Promise.resolve({ count: 0 } as { count: number | null })
+      : supabase.from('companies').select('*', { count: 'exact', head: true }).in('id', inCountryIds).eq('is_active', true).eq('is_relevant', true),
+    supabase.from('cities').select('*', { count: 'exact', head: true }).eq('country', COUNTRY).eq('is_active', true),
+    noCompanies
+      ? Promise.resolve({ data: [] as Array<{ google_rating: number | null; google_reviews_count: number | null }> })
+      : supabase
+          .from('companies')
+          .select('google_rating, google_reviews_count')
+          .in('id', inCountryIds)
+          .eq('is_active', true)
+          .eq('is_relevant', true)
+          .not('google_rating', 'is', null),
   ])
+  const firmCount = firmCountRes.count
+  const cityCount = cityCountRes.count
+  const ratingData = ratingDataRes.data
 
   let avgRating = 4.2
   let totalReviews = 0
@@ -75,6 +91,7 @@ export async function getCities(): Promise<City[]> {
   const { data, error } = await supabase
     .from('cities')
     .select('*')
+    .eq('country', COUNTRY)
     .eq('is_active', true)
     .order('population', { ascending: false })
 
@@ -83,10 +100,14 @@ export async function getCities(): Promise<City[]> {
 }
 
 export async function getCityBySlug(slug: string): Promise<City | null> {
+  // country filter is defensive — slugs are globally unique, but a DE-side admin
+  // accidentally adding an AT-named city without country='AT' would otherwise
+  // leak across deployments.
   const { data, error } = await supabase
     .from('cities')
     .select('*')
     .eq('slug', slug)
+    .eq('country', COUNTRY)
     .eq('is_active', true)
     .single()
 
@@ -122,9 +143,13 @@ export async function getOtherCompaniesInCity(
   excludeSlug: string,
   limit: number = 6
 ): Promise<{ name: string; slug: string; google_rating: number | null }[]> {
+  const inCountryIds = [...(await getCompanyIdsInCountry())]
+  if (inCountryIds.length === 0) return []
+
   const { data } = await supabase
     .from('companies')
     .select('name, slug, google_rating')
+    .in('id', inCountryIds)
     .eq('city', city)
     .eq('is_active', true)
     .eq('is_relevant', true)
@@ -218,6 +243,7 @@ export async function getCitiesWithMinCompanies(
     .from('cities')
     .select('*')
     .in('id', qualifyingCityIds)
+    .eq('country', COUNTRY)
     .eq('is_active', true)
     .order('population', { ascending: false })
 
@@ -237,6 +263,9 @@ export async function getCitiesWithMinCompanies(
  * One batch query — cheaper than N calls to getCompaniesForCraneType just
  * to read .length. */
 export async function getCompanyCountsPerCraneType(): Promise<Map<string, number>> {
+  const inCountryIds = await getCompanyIdsInCountry()
+  if (inCountryIds.size === 0) return new Map()
+
   const { data } = await supabase
     .from('company_cranes')
     .select('crane_type_id, company_id, companies!inner(is_active, is_relevant)')
@@ -245,6 +274,7 @@ export async function getCompanyCountsPerCraneType(): Promise<Map<string, number
 
   const perType = new Map<string, Set<string>>()
   for (const row of (data ?? []) as Array<{ crane_type_id: string; company_id: string }>) {
+    if (!inCountryIds.has(row.company_id)) continue
     const set = perType.get(row.crane_type_id) ?? new Set<string>()
     set.add(row.company_id)
     perType.set(row.crane_type_id, set)
@@ -258,6 +288,9 @@ export async function getCompaniesForCraneType(
   craneTypeId: string,
   nearPlz?: string
 ): Promise<CompanyWithCranes[]> {
+  const inCountryIds = await getCompanyIdsInCountry()
+  if (inCountryIds.size === 0) return []
+
   const { data: craneData } = await supabase
     .from('company_cranes')
     .select('company_id')
@@ -265,7 +298,8 @@ export async function getCompaniesForCraneType(
 
   if (!craneData || craneData.length === 0) return []
 
-  const companyIds = [...new Set(craneData.map(c => c.company_id))]
+  const companyIds = [...new Set(craneData.map(c => c.company_id))].filter((id) => inCountryIds.has(id))
+  if (companyIds.length === 0) return []
   const limit = 50
 
   // PLZ-near path: load ALL matching companies (in batches), sort by distance,
@@ -471,6 +505,10 @@ export async function getCompaniesForCraneTypeNearPlz(
   plz: string,
   opts?: { limit?: number },
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number } | null> {
+  // PLZ-based search uses german-cities.json (5-digit DE codes only). Until the
+  // AT counterpart (austrian-cities.json with 4-digit codes) ships, the function
+  // is DE-only — AT users hitting it get null and the UI falls back to the city-list path.
+  if (COUNTRY !== 'DE') return null
   if (!/^\d{5}$/.test(plz)) return null
   const cities = await getCitiesJson()
   const plzCity = cities.find((c) => c.p === plz)
@@ -493,6 +531,9 @@ export async function getCompaniesForCraneTypeNearLocation(
   location: string,
   opts?: { limit?: number },
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number; resolved_label: string } | null> {
+  // Same DE-only gate as getCompaniesForCraneTypeNearPlz — uses german-cities.json
+  // for PLZ + city-name lookup. AT counterpart pending.
+  if (COUNTRY !== 'DE') return null
   const trimmed = location.trim()
   if (!trimmed) return null
 
@@ -574,10 +615,12 @@ export async function submitLead(formData: {
   const { company_ids, ...leadData } = formData
   const sb = getServiceSupabase()
 
-  // Insert lead
+  // Insert lead — stamp country from build-time env so the same DB serves both
+  // kranvergleich.de (country='DE') and kranvergleich.at (country='AT'); admin
+  // dashboards and AT-routing logic split the pipeline by this column.
   const { data: lead, error: leadError } = await sb
     .from('leads')
-    .insert(leadData)
+    .insert({ ...leadData, country: COUNTRY })
     .select('id')
     .single()
 

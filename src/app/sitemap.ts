@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getCraneTypes, getCitiesWithMinCompanies } from '@/lib/queries'
+import { COUNTRY } from '@/lib/country'
 
 // Regenerate at most daily — prevents per-request rebuilds from churning
 // lastmod on the dynamic URLs below.
@@ -31,7 +32,10 @@ const toDate = (s: string) => new Date(s)
 const maxIsoDate = (a: string, b: string) => (a > b ? a : b)
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://kranvergleich.de'
+  // Country-aware origin so kranvergleich.at builds emit AT URLs while sharing
+  // the same code path. getCitiesWithMinCompanies (below) is also country-scoped
+  // via queries.ts, so AT sitemap won't list DE city pages.
+  const baseUrl = COUNTRY === 'AT' ? 'https://kranvergleich.at' : 'https://kranvergleich.de'
 
   // NOTE: /anbieter/* (674 firm profiles) intentionally excluded from the sitemap.
   // Sampled pages were ~250 words each — thin by Google's quality standards.

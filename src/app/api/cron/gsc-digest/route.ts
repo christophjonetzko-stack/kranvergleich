@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
+import { COUNTRY } from '@/lib/country'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,6 +28,13 @@ export async function GET(req: Request) {
   const authHeader = req.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // gsc_page_stats holds CSV imports from the .de Search Console property.
+  // The .at deployment fires this cron from a shared vercel.json but has no
+  // separate AT GSC import pipeline yet. Skip on AT until that pipeline exists.
+  if (COUNTRY === 'AT') {
+    return NextResponse.json({ skipped: true, reason: 'gsc-digest is DE-only until AT GSC import pipeline lands' })
   }
 
   const supabase = getServiceSupabase()
