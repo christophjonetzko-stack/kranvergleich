@@ -4,8 +4,11 @@
 
 Confirms:
   1. `country` column exists on all 5 target tables
-  2. Every existing row has country = 'DE' (default backfill correct)
+  2. Every row's country is in the allowed set ('DE', 'AT')
   3. CHECK constraint rejects unsupported values ('PL' should error)
+
+The script accepts ANY mix of DE/AT values per table — it does not enforce a
+specific distribution, only that every value is one of the allowed jurisdictions.
 """
 import os
 import sys
@@ -51,15 +54,16 @@ for table in TABLES:
 
         counts = Counter(r["country"] for r in rows)
         total = sum(counts.values())
-        non_de = {k: v for k, v in counts.items() if k != "DE"}
+        invalid = {k: v for k, v in counts.items() if k not in ("DE", "AT")}
 
         if total == 0:
             print(f"  {table:<22} 0 rows (column exists, table empty) ✓")
-        elif counts.get("DE", 0) == total and not non_de:
-            print(f"  {table:<22} {total} rows, all 'DE' ✓")
-        else:
-            print(f"  {table:<22} {total} rows — UNEXPECTED: {dict(counts)} ✗")
+        elif invalid:
+            print(f"  {table:<22} {total} rows — INVALID country values: {invalid} ✗")
             all_ok = False
+        else:
+            distribution = ", ".join(f"{k}={v}" for k, v in sorted(counts.items()))
+            print(f"  {table:<22} {total} rows ({distribution}) ✓")
     except KeyError as e:
         print(f"  {table:<22} FAIL — column 'country' missing or query error: {e} ✗")
         all_ok = False
