@@ -1,0 +1,710 @@
+{
+  "proposals": [
+    {
+      "company_row": {
+        "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG",
+        "slug": "felbermayr-graz",
+        "country": "AT",
+        "phone": "+43 316 243030",
+        "email": null,
+        "website": "https://www.felbermayr.cc/",
+        "address": "Hafnerstraße 207, 8054 Graz",
+        "city": "Graz",
+        "state": "",
+        "zip": "8054",
+        "lat": 47.0241822,
+        "lng": 15.4058456,
+        "google_rating": 4.6,
+        "google_reviews_count": 227,
+        "google_place_id": "ChIJNWlMxrrKb0cR_DnTQyWHXXU",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "graz",
+          "city_id": "d8abe56f-b400-463e-a75d-56216cf4cfe7"
+        },
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Transport | Kran | Arbeitsbühnen und Stapler | Einbringung | Lagerei",
+        "reviews": 227.0,
+        "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei/@47.0241822,15.4058456,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei!3m4!1s0x476fcabac64c6935:0x755d872543d339fc!8m2!3d47.0241822!4d15.4058456",
+        "seen_in_queries": [
+          "Wien",
+          "Graz"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG",
+        "slug": "felbermayr-wien",
+        "country": "AT",
+        "phone": "+43 2235 44505",
+        "email": null,
+        "website": "https://www.felbermayr.cc/",
+        "address": "Neubaugasse 5, 2326 Lanzendorf",
+        "city": "Lanzendorf",
+        "state": "",
+        "zip": "2326",
+        "lat": 48.1023955,
+        "lng": 16.4259979,
+        "google_rating": 4.6,
+        "google_reviews_count": 206,
+        "google_place_id": "ChIJg8-iAYGrbUcR3YNAn-ZJdyg",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Transport | Kran | Arbeitsbühnen und Stapler | Einbringung | Lagerei",
+        "reviews": 206.0,
+        "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei/@48.1023955,16.4259979,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung+%7C+Lagerei!3m4!1s0x476dab8101a2cf83:0x287749e69f4083dd!8m2!3d48.1023955!4d16.4259979",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG",
+        "slug": "felbermayr-linz",
+        "country": "AT",
+        "phone": "+43 732 611961",
+        "email": null,
+        "website": "https://www.felbermayr.cc/",
+        "address": "Lunzerstraße 97, 4030 Linz",
+        "city": "Linz",
+        "state": "",
+        "zip": "4030",
+        "lat": 48.2695259,
+        "lng": 14.347743999999999,
+        "google_rating": 4.6,
+        "google_reviews_count": 205,
+        "google_place_id": "ChIJC8294wy9c0cRoyZLwW3BpRA",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "linz",
+          "city_id": "ad17d8a3-ee8d-45f0-b1d5-14fca52666ce"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Kran | Arbeitsbühnen und Stapler | Transport | Hafenbetrieb | Lagerei",
+        "reviews": 205,
+        "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Transport+%7C+Hafenbetrieb+%7C+Lagerei/@48.2695259,14.347743999999999,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Transport+%7C+Hafenbetrieb+%7C+Lagerei!3m4!1s0x4773bd0ce3bdcd0b:0x10a5c16dc14b26a3!8m2!3d48.2695259!4d14.347743999999999",
+        "seen_in_queries": [
+          "Linz"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Prangl GmbH Zentrale",
+        "slug": "prangl-wien",
+        "country": "AT",
+        "phone": "+43 50 9951 1000",
+        "email": null,
+        "website": "http://www.prangl.com/%3Flanguage%3D1",
+        "address": "Josef-Prangl-Straße 8, 1230 Wien",
+        "city": "Wien",
+        "state": "",
+        "zip": "1230",
+        "lat": 48.133060099999994,
+        "lng": 16.3599156,
+        "google_rating": 4.4,
+        "google_reviews_count": 147,
+        "google_place_id": "ChIJtRQUQjCvbUcR9BWVfjROiAU",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Prangl GmbH Zentrale",
+        "reviews": 147.0,
+        "google_maps_url": "https://www.google.com/maps/place/Prangl+GmbH+Zentrale/@48.133060099999994,16.3599156,14z/data=!4m8!1m2!2m1!1sPrangl+GmbH+Zentrale!3m4!1s0x476daf30421414b5:0x5884e347e9515f4!8m2!3d48.133060099999994!4d16.3599156",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Kuhn-Ladetechnik GmbH",
+        "slug": "kuhn-ladetechnik-gmbh",
+        "country": "AT",
+        "phone": "+43 2236 714880",
+        "email": null,
+        "website": "http://www.kuhn.at/",
+        "address": "Lanzendorfer Str. 54, 2481 Achau",
+        "city": "Achau",
+        "state": "",
+        "zip": "2481",
+        "lat": 48.0838061,
+        "lng": 16.3984973,
+        "google_rating": 4.4,
+        "google_reviews_count": 76,
+        "google_place_id": "ChIJk9v2xzusbUcRT8x4mwKwFdY",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Kuhn-Ladetechnik GmbH",
+        "reviews": 76.0,
+        "google_maps_url": "https://www.google.com/maps/place/Kuhn-Ladetechnik+GmbH/@48.0838061,16.3984973,14z/data=!4m8!1m2!2m1!1sKuhn-Ladetechnik+GmbH!3m4!1s0x476dac3bc7f6db93:0xd615b0029b78cc4f!8m2!3d48.0838061!4d16.3984973",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Kranverleih Kampel",
+        "slug": "kranverleih-kampel",
+        "country": "AT",
+        "phone": "+43 2162 62203",
+        "email": null,
+        "website": "https://kampel.at/",
+        "address": "Industriegelände W 15, 2460 Gemeinde Bruck an der Leitha",
+        "city": "Gemeinde Bruck an der Leitha",
+        "state": "",
+        "zip": "2460",
+        "lat": 48.0233244,
+        "lng": 16.7490626,
+        "google_rating": 4.5,
+        "google_reviews_count": 58,
+        "google_place_id": "ChIJP_2nuJFbbEcRs_GwnSia3HE",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Kranverleih Kampel",
+        "reviews": 58.0,
+        "google_maps_url": "https://www.google.com/maps/place/Kranverleih+Kampel/@48.0233244,16.7490626,14z/data=!4m8!1m2!2m1!1sKranverleih+Kampel!3m4!1s0x476c5b91b8a7fd3f:0x71dc9a289db0f1b3!8m2!3d48.0233244!4d16.7490626",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Boels Maschinenverleih Österreich GmbH",
+        "slug": "boels-wien",
+        "country": "AT",
+        "phone": "+43 2236 6885131",
+        "email": null,
+        "website": "https://www.boels.com/de-at/%3Futm_source%3Dgoogle%26utm_medium%3Dyext%26utm_content%3D578",
+        "address": "Laxenburgerstraße 50, 2351 Wiener Neudorf",
+        "city": "Wiener Neudorf",
+        "state": "",
+        "zip": "2351",
+        "lat": 48.0791762,
+        "lng": 16.3300543,
+        "google_rating": 4.2,
+        "google_reviews_count": 48,
+        "google_place_id": "ChIJuY1RWvOubUcRtIvktbV9Ntw",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Boels Maschinenverleih Österreich GmbH",
+        "reviews": 48.0,
+        "google_maps_url": "https://www.google.com/maps/place/Boels+Maschinenverleih+%C3%96sterreich+GmbH/@48.0791762,16.3300543,14z/data=!4m8!1m2!2m1!1sBoels+Maschinenverleih+%C3%96sterreich+GmbH!3m4!1s0x476daef35a518db9:0xdc367db5b5e48bb4!8m2!3d48.0791762!4d16.3300543",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "XL Spedition & Transporte GmbH",
+        "slug": "xl-spedition-transporte-gmbh",
+        "country": "AT",
+        "phone": "+43 2232 7735211",
+        "email": null,
+        "website": "http://www.xl-transporte.at/",
+        "address": "Airportstraße 3A/Unit 2, 2401 Fischamend",
+        "city": "Fischamend",
+        "state": "",
+        "zip": "2401",
+        "lat": 48.123006,
+        "lng": 16.5910634,
+        "google_rating": 4.4,
+        "google_reviews_count": 43,
+        "google_place_id": "ChIJqRmEvElVbEcRGcFtzHA0sOw",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "XL Spedition & Transporte GmbH",
+        "reviews": 43.0,
+        "google_maps_url": "https://www.google.com/maps/place/XL+Spedition+%26+Transporte+GmbH/@48.123006,16.5910634,14z/data=!4m8!1m2!2m1!1sXL+Spedition+%26+Transporte+GmbH!3m4!1s0x476c5549bc8419a9:0xecb03470cc6dc119!8m2!3d48.123006!4d16.5910634",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Prangl Niederlassung St. Florian",
+        "slug": "prangl-niederlassung-st-florian",
+        "country": "AT",
+        "phone": "+43 50 9951 3000",
+        "email": null,
+        "website": "https://www.prangl.at/",
+        "address": "Tagerbachstraße 1, 4490",
+        "city": "AT",
+        "state": "",
+        "zip": "4490",
+        "lat": 48.227047999999996,
+        "lng": 14.3924182,
+        "google_rating": 4.7,
+        "google_reviews_count": 40,
+        "google_place_id": "ChIJKzwUBxC8c0cRahhOI5Xt-p0",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "linz",
+          "city_id": "ad17d8a3-ee8d-45f0-b1d5-14fca52666ce"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Prangl Niederlassung St. Florian",
+        "reviews": 40,
+        "google_maps_url": "https://www.google.com/maps/place/Prangl+Niederlassung+St.+Florian/@48.227047999999996,14.3924182,14z/data=!4m8!1m2!2m1!1sPrangl+Niederlassung+St.+Florian!3m4!1s0x4773bc1007143c2b:0x9dfaed95234e186a!8m2!3d48.227047999999996!4d14.3924182",
+        "seen_in_queries": [
+          "Linz"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Boels Maschinenverleih Österreich GmbH Wels",
+        "slug": "boels-wels",
+        "country": "AT",
+        "phone": "+43 7242 350812",
+        "email": null,
+        "website": "https://www.boels.com/de-at/%3Futm_source%3Dgoogle%26utm_medium%3Dyext%26utm_content%3D413",
+        "address": "Gunskirchener Str. 6, 4600 Wels",
+        "city": "Wels",
+        "state": "",
+        "zip": "4600",
+        "lat": 48.149018399999996,
+        "lng": 13.974567799999999,
+        "google_rating": 4.1,
+        "google_reviews_count": 36,
+        "google_place_id": "ChIJiwC7wADzc0cRHitO_GfZfU4",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wels",
+          "city_id": "cccd35d0-d851-48f8-bbd9-89ecf0e2d8b6"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Boels Maschinenverleih Österreich GmbH Wels",
+        "reviews": 36.0,
+        "google_maps_url": "https://www.google.com/maps/place/Boels+Maschinenverleih+%C3%96sterreich+GmbH+Wels/@48.149018399999996,13.974567799999999,14z/data=!4m8!1m2!2m1!1sBoels+Maschinenverleih+%C3%96sterreich+GmbH+Wels!3m4!1s0x4773f300c0bb008b:0x4e7dd967fc4e2b1e!8m2!3d48.149018399999996!4d13.974567799999999",
+        "seen_in_queries": [
+          "Wels"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG",
+        "slug": "felbermayr-klagenfurt",
+        "country": "AT",
+        "phone": "+43 463 72241",
+        "email": null,
+        "website": "https://www.felbermayr.cc/",
+        "address": "Ziegeleistraße 1, 9020 Klagenfurt am Wörthersee",
+        "city": "Klagenfurt am Wörthersee",
+        "state": "",
+        "zip": "9020",
+        "lat": 46.629981,
+        "lng": 14.3708549,
+        "google_rating": 4.6,
+        "google_reviews_count": 35,
+        "google_place_id": "ChIJ1_qwOb0McEcRWIj8juEcLn4",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "klagenfurt",
+          "city_id": "de86e9d8-7b45-4420-bb20-4f03f623df71"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Transport | Kranvermietung | Arbeitsbühnen und Stapler | Einbringung",
+        "reviews": 35,
+        "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kranvermietung+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung/@46.629981,14.3708549,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Transport+%7C+Kranvermietung+%7C+Arbeitsb%C3%BChnen+und+Stapler+%7C+Einbringung!3m4!1s0x47700cbd39b0fad7:0x7e2e1ce18efc8858!8m2!3d46.629981!4d14.3708549",
+        "seen_in_queries": [
+          "Klagenfurt"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Scheffknecht Autokran GmbH",
+        "slug": "scheffknecht-autokran-gmbh",
+        "country": "AT",
+        "phone": "+43 5577 82604",
+        "email": null,
+        "website": "https://www.scheffknecht-kran.at/",
+        "address": "Hagstraße 28, 6890 Lustenau",
+        "city": "Lustenau",
+        "state": "",
+        "zip": "6890",
+        "lat": 47.44862,
+        "lng": 9.6642499,
+        "google_rating": 4.9,
+        "google_reviews_count": 34,
+        "google_place_id": "ChIJVf-QFe8Tm0cRF-nzMyBIS-g",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "dornbirn",
+          "city_id": "4e0fb80a-cc5e-4c15-bee0-af59de64da00"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Scheffknecht Autokran GmbH",
+        "reviews": 34,
+        "google_maps_url": "https://www.google.com/maps/place/Scheffknecht+Autokran+GmbH/@47.44862,9.6642499,14z/data=!4m8!1m2!2m1!1sScheffknecht+Autokran+GmbH!3m4!1s0x479b13ef1590ff55:0xe84b482033f3e917!8m2!3d47.44862!4d9.6642499",
+        "seen_in_queries": [
+          "Dornbirn"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Felbermayr Transport und Hebetechnik GmbH & Co KG",
+        "slug": "felbermayr-innsbruck",
+        "country": "AT",
+        "phone": "+43 5223 56245",
+        "email": null,
+        "website": "https://www.felbermayr.cc/",
+        "address": "Bert-Köllensperger-Straße 3/a, 6065 Thaur",
+        "city": "Thaur",
+        "state": "",
+        "zip": "6065",
+        "lat": 47.2756626,
+        "lng": 11.4720289,
+        "google_rating": 4.7,
+        "google_reviews_count": 34,
+        "google_place_id": "ChIJNwqHuTFvnUcRIY05km7-OCo",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "innsbruck",
+          "city_id": "7a8be8f1-08cd-4809-9571-9f5e5531a2cd"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Felbermayr Transport und Hebetechnik GmbH & Co KG | Kran | Arbeitsbühnenvermietung | Staplervermietung | Einbringung",
+        "reviews": 34,
+        "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnenvermietung+%7C+Staplervermietung+%7C+Einbringung/@47.2756626,11.4720289,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Kran+%7C+Arbeitsb%C3%BChnenvermietung+%7C+Staplervermietung+%7C+Einbringung!3m4!1s0x479d6f31b9870a37:0x2a38fe6e92398d21!8m2!3d47.2756626!4d11.4720289",
+        "seen_in_queries": [
+          "Innsbruck"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "W. Reitinger GmbH",
+        "slug": "w-reitinger-gmbh",
+        "country": "AT",
+        "phone": "+43 2252 214800",
+        "email": null,
+        "website": "https://www.w-reitinger.com/",
+        "address": "Haidhofstraße 150, 2500 Baden",
+        "city": "Baden",
+        "state": "",
+        "zip": "2500",
+        "lat": 47.974252299999996,
+        "lng": 16.2801915,
+        "google_rating": 4.8,
+        "google_reviews_count": 31,
+        "google_place_id": "ChIJMzV2mvSwbUcR1t8O19NpikA",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "W. Reitinger GmbH",
+        "reviews": 31.0,
+        "google_maps_url": "https://www.google.com/maps/place/W.+Reitinger+GmbH/@47.974252299999996,16.2801915,14z/data=!4m8!1m2!2m1!1sW.+Reitinger+GmbH!3m4!1s0x476db0f49a763533:0x408a69d3d70edfd6!8m2!3d47.974252299999996!4d16.2801915",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "HAIDER KRAN und Transporte",
+        "slug": "haider-kran-und-transporte",
+        "country": "AT",
+        "phone": "+43 664 3086500",
+        "email": null,
+        "website": "http://www.haider.eu/",
+        "address": "Guntherstraße 8, 2301 Groß-Enzersdorf",
+        "city": "Groß-Enzersdorf",
+        "state": "",
+        "zip": "2301",
+        "lat": 48.2185047,
+        "lng": 16.546670499999998,
+        "google_rating": 4.7,
+        "google_reviews_count": 31,
+        "google_place_id": "ChIJcYvmCNsBbUcR9dExG6AIV7o",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "HAIDER KRAN und Transporte",
+        "reviews": 31.0,
+        "google_maps_url": "https://www.google.com/maps/place/HAIDER+KRAN+und+Transporte/@48.2185047,16.546670499999998,14z/data=!4m8!1m2!2m1!1sHAIDER+KRAN+und+Transporte!3m4!1s0x476d01db08e68b71:0xba5708a01b31d1f5!8m2!3d48.2185047!4d16.546670499999998",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "BMK Baumaschinen Services",
+        "slug": "bmk-baumaschinen-services",
+        "country": "AT",
+        "phone": "+43 664 99973600",
+        "email": null,
+        "website": "https://www.bmk-baumaschinen.at/",
+        "address": "Herzmanovsky-Orlando-Gasse 1-13/12 9, 1210 Wien",
+        "city": "Wien",
+        "state": "",
+        "zip": "1210",
+        "lat": 48.2694459,
+        "lng": 16.450013,
+        "google_rating": 5.0,
+        "google_reviews_count": 26,
+        "google_place_id": "ChIJkwAuiCgHbUcRvRV-5D4PRSc",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "BMK Baumaschinen Services",
+        "reviews": 26.0,
+        "google_maps_url": "https://www.google.com/maps/place/BMK+Baumaschinen+Services/@48.2694459,16.450013,14z/data=!4m8!1m2!2m1!1sBMK+Baumaschinen+Services!3m4!1s0x476d0728882e0093:0x27450f3ee47e15bd!8m2!3d48.2694459!4d16.450013",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Timi Kran GmbH",
+        "slug": "timi-kran-gmbh",
+        "country": "AT",
+        "phone": "+43 660 5848284",
+        "email": null,
+        "website": "http://www.timi-trans.at/",
+        "address": "Viehtriftgasse 14, 1210 Wien",
+        "city": "Wien",
+        "state": "",
+        "zip": "1210",
+        "lat": 48.2589057,
+        "lng": 16.4333726,
+        "google_rating": 5.0,
+        "google_reviews_count": 22,
+        "google_place_id": "ChIJhUO74J4GbUcRhWYCDaNEOIE",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Timi Kran GmbH",
+        "reviews": 22.0,
+        "google_maps_url": "https://www.google.com/maps/place/Timi+Kran+GmbH/@48.2589057,16.4333726,14z/data=!4m8!1m2!2m1!1sTimi+Kran+GmbH!3m4!1s0x476d069ee0bb4385:0x813844a30d026685!8m2!3d48.2589057!4d16.4333726",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "KranWien GmbH",
+        "slug": "kranwien-gmbh",
+        "country": "AT",
+        "phone": "+43 650 9241652",
+        "email": null,
+        "website": "http://www.kranwien.at/",
+        "address": "Wattgasse 33, 1160 Wien",
+        "city": "Wien",
+        "state": "",
+        "zip": "1160",
+        "lat": 48.2166941,
+        "lng": 16.3194289,
+        "google_rating": 4.4,
+        "google_reviews_count": 22,
+        "google_place_id": "ChIJHVp13CQJbUcR33uSvuzrmDo",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "wien",
+          "city_id": "c6efaf2e-f641-40bd-bd09-62f78eb2ff76"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "KranWien GmbH",
+        "reviews": 22.0,
+        "google_maps_url": "https://www.google.com/maps/place/KranWien+GmbH/@48.2166941,16.3194289,14z/data=!4m8!1m2!2m1!1sKranWien+GmbH!3m4!1s0x476d0924dc755a1d:0x3a98ebecbe927bdf!8m2!3d48.2166941!4d16.3194289",
+        "seen_in_queries": [
+          "Wien"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Schweighofer Kran & Transport Bergheim bei Salzburg",
+        "slug": "schweighofer-kran-transport-bergheim-bei-salzburg",
+        "country": "AT",
+        "phone": "+43 662 4516820",
+        "email": null,
+        "website": "https://www.n-schweighofer.at/",
+        "address": "Kasern 10, 5101 Bergheim bei Salzburg",
+        "city": "Bergheim bei Salzburg",
+        "state": "",
+        "zip": "5101",
+        "lat": 47.8360432,
+        "lng": 13.0581772,
+        "google_rating": 4.8,
+        "google_reviews_count": 21,
+        "google_place_id": "ChIJOUCdmvOadkcRb0UNoqnkrN0",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "salzburg",
+          "city_id": "e82a83d9-775e-4b15-9bba-259f6d8dee3d"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Schweighofer Kran & Transport Bergheim bei Salzburg",
+        "reviews": 21,
+        "google_maps_url": "https://www.google.com/maps/place/Schweighofer+Kran+%26+Transport+Bergheim+bei+Salzburg/@47.8360432,13.0581772,14z/data=!4m8!1m2!2m1!1sSchweighofer+Kran+%26+Transport+Bergheim+bei+Salzburg!3m4!1s0x47769af39a9d4039:0xddace4a9a20d456f!8m2!3d47.8360432!4d13.0581772",
+        "seen_in_queries": [
+          "Salzburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG",
+        "slug": "felbermayr-salzburg",
+        "country": "AT",
+        "phone": "+43 662 8767570",
+        "email": null,
+        "website": "https://www.felbermayr.cc/",
+        "address": "Aupoint 4, 5101 Bergheim bei Salzburg",
+        "city": "Bergheim bei Salzburg",
+        "state": "",
+        "zip": "5101",
+        "lat": 47.8650269,
+        "lng": 13.009089699999999,
+        "google_rating": 4.5,
+        "google_reviews_count": 20,
+        "google_place_id": "ChIJc4pMStqEdkcRxCIFIOP9zDs",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_slug": "salzburg",
+          "city_id": "e82a83d9-775e-4b15-9bba-259f6d8dee3d"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Felbermayr Transport- und Hebetechnik GmbH & Co KG | Einbringung | Kran | Arbeitsbühnenvermietung | Staplervermietung",
+        "reviews": 20,
+        "google_maps_url": "https://www.google.com/maps/place/Felbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Einbringung+%7C+Kran+%7C+Arbeitsb%C3%BChnenvermietung+%7C+Staplervermietung/@47.8650269,13.009089699999999,14z/data=!4m8!1m2!2m1!1sFelbermayr+Transport-+und+Hebetechnik+GmbH+%26+Co+KG+%7C+Einbringung+%7C+Kran+%7C+Arbeitsb%C3%BChnenvermietung+%7C+Staplervermietung!3m4!1s0x477684da4a4c8a73:0x3bccfde3200522c4!8m2!3d47.8650269!4d13.009089699999999",
+        "seen_in_queries": [
+          "Salzburg"
+        ]
+      }
+    }
+  ],
+  "slug_collisions": {}
+}
