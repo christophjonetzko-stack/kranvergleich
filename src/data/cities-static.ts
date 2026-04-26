@@ -23,7 +23,8 @@ export interface ExtendedCity {
 // allCities defined after seoCities (below).
 // Exported for next.config.ts redirect generation — direct URLs to these
 // cities 404 (no Supabase row), so we route them to nearestSlug via 307.
-export const _extraCities: ExtendedCity[] = [
+// DE-specific orphan list. AT counterpart is _extraCitiesAT (currently empty).
+const _extraCitiesDE: ExtendedCity[] = [
   { name: 'Darmstadt', slug: 'darmstadt', state: 'Hessen', nearestSlug: 'frankfurt-am-main' },
   { name: 'Ehingen', slug: 'ehingen', state: 'Baden-Württemberg', nearestSlug: 'ulm' },
   { name: 'Erlangen', slug: 'erlangen', state: 'Bayern', nearestSlug: 'nuernberg' },
@@ -49,7 +50,7 @@ export const _extraCities: ExtendedCity[] = [
   { name: 'Wolfsburg', slug: 'wolfsburg', state: 'Niedersachsen', nearestSlug: 'braunschweig' },
 ]
 
-export const seoCities: CityInfo[] = [
+const seoCitiesDE: CityInfo[] = [
   { slug: 'berlin', name: 'Berlin', state: 'Berlin', companyCount: 62 },
   { slug: 'hamburg', name: 'Hamburg', state: 'Hamburg', companyCount: 19 },
   { slug: 'duesseldorf', name: 'Düsseldorf', state: 'Nordrhein-Westfalen', companyCount: 19 },
@@ -131,6 +132,22 @@ export const seoCities: CityInfo[] = [
   { slug: 'recklinghausen', name: 'Recklinghausen', state: 'Nordrhein-Westfalen', companyCount: 1 },
   { slug: 'jena', name: 'Jena', state: 'Thüringen', companyCount: 1 },
 ]
+
+// AT cities — populated together with their firms (tydzień 2 of the
+// kranvergleich.at launch). Stays empty until each AT city has ≥1 firm via
+// company_regions; pre-populating without firms creates thin city pages and
+// drags the whole AT domain quality signal down (Helpful Content Update).
+// Reference data for slug + state + coords lives in src/data/austrian-cities.json.
+const seoCitiesAT: CityInfo[] = []
+const _extraCitiesAT: ExtendedCity[] = []
+
+// Country-aware exports. kranvergleich.de build (NEXT_PUBLIC_COUNTRY unset or 'DE')
+// resolves to DE arrays; kranvergleich.at build ('AT') resolves to AT arrays.
+// The check uses process.env directly to avoid pulling country.ts (which transitively
+// imports the Supabase client) into next.config.ts's import graph.
+const _IS_AT = process.env.NEXT_PUBLIC_COUNTRY === 'AT'
+export const seoCities: CityInfo[] = _IS_AT ? seoCitiesAT : seoCitiesDE
+export const _extraCities: ExtendedCity[] = _IS_AT ? _extraCitiesAT : _extraCitiesDE
 
 export const allCities: ExtendedCity[] = [
   ...seoCities.map(c => ({ name: c.name, slug: c.slug, state: c.state, nearestSlug: null as string | null })),

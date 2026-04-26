@@ -1,0 +1,12 @@
+[
+  {"p":"1010","n":"Wien","s":"Wien","la":48.2082,"ln":16.3738},
+  {"p":"8010","n":"Graz","s":"Steiermark","la":47.0707,"ln":15.4395},
+  {"p":"4020","n":"Linz","s":"Oberösterreich","la":48.3064,"ln":14.2858},
+  {"p":"5020","n":"Salzburg","s":"Salzburg","la":47.8095,"ln":13.0550},
+  {"p":"6020","n":"Innsbruck","s":"Tirol","la":47.2692,"ln":11.4041},
+  {"p":"9020","n":"Klagenfurt","s":"Kärnten","la":46.6243,"ln":14.3052},
+  {"p":"9500","n":"Villach","s":"Kärnten","la":46.6111,"ln":13.8558},
+  {"p":"4600","n":"Wels","s":"Oberösterreich","la":48.1576,"ln":14.0264},
+  {"p":"3100","n":"St. Pölten","s":"Niederösterreich","la":48.2058,"ln":15.6232},
+  {"p":"6850","n":"Dornbirn","s":"Vorarlberg","la":47.4125,"ln":9.7417}
+]
