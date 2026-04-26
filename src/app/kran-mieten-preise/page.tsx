@@ -9,6 +9,7 @@ import { InlineSammelanfrageForm } from '@/components/inline-sammelanfrage-form'
 import { PageEventTracker } from '@/components/page-event-tracker'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
+import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -132,7 +133,7 @@ export default async function KranMietenPreisePage() {
         Was kostet ein Kran? Preise &amp; Kosten 2026
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
-        Komplette Mietkran-Preisliste für alle 8 Krantypen in Deutschland: Tagespreise, Wochenpreise und
+        Komplette Mietkran-Preisliste für alle 8 Krantypen in {COUNTRY_LABEL}: Tagespreise, Wochenpreise und
         Monatspreise im Überblick — von Minikran über Autokran (Kranwagen) bis Schwerlastkran.
         Ob Sie einen Kran mieten oder leihen möchten: hier finden Sie alle Kranmiete Kosten auf einen Blick.
         Alle Preise sind unverbindliche Richtwerte (netto, zzgl. MwSt.) basierend auf Marktrecherche Q1 2026.
@@ -1006,8 +1007,8 @@ export default async function KranMietenPreisePage() {
       <div className="text-[14px] text-gray-500 leading-relaxed mb-10">
         <p>
           Die Kosten für die Kranmiete hängen von mehreren Faktoren ab: Krantyp, Tragkraft,
-          Mietdauer, Region und Verfügbarkeit. <strong className="text-gray-900">Auf KranVergleich.de</strong> vergleichen
-          Sie die Preise von über {anbieterCount} Anbietern in ganz Deutschland — kostenlos und unverbindlich.
+          Mietdauer, Region und Verfügbarkeit. <strong className="text-gray-900">Auf {BRAND_NAME}</strong> vergleichen
+          Sie die Preise von über {anbieterCount} Anbietern in ganz {COUNTRY_LABEL} — kostenlos und unverbindlich.
           Fordern Sie über unsere <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage</Link> Angebote
           von mehreren Firmen gleichzeitig an und sparen Sie Zeit und Geld.
         </p>
@@ -1057,24 +1058,24 @@ export default async function KranMietenPreisePage() {
             '@type': 'Article',
             headline: 'Was kostet ein Kran? Preise & Kosten 2026 — alle Krantypen',
             description:
-              'Komplette Mietkran-Preisliste 2026: Tages-, Wochen-, Monats- und Stundenpreise für alle 8 Krantypen in Deutschland. Regionale Preisunterschiede, Tragkraft-Kostentabelle, Kranführer-Preise, Zusatzkosten und Kostenbeispiele aus der Praxis.',
+              `Komplette Mietkran-Preisliste 2026: Tages-, Wochen-, Monats- und Stundenpreise für alle 8 Krantypen in ${COUNTRY_LABEL}. Regionale Preisunterschiede, Tragkraft-Kostentabelle, Kranführer-Preise, Zusatzkosten und Kostenbeispiele aus der Praxis.`,
             datePublished: '2026-03-20',
             dateModified: '2026-04-20',
             author: {
               '@type': 'Organization',
-              name: 'KranVergleich.de',
-              url: 'https://kranvergleich.de',
+              name: BRAND_NAME,
+              url: BASE_URL,
             },
             publisher: {
               '@type': 'Organization',
-              name: 'KranVergleich.de',
-              url: 'https://kranvergleich.de',
+              name: BRAND_NAME,
+              url: BASE_URL,
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': 'https://kranvergleich.de/kran-mieten-preise',
+              '@id': `${BASE_URL}/kran-mieten-preise`,
             },
-            about: { '@type': 'Thing', name: 'Kranvermietung Preise Deutschland 2026' },
+            about: { '@type': 'Thing', name: `Kranvermietung Preise ${COUNTRY_LABEL} 2026` },
           }),
         }}
       />

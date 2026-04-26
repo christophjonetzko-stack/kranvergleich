@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import { CompanyListWithForm } from './company-list-with-form'
 import { CompanyMapWrapper } from './company-map-wrapper'
 import type { CompanyWithCranes } from '@/lib/types'
+import { COUNTRY_LABEL } from '@/lib/country'
 
 interface CompanySectionProps {
   companies: CompanyWithCranes[]
@@ -78,7 +79,7 @@ export function CompanySection({
       {mapCompanies.length > 0 && (
         <section id="karte" className="mt-10 mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {craneTypeName ? `${craneTypeName}-Anbieter` : 'Anbieter'}{cityName ? ` in ${cityName}` : ' in Deutschland'} — Karte
+            {craneTypeName ? `${craneTypeName}-Anbieter` : 'Anbieter'}{cityName ? ` in ${cityName}` : ` in ${COUNTRY_LABEL}`} — Karte
             <span className="text-[13px] font-normal text-gray-400 ml-2">({mapCompanies.length})</span>
           </h2>
           <CompanyMapWrapper

@@ -2,18 +2,19 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
+import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 
 export const revalidate = 86400
 
 export async function generateMetadata(): Promise<Metadata> {
   const { anbieterCount, staedteCount } = await getSiteStats()
   return {
-    title: 'Über uns — KranVergleich.de',
-    description: `KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte. Kostenlos und unverbindlich.`,
+    title: `Über uns — ${BRAND_NAME}`,
+    description: `${BRAND_NAME} ist ${COUNTRY_LABEL}s Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte. Kostenlos und unverbindlich.`,
     alternates: alternatesFor('/ueber-uns'),
     openGraph: {
-      title: 'Über uns — KranVergleich.de',
-      description: `KranVergleich.de ist Deutschlands Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte.`,
+      title: `Über uns — ${BRAND_NAME}`,
+      description: `${BRAND_NAME} ist ${COUNTRY_LABEL}s Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte.`,
       type: 'website',
       url: '/ueber-uns',
     },
@@ -32,15 +33,15 @@ export default async function UeberUnsPage() {
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-6">
-        Über KranVergleich.de
+        Über {BRAND_NAME}
       </h1>
 
       <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Was ist KranVergleich.de?</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Was ist {BRAND_NAME}?</h2>
           <p>
-            KranVergleich.de ist ein unabhängiges Vergleichsportal für Kranvermietung in
-            Deutschland. Wir helfen Bauunternehmern, Handwerkern und Projektleitern, den
+            {BRAND_NAME} ist ein unabhängiges Vergleichsportal für Kranvermietung in
+            {' '}{COUNTRY_LABEL}. Wir helfen Bauunternehmern, Handwerkern und Projektleitern, den
             passenden Kran zum besten Preis zu finden — schnell, transparent und kostenlos.
           </p>
         </section>
@@ -48,7 +49,7 @@ export default async function UeberUnsPage() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Unsere Daten</h2>
           <p>
-            Unsere Datenbank umfasst über {anbieterCount} Kranvermieter in ganz Deutschland. Die Daten
+            Unsere Datenbank umfasst über {anbieterCount} Kranvermieter in ganz {COUNTRY_LABEL}. Die Daten
             stammen aus öffentlich zugänglichen Quellen (Google Maps) und werden regelmäßig
             aktualisiert. Wir zeigen echte Google-Bewertungen, Kontaktdaten und — wo verfügbar
             — Preisinformationen.

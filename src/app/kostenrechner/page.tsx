@@ -4,6 +4,7 @@ import { CostCalculator } from '@/components/cost-calculator'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
+import { COUNTRY_LABEL } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -84,7 +85,7 @@ export default async function KostenrechnerPage() {
           geplante Mietdauer.
         </p>
         <p className="mb-3">
-          Die Preise basieren auf einer Marktanalyse von {anbieterCount} Kranvermietungen in Deutschland
+          Die Preise basieren auf einer Marktanalyse von {anbieterCount} Kranvermietungen in {COUNTRY_LABEL}
           (Stand 2026). Für ein verbindliches Angebot können Sie über KranVergleich.de kostenlos
           bei mehreren Anbietern gleichzeitig anfragen.
         </p>

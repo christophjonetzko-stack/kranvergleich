@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
+import { COUNTRY_LABEL } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
 
 export const metadata: Metadata = {
   title: 'Kran mieten ohne Führerschein — was ist erlaubt?',
   description:
-    'Welche Krane darf man ohne Führerschein bedienen? Minikran, Dachdeckerkran, Autokran — Regelungen, Ausbildungspflicht und Kosten. Alles zur Kranführerpflicht in Deutschland.',
-  alternates: { canonical: '/ratgeber/kran-mieten-ohne-fuehrerschein' },
+    `Welche Krane darf man ohne Führerschein bedienen? Minikran, Dachdeckerkran, Autokran — Regelungen, Ausbildungspflicht und Kosten. Alles zur Kranführerpflicht in ${COUNTRY_LABEL}.`,
+  alternates: alternatesFor('/ratgeber/kran-mieten-ohne-fuehrerschein'),
 }
 
 const faqs = [

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
+import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
@@ -211,7 +212,7 @@ export default async function CraneTypePage({
         return (
           <section className="mb-8">
             <h2 className="text-lg font-semibold text-gray-900 mb-3">
-              {craneType.name} leihen, ausleihen oder mieten? {plural} Vermietung in ganz Deutschland
+              {craneType.name} leihen, ausleihen oder mieten? {plural} Vermietung in ganz {COUNTRY_LABEL}
             </h2>
             <p className="text-[14px] text-gray-500 leading-relaxed">
               Ob Sie einen <strong className="text-gray-900">{craneType.name}</strong> mieten, leihen oder ausleihen möchten —
@@ -244,7 +245,7 @@ export default async function CraneTypePage({
       {companies.length > 0 && (
         <section id="anbieter" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {craneType.name}-Anbieter in Deutschland ({companies.length})
+            {craneType.name}-Anbieter in {COUNTRY_LABEL} ({companies.length})
           </h2>
           <CompanySection
             companies={companies}
@@ -350,10 +351,10 @@ export default async function CraneTypePage({
       {ratgeber?.brands && ratgeber.brands.length > 0 && (
         <section id="marken" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            {craneType.name} — Marken und Modelle in deutschen Vermietflotten
+            {craneType.name} — Marken und Modelle in den Vermietflotten
           </h2>
           <p className="text-[14px] text-gray-500 mb-4 leading-relaxed">
-            Deutsche {craneType.name}-Vermieter setzen überwiegend auf eine Handvoll Hersteller. Die
+            {craneType.name}-Vermieter setzen überwiegend auf eine Handvoll Hersteller. Die
             folgende Übersicht zeigt die gängigsten Modellreihen und ihre Positionierung im Markt —
             als Orientierung, nicht als Empfehlung.
           </p>
@@ -485,7 +486,7 @@ export default async function CraneTypePage({
 
           <h3 className="text-[14px] font-semibold text-gray-900 mb-2">Bekannte Schnellbaukran-Modelle</h3>
           <p className="text-[13px] text-gray-600 leading-relaxed mb-4">
-            <strong>Potain IGO</strong> (T70, T85, T130) — die meistvermieteten Schnellbaukrane in Deutschland.{' '}
+            <strong>Potain IGO</strong> (T70, T85, T130) — die meistvermieteten Schnellbaukrane überhaupt.{' '}
             <strong>Potain GTMR</strong> (331 C, 336 B, 346 A, 386 A) — Serie für mittelgroße Hochbauprojekte.{' '}
             <strong>Liebherr K</strong>-Serie, <strong>Wolffkran WOLFF 7018</strong>, <strong>Eurogru DS 216</strong> — kompakte Modelle für Sanierungen und Einfamilienhäuser.
           </p>
@@ -539,7 +540,7 @@ export default async function CraneTypePage({
             <p>
               Sie möchten einen <strong className="text-gray-900">{craneType.name}</strong>
               {synonyms.length > 0 && <> (auch {synonyms.slice(0, 3).join(', ')} genannt)</>}
-              {' '}mieten oder leihen in Deutschland? Auf KranVergleich.de finden Sie{' '}
+              {' '}mieten oder leihen in {COUNTRY_LABEL}? Auf {BRAND_NAME} finden Sie{' '}
               {companies.length > 0 ? `${companies.length} ` : ''}{craneType.name}-Vermieter im direkten Vergleich.
               {price && (
                 <> Die Tagesmiete liegt zwischen ca. {price.dayFrom.toLocaleString('de-DE')}€ und{' '}

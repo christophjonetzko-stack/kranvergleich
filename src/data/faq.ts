@@ -37,11 +37,11 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Was ist ein Raupen-Minikran und wo kann ich ihn leihen?',
-      answer: 'Ein Raupen-Minikran (auch Spinnenkran oder Spider Crane) ist ein kompakter Kran auf Raupenfahrwerk. Dank seiner geringen Breite ab 60 cm passt er durch Türen und Hallentore. Auf KranVergleich.de finden Sie Anbieter, bei denen Sie einen Raupen-Minikran leihen oder ausleihen können — mit oder ohne Bediener.',
+      answer: 'Ein Raupen-Minikran (auch Spinnenkran oder Spider Crane) ist ein kompakter Kran auf Raupenfahrwerk. Dank seiner geringen Breite ab 60 cm passt er durch Türen und Hallentore. Auf {BRAND_NAME} finden Sie Anbieter, bei denen Sie einen Raupen-Minikran leihen oder ausleihen können — mit oder ohne Bediener.',
     },
     {
       question: 'Wo finde ich eine Minikran-Preisliste?',
-      answer: 'Eine aktuelle Minikran-Preisliste finden Sie auf KranVergleich.de: Tagesmiete 250–500€, Wochenmiete 1.000–2.500€, Monatsmiete 3.000–7.000€ (netto). Vergleichen Sie Minikran-Mietpreise und fordern Sie kostenlos Angebote an.',
+      answer: 'Eine aktuelle Minikran-Preisliste finden Sie auf {BRAND_NAME}: Tagesmiete 250–500€, Wochenmiete 1.000–2.500€, Monatsmiete 3.000–7.000€ (netto). Vergleichen Sie Minikran-Mietpreise und fordern Sie kostenlos Angebote an.',
     },
     {
       question: 'Kann ich einen kleinen Kran mieten?',
@@ -71,7 +71,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Wo finde ich eine Autokran-Preisliste?',
-      answer: 'Eine aktuelle Autokran-Preisliste 2026 finden Sie auf KranVergleich.de: Tagespreise 500–2.000€, Wochenpreise 2.500–10.000€, Monatspreise 8.000–35.000€ — jeweils inklusive Kranführer. Die Autokran-Mietpreise hängen von Tragkraft (30t–500t), Einsatzdauer und Region ab. Vergleichen Sie kostenlos Angebote von mehreren Autokranvermietungen.',
+      answer: 'Eine aktuelle Autokran-Preisliste 2026 finden Sie auf {BRAND_NAME}: Tagespreise 500–2.000€, Wochenpreise 2.500–10.000€, Monatspreise 8.000–35.000€ — jeweils inklusive Kranführer. Die Autokran-Mietpreise hängen von Tragkraft (30t–500t), Einsatzdauer und Region ab. Vergleichen Sie kostenlos Angebote von mehreren Autokranvermietungen.',
     },
     {
       question: 'Autokran mieten — welche Tragkraft brauche ich?',
@@ -101,7 +101,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Was kostet ein Dachdeckerkran pro Tag?',
-      answer: 'Die Kosten für einen Dachdeckerkran (auch Dachkran oder Ziegelkran) liegen bei 200–450€ pro Tag ohne Bediener. Bei Wochenmiete zahlen Sie 1.000–2.500€. Transport und Einweisung sind bei den meisten Vermietern inklusive. Vergleichen Sie Dachdeckerkran-Preise auf KranVergleich.de.',
+      answer: 'Die Kosten für einen Dachdeckerkran (auch Dachkran oder Ziegelkran) liegen bei 200–450€ pro Tag ohne Bediener. Bei Wochenmiete zahlen Sie 1.000–2.500€. Transport und Einweisung sind bei den meisten Vermietern inklusive. Vergleichen Sie Dachdeckerkran-Preise auf {BRAND_NAME}.',
     },
     {
       question: 'Was kostet ein Dachdecker-Kran für Dacharbeiten?',
@@ -121,7 +121,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Welche Dachdeckerkran-Marken gibt es zum Mieten?',
-      answer: 'Die gängigsten Dachdeckerkran-Marken in Deutschland sind Böcker (häufig im Verleih, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf KranVergleich.de bieten Böcker-Dachdeckerkrane an — sie gelten als besonders zuverlässig und einfach zu bedienen.',
+      answer: 'Die gängigsten Dachdeckerkran-Marken in {COUNTRY_LABEL} sind Böcker (häufig im Verleih, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf {BRAND_NAME} bieten Böcker-Dachdeckerkrane an — sie gelten als besonders zuverlässig und einfach zu bedienen.',
     },
   ],
   'raupenkran-mieten': [
@@ -145,7 +145,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Wo finde ich einen Anhängerkran in meiner Nähe?',
-      answer: 'Auf KranVergleich.de finden Sie Anhängerkran-Vermieter in ganz Deutschland. Geben Sie Ihre Stadt in die Suche ein und vergleichen Sie Anbieter nach Preis und Bewertung. Kostenlos Angebote anfragen — bei einem oder mehreren Vermietern gleichzeitig.',
+      answer: 'Auf {BRAND_NAME} finden Sie Anhängerkran-Vermieter in ganz {COUNTRY_LABEL}. Geben Sie Ihre Stadt in die Suche ein und vergleichen Sie Anbieter nach Preis und Bewertung. Kostenlos Angebote anfragen — bei einem oder mehreren Vermietern gleichzeitig.',
     },
     {
       question: 'Brauche ich einen Führerschein für einen Anhängerkran?',
@@ -153,7 +153,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Welche Anhängerkran-Marken kann man mieten?',
-      answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (eine der am häufigsten verliehenen Marken in Deutschland), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet — viele Vermieter auf KranVergleich.de bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
+      answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (eine der am häufigsten verliehenen Marken in {COUNTRY_LABEL}), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet — viele Vermieter auf {BRAND_NAME} bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
     },
     {
       question: 'Was ist ein PKW-Anhänger mit Kran?',
@@ -183,7 +183,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Was kostet es, einen Mobilkran zu leihen?',
-      answer: 'Einen Mobilkran leihen kostet 600–3.000€/Tag. Die Wochenmiete liegt bei 3.000–15.000€. Beim Mobilkranverleih sind Kranführer und An-/Abfahrt meist inklusive. Vergleichen Sie Mobilkran-Mietpreise auf KranVergleich.de.',
+      answer: 'Einen Mobilkran leihen kostet 600–3.000€/Tag. Die Wochenmiete liegt bei 3.000–15.000€. Beim Mobilkranverleih sind Kranführer und An-/Abfahrt meist inklusive. Vergleichen Sie Mobilkran-Mietpreise auf {BRAND_NAME}.',
     },
     {
       question: 'Was kostet ein Schwerlastkran?',
@@ -223,7 +223,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Wo finde ich eine Baukran-Preisliste?',
-      answer: 'Auf KranVergleich.de finden Sie eine aktuelle Baukran-Preisliste mit Tages-, Wochen- und Monatspreisen. Vergleichen Sie Baukran-Mietpreise von über 100 Anbietern in ganz Deutschland — kostenlos und unverbindlich.',
+      answer: 'Auf {BRAND_NAME} finden Sie eine aktuelle Baukran-Preisliste mit Tages-, Wochen- und Monatspreisen. Vergleichen Sie Baukran-Mietpreise von über 100 Anbietern in ganz {COUNTRY_LABEL} — kostenlos und unverbindlich.',
     },
   ],
 }
@@ -250,7 +250,7 @@ function getCityFAQs(craneName: string, cityName: string, priceFrom?: number, pr
     },
     {
       question: `Wo finde ich ${craneName}-Vermietung in ${cityName}?`,
-      answer: `Auf KranVergleich.de finden Sie alle ${craneName}-Vermieter in ${cityName} und Umgebung. Vergleichen Sie Preise und Bewertungen und fragen Sie kostenlos Angebote an — bei einem oder mehreren Anbietern gleichzeitig.`,
+      answer: `Auf {BRAND_NAME} finden Sie alle ${craneName}-Vermieter in ${cityName} und Umgebung. Vergleichen Sie Preise und Bewertungen und fragen Sie kostenlos Angebote an — bei einem oder mehreren Anbietern gleichzeitig.`,
     },
   ]
 }

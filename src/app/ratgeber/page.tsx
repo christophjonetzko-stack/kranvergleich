@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
 
 export const metadata: Metadata = {
   title: 'Ratgeber — Kran mieten: Tipps, Kosten & Vergleiche',
   description:
-    'Ratgeber rund um Kranvermietung: Welchen Kran brauche ich? Minikran vs. Autokran, Kranführerschein, 7 Tipps für Bauunternehmer. Kostenlos auf KranVergleich.de.',
-  alternates: { canonical: '/ratgeber' },
+    `Ratgeber rund um Kranvermietung: Welchen Kran brauche ich? Minikran vs. Autokran, Kranführerschein, 7 Tipps für Bauunternehmer. Kostenlos auf ${BRAND_NAME}.`,
+  alternates: alternatesFor('/ratgeber'),
 }
 
 const articles = [
@@ -79,7 +81,7 @@ export default function RatgeberIndexPage() {
         Ratgeber — Kran mieten
       </h1>
       <p className="text-[15px] text-gray-500 mb-8 max-w-3xl">
-        Praktische Ratgeber rund um Kranvermietung in Deutschland. Finden Sie den richtigen Kran,
+        Praktische Ratgeber rund um Kranvermietung in {COUNTRY_LABEL}. Finden Sie den richtigen Kran,
         vergleichen Sie Kosten und vermeiden Sie typische Fehler.
       </p>
 

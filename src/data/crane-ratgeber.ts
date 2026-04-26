@@ -122,7 +122,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Standard-Obendreher 30–40m',
         tonnage: '4–5t am Auslegerende',
         reach: '30–40m Hakenhöhe, 35–45m Ausladung',
-        useCase: 'Mehrfamilienhäuser mit 3 Vollgeschossen, Reihenhauszeilen, Gewerbebauten mittlerer Größe — die in Deutschland am häufigsten gemietete Baukran-Klasse',
+        useCase: 'Mehrfamilienhäuser mit 3 Vollgeschossen, Reihenhauszeilen, Gewerbebauten mittlerer Größe — die am häufigsten gemietete Baukran-Klasse',
         priceRange: '4.000–7.500€/Monat + Montage',
       },
       {
@@ -151,12 +151,12 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Liebherr',
         models: ['125 EC-B 6', '172 EC-B 8', '280 EC-H 12', '357 HC-L 8/16', 'K 78'],
-        note: 'Einer der am häufigsten verliehenen Hersteller im deutschen Turmdrehkranmarkt, mit Werk in Biberach. Die EC-B-Serie sind Untendreher für Schnellmontage, die EC-H- und HC-L-Serien sind Obendreher. Die K-Serie (Kompaktkran) deckt den Einsteigerbereich ab.',
+        note: 'Einer der am häufigsten verliehenen Hersteller im Turmdrehkranmarkt, mit Werk in Biberach. Die EC-B-Serie sind Untendreher für Schnellmontage, die EC-H- und HC-L-Serien sind Obendreher. Die K-Serie (Kompaktkran) deckt den Einsteigerbereich ab.',
       },
       {
         name: 'Potain',
         models: ['MDT 139', 'MDT 189', 'MDT 249', 'IGO M 14', 'Hup 32-27'],
-        note: 'Teil der Manitowoc-Gruppe. Französischer Hersteller mit starker Präsenz in Deutschland. Die MDT-Serie (Manitowoc Drum Top) sind klassische Obendreher bis 70m; die IGO- und Hup-Serien bedienen den Selbstaufbauenden-Markt.',
+        note: 'Teil der Manitowoc-Gruppe. Französischer Hersteller mit starker Präsenz im DACH-Raum. Die MDT-Serie (Manitowoc Drum Top) sind klassische Obendreher bis 70m; die IGO- und Hup-Serien bedienen den Selbstaufbauenden-Markt.',
       },
       {
         name: 'WOLFFKRAN',
@@ -247,7 +247,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Standard-Dachdeckerkran 15–18m',
         tonnage: 'bis 800kg',
         reach: '15–18m Hakenhöhe',
-        useCase: 'Einfamilienhaus mit 1–2 Vollgeschossen und Satteldach — die in Deutschland am häufigsten gemietete Klasse für Dachsanierung und PV-Montage',
+        useCase: 'Einfamilienhaus mit 1–2 Vollgeschossen und Satteldach — die am häufigsten gemietete Klasse für Dachsanierung und PV-Montage',
         priceRange: '200–320€/Tag',
       },
       {
@@ -367,7 +367,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Liebherr',
         models: ['LTM 1050-3.1', 'LTM 1100-5.2', 'LTM 1230-5.1', 'LTM 1400-7.1', 'LTM 1750-9.1'],
-        note: 'Einer der am häufigsten verliehenen Hersteller im deutschen Mobilkran-Segment, mit Werk in Ehingen. Die LTM-Serie (L = Luftgefederter Teleskopkran, T = Teleskopausleger, M = Mobilkran) deckt 20 bis 1.200 Tonnen ab.',
+        note: 'Einer der am häufigsten verliehenen Hersteller im Mobilkran-Segment, mit Werk in Ehingen. Die LTM-Serie (L = Luftgefederter Teleskopkran, T = Teleskopausleger, M = Mobilkran) deckt 20 bis 1.200 Tonnen ab.',
       },
       {
         name: 'Grove',
@@ -382,7 +382,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Manitowoc',
         models: ['MLC 100', 'MLC 150-1', 'MLC 300'],
-        note: 'US-amerikanische Muttergesellschaft von Grove. Eigene Manitowoc-Modelle sind in Deutschland seltener; meist trifft man die Marke über Grove-Maschinen in deutschen Vermietflotten.',
+        note: 'US-amerikanische Muttergesellschaft von Grove. Eigene Manitowoc-Modelle sind hierzulande seltener; meist trifft man die Marke über Grove-Maschinen in den Vermietflotten.',
       },
     ],
     alternatives: [
@@ -503,7 +503,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Standard-Autokran 25–35t',
         tonnage: '25–35t',
         reach: '30–35m',
-        useCase: 'Dachstuhl bei Ein- und Mehrfamilienhäusern, Hallenbau, Klimaanlagen auf Flachdächern — die in Deutschland am häufigsten vermietete Klasse',
+        useCase: 'Dachstuhl bei Ein- und Mehrfamilienhäusern, Hallenbau, Klimaanlagen auf Flachdächern — die am häufigsten vermietete Klasse',
         priceRange: '500–800€/Tag',
       },
       {
@@ -539,7 +539,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Liebherr',
         models: ['LTM 1030', 'LTM 1060', 'LTM 1090', 'LTM 1130', 'LTM 1250', 'LTM 1500'],
-        note: 'Verbreiteter deutscher Hersteller mit Werk in Ehingen. Die LTM-Serie deckt 20 bis 1.200 Tonnen ab und stellt einen Großteil der deutschen Vermietflotten.',
+        note: 'Verbreiteter deutscher Hersteller mit Werk in Ehingen. Die LTM-Serie deckt 20 bis 1.200 Tonnen ab und stellt einen Großteil der Vermietflotten im DACH-Raum.',
       },
       {
         name: 'Tadano',

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
+import { COUNTRY_LABEL } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -8,7 +10,7 @@ export const metadata: Metadata = {
   title: 'Kran mieten für den Hausbau: Welcher Kran wann? | Einfamilienhaus 2026',
   description:
     'Hausbau-Guide für Bauherren: Welcher Kran für welche Bauphase (Rohbau, Dachstuhl, Dacheindeckung)? Kostenbeispiel für ein typisches Einfamilienhaus, Timing und Genehmigungen.',
-  alternates: { canonical: '/ratgeber/kran-mieten-hausbau' },
+  alternates: alternatesFor('/ratgeber/kran-mieten-hausbau'),
   openGraph: {
     title: 'Kran mieten für den Hausbau: Welcher Kran wann? | Einfamilienhaus 2026',
     description:
@@ -669,7 +671,7 @@ export default async function KranMietenHausbauPage() {
           Angebote für Ihren Hausbau einholen
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz Deutschland für jeden Bauabschnitt —
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz {COUNTRY_LABEL} für jeden Bauabschnitt —
           Autokran für Rohbau &amp; Dachstuhl, Dachdeckerkran für die Dacheindeckung.
           Kostenlos Angebote bei mehreren Anbietern gleichzeitig anfragen.
         </p>

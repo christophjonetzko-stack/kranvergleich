@@ -8,7 +8,7 @@ import { craneTypes as craneTypeStatic } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats, getCraneTypes, getCompanyCountsPerCraneType } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY } from '@/lib/country'
+import { COUNTRY, COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 
 const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // — Google only shows ~60 chars of the title, so we bake the brand into the
   // string ourselves and keep the keyword phrase up front.
   const title = `Kran mieten 2026 — ${count} Anbieter ab 150€/Tag | KranVergleich.de`
-  const description = `Kranvermietung in Deutschland vergleichen: ${count} geprüfte Anbieter, 8 Krantypen ab 150€/Tag. Kostenlos 3 Angebote in 2 Minuten.`
+  const description = `Kranvermietung in ${COUNTRY_LABEL} vergleichen: ${count} geprüfte Anbieter, 8 Krantypen ab 150€/Tag. Kostenlos 3 Angebote in 2 Minuten.`
   return {
     title: { absolute: title },
     description,
@@ -78,7 +78,7 @@ export default async function HomePage() {
           {/* Eyebrow — spec-sheet label */}
           <div className="flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.15em] uppercase text-neutral-600 mb-5 sm:mb-6 font-[var(--font-mono)]">
             <span className="w-6 h-px bg-neutral-900" aria-hidden />
-            <span>Kranvermietung · Deutschland · {anbieterCount.toLocaleString('de-DE')} Anbieter</span>
+            <span>Kranvermietung · {COUNTRY_LABEL} · {anbieterCount.toLocaleString('de-DE')} Anbieter</span>
           </div>
 
           {/* H1 — Archivo Narrow 800, compressed, left-aligned */}
@@ -91,7 +91,7 @@ export default async function HomePage() {
             <strong className="font-semibold text-neutral-900">
               {anbieterCount.toLocaleString('de-DE')}+ geprüfte Kranvermieter
             </strong>{' '}
-            in Deutschland. Minikran, Autokran, Mobilkran, Raupenkran und weitere Typen — mit
+            in {COUNTRY_LABEL}. Minikran, Autokran, Mobilkran, Raupenkran und weitere Typen — mit
             transparenten Tagespreisen und kostenlosen, unverbindlichen Angeboten.
           </p>
 
@@ -312,7 +312,7 @@ export default async function HomePage() {
               },
               {
                 q: 'Wie finde ich den besten Kranvermieter in meiner Nähe?',
-                a: 'Auf KranVergleich.de können Sie über {anbieterCount} Kranvermieter in ganz Deutschland nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an — so finden Sie den besten Preis für Ihr Projekt.',
+                a: `Auf ${BRAND_NAME} können Sie über ${anbieterCount} Kranvermieter in ganz ${COUNTRY_LABEL} nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an — so finden Sie den besten Preis für Ihr Projekt.`,
               },
             ].map((faq, i) => (
               <details key={i} className="group bg-white border border-gray-200 rounded-lg">
@@ -377,7 +377,7 @@ export default async function HomePage() {
                 name: 'Wie finde ich den besten Kranvermieter in meiner Nähe?',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: `Auf KranVergleich.de können Sie ${anbieterCount} Kranvermieter in ganz Deutschland nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an.`,
+                  text: `Auf ${BRAND_NAME} können Sie ${anbieterCount} Kranvermieter in ganz ${COUNTRY_LABEL} nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an.`,
                 },
               },
             ],
@@ -390,9 +390,9 @@ export default async function HomePage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'WebSite',
-            name: 'KranVergleich.de',
-            url: 'https://kranvergleich.de',
-            description: 'Vergleichsportal für Kranvermietung in Deutschland',
+            name: BRAND_NAME,
+            url: BASE_URL,
+            description: `Vergleichsportal für Kranvermietung in ${COUNTRY_LABEL}`,
           }),
         }}
       />
@@ -402,9 +402,9 @@ export default async function HomePage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Organization',
-            name: 'KranVergleich.de',
-            url: 'https://kranvergleich.de',
-            description: 'Vergleichsportal für Kranvermietung in Deutschland. Über 740 Anbieter für Minikrane, Autokrane und mehr.',
+            name: BRAND_NAME,
+            url: BASE_URL,
+            description: `Vergleichsportal für Kranvermietung in ${COUNTRY_LABEL}. Über ${anbieterCount} Anbieter für Minikrane, Autokrane und mehr.`,
             contactPoint: {
               '@type': 'ContactPoint',
               email: 'kontakt@kranvergleich.de',

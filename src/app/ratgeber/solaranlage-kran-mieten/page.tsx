@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
+import { COUNTRY_LABEL } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -8,7 +10,7 @@ export const metadata: Metadata = {
   title: 'Solaranlage montieren: Welcher Kran für PV-Module? Kosten & Planung 2026',
   description:
     'PV-Module aufs Dach heben: Dachdeckerkran ab 200€/Tag für Standard-Einfamilienhäuser, Autokran für große Anlagen. Kosten pro kWp, Zeitplanung und Spezialausrüstung im Überblick.',
-  alternates: { canonical: '/ratgeber/solaranlage-kran-mieten' },
+  alternates: alternatesFor('/ratgeber/solaranlage-kran-mieten'),
   openGraph: {
     title: 'Solaranlage montieren: Welcher Kran für PV-Module? Kosten & Planung 2026',
     description:
@@ -602,7 +604,7 @@ export default async function SolaranlageKranMietenPage() {
           Kran für Ihre PV-Montage finden
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz Deutschland — Dachdeckerkran
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz {COUNTRY_LABEL} — Dachdeckerkran
           für Standard-EFH-Anlagen, Autokran für große Gewerbedächer. Kostenlos Angebote bei
           mehreren Anbietern gleichzeitig anfragen.
         </p>

@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
+import { COUNTRY_LABEL } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -9,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Kran kaufen oder mieten? Break-even-Rechnung & Entscheidungshilfe 2026',
   description:
     'Lohnt sich der Kauf eines Krans oder ist Miete günstiger? Kaufpreise, Betriebskosten, Break-even pro Krantyp und Entscheidungshilfe — ab wann sich der Kauf rechnet.',
-  alternates: { canonical: '/ratgeber/was-kostet-ein-kran' },
+  alternates: alternatesFor('/ratgeber/was-kostet-ein-kran'),
   openGraph: {
     title: 'Kran kaufen oder mieten? Break-even-Rechnung 2026',
     description:
@@ -48,7 +50,7 @@ const faqs = [
   {
     question: 'Warum mieten die meisten Unternehmen statt zu kaufen?',
     answer:
-      'Über 80% der Krannutzer in Deutschland mieten — aus mehreren Gründen: (1) Keine Kapitalbindung (500.000€ für einen Autokran bindet liquide Mittel), (2) Flexibilität beim Krantyp je nach Projekt, (3) Wartung, TÜV und Kranführer sind inklusive, (4) Steuerlich sofort als Betriebsausgabe absetzbar, (5) Kein Risiko durch Stillstand bei Auftragslücken. Kauf lohnt sich erst bei kontinuierlich hoher Auslastung in größeren Unternehmen.',
+      'Über 80% der Krannutzer mieten — aus mehreren Gründen: (1) Keine Kapitalbindung (500.000€ für einen Autokran bindet liquide Mittel), (2) Flexibilität beim Krantyp je nach Projekt, (3) Wartung, TÜV und Kranführer sind inklusive, (4) Steuerlich sofort als Betriebsausgabe absetzbar, (5) Kein Risiko durch Stillstand bei Auftragslücken. Kauf lohnt sich erst bei kontinuierlich hoher Auslastung in größeren Unternehmen.',
   },
 ]
 
@@ -423,7 +425,7 @@ export default async function WasKostetEinKranPage() {
             Warum über 80% der Nutzer mieten statt kaufen
           </h2>
           <p className="mb-4">
-            Der deutsche Kranmarkt wird klar von der Miete dominiert — aus guten Gründen:
+            Der Kranmarkt wird klar von der Miete dominiert — aus guten Gründen:
           </p>
           <div className="grid gap-2 sm:grid-cols-2 text-[13px]">
             <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Keine Kapitalbindung</strong> — 500.000€ bleiben frei für andere Investitionen</span></div>
@@ -450,7 +452,7 @@ export default async function WasKostetEinKranPage() {
           Miete ist für Sie die bessere Wahl?
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-xl mx-auto">
-          Vergleichen Sie {anbieterCount}+ Kranvermieter in Deutschland und holen Sie kostenlos
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in {COUNTRY_LABEL} und holen Sie kostenlos
           Angebote ein — ohne Kaufrisiko, ohne Kapitalbindung, mit Kranführer und voller Wartung.
         </p>
         <div className="flex flex-wrap justify-center gap-2 mb-5">

@@ -6,18 +6,19 @@ import { cranePrices } from '@/data/crane-prices'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
+import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 
 export const revalidate = 86400
 
 export async function generateMetadata(): Promise<Metadata> {
   const { anbieterCount } = await getSiteStats()
   return {
-    title: 'Kranverleih — Krane mieten in ganz Deutschland',
-    description: `Kranverleih in Deutschland: ${anbieterCount}+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.`,
+    title: `Kranverleih — Krane mieten in ganz ${COUNTRY_LABEL}`,
+    description: `Kranverleih in ${COUNTRY_LABEL}: ${anbieterCount}+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.`,
     alternates: alternatesFor('/kranverleih'),
     openGraph: {
-      title: 'Kranverleih — Krane mieten in ganz Deutschland',
-      description: `Kranverleih in Deutschland: ${anbieterCount}+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.`,
+      title: `Kranverleih — Krane mieten in ganz ${COUNTRY_LABEL}`,
+      description: `Kranverleih in ${COUNTRY_LABEL}: ${anbieterCount}+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.`,
       type: 'website',
       url: '/kranverleih',
     },
@@ -41,11 +42,11 @@ export default async function KranverleihPage() {
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Kranverleih — Krane mieten in ganz Deutschland
+        Kranverleih — Krane mieten in ganz {COUNTRY_LABEL}
       </h1>
       <p className="text-[15px] text-gray-500 mb-8 max-w-3xl">
         Sie suchen einen Kranverleih in Ihrer Nähe? Auf KranVergleich.de finden Sie über {anbieterCount}
-        {' '}Kranverleiher in ganz Deutschland. Ob Minikran, Autokran oder Baukran — vergleichen Sie
+        {' '}Kranverleiher in ganz {COUNTRY_LABEL}. Ob Minikran, Autokran oder Baukran — vergleichen Sie
         Preise, lesen Sie Bewertungen und fragen Sie kostenlos Angebote an.
       </p>
 
@@ -139,7 +140,7 @@ export default async function KranverleihPage() {
           erfolgt in der Regel tageweise, wochenweise oder monatsweise.
         </p>
         <p>
-          Auf KranVergleich.de können Sie Kranverleiher in ganz Deutschland vergleichen — mit
+          Auf {BRAND_NAME} können Sie Kranverleiher in ganz {COUNTRY_LABEL} vergleichen — mit
           transparenten Preisen, echten Google-Bewertungen und der Möglichkeit, kostenlos Angebote
           bei mehreren Anbietern gleichzeitig anzufragen.
         </p>

@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getSiteStats } from '@/lib/queries'
+import { COUNTRY_LABEL } from '@/lib/country'
+import { alternatesFor } from '@/lib/alternates'
 
 export const revalidate = 86400
 
@@ -9,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Krantypen im Vergleich: 8 Typen, Kosten & Einsatzgebiete 2026',
   description:
     'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze. Welcher Kran passt zu Ihrem Projekt? Entscheidungshilfe & Links zu Anbietern.',
-  alternates: { canonical: '/ratgeber/krantypen' },
+  alternates: alternatesFor('/ratgeber/krantypen'),
   openGraph: {
     title: 'Krantypen im Vergleich: 8 Typen, Kosten & Einsatzgebiete 2026',
     description:
@@ -80,7 +82,7 @@ const craneTypeData: CraneTypeEntry[] = [
     slug: 'autokran-mieten',
     name: 'Autokran',
     also: 'Kranwagen, Fahrzeugkran, LKW-Kran',
-    shortDesc: 'Der vielseitigste und meistgemietete Krantyp in Deutschland — LKW-Fahrgestell, fährt selbst zur Baustelle, in 15–30 Minuten einsatzbereit. Kranführer gesetzlich inklusive.',
+    shortDesc: 'Der vielseitigste und meistgemietete Krantyp überhaupt — LKW-Fahrgestell, fährt selbst zur Baustelle, in 15–30 Minuten einsatzbereit. Kranführer gesetzlich inklusive.',
     capacity: '10 – 500 t',
     einsatz: 'Kurzfristige Hebearbeiten, Montagen, Dachstuhl, Baumfällung',
     pros: ['Fährt selbst zur Baustelle', 'Schnell einsatzbereit (15–30 Min.)', 'Kranführer im Preis enthalten', 'Breites Tragkraftspektrum'],
@@ -136,8 +138,8 @@ const faqs = [
     a: 'Für den Hausbau gibt es drei typische Optionen, abhängig von Bauzeit und Projekttyp: (1) Neubau mit Bauzeit unter 3 Monaten → Autokran für punktuelle Einsätze (Dachstuhl setzen, Fertigteile positionieren, Betonelemente heben), ab 500€/Tag inklusive Kranführer. (2) Neubau mit Bauzeit über 3 Monaten oder mehrgeschossiger Bau → Baukran (Turmdrehkran), 4.000–8.000€/Monat zzgl. 3.000–5.000€ Montage. (3) Dachsanierung, Solaranlagen-Montage oder Dachdeckerarbeiten → Dachdeckerkran, ab 200€/Tag ohne Kranführer. Faustregel: Unter 3 Monaten Bauzeit lohnt sich der Autokran, darüber der Baukran.',
   },
   {
-    q: 'Welche Krantypen gibt es in Deutschland?',
-    a: 'In Deutschland werden 8 Haupttypen vermietet: Anhängerkran (bis 1,5t, ab 150€/Tag), Dachdeckerkran (bis 2t, ab 200€/Tag), Minikran (bis 3t, ab 250€/Tag), Ladekran (bis 30t, ab 300€/Tag), Baukran/Turmdrehkran (bis 20t, ab 300€/Tag), Autokran (bis 500t, ab 500€/Tag), Mobilkran (bis 1.200t, ab 600€/Tag) und Raupenkran (bis 3.000t, ab 800€/Tag). Jeder Typ hat spezifische Tragkräfte, Einsatzgebiete und Preiskategorien.',
+    q: 'Welche Krantypen werden vermietet?',
+    a: 'Es werden 8 Haupttypen vermietet: Anhängerkran (bis 1,5t, ab 150€/Tag), Dachdeckerkran (bis 2t, ab 200€/Tag), Minikran (bis 3t, ab 250€/Tag), Ladekran (bis 30t, ab 300€/Tag), Baukran/Turmdrehkran (bis 20t, ab 300€/Tag), Autokran (bis 500t, ab 500€/Tag), Mobilkran (bis 1.200t, ab 600€/Tag) und Raupenkran (bis 3.000t, ab 800€/Tag). Jeder Typ hat spezifische Tragkräfte, Einsatzgebiete und Preiskategorien.',
   },
   {
     q: 'Welcher Kran ist der günstigste?',
@@ -172,7 +174,7 @@ export default async function KrantypenPage() {
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Von 150€ für den Anhängerkran bis 10.000€+ für den 500-Tonnen-Raupenkran — die Wahl
         des richtigen Krantyps entscheidet über Kosten, Zeit und Machbarkeit Ihres Projekts.
-        In diesem Vergleich finden Sie alle 8 in Deutschland üblichen Krantypen mit Tragkraft,
+        In diesem Vergleich finden Sie alle 8 üblichen Krantypen mit Tragkraft,
         Tagespreisen, typischen Einsätzen sowie Vor- und Nachteilen.
       </p>
       <p className="text-[11px] text-gray-300 mb-6">Stand: April 2026 · Preise netto, Richtwerte</p>
@@ -313,7 +315,7 @@ export default async function KrantypenPage() {
           Den richtigen Kran gefunden?
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Vergleichen Sie jetzt {anbieterCount}+ Kranvermieter in ganz Deutschland.
+          Vergleichen Sie jetzt {anbieterCount}+ Kranvermieter in ganz {COUNTRY_LABEL}.
           Kostenlos Angebote anfragen — bei einem oder mehreren Anbietern gleichzeitig.
         </p>
         <div className="flex flex-wrap gap-3 justify-center">
