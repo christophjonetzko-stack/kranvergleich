@@ -73,7 +73,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const ratgeberArticles: Array<{ slug: string; priority: number }> = [
     { slug: 'was-kostet-ein-kran', priority: 0.8 },
     { slug: 'welchen-kran-brauche-ich', priority: 0.7 },
-    { slug: 'minikran-vs-autokran', priority: 0.7 },
     { slug: 'kran-mieten-privatperson', priority: 0.7 },
     { slug: 'kran-mieten-ohne-fuehrerschein', priority: 0.7 },
     { slug: 'kran-mieten-tipps', priority: 0.7 },

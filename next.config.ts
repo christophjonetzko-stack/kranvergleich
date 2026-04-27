@@ -211,6 +211,17 @@ const nextConfig: NextConfig = {
         destination: '/dachdeckerkran-mieten',
         permanent: true,
       },
+      // /ratgeber/minikran-vs-autokran consolidated into the parent guide
+      // (ratgeber 0 imp / 0 clicks in 90 days, "Crawled — currently not
+      // indexed" in GSC after a failed validation pass on 2026-04-21).
+      // Content moved into /ratgeber/welchen-kran-brauche-ich (which
+      // already ranks pos 17.77, 71 imp). Redirect lets that authority
+      // collect the residual signal instead of leaving it on a dead URL.
+      {
+        source: '/ratgeber/minikran-vs-autokran',
+        destination: '/ratgeber/welchen-kran-brauche-ich',
+        permanent: true,
+      },
       // City slug shorthand → real slug (compound + umlaut-lazy variants).
       // DE-only — the maps reference DE city slugs (frankfurt, gottingen, ...)
       // that have no AT analogue.

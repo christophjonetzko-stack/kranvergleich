@@ -144,6 +144,68 @@ export default async function WelchenKranPage() {
         </div>
       </section>
 
+      {/* Minikran vs. Autokran — der häufigste Vergleich.
+          Konsolidiert aus dem ehemaligen /ratgeber/minikran-vs-autokran
+          (Google hat die Standalone-Seite nicht indexiert; Inhalt ist hier
+          stärker, weil im Authority-Kontext des Eltern-Ratgebers). */}
+      <section className="mb-10 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Minikran vs. Autokran — der häufigste Vergleich
+        </h2>
+        <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
+          Minikran und Autokran decken zusammen rund 80 % aller Hebearbeiten auf
+          deutschen Baustellen ab — sie sind aber für sehr unterschiedliche
+          Einsätze gemacht. Hier die wichtigsten Unterschiede auf einen Blick:
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-[13px] border border-gray-200 rounded-md">
+            <thead>
+              <tr className="bg-gray-50 border-b">
+                <th className="py-2.5 px-3 text-left font-medium text-gray-900">Kriterium</th>
+                <th className="py-2.5 px-3 text-left font-medium text-blue-600">Minikran</th>
+                <th className="py-2.5 px-3 text-left font-medium text-blue-600">Autokran</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600">
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Tragkraft</td><td className="py-2 px-3">500 kg – 3 t</td><td className="py-2 px-3">10 – 500 t</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Hubhöhe</td><td className="py-2 px-3">bis ca. 25 m</td><td className="py-2 px-3">bis ca. 80 m</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Min. Zufahrt</td><td className="py-2 px-3">ab 80 cm</td><td className="py-2 px-3">ab 3 m (LKW-Breite)</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Aufbauzeit</td><td className="py-2 px-3">5–15 Min. (Funkfernbedienung)</td><td className="py-2 px-3">15–30 Min. (Stützen ausfahren)</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Bediener nötig?</td><td className="py-2 px-3">Nein — Selbstbedienung nach 30 Min. Einweisung</td><td className="py-2 px-3">Ja — Kranführer im Preis enthalten</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Innenraum-tauglich?</td><td className="py-2 px-3">Ja — elektrisch, abgasfrei</td><td className="py-2 px-3">Nein — Diesel-LKW</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Tagespreis</td><td className="py-2 px-3">ab 250 € (ohne Bediener)</td><td className="py-2 px-3">ab 500 € (inkl. Kranführer)</td></tr>
+              <tr><td className="py-2 px-3 font-medium text-gray-700">Wochenpreis</td><td className="py-2 px-3">ab 1.200 €</td><td className="py-2 px-3">ab 2.500 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-[15px] font-semibold text-gray-900 mt-6 mb-2">Wann Minikran besser ist</h3>
+        <ul className="text-[14px] text-gray-600 leading-relaxed list-disc pl-5 space-y-1.5 mb-4">
+          <li>Der Einsatzort ist eng (Hinterhof, Innenraum, Durchfahrt unter 3 m)</li>
+          <li>Die Last wiegt unter 3 Tonnen</li>
+          <li>Sie wollen den Kran selbst bedienen (kein Kranführerschein nötig)</li>
+          <li>Sie arbeiten in Innenräumen oder auf empfindlichem Untergrund (Rasen, Parkett)</li>
+          <li>Glasmontage mit Vakuumheber (sogenannter Spinnenkran-Einsatz)</li>
+        </ul>
+
+        <h3 className="text-[15px] font-semibold text-gray-900 mt-4 mb-2">Wann Autokran besser ist</h3>
+        <ul className="text-[14px] text-gray-600 leading-relaxed list-disc pl-5 space-y-1.5 mb-4">
+          <li>Die Last wiegt über 3 Tonnen</li>
+          <li>Sie brauchen Hubhöhen über 25 m</li>
+          <li>Es ist ein einzelner, schneller Tageseinsatz (Klimaanlage aufs Dach, Pool in Garten)</li>
+          <li>Sie wollen sich nicht selbst um die Bedienung kümmern (Kranführer ist Pflicht und im Preis)</li>
+          <li>Die Zufahrt ist breit genug für einen LKW (mindestens 3 m)</li>
+        </ul>
+
+        <p className="text-[14px] text-gray-500 leading-relaxed">
+          <strong className="text-gray-700">Faustregel:</strong> Bis 3 t und/oder enge Zufahrt &rarr;{' '}
+          <Link href="/minikran-mieten" className="text-blue-600 hover:underline">Minikran</Link>.
+          Über 3 t oder Tagesgeschäft &rarr;{' '}
+          <Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link>.
+          Bei Glasmontage prüfen Sie zuerst die Zufahrtbreite — die entscheidet stärker als das Gewicht.
+        </p>
+      </section>
+
       <section className="bg-blue-50 border border-blue-100 rounded-lg p-6 text-center">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
           Noch unsicher? Lassen Sie sich kostenlos beraten
