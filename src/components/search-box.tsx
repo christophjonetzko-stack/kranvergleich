@@ -118,107 +118,167 @@ export function SearchBox() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto sm:border sm:border-gray-200 sm:rounded-full sm:bg-white sm:shadow-lg">
-      <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-center">
-        {/* Krantyp field */}
-        <div className="w-full sm:flex-1 text-left">
-          <label className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
-            Krantyp
-          </label>
-          <select
-            value={craneType}
-            onChange={(e) => setCraneType(e.target.value)}
-            className="w-full h-12 sm:h-11 bg-white sm:bg-transparent pl-4 sm:pl-5 pr-3 text-[15px] sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:focus:ring-0 focus:border-blue-500 sm:focus:border-transparent cursor-pointer appearance-none rounded-lg sm:rounded-full border border-gray-300 sm:border-0"
-          >
-            <option value="">Egal — alle Typen</option>
-            {craneTypes.map((ct) => (
-              <option key={ct.slug} value={ct.slug}>{ct.name}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="hidden sm:block w-px h-6 bg-gray-200 shrink-0" />
-
-        {/* Stadt / PLZ field */}
-        <div ref={wrapperRef} className="relative w-full sm:flex-1 text-left">
-          <label className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
-            Stadt oder PLZ
-            {plzLabel && <span className="ml-2 text-blue-600 font-normal">→ {plzLabel}</span>}
-          </label>
-          <div className="relative">
-            {plzLabel && (
-              <span className="hidden sm:block absolute -top-4 left-5 text-[11px] text-blue-600 whitespace-nowrap pointer-events-none">
-                {plzLabel}
+    <div className="max-w-3xl mx-auto">
+      {/* Outer container — single rounded card. Pill aesthetic on desktop
+          when collapsed, but switches to rounded-3xl when project field
+          expands so the textarea attaches cleanly inside the same surface
+          (no floating overlay, layout stays stable). */}
+      <div
+        className={`bg-white shadow-lg sm:border sm:border-gray-200 transition-all overflow-hidden ${
+          showProjectField ? 'sm:rounded-3xl' : 'sm:rounded-full'
+        }`}
+      >
+        <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-stretch p-3 sm:p-1.5">
+          {/* Krantyp field — icon + uppercase label + select. Daibau-style
+              "Welche Leistung?" pattern: micro-label tells the user what
+              this segment is, placeholder is the actual default. */}
+          <div className="w-full sm:flex-1 text-left">
+            <label htmlFor="sb-cranetype" className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
+              Krantyp
+            </label>
+            <div className="relative flex items-center">
+              <span className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" aria-hidden>
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 21h18" />
+                  <path d="M5 21V8h14" />
+                  <path d="M5 8L19 8" />
+                  <path d="M19 8v3" />
+                  <path d="M19 11l-2 2" />
+                  <path d="M17 13v2" />
+                </svg>
               </span>
-            )}
-            <input
-              type="text"
-              value={cityQuery}
-              onChange={(e) => handleInputChange(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onFocus={() => { if (results.length > 0) setIsOpen(true) }}
-              placeholder="Stadt oder PLZ…"
-              autoComplete="off"
-              className="w-full h-12 sm:h-11 bg-white sm:bg-transparent px-4 text-[15px] sm:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:focus:ring-0 rounded-lg sm:rounded-none border border-gray-300 sm:border-0"
-            />
-            {isLoading && (
-              <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                <div className="h-3.5 w-3.5 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+              <div className="hidden sm:flex flex-col flex-1 sm:pl-12 sm:pr-3 sm:py-1.5 cursor-pointer">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-500 leading-none">Krantyp</span>
+                <select
+                  id="sb-cranetype"
+                  value={craneType}
+                  onChange={(e) => setCraneType(e.target.value)}
+                  className="appearance-none bg-transparent text-[14px] font-medium text-neutral-900 cursor-pointer focus:outline-none mt-0.5 pr-4"
+                >
+                  <option value="">Egal — alle Typen</option>
+                  {craneTypes.map((ct) => (
+                    <option key={ct.slug} value={ct.slug}>{ct.name}</option>
+                  ))}
+                </select>
               </div>
+              {/* Mobile select — full styled select (label sits above per the mobile <label> tag). */}
+              <select
+                value={craneType}
+                onChange={(e) => setCraneType(e.target.value)}
+                className="sm:hidden w-full h-12 bg-white pl-4 pr-3 text-[15px] font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer appearance-none rounded-lg border border-gray-300"
+              >
+                <option value="">Egal — alle Typen</option>
+                {craneTypes.map((ct) => (
+                  <option key={ct.slug} value={ct.slug}>{ct.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="hidden sm:block w-px self-stretch bg-gray-200 shrink-0 my-2" />
+
+          {/* Stadt / PLZ field */}
+          <div ref={wrapperRef} className="relative w-full sm:flex-1 text-left">
+            <label htmlFor="sb-city" className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
+              Stadt oder PLZ
+              {plzLabel && <span className="ml-2 text-blue-600 font-normal">→ {plzLabel}</span>}
+            </label>
+            <div className="relative flex items-center sm:h-full">
+              <span className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" aria-hidden>
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </span>
+              {plzLabel && (
+                <span className="hidden sm:block absolute left-12 -top-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-blue-600 whitespace-nowrap pointer-events-none bg-white px-1">
+                  {plzLabel}
+                </span>
+              )}
+              <div className="hidden sm:flex flex-col flex-1 sm:pl-12 sm:pr-3 sm:py-1.5">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-500 leading-none">Standort</span>
+                <input
+                  id="sb-city"
+                  type="text"
+                  value={cityQuery}
+                  onChange={(e) => handleInputChange(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => { if (results.length > 0) setIsOpen(true) }}
+                  placeholder="Stadt oder PLZ…"
+                  autoComplete="off"
+                  className="bg-transparent text-[14px] font-medium text-neutral-900 placeholder:text-neutral-400 placeholder:font-normal focus:outline-none mt-0.5"
+                />
+              </div>
+              {/* Mobile input */}
+              <input
+                type="text"
+                value={cityQuery}
+                onChange={(e) => handleInputChange(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onFocus={() => { if (results.length > 0) setIsOpen(true) }}
+                placeholder="Stadt oder PLZ…"
+                autoComplete="off"
+                className="sm:hidden w-full h-12 bg-white px-4 text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg border border-gray-300"
+              />
+              {isLoading && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <div className="h-3.5 w-3.5 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+                </div>
+              )}
+            </div>
+            {isOpen && results.length > 0 && (
+              <ul className="absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-lg mt-2 max-h-60 overflow-y-auto">
+                {results.map((city, i) => (
+                  <li key={`${city.plz}-${city.name}`}>
+                    <button
+                      type="button"
+                      onMouseDown={() => selectCity(city)}
+                      className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors ${
+                        i === activeIndex ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      <span className="text-gray-400 mr-1">{city.plz}</span>
+                      <span className="font-medium">{city.name}</span>
+                      <span className="text-gray-400 text-[11px] ml-1">{city.state}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
-          {isOpen && results.length > 0 && (
-            <ul className="absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-lg mt-2 max-h-60 overflow-y-auto">
-              {results.map((city, i) => (
-                <li key={`${city.plz}-${city.name}`}>
-                  <button
-                    type="button"
-                    onMouseDown={() => selectCity(city)}
-                    className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors ${
-                      i === activeIndex ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <span className="text-gray-400 mr-1">{city.plz}</span>
-                    <span className="font-medium">{city.name}</span>
-                    <span className="text-gray-400 text-[11px] ml-1">{city.state}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+
+          {/* Search button — editorial/navigation CTA (black). Transaction CTAs
+              across the site ("Angebot anfragen", form submit) stay blue as a
+              deliberate two-tier signal: black = discovery, blue = commitment. */}
+          <button
+            onClick={handleSearch}
+            className="w-full sm:w-auto bg-neutral-950 hover:bg-neutral-800 text-white rounded-lg sm:rounded-full px-6 sm:px-7 h-12 sm:h-12 text-[15px] sm:text-[14px] font-semibold transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm sm:shadow-none"
+          >
+            <svg className="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            Suchen
+          </button>
         </div>
 
-        {/* Search button — editorial/navigation CTA (black). Transaction CTAs
-            across the site ("Angebot anfragen", form submit) stay blue as a
-            deliberate two-tier signal: black = discovery, blue = commitment. */}
-        <button
-          onClick={handleSearch}
-          className="sm:m-1 mt-1 sm:mt-0 w-full sm:w-auto bg-neutral-950 hover:bg-neutral-800 text-white rounded-lg sm:rounded-full px-6 h-12 sm:h-9 text-[15px] sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm sm:shadow-none"
-        >
-          <svg className="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          Suchen
-        </button>
-      </div>
-      {/* Optional project-description field. Collapsed by default to keep the
-          hero scannable; expanded once you click "Projekt beschreiben". When
-          filled, the value rides along to the listing page as ?project=… and
-          prefills the inquiry form's Projektbeschreibung textarea. */}
-      <div className="mt-2 px-1 sm:px-5 sm:pb-3">
-        {!showProjectField ? (
-          <button
-            type="button"
-            onClick={() => setShowProjectField(true)}
-            className="text-[12px] text-neutral-500 hover:text-neutral-800 underline-offset-2 hover:underline transition-colors"
-          >
-            + Projekt beschreiben (optional, hilft beim Matching)
-          </button>
-        ) : (
-          <div>
-            <label htmlFor="search-project" className="block text-[12px] font-medium text-gray-700 mb-1">
-              Projektbeschreibung (optional)
-            </label>
+        {/* Optional project-description field — accordion INSIDE the same
+            surface, separated by border-top so the visual gravity stays
+            stable when expanded. No more floating overlay drift. */}
+        {showProjectField && (
+          <div className="border-t border-gray-200 px-4 sm:px-5 py-3 bg-gray-50/40">
+            <div className="flex items-center justify-between mb-1.5">
+              <label htmlFor="search-project" className="text-[11px] font-semibold uppercase tracking-[0.08em] text-neutral-700">
+                Projektbeschreibung <span className="font-normal text-neutral-400 normal-case tracking-normal">(optional)</span>
+              </label>
+              <button
+                type="button"
+                onClick={() => setShowProjectField(false)}
+                aria-label="Projektbeschreibung schließen"
+                className="text-[11px] text-neutral-400 hover:text-neutral-700"
+              >
+                ✕ schließen
+              </button>
+            </div>
             <textarea
               id="search-project"
               value={projectDescription}
@@ -226,17 +286,35 @@ export function SearchBox() {
               rows={2}
               maxLength={500}
               placeholder="z.B. 13 Terrassenscheiben 450×80 cm aufs Dach, Durchfahrtbreite 3 m, fester Rasen"
-              className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-none"
+              className="w-full text-[13px] bg-white border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-none"
             />
-            <p className="text-[11px] text-neutral-500 mt-1">
+            <p className="text-[11px] text-neutral-500 mt-1.5">
               Anbieter sehen diese Beschreibung in der Anfrage und können das passende Gerät vorschlagen.
             </p>
           </div>
         )}
       </div>
-      {hint && (
-        <p className="text-[12px] text-gray-400 mt-1 px-1 sm:px-5 sm:pb-2">{hint}</p>
-      )}
+
+      {/* Toggle row outside the box — keeps the search bar surface clean
+          when collapsed. Inline with hint text on the same line. */}
+      <div className="flex flex-wrap items-center justify-between gap-2 mt-3 px-1">
+        {!showProjectField ? (
+          <button
+            type="button"
+            onClick={() => setShowProjectField(true)}
+            className="text-[12px] text-neutral-500 hover:text-neutral-900 transition-colors inline-flex items-center gap-1"
+          >
+            <span aria-hidden className="text-neutral-400">＋</span>
+            Projekt beschreiben
+            <span className="text-neutral-400">— hilft beim Matching</span>
+          </button>
+        ) : (
+          <span aria-hidden />
+        )}
+        {hint && (
+          <p className="text-[12px] text-gray-500 sm:text-right">{hint}</p>
+        )}
+      </div>
     </div>
   )
 }
