@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getCraneTypes, getCitiesWithMinCompanies } from '@/lib/queries'
+import type { City } from '@/lib/types'
 import { COUNTRY } from '@/lib/country'
 
 // Regenerate at most daily — prevents per-request rebuilds from churning
@@ -43,10 +44,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // blocked crawl of the 400 healthy pages, showing up as "Gefunden – zurzeit
   // nicht indexiert" in GSC. Re-add after each profile has 500+ words of
   // unique content. Pages are still reachable via the company-section widgets.
-  const [craneTypes, indexableCities] = await Promise.all([
-    getCraneTypes(),
-    getCitiesWithMinCompanies('', 3),
-  ])
+  const craneTypes = await getCraneTypes()
+
+  // Per-type indexable cities. Was a single any-type call with min=3, which
+  // listed every (type × city) URL whenever the city had ≥3 firms total —
+  // even when zero of those firms offered the requested crane type. The
+  // page itself then served `noindex` (page.tsx checks companies.length<3),
+  // so Google logged the URL as "Excluded by 'noindex' tag" and lost trust
+  // in the sitemap. Now each type only lists cities where THAT type has
+  // ≥3 firms, matching the page-level threshold exactly.
+  const indexableCitiesPerType = new Map<string, City[]>(
+    await Promise.all(
+      craneTypes.map(
+        async (ct) => [ct.id, await getCitiesWithMinCompanies(ct.id, 3)] as const,
+      ),
+    ),
+  )
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: toDate(DATE_HOME), changeFrequency: 'weekly', priority: 1 },
@@ -90,7 +103,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cityPages: MetadataRoute.Sitemap = craneTypes.flatMap((ct) => {
     const typeDate = TYPE_CONTENT_DATES[ct.slug] ?? DATE_CITY_REFRESH
     const effectiveDate = maxIsoDate(typeDate, DATE_CITY_REFRESH)
-    return indexableCities.map((city) => ({
+    const cities = indexableCitiesPerType.get(ct.id) ?? []
+    return cities.map((city) => ({
       url: `${baseUrl}/${ct.slug}/${city.slug}`,
       lastModified: toDate(effectiveDate),
       changeFrequency: 'weekly' as const,

@@ -212,15 +212,29 @@ export async function getCompaniesForCraneAndCity(
  * Used for generateStaticParams — only generate pages for cities with enough data.
  */
 export async function getCitiesWithMinCompanies(
-  _craneTypeId: string,
+  craneTypeId: string,
   minCompanies: number = 3
 ): Promise<City[]> {
   // Count only active+relevant companies — matches page-level noindex threshold,
   // so sitemap (which uses this) does not advertise URLs that will be noindexed.
+  // When craneTypeId is non-empty, only firms that actually offer that crane
+  // type are counted toward the threshold. Without this filter the sitemap
+  // listed e.g. /minikran-mieten/wien (0 AT Minikran firms) which then served
+  // a noindex tag — Google sees that as "Excluded by noindex" and erodes
+  // trust in the sitemap. The arg used to be `_craneTypeId` (TODO leftover).
   const [regionsRes, activeRes] = await Promise.all([
     supabase.from('company_regions').select('company_id, city_id'),
     supabase.from('companies').select('id').eq('is_active', true).eq('is_relevant', true),
   ])
+
+  let typeFilter: Set<string> | null = null
+  if (craneTypeId) {
+    const { data } = await supabase
+      .from('company_cranes')
+      .select('company_id')
+      .eq('crane_type_id', craneTypeId)
+    typeFilter = new Set((data ?? []).map((c) => c.company_id))
+  }
 
   const allRegions = regionsRes.data ?? []
   const activeIds = new Set((activeRes.data ?? []).map(c => c.id))
@@ -229,6 +243,7 @@ export async function getCitiesWithMinCompanies(
   const cityCounts = new Map<string, Set<string>>()
   for (const r of allRegions) {
     if (!activeIds.has(r.company_id)) continue
+    if (typeFilter && !typeFilter.has(r.company_id)) continue
     if (!cityCounts.has(r.city_id)) cityCounts.set(r.city_id, new Set())
     cityCounts.get(r.city_id)!.add(r.company_id)
   }
