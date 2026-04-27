@@ -18,6 +18,9 @@ interface CompanySectionProps {
   referencePrice?: string | null
   cityContext?: string | null
   typeContext?: string | null
+  /** Threaded through from page-level searchParams.project to the inquiry
+   *  textarea — captures user's intent at the search step. */
+  initialProjectDescription?: string
 }
 
 export function CompanySection({
@@ -32,6 +35,7 @@ export function CompanySection({
   referencePrice,
   cityContext,
   typeContext,
+  initialProjectDescription,
 }: CompanySectionProps) {
   const [mapCompanies, setMapCompanies] = useState(() =>
     companies
@@ -74,6 +78,7 @@ export function CompanySection({
         referencePrice={referencePrice}
         cityContext={cityContext}
         typeContext={typeContext}
+        initialProjectDescription={initialProjectDescription}
       />
 
       {mapCompanies.length > 0 && (

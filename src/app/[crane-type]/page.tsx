@@ -64,10 +64,10 @@ export default async function CraneTypePage({
   searchParams,
 }: {
   params: Promise<{ 'crane-type': string }>
-  searchParams: Promise<{ plz?: string }>
+  searchParams: Promise<{ plz?: string; project?: string }>
 }) {
   const { 'crane-type': craneTypeSlug } = await params
-  const { plz } = await searchParams
+  const { plz, project } = await searchParams
   const craneType = await getCraneTypeBySlug(craneTypeSlug)
   if (!craneType) notFound()
 
@@ -270,6 +270,7 @@ export default async function CraneTypePage({
             centerLng={10.4515}
             referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
             typeContext={craneType.slug}
+            initialProjectDescription={project}
           />
         </section>
       )}

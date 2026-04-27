@@ -25,6 +25,12 @@ export function SearchBox() {
   const [selectedCity, setSelectedCity] = useState<CityResult | null>(null)
   const [hint, setHint] = useState('')
   const [plzLabel, setPlzLabel] = useState('')
+  // Optional free-text project description — forwarded to the listing page
+  // as ?project=… so the lead form prefills it. Lets project-intent users
+  // (Mario, Mathias) capture context at the search step instead of typing
+  // it again two clicks later in the inquiry form.
+  const [projectDescription, setProjectDescription] = useState('')
+  const [showProjectField, setShowProjectField] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
@@ -84,7 +90,7 @@ export function SearchBox() {
   }
 
   function handleSearch() {
-    const target = resolveSearchTarget({ craneType, cityQuery, selectedCity })
+    const target = resolveSearchTarget({ craneType, cityQuery, selectedCity, projectDescription })
     if (!target) return
     setHint(target.hint ?? '')
     router.push(target.url)
@@ -124,7 +130,7 @@ export function SearchBox() {
             onChange={(e) => setCraneType(e.target.value)}
             className="w-full h-12 sm:h-11 bg-white sm:bg-transparent pl-4 sm:pl-5 pr-3 text-[15px] sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:focus:ring-0 focus:border-blue-500 sm:focus:border-transparent cursor-pointer appearance-none rounded-lg sm:rounded-full border border-gray-300 sm:border-0"
           >
-            <option value="" disabled>Krantyp wählen…</option>
+            <option value="">Egal — alle Typen</option>
             {craneTypes.map((ct) => (
               <option key={ct.slug} value={ct.slug}>{ct.name}</option>
             ))}
@@ -187,14 +193,46 @@ export function SearchBox() {
             deliberate two-tier signal: black = discovery, blue = commitment. */}
         <button
           onClick={handleSearch}
-          disabled={!craneType}
-          className="sm:m-1 mt-1 sm:mt-0 w-full sm:w-auto bg-neutral-950 hover:bg-neutral-800 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed text-white rounded-lg sm:rounded-full px-6 h-12 sm:h-9 text-[15px] sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm sm:shadow-none"
+          className="sm:m-1 mt-1 sm:mt-0 w-full sm:w-auto bg-neutral-950 hover:bg-neutral-800 text-white rounded-lg sm:rounded-full px-6 h-12 sm:h-9 text-[15px] sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm sm:shadow-none"
         >
           <svg className="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           Suchen
         </button>
+      </div>
+      {/* Optional project-description field. Collapsed by default to keep the
+          hero scannable; expanded once you click "Projekt beschreiben". When
+          filled, the value rides along to the listing page as ?project=… and
+          prefills the inquiry form's Projektbeschreibung textarea. */}
+      <div className="mt-2 px-1 sm:px-5 sm:pb-3">
+        {!showProjectField ? (
+          <button
+            type="button"
+            onClick={() => setShowProjectField(true)}
+            className="text-[12px] text-neutral-500 hover:text-neutral-800 underline-offset-2 hover:underline transition-colors"
+          >
+            + Projekt beschreiben (optional, hilft beim Matching)
+          </button>
+        ) : (
+          <div>
+            <label htmlFor="search-project" className="block text-[12px] font-medium text-gray-700 mb-1">
+              Projektbeschreibung (optional)
+            </label>
+            <textarea
+              id="search-project"
+              value={projectDescription}
+              onChange={(e) => setProjectDescription(e.target.value)}
+              rows={2}
+              maxLength={500}
+              placeholder="z.B. 13 Terrassenscheiben 450×80 cm aufs Dach, Durchfahrtbreite 3 m, fester Rasen"
+              className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-none"
+            />
+            <p className="text-[11px] text-neutral-500 mt-1">
+              Anbieter sehen diese Beschreibung in der Anfrage und können das passende Gerät vorschlagen.
+            </p>
+          </div>
+        )}
       </div>
       {hint && (
         <p className="text-[12px] text-gray-400 mt-1 px-1 sm:px-5 sm:pb-2">{hint}</p>

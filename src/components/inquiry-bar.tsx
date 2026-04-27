@@ -21,6 +21,10 @@ interface InquiryBarProps {
   craneTypeId?: string
   craneTypeName?: string
   cityName?: string
+  /** Pre-filled Projektbeschreibung — set when the user typed a description in
+   *  the home SearchBox and was forwarded here via ?project=… query param.
+   *  Used as `defaultValue` so the user can still edit it before submitting. */
+  initialProjectDescription?: string
 }
 
 export function InquiryBar({
@@ -30,6 +34,7 @@ export function InquiryBar({
   craneTypeId,
   craneTypeName,
   cityName,
+  initialProjectDescription,
 }: InquiryBarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
@@ -229,6 +234,7 @@ export function InquiryBar({
                     id="ib-description"
                     name="description"
                     rows={3}
+                    defaultValue={initialProjectDescription}
                     placeholder="Was soll gehoben werden? Gewicht, Hohe, Zufahrt..."
                   />
                 </div>

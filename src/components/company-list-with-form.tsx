@@ -51,6 +51,10 @@ interface CompanyListWithFormProps {
   cityContext?: string | null
   /** Crane-type slug passed to firm_events for the same reason */
   typeContext?: string | null
+  /** Pre-filled from ?project=… on the listing page — passed through to
+   *  InquiryBar so the inquiry textarea opens with the user's home-page
+   *  description already inside. */
+  initialProjectDescription?: string
 }
 
 export function CompanyListWithForm({
@@ -64,6 +68,7 @@ export function CompanyListWithForm({
   referencePrice,
   cityContext,
   typeContext,
+  initialProjectDescription,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
@@ -323,6 +328,7 @@ export function CompanyListWithForm({
         craneTypeId={craneTypeId}
         craneTypeName={craneTypeName}
         cityName={cityName}
+        initialProjectDescription={initialProjectDescription}
       />
     </div>
   )
