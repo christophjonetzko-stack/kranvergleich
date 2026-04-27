@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   alternates: alternatesFor('/ratgeber'),
 }
 
+// Curated list of real ratgeber pages (those that exist as standalone routes
+// under /ratgeber/<slug>/page.tsx). DO NOT add slugs here that redirect to a
+// type page in next.config.ts — Google was discovering these tiles, following
+// the link, getting a 308, and never seeing the canonical type page directly,
+// which made the rewrite path look like the canonical one. Per 2026-04-27
+// audit five ratgeber were genuinely orphan (no internal links anywhere) —
+// adding them here is what gets Googlebot to crawl them.
 const articles = [
   {
     slug: 'was-kostet-ein-kran',
@@ -19,32 +26,22 @@ const articles = [
   {
     slug: 'welchen-kran-brauche-ich',
     title: 'Welchen Kran brauche ich?',
-    description: '8 typische Baustellen-Szenarien mit Empfehlung: Dacharbeiten, Glasmontage, Schwerlast, Großbaustelle und mehr. Plus Vergleichstabelle aller 8 Krantypen.',
+    description: '8 typische Baustellen-Szenarien mit Empfehlung — plus Minikran vs. Autokran im direkten Vergleich. Vergleichstabelle aller 8 Krantypen.',
   },
   {
-    slug: 'autokran-mieten-kosten',
-    title: 'Autokran mieten: Kosten pro Tag, Stunde & Einsatz',
-    description: 'Autokran mieten ab 500€/Tag inkl. Kranführer. Preise nach Tonnage (30t–500t), Stundenpreise und typische Einsatzkosten.',
+    slug: 'krantypen',
+    title: 'Krantypen im Vergleich: 8 Typen, Kosten & Einsatzgebiete',
+    description: 'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze. Entscheidungshilfe mit Links zu Anbietern.',
   },
   {
-    slug: 'baukran-mieten-kosten',
-    title: 'Baukran mieten: Kosten, Dauer & Genehmigung',
-    description: 'Baukran (Turmdrehkran) mieten ab 4.000€/Monat. Montagekosten, Genehmigung, Mietdauer und Vergleich mit Autokran.',
+    slug: 'kran-mieten-hausbau',
+    title: 'Kran mieten beim Hausbau: Welcher Kran, welche Kosten?',
+    description: 'Welcher Kran beim Einfamilienhaus, Mehrfamilienhaus oder Anbau? Kosten, Mietdauer und Tipps zur Auswahl für Bauherren.',
   },
   {
-    slug: 'dachdeckerkran-mieten',
-    title: 'Dachdeckerkran mieten: Kosten, Einsatz & Anbieter 2026',
-    description: 'Dachdeckerkran mieten ab 200€/Tag. Hakenhöhe bis 30m, ideal für Dachsanierung & Solaranlagen. Kosten und Vergleich mit Autokran.',
-  },
-  {
-    slug: 'mobilkran-mieten-kosten',
-    title: 'Mobilkran mieten: Kosten, Tragkraft & Einsatz 2026',
-    description: 'Mobilkran mieten ab 600€/Tag inkl. Kranführer. Tragkraft 20–1.200t. Preisliste nach Tonnage und Unterschied zum Autokran.',
-  },
-  {
-    slug: 'minikran-vs-autokran',
-    title: 'Minikran vs. Autokran — Wann brauchen Sie was?',
-    description: 'Die zwei beliebtesten Krantypen im direkten Vergleich: Tragkraft, Kosten, Führerscheinpflicht, Einsatzbereiche.',
+    slug: 'solaranlage-kran-mieten',
+    title: 'Kran für Solaranlage mieten: Kosten & Tipps',
+    description: 'Solarmodule aufs Dach: Welcher Kran, was kostet er und wie viele Module pro Tag schafft man? Praxis-Ratgeber für PV-Installation.',
   },
   {
     slug: 'kran-mieten-privatperson',
