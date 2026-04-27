@@ -240,7 +240,7 @@ export function KranBerater() {
                 Hallo! Beschreiben Sie kurz Ihr Projekt — ich helfe Ihnen, den passenden
                 Krantyp zu finden und passende Anbieter zu sehen.
                 <p className="mt-2 text-gray-400 text-[12px]">
-                  z.B. „Stahlhalle 45×25m bauen, koło Hannover" oder „Glasscheiben
+                  z.B. „Stahlhalle 45×25m bauen, bei Hannover" oder „Glasscheiben
                   aufs Dach, 22m Höhe".
                 </p>
               </div>
