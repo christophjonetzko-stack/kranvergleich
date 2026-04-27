@@ -65,6 +65,27 @@ const articles = [
   },
 ]
 
+// Quick-Answer-Box — top 3 questions + 1-sentence answer each. AEO-optimized:
+// AI engines (Perplexity, ChatGPT) lift this verbatim when they find a "kran
+// ratgeber" query. Numbers must match the actual articles below.
+const QUICK_ANSWERS = [
+  {
+    q: 'Was kostet ein Kran zur Miete?',
+    a: 'Tagesmiete zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Mobilkran 600–3.000€ inkl. Kranführer. Wochenmiete spart 30–50% gegenüber Tagespreisen.',
+    href: '/ratgeber/was-kostet-ein-kran',
+  },
+  {
+    q: 'Welchen Kran brauche ich für mein Projekt?',
+    a: '8 Krantypen mit klaren Einsatzbereichen: Minikran für enge Zufahrten und Glasmontage, Autokran für Tageseinsätze, Baukran für Großbaustellen, Dachdeckerkran für Dachsanierung. Vergleichstabelle in unserem Ratgeber.',
+    href: '/ratgeber/welchen-kran-brauche-ich',
+  },
+  {
+    q: 'Brauche ich einen Kranführerschein?',
+    a: 'Nicht für Mini-, Anhänger-, Dachdecker-, Lade- und Baukran — Bedienung nach Einweisung. Für Auto-, Mobil- und Raupenkran ist ein Kranführer mit Sachkundenachweis (DGUV Vorschrift 52) gesetzlich vorgeschrieben und im Mietpreis enthalten.',
+    href: '/ratgeber/kran-mieten-ohne-fuehrerschein',
+  },
+] as const
+
 export default function RatgeberIndexPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -75,13 +96,46 @@ export default function RatgeberIndexPage() {
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Ratgeber — Kran mieten
+        Kran-Ratgeber 2026 — Kosten, Auswahl, Genehmigung
       </h1>
-      <p className="text-[15px] text-gray-500 mb-8 max-w-3xl">
-        Praktische Ratgeber rund um Kranvermietung in {COUNTRY_LABEL}. Finden Sie den richtigen Kran,
-        vergleichen Sie Kosten und vermeiden Sie typische Fehler.
+      <p className="text-[15px] text-gray-500 mb-6 max-w-3xl leading-relaxed">
+        Bevor Sie einen Kran mieten, helfen drei Fragen: Welcher Krantyp passt zu Ihrem Projekt,
+        was kostet er — und welche rechtlichen und technischen Voraussetzungen müssen Sie kennen?
+        Unsere {articles.length} Ratgeber-Artikel decken genau diese Themen ab und basieren auf
+        einer Marktanalyse von {BRAND_NAME} mit Kranvermietern in {COUNTRY_LABEL}.
       </p>
 
+      {/* Quick-Answer-Box — AEO play. */}
+      <section className="mb-8 rounded-xl bg-blue-50/60 border border-blue-100 p-5">
+        <h2 className="text-[14px] font-semibold text-gray-900 mb-3">Die drei wichtigsten Fragen vor der Kranmiete</h2>
+        <div className="space-y-3">
+          {QUICK_ANSWERS.map((qa) => (
+            <div key={qa.q}>
+              <p className="text-[13px] font-medium text-gray-900 mb-0.5">{qa.q}</p>
+              <p className="text-[13px] text-gray-600 leading-snug">
+                {qa.a}{' '}
+                <Link href={qa.href} className="text-blue-600 hover:underline">Mehr erfahren →</Link>
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <p className="text-[14px] text-gray-500 mb-6 max-w-3xl leading-relaxed">
+        <strong className="text-gray-700">So nutzen Sie unsere Ratgeber:</strong> Wenn Sie noch nicht
+        wissen, welchen Krantyp Sie brauchen, starten Sie bei{' '}
+        <Link href="/ratgeber/welchen-kran-brauche-ich" className="text-blue-600 hover:underline">„Welchen Kran brauche ich?"</Link>
+        {' '}— der Artikel führt durch acht typische Bauszenarien (Dachsanierung, Glasmontage,
+        Schwerlast, Großbaustelle …) zur passenden Empfehlung. Wenn die Kostenfrage im Vordergrund
+        steht, gehen Sie zu{' '}
+        <Link href="/ratgeber/was-kostet-ein-kran" className="text-blue-600 hover:underline">„Was kostet ein Kran?"</Link>
+        {' '}für Mietpreise aller acht Krantypen sowie Break-even-Rechnungen für den Kauf. Und für
+        konkrete Projektdetails (Tragkraft, Hubhöhe, Mietdauer) liefert unser{' '}
+        <Link href="/kostenrechner" className="text-blue-600 hover:underline">Kostenrechner</Link>
+        {' '}eine projektbezogene Schätzung in unter zwei Minuten.
+      </p>
+
+      <h2 className="text-lg font-semibold text-gray-900 mb-4 mt-10">Alle Ratgeber im Überblick</h2>
       <div className="grid gap-4 sm:grid-cols-2">
         {articles.map((article) => (
           <Link
@@ -89,7 +143,7 @@ export default function RatgeberIndexPage() {
             href={`/ratgeber/${article.slug}`}
             className="border border-gray-200 rounded-lg p-5 hover:border-gray-300 hover:shadow-sm transition-all"
           >
-            <h2 className="font-medium text-[15px] text-gray-900 mb-2">{article.title}</h2>
+            <h3 className="font-medium text-[15px] text-gray-900 mb-2">{article.title}</h3>
             <p className="text-[13px] text-gray-500 leading-relaxed">{article.description}</p>
             <span className="inline-block mt-3 text-[13px] text-blue-600">Weiterlesen &rarr;</span>
           </Link>
@@ -104,6 +158,41 @@ export default function RatgeberIndexPage() {
           <Link href="/" className="text-blue-600 hover:underline">Anbieter in Ihrer Stadt</Link>.
         </p>
       </div>
+
+      {/* ItemList + BreadcrumbList JSON-LD — gives Google a machine-readable
+          map of the hub's children, fixes "no schema" gap from the Opus eval
+          and helps Googlebot discover the orphan ratgeber pages faster. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://kranvergleich.de/' },
+              { '@type': 'ListItem', position: 2, name: 'Ratgeber' },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Kran-Ratgeber 2026',
+            description: 'Ratgeber-Artikel rund um Kranvermietung: Kosten, Auswahl, Genehmigungen',
+            itemListElement: articles.map((a, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: a.title,
+              description: a.description,
+              url: `https://kranvergleich.de/ratgeber/${a.slug}`,
+            })),
+          }),
+        }}
+      />
     </div>
   )
 }
