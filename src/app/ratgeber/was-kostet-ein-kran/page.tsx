@@ -4,24 +4,75 @@ import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, TAX_LABEL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { cranePrices } from '@/data/crane-prices'
 
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran kaufen oder mieten? Break-even-Rechnung & Entscheidungshilfe 2026',
+  title: 'Was kostet ein Kran? Miet- & Kaufpreise 2026 im Vergleich',
   description:
-    'Lohnt sich der Kauf eines Krans oder ist Miete günstiger? Kaufpreise, Betriebskosten, Break-even pro Krantyp und Entscheidungshilfe — ab wann sich der Kauf rechnet.',
+    'Was kostet ein Kran zur Miete oder zum Kauf? Tagespreise ab 150€ (Anhängerkran) bis 5.000€ (Raupenkran). Komplette Mietpreis-Tabelle aller 8 Krantypen 2026.',
   alternates: alternatesFor('/ratgeber/was-kostet-ein-kran'),
   openGraph: {
-    title: 'Kran kaufen oder mieten? Break-even-Rechnung 2026',
+    title: 'Was kostet ein Kran? Mietpreise 2026 ab 150€/Tag',
     description:
-      'Lohnt sich der Kauf eines Krans oder ist Miete günstiger? Kaufpreise, Betriebskosten und Break-even pro Krantyp im Vergleich.',
+      'Komplette Mietpreis-Übersicht aller 8 Krantypen: Tag, Woche, Monat. Plus Kaufpreise und Break-even-Rechnung.',
     type: 'website',
     url: '/ratgeber/was-kostet-ein-kran',
   },
 }
 
+// Display name + key technical context per crane-type slug. Used in the
+// Mietpreis-Referenztabelle below — same vocabulary as the rest of the
+// site so the user reads consistent language.
+const CRANE_DISPLAY: Record<string, { name: string; tonnage: string }> = {
+  'anhaengerkran-mieten': { name: 'Anhängerkran', tonnage: 'bis 1,5 t' },
+  'minikran-mieten': { name: 'Minikran (Spinnenkran)', tonnage: '0,5–3 t' },
+  'dachdeckerkran-mieten': { name: 'Dachdeckerkran', tonnage: '0,5–2 t' },
+  'ladekran-mieten': { name: 'Ladekran (LKW)', tonnage: '1–30 t' },
+  'autokran-mieten': { name: 'Autokran', tonnage: '10–500 t' },
+  'mobilkran-mieten': { name: 'Mobilkran', tonnage: '20–1.200 t' },
+  'baukran-mieten': { name: 'Baukran (Turmdrehkran)', tonnage: '1–20 t' },
+  'raupenkran-mieten': { name: 'Raupenkran', tonnage: '50–3.000 t' },
+}
+// Order: cheapest first — informational-intent visitors expect "ab X€" up top.
+const PRICE_TABLE_ORDER = [
+  'anhaengerkran-mieten',
+  'dachdeckerkran-mieten',
+  'minikran-mieten',
+  'ladekran-mieten',
+  'autokran-mieten',
+  'mobilkran-mieten',
+  'baukran-mieten',
+  'raupenkran-mieten',
+] as const
+
 const faqs = [
+  {
+    question: 'Was kostet ein Kran pro Tag?',
+    answer:
+      'Ein Kran kostet zur Miete zwischen 150€/Tag (Anhängerkran) und 5.000€/Tag (Schwerlast-Raupenkran). Die häufigsten Krantypen: Anhängerkran 150–350€, Dachdeckerkran 200–450€, Minikran 250–500€, Ladekran 300–800€, Autokran 500–2.000€ (inkl. Kranführer), Mobilkran 600–3.000€ (inkl. Kranführer), Baukran 300–1.500€/Tag (Monatsmiete üblicher). Alle Preise netto zzgl. MwSt., ohne Transport.',
+  },
+  {
+    question: 'Was kostet ein Kran pro Stunde?',
+    answer:
+      'Stundenpreise sind seltener als Tagespreise — die meisten Vermieter berechnen mindestens einen Tagessatz, weil An- und Abfahrt sowie Auf- und Abbau bereits 1–3 Stunden binden. Bei reinen Stundeneinsätzen (z. B. Hebebühne aufs Dach setzen) liegen die Preise bei 80–250€/Stunde inkl. Kranführer für einen mittleren Autokran. Mindestbuchung typischerweise 4 Stunden.',
+  },
+  {
+    question: 'Was kostet ein Mobilkran pro Tag?',
+    answer:
+      'Ein Mobilkran kostet zwischen 600€ und 3.000€ pro Tag inklusive Kranführer. Der Preis hängt stark von der Tragkraft ab: Mobilkran 30–50t ca. 600–900€/Tag, Mobilkran 80–120t ca. 1.300–1.800€/Tag, Mobilkran 200–500t ab 2.500€/Tag. Hinzu kommen je nach Anbieter 1–3€ pro km Anfahrt sowie Standgebühr ab 50€/Tag bei mehrtägigen Einsätzen.',
+  },
+  {
+    question: 'Was kostet ein Baukran pro Monat?',
+    answer:
+      'Ein Baukran (Turmdrehkran) kostet zwischen 4.000€ und 25.000€ pro Monat — abhängig von Hakenhöhe, Auslegerlänge und Tragkraft. Ein typischer Schnellmontagekran für ein Einfamilienhaus liegt bei 4.500–7.000€/Monat. Hinzu kommen einmalig 3.000–8.000€ für Montage und Demontage sowie Strom- und Fundamentkosten. Bei Mietzeiten unter 4 Wochen werden meist Tagespreise berechnet.',
+  },
+  {
+    question: 'Was kostet ein Autokran 50t?',
+    answer:
+      'Ein Autokran mit 50 Tonnen Tragkraft kostet zur Miete ca. 800–1.100€ pro Tag inkl. Kranführer. Bei Wochenmiete sinkt der Tagespreis auf ca. 500–700€ (Wochenpreis 3.500–4.900€). Anfahrt typischerweise 2–4€/km, Mindesteinsatzzeit 4–8 Stunden. Ein neuer Autokran 50t kostet zum Kauf 500.000–800.000€, gebraucht 150.000–300.000€.',
+  },
   {
     question: 'Lohnt es sich, einen Autokran zu kaufen?',
     answer:
@@ -65,31 +116,120 @@ export default async function WasKostetEinKranPage() {
         <span className="mx-1.5">/</span>
         <Link href="/ratgeber" className="hover:text-gray-600">Ratgeber</Link>
         <span className="mx-1.5">/</span>
-        <span className="text-gray-900">Kran kaufen oder mieten?</span>
+        <span className="text-gray-900">Was kostet ein Kran?</span>
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Kran kaufen oder mieten? Break-even-Rechnung &amp; Entscheidungshilfe 2026
+        Was kostet ein Kran? Miet- und Kaufpreise 2026 im Überblick
       </h1>
-      <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
-        Ein Kran kostet beim Kauf zwischen <strong className="text-gray-900">25.000€</strong> (Anhängerkran)
-        und <strong className="text-gray-900">5.000.000€</strong> (Schwerlast-Raupenkran) — und dann kommen
-        jährlich noch einmal 15–30% des Kaufpreises für Wartung, Versicherung, Kranführer und Wertverlust
-        hinzu. Wir rechnen vor, ab wie vielen Einsatztagen pro Jahr sich der Kauf gegenüber der Miete rechnet.
-      </p>
-      <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
-        <p className="text-[13px] text-gray-700">
-          <strong className="text-gray-900">Kurz gesagt:</strong> Bei kleinen Kranen (Anhängerkran, Minikran)
-          lohnt sich der Kauf ab ca. 40–80 Einsatztagen/Jahr. Bei mittleren (Autokran 30–80t) erst ab
-          150–220 Tagen. Bei Schwerlastkranen (Mobil-/Raupenkran) fast nie — diese werden praktisch immer
-          gemietet oder über Leasing finanziert.
-        </p>
-      </div>
-      <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026 | Alle Preise netto zzgl. {TAX_LABEL}</p>
 
-      {/* TOC */}
+      {/* AEO Kurzantwort — first content block, optimized for ChatGPT/Perplexity citation. */}
+      <div className="bg-blue-50 border border-blue-100 rounded-lg p-5 mb-5">
+        <p className="text-[13px] font-semibold text-gray-900 mb-2">Was kostet ein Kran? — Kurzantwort:</p>
+        <p className="text-[14px] text-gray-700 leading-relaxed">
+          Ein Kran kostet <strong className="text-gray-900">zur Miete zwischen 150€/Tag</strong> (Anhängerkran)
+          und <strong className="text-gray-900">5.000€/Tag</strong> (Schwerlast-Raupenkran). Bei den häufigsten
+          Krantypen zahlen Sie: Anhängerkran 150–350€, Dachdeckerkran 200–450€, Minikran 250–500€,
+          Autokran 500–2.000€ (inkl. Kranführer), Mobilkran 600–3.000€ (inkl. Kranführer) pro Tag.
+          Wochen- und Monatspreise sind deutlich günstiger pro Tag — z.B. Mobilkran 600€/Tag oder
+          10.000€/Monat (entspricht ~330€/Tag).
+          <strong className="text-gray-900"> Beim Kauf</strong> liegen die Preise zwischen 25.000€ (Anhängerkran)
+          und 5.000.000€ (Schwerlast-Raupenkran). Detaillierte Tabelle unten.
+        </p>
+        <p className="text-[11px] text-gray-500 mt-2">Stand: 2026 · Alle Preise netto zzgl. {TAX_LABEL}, ohne Transport / An- &amp; Abfahrt.</p>
+      </div>
+
+      {/* Mietpreis-Referenztabelle — primary intent match for "was kostet ein kran"
+          (informational, Mietpreis-driven). Kaufpreise + Break-even bleiben weiter
+          unten als sekundärer Zweck. */}
+      <section id="mietpreise" className="mb-10 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Was kostet ein Kran zur Miete? Tagespreise, Wochenpreise, Monatspreise
+        </h2>
+        <p className="text-[14px] text-gray-600 mb-4 leading-relaxed">
+          Über 80% aller Kraneinsätze in {COUNTRY_LABEL} laufen über Miete — die folgende Tabelle zeigt
+          Richtwerte für alle 8 Krantypen, basierend auf Marktdurchschnitt 2026. Längere Mietdauern
+          senken den effektiven Tagespreis deutlich (eine Wochenmiete spart 30–50% gegenüber 5 Einzeltagen).
+        </p>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="py-3 px-4 text-left font-medium text-gray-900">Krantyp</th>
+                <th className="py-3 px-4 text-left font-medium text-gray-900">Tragkraft</th>
+                <th className="py-3 px-4 text-left font-medium text-gray-900 whitespace-nowrap">Tagespreis</th>
+                <th className="py-3 px-4 text-left font-medium text-gray-900 whitespace-nowrap">Wochenpreis</th>
+                <th className="py-3 px-4 text-left font-medium text-gray-900 whitespace-nowrap">Monatspreis</th>
+                <th className="py-3 px-4 text-left font-medium text-gray-900">Kranführer</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600">
+              {PRICE_TABLE_ORDER.map((slug, idx) => {
+                const p = cranePrices.find(x => x.craneTypeSlug === slug)
+                const meta = CRANE_DISPLAY[slug]
+                if (!p || !meta) return null
+                const fmt = (n: number) => n.toLocaleString('de-DE')
+                return (
+                  <tr key={slug} className={`border-t ${idx % 2 ? 'bg-gray-50' : ''}`}>
+                    <td className="py-3 px-4 font-medium text-gray-900">
+                      <Link href={`/${slug}`} className="hover:text-blue-600 hover:underline">{meta.name}</Link>
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">{meta.tonnage}</td>
+                    <td className="py-3 px-4 whitespace-nowrap">{fmt(p.dayFrom)}–{fmt(p.dayTo)}€</td>
+                    <td className="py-3 px-4 whitespace-nowrap">{fmt(p.weekFrom)}–{fmt(p.weekTo)}€</td>
+                    <td className="py-3 px-4 whitespace-nowrap">{fmt(p.monthFrom)}–{fmt(p.monthTo)}€</td>
+                    <td className="py-3 px-4 text-gray-500">{p.includesOperator ? 'inklusive' : 'nicht enthalten'}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[11px] text-gray-400 mt-2">
+          Richtwerte 2026, ohne Transport und ohne Sondergenehmigungen. Bei Auto-, Mobil- und
+          Raupenkranen ist der Kranführer gesetzlich vorgeschrieben und im Mietpreis enthalten.
+          Bei Mini-, Anhänger-, Dachdecker-, Lade- und Baukran übernehmen Sie die Bedienung selbst
+          (Einweisung durch den Vermieter typischerweise inklusive).
+        </p>
+
+        {/* Beispielrechnungen — concrete numbers Google rewards. */}
+        <h3 className="text-[15px] font-semibold text-gray-900 mt-6 mb-3">Drei typische Beispielrechnungen</h3>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
+            <p className="text-[12px] text-gray-500 mb-1">Dachstuhl heben</p>
+            <p className="text-[14px] font-semibold text-gray-900 mb-2">~850€</p>
+            <p className="text-[12px] text-gray-500 leading-snug">
+              Autokran 30t, 1 Tag, inkl. Kranführer. Klassischer Einsatz beim Einfamilienhaus —
+              Aufstellen vor dem Haus, alle Dachstuhl-Elemente in 4–6 Stunden gehoben.
+            </p>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
+            <p className="text-[12px] text-gray-500 mb-1">Glasmontage</p>
+            <p className="text-[14px] font-semibold text-gray-900 mb-2">~480€</p>
+            <p className="text-[12px] text-gray-500 leading-snug">
+              Minikran (Spinnenkran) mit Vakuumheber, 1 Tag, Selbstbedienung nach Einweisung.
+              Passt durch 80 cm Türöffnung — ideal für Innenräume und Hinterhöfe.
+            </p>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
+            <p className="text-[12px] text-gray-500 mb-1">Baukran für EFH (4 Monate)</p>
+            <p className="text-[14px] font-semibold text-gray-900 mb-2">~28.000€</p>
+            <p className="text-[12px] text-gray-500 leading-snug">
+              Schnellmontagekran 30 m Hakenhöhe, 4 Monate Miete + Montage/Demontage.
+              Inkl. Wartung und TÜV-Abnahme. Bedienung durch eigenen Bauleiter mit Kranschein.
+            </p>
+          </div>
+        </div>
+        <p className="text-[12px] text-gray-500 mt-4">
+          Konkretes Angebot in Ihrer Region:{' '}
+          <Link href="/" className="text-blue-600 hover:underline">vergleichen Sie jetzt {anbieterCount}+ Anbieter in {COUNTRY_LABEL}</Link>
+          {' '}— oder nutzen Sie unseren <Link href="/kostenrechner" className="text-blue-600 hover:underline">Kostenrechner</Link> für eine projektbezogene Schätzung.
+        </p>
+      </section>
+
+      {/* TOC — refocused on "was kostet ein kran" intent first, then the kaufen vs mieten content. */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
-        <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
+        <p className="text-[13px] font-medium text-gray-900 mb-2">Weiterführende Inhalte</p>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#kaufpreise" className="text-[13px] text-blue-600 hover:underline">Was kostet ein Kran zum Kauf?</a></li>
           <li><a href="#laufende-kosten" className="text-[13px] text-blue-600 hover:underline">Versteckte Kosten beim Kranbesitz</a></li>
@@ -499,7 +639,7 @@ export default async function WasKostetEinKranPage() {
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://kranvergleich.de/' },
               { '@type': 'ListItem', position: 2, name: 'Ratgeber', item: 'https://kranvergleich.de/ratgeber' },
-              { '@type': 'ListItem', position: 3, name: 'Kran kaufen oder mieten?' },
+              { '@type': 'ListItem', position: 3, name: 'Was kostet ein Kran?' },
             ],
           }),
         }}
