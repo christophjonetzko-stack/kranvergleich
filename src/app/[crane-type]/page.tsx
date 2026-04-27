@@ -71,6 +71,15 @@ export default async function CraneTypePage({
   const craneType = await getCraneTypeBySlug(craneTypeSlug)
   if (!craneType) notFound()
 
+  // Static info from crane-types.ts gives us the synonyms array. Rendered
+  // below the description so Google sees terms like "Turmdrehkran" /
+  // "Spinnenkran" on the real /baukran-mieten / /minikran-mieten page —
+  // critical because /turmdrehkran-mieten and /spinnenkran-mieten redirect
+  // here (next.config.ts) but the redirect alone doesn't carry the keyword
+  // onto the destination's content; without the keyword in body text Google
+  // doesn't rank the destination for those searches.
+  const craneTypeStatic = craneTypesList.find((ct) => ct.slug === craneTypeSlug)
+
   const [companies, cities, siteStats] = await Promise.all([
     getCompaniesForCraneType(craneType.id, plz),
     getCities(),
@@ -123,6 +132,11 @@ export default async function CraneTypePage({
           <p className="text-[15px] text-neutral-600 mb-3">
             {craneType.description}
           </p>
+          {craneTypeStatic?.synonyms && craneTypeStatic.synonyms.length > 0 && (
+            <p className="text-[13px] text-neutral-500 mb-3">
+              Auch bekannt als: {craneTypeStatic.synonyms.join(', ')}.
+            </p>
+          )}
 
           {/* Specs inline */}
           <div className="flex flex-wrap gap-4 text-[13px] text-neutral-500 mb-3">

@@ -110,6 +110,75 @@ const nextConfig: NextConfig = {
         destination: '/anhaengerkran-mieten',
         permanent: true,
       },
+      // === Synonym redirects added 2026-04-27 from GSC zero-click audit. ===
+      // Each query below had ≥40 impressions and 0 clicks over the last
+      // 90 days because the URL form Google was indexing didn't exist.
+      // Redirect consolidates ranking signal into the real type page.
+      // Type pages also got synonym mentions in their H1/intro so the
+      // real page can rank for the synonym keyword (redirect alone keeps
+      // Google ignoring the alias for ranking purposes).
+      // Baukran family — turmdrehkran/schnellbaukran/baustellenkran/mobilbaukran
+      // are all colloquial / B2B / regional names for the same construction
+      // tower crane category.
+      {
+        // 65 imp pos 24.4 — Schnellbaukran = quick-erect tower crane
+        source: '/schnellbaukran-mieten',
+        destination: '/baukran-mieten',
+        permanent: true,
+      },
+      {
+        // 59 imp pos 27.5 — Baustellenkran = colloquial "construction-site crane"
+        source: '/baustellenkran-mieten',
+        destination: '/baukran-mieten',
+        permanent: true,
+      },
+      {
+        // 49 imp pos 33.6 — Mobilbaukran = mobile construction tower crane
+        source: '/mobilbaukran-mieten',
+        destination: '/baukran-mieten',
+        permanent: true,
+      },
+      {
+        // 42 imp pos 19.2 — Turmdrehkran = tower (rotating) crane, B2B term
+        source: '/turmdrehkran-mieten',
+        destination: '/baukran-mieten',
+        permanent: true,
+      },
+      // Mobilkran family — plural forms + "mobiler Kran" (grammatical variant)
+      {
+        // 53 imp pos 44.4 — German plural of Mobilkran
+        source: '/mobilkrane-mieten',
+        destination: '/mobilkran-mieten',
+        permanent: true,
+      },
+      {
+        // 64 imp pos 44.4 — "mobilen Kran" inflected form ("rent a mobile crane")
+        source: '/mobilen-kran-mieten',
+        destination: '/mobilkran-mieten',
+        permanent: true,
+      },
+      // Minikran family — Spinnenkran (spider crane, outriggers, indoor use)
+      // and Miniraupenkran (mini crawler) both functionally fit Minikran better
+      // than Raupenkran — they're compact-footprint cranes.
+      {
+        // 48 imp pos 20.6 — spider crane for tight access
+        source: '/spinnenkran-mieten',
+        destination: '/minikran-mieten',
+        permanent: true,
+      },
+      {
+        // 59 imp pos 46.9 — compound: mini + raupen (crawler), small format
+        source: '/miniraupenkran-mieten',
+        destination: '/minikran-mieten',
+        permanent: true,
+      },
+      // /mietkran (rental-crane noun form) — same cannibalization story as
+      // /kranmiete: separate URL stem confused Google. 68 imp pos 20 in GSC.
+      {
+        source: '/mietkran',
+        destination: '/kran-mieten-preise',
+        permanent: true,
+      },
       // /ratgeber/autokran-mieten-kosten merged into /autokran-mieten
       // (0 imp vs 228 imp pos 40 in GSC) — content moved into ratgeber
       // section on the type page
