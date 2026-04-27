@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,8 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+
+const AVATAR_SRC = '/images/kran-berater-avatar.png'
 
 /**
  * Floating "Kran-Berater" chat bubble — global widget rendered in layout.tsx.
@@ -208,39 +211,56 @@ export function KranBerater() {
   return (
     <>
       {/* Floating launcher — bottom-right, hidden until React hydrates so the
-          SSR HTML stays clean for SEO. */}
+          SSR HTML stays clean for SEO. Avatar shown in a circle stamp on the
+          dark pill so the bot reads as a person, not a generic AI emoji. */}
       {hydrated && (
         <button
           type="button"
           aria-label="Kran-Berater öffnen"
           onClick={() => setOpen(true)}
-          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white px-4 py-3 shadow-lg transition-colors"
+          className="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white pl-1.5 pr-4 py-1.5 shadow-lg transition-colors"
         >
-          <span aria-hidden className="text-[18px] leading-none">🤖</span>
-          <span className="text-[13px] font-medium hidden sm:inline">Kran-Berater</span>
+          <span className="relative inline-block h-9 w-9 rounded-full overflow-hidden bg-white ring-2 ring-white shrink-0">
+            <Image
+              src={AVATAR_SRC}
+              alt=""
+              width={36}
+              height={36}
+              priority
+              className="h-full w-full object-cover"
+            />
+          </span>
+          <span className="text-[13px] font-medium hidden sm:inline">Kran-Berater fragen</span>
           {messages.length > 0 && (
-            <span aria-hidden className="ml-1 h-1.5 w-1.5 rounded-full bg-blue-400" />
+            <span aria-hidden className="ml-1 h-2 w-2 rounded-full bg-emerald-400" />
           )}
         </button>
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
-          <DialogHeader className="px-5 py-3 border-b">
-            <DialogTitle className="text-[15px] font-semibold flex items-center gap-2">
-              <span aria-hidden>🤖</span>
-              Kran-Berater
+          <DialogHeader className="px-5 py-3 border-b bg-gradient-to-r from-neutral-50 to-white">
+            <DialogTitle className="text-[15px] font-semibold flex items-center gap-3">
+              <span className="relative inline-block h-9 w-9 rounded-full overflow-hidden bg-white ring-1 ring-neutral-200 shrink-0">
+                <Image src={AVATAR_SRC} alt="" width={36} height={36} className="h-full w-full object-cover" />
+                <span aria-hidden className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+              </span>
+              <span className="flex flex-col">
+                <span className="text-neutral-900 leading-tight">Kran-Berater</span>
+                <span className="text-[11px] text-emerald-700 font-normal leading-tight">Online · antwortet sofort</span>
+              </span>
             </DialogTitle>
           </DialogHeader>
 
           {/* Chat thread */}
           <div ref={scrollRef} className="px-5 py-4 max-h-[50vh] overflow-y-auto space-y-3">
             {messages.length === 0 && (
-              <div className="text-[13px] text-gray-600 leading-relaxed">
-                Hallo! Beschreiben Sie kurz Ihr Projekt — ich helfe Ihnen, den passenden
-                Krantyp zu finden und passende Anbieter zu sehen.
-                <p className="mt-2 text-gray-400 text-[12px]">
-                  z.B. „Stahlhalle 45×25m bauen, bei Hannover" oder „Glasscheiben
+              <div className="rounded-xl bg-blue-50/60 border border-blue-100 px-4 py-3 text-[13px] text-gray-700 leading-relaxed">
+                <p className="font-medium text-gray-900 mb-1">Guten Tag!</p>
+                Beschreiben Sie kurz Ihr Projekt — ich finde für Sie den passenden
+                Krantyp und passende Anbieter in Ihrer Region.
+                <p className="mt-2 text-gray-500 text-[12px]">
+                  Beispiel: „Stahlhalle 45×25m bauen, bei Hannover" oder „Glasscheiben
                   aufs Dach, 22m Höhe".
                 </p>
               </div>
@@ -258,8 +278,10 @@ export function KranBerater() {
               </div>
             ))}
             {loading && (
-              <div className="mr-6 rounded-lg bg-gray-100 px-3 py-2 text-[13px] text-gray-500">
-                …
+              <div className="mr-6 rounded-lg bg-gray-100 px-3 py-2 inline-flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:-0.3s]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:-0.15s]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-gray-400 animate-bounce" />
               </div>
             )}
             {suggestion && !loading && (
