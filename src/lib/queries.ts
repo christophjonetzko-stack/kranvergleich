@@ -540,26 +540,41 @@ export async function getCompaniesForCraneTypeNearLocation(
   const cities = await getCitiesJson()
   const limit = opts?.limit ?? 10
 
-  // Path 1: exact 5-digit PLZ.
-  if (/^\d{5}$/.test(trimmed)) {
-    const plzCity = cities.find((c) => c.p === trimmed)
+  // Path 1: extract a 5-digit PLZ from the start of the input. Handles both
+  // pure "31275" and the very common "31275 Lehrte" / "31275 Lehrte/Ahlten"
+  // form (a German address habit; the placeholder "z.B. 10115 oder Berlin"
+  // doesn't forbid it). When a PLZ prefix matches, the remainder is
+  // informational — we trust the PLZ for geocoding.
+  const plzPrefix = trimmed.match(/^(\d{5})\b/)
+  if (plzPrefix) {
+    const plz = plzPrefix[1]
+    const plzCity = cities.find((c) => c.p === plz)
     if (!plzCity) return null
     const base = await _computeFirmMatchesFromCoords(craneTypeId, plzCity.la, plzCity.ln, cities, limit)
-    return { ...base, resolved_label: `${trimmed} ${plzCity.n}` }
+    return { ...base, resolved_label: `${plz} ${plzCity.n}` }
   }
 
-  // Path 2: city name. Try umlaut-transliterated match first (correct spelling),
-  // then pure diacritic-stripped match (sloppy spelling), then startsWith.
-  const needle = normalizeCityName(trimmed)
-  let cityMatch = cities.find((c) => {
-    const h = normalizeCityName(c.n)
-    return h.withAe === needle.withAe || h.diacriticStripped === needle.diacriticStripped
-  })
-  if (!cityMatch) {
+  // Path 2: city name. Try the input as-is, then fall back to the first
+  // segment when the user wrote "Stadt/Ortsteil" or "Stadt, Ortsteil"
+  // (e.g. "Lehrte/Ahlten" → "Lehrte"). For each candidate try an exact
+  // umlaut-transliterated match, then a diacritic-stripped match, then a
+  // startsWith match.
+  const head = trimmed.split(/[/,]/)[0].trim()
+  const candidates = head && head !== trimmed ? [trimmed, head] : [trimmed]
+  let cityMatch: CityRow | undefined
+  for (const cand of candidates) {
+    const needle = normalizeCityName(cand)
     cityMatch = cities.find((c) => {
       const h = normalizeCityName(c.n)
-      return h.withAe.startsWith(needle.withAe) || h.diacriticStripped.startsWith(needle.diacriticStripped)
+      return h.withAe === needle.withAe || h.diacriticStripped === needle.diacriticStripped
     })
+    if (!cityMatch) {
+      cityMatch = cities.find((c) => {
+        const h = normalizeCityName(c.n)
+        return h.withAe.startsWith(needle.withAe) || h.diacriticStripped.startsWith(needle.diacriticStripped)
+      })
+    }
+    if (cityMatch) break
   }
   if (!cityMatch) return null
 

@@ -371,14 +371,33 @@ export async function POST(request: Request) {
     // NOTIFICATION_EMAIL env var doesn't kill the rest of the flow. Customer
     // confirmation + 200 response must still fire even if the owner side is
     // misconfigured. Track delivery so the response can surface it.
+    //
+    // When the lead landed without any firm attached (auto_select returned
+    // nothing OR the customer skipped the firm picker), promote the subject
+    // to a 🚨 alert and prepend a red banner — otherwise this critical case
+    // looks identical to a normal lead and gets missed in the inbox. This
+    // bug was discovered when Mario Wagner's Stahlhalle lead (2026-04-26)
+    // sat for hours with zero firms notified.
+    const noFirmsAttached = companyIds.length === 0
     const ownerEmail = getNotificationEmailOrNull()
     let ownerNotificationSent = false
     if (ownerEmail) {
+      const alertBanner = noFirmsAttached
+        ? `<div style="background:#fee2e2;border:2px solid #dc2626;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">⚠️ Achtung — keine Anbieter zugeordnet</div>
+            <div style="font-size:13px;color:#7f1d1d;line-height:1.5;">
+              Dieser Lead konnte keinem Anbieter automatisch zugewiesen werden. Mögliche Ursachen: ungewöhnliche Standort-Eingabe, fehlende Firmen in der Region, oder Kunde hat die Firmenliste übersprungen.<br>
+              <strong>Manuelle Weiterleitung erforderlich</strong> — sonst geht der Lead verloren.
+            </div>
+          </div>`
+        : ''
+      const subjectPrefix = noFirmsAttached ? '🚨 LEAD OHNE ANBIETER — ' : ''
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}Neue Anfrage: ${safeName} — ${safeCity}`,
+        subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${subjectPrefix}Neue Anfrage: ${safeName} — ${safeCity}`,
         html: `
+          ${alertBanner}
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
             ${safeCraneType ? `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}

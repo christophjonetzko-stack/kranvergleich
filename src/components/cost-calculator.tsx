@@ -286,14 +286,12 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
       return
     }
 
-    // Project description = calculator recommendation as the baseline (so firms
-    // always know which crane the visitor settled on + why we recommended it)
-    // plus any free-text details the visitor added, clearly labelled.
-    const baseDescription = `Empfehlung Kostenrechner (${page}): ${result.name} — ${result.reason}`
+    // Project description = ONLY what the customer typed. The recommended crane
+    // type already appears as its own field ("Krantyp: Mobilkran") in the firm
+    // email, so prefixing the boilerplate ("Empfehlung Kostenrechner: …") just
+    // buries the real project details in noise the firm doesn't need.
     const userDetails = String(form.get('project_details') || '').trim()
     const projectDescription = userDetails
-      ? `${baseDescription}\n\nProjektdetails vom Kunden:\n${userDetails}`
-      : baseDescription
 
     setLeadSending(true)
     setLeadError(null)
