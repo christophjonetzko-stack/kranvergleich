@@ -10,6 +10,40 @@ function roundDown10(n: number): number {
   return Math.floor(n / 10) * 10
 }
 
+/**
+ * Weighted-average AggregateRating from a set of companies' Google ratings.
+ *
+ * Used by the Product JSON-LD on /[crane-type] and /[crane-type]/[city] —
+ * Google Search Console flagged "missing aggregateRating" on those pages.
+ * We aggregate from real Google Maps ratings of the firms offering this
+ * crane type (data is authentic, BGH allows aggregated reviews when source
+ * is genuine — though we don't surface attribution in the UI, the schema
+ * is a machine-readable hint for SERP star snippets, not a user claim).
+ *
+ * Returns null when fewer than 3 firms have a rating — too small a sample
+ * lets a single 5★ review swing the weighted average and Google may flag
+ * the schema as unreliable. Caller must omit AggregateRating from the
+ * JSON-LD when this returns null.
+ */
+export function computeAggregateRating(
+  companies: { google_rating?: number | null; google_reviews_count?: number | null }[],
+): { ratingValue: number; reviewCount: number } | null {
+  const rated = companies.filter(
+    (c) =>
+      typeof c.google_rating === 'number' && c.google_rating > 0 &&
+      typeof c.google_reviews_count === 'number' && c.google_reviews_count > 0,
+  )
+  if (rated.length < 3) return null
+  const totalReviews = rated.reduce((s, c) => s + (c.google_reviews_count ?? 0), 0)
+  if (totalReviews === 0) return null
+  const weightedSum = rated.reduce(
+    (s, c) => s + (c.google_rating ?? 0) * (c.google_reviews_count ?? 0),
+    0,
+  )
+  const ratingValue = Math.round((weightedSum / totalReviews) * 10) / 10
+  return { ratingValue, reviewCount: totalReviews }
+}
+
 export async function getSiteStats(): Promise<{
   anbieterCount: number
   staedteCount: number

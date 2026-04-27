@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getSiteStats } from '@/lib/queries'
+import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getSiteStats, computeAggregateRating } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL } from '@/lib/country'
 import { CompanySection } from '@/components/company-section'
@@ -598,42 +598,60 @@ export default async function CraneTypePage({
           }),
         }}
       />
-      {/* Product + AggregateOffer — AEO-citable price range per crane type */}
-      {price && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Product',
-              name: `${craneType.name} mieten`,
-              description: craneType.description,
-              category: 'Kranvermietung',
-              brand: { '@type': 'Brand', name: BRAND_NAME },
-              offers: {
-                '@type': 'AggregateOffer',
-                priceCurrency: 'EUR',
-                lowPrice: price.dayFrom,
-                highPrice: price.dayTo,
-                ...(companies.length > 0 && {
-                  offerCount: companies.length,
-                  availability: 'https://schema.org/InStock',
-                }),
-                priceSpecification: {
-                  '@type': 'UnitPriceSpecification',
-                  price: price.dayFrom,
+      {/* Product + AggregateOffer — AEO-citable price range per crane type.
+          AggregateRating is added when ≥3 listed firms have a Google rating —
+          fixes GSC "missing aggregateRating" warning + earns SERP star snippets.
+          The single rating + reviewCount aggregate Google's own per-firm data
+          weighted by review count, so a firm with 200 reviews counts more than
+          one with 5. computeAggregateRating returns null below the 3-firm
+          threshold (avoids cargo-cult schema on under-sampled pages). */}
+      {price && (() => {
+        const aggRating = computeAggregateRating(companies)
+        return (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Product',
+                name: `${craneType.name} mieten`,
+                description: craneType.description,
+                category: 'Kranvermietung',
+                brand: { '@type': 'Brand', name: BRAND_NAME },
+                offers: {
+                  '@type': 'AggregateOffer',
                   priceCurrency: 'EUR',
-                  referenceQuantity: {
-                    '@type': 'QuantitativeValue',
-                    value: 1,
-                    unitCode: 'DAY',
+                  lowPrice: price.dayFrom,
+                  highPrice: price.dayTo,
+                  ...(companies.length > 0 && {
+                    offerCount: companies.length,
+                    availability: 'https://schema.org/InStock',
+                  }),
+                  priceSpecification: {
+                    '@type': 'UnitPriceSpecification',
+                    price: price.dayFrom,
+                    priceCurrency: 'EUR',
+                    referenceQuantity: {
+                      '@type': 'QuantitativeValue',
+                      value: 1,
+                      unitCode: 'DAY',
+                    },
                   },
                 },
-              },
-            }),
-          }}
-        />
-      )}
+                ...(aggRating && {
+                  aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: aggRating.ratingValue,
+                    reviewCount: aggRating.reviewCount,
+                    bestRating: 5,
+                    worstRating: 1,
+                  },
+                }),
+              }),
+            }}
+          />
+        )
+      })()}
     </div>
     <NewsletterPanel />
     </>
