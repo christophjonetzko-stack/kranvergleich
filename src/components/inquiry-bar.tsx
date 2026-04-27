@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
+import { DescriptionCoach } from './description-coach'
 import {
   Dialog,
   DialogContent,
@@ -42,6 +43,9 @@ export function InquiryBar({
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
+  // Controlled value for the Projektbeschreibung textarea — needed so the AI
+  // coach can watch the value via prop without lifting the form's whole state.
+  const [description, setDescription] = useState(initialProjectDescription ?? '')
   const prevCount = useRef(selectedCompanies.length)
 
   // Show toast when a company is added
@@ -234,9 +238,11 @@ export function InquiryBar({
                     id="ib-description"
                     name="description"
                     rows={3}
-                    defaultValue={initialProjectDescription}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     placeholder="Was soll gehoben werden? Gewicht, Hohe, Zufahrt..."
                   />
+                  <DescriptionCoach description={description} craneTypeName={craneTypeName} />
                 </div>
 
                 <label className="flex gap-2 cursor-pointer">
