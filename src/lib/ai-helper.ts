@@ -361,6 +361,99 @@ export async function runBerater(messages: BeraterMessage[]): Promise<BeraterRes
   return block.input as BeraterResult
 }
 
+// === SUBTYPE-CHECK MODE ===
+
+const SUBTYPE_CHECK_SYSTEM = `Du prüfst eine Krantyp-Empfehlung des KranVergleich.de-Kostenrechners. Der Nutzer hat einen Krantyp ausgewählt UND eine freie Projektbeschreibung verfasst. Deine Aufgabe: erkennen, ob die Beschreibung auf einen besser passenden (Sub-)Typ hindeutet, den der Nutzer übersehen hat.
+
+Verfügbare Krantypen auf KranVergleich.de:
+${CRANE_TYPE_DICTIONARY}
+
+Spezialfälle die du erkennen solltest:
+- Glasmontage / Glasscheiben / Fenster aufs Dach + enge Zufahrt → Spinnenkran (im Minikran-Filter findbar) statt Mobilkran/Autokran
+- Indoor-Arbeit / Bodenbelag schonen / Rasen + niedriges Gewicht → Spinnenkran/Minikran
+- Dacharbeiten / Ziegelmontage / kurzfristig 1 Tag → Dachdeckerkran (kompakter, kein Bedienerschein)
+- Hochhaus / mehrwöchige Baustelle → Baukran (Turmdrehkran) statt Mobilkran
+- Schwerlast > 80 t / weiches Gelände → Raupenkran statt Mobilkran
+- LKW be-/entladen / Hof-Logistik → Ladekran statt Autokran
+- DIY / kleines Privatprojekt / unter 0,5 t → Anhängerkran statt Mobilkran
+
+Regel — nur dann Hinweis geben, wenn:
+1. Die Beschreibung einen klaren Indikator für einen anderen Typ enthält (z.B. "Glasmontage", "enge Zufahrt 3m", "indoor", "Dach", "Hochhaus", "schwerlast 100 t").
+2. UND der gewählte Typ wirklich suboptimal ist für diesen Anwendungsfall (nicht nur "auch ok").
+
+Wenn der Nutzer bereits den passenden Typ gewählt hat oder die Beschreibung zu vage ist um sicher zu sein → kein Hinweis (should_suggest=false).
+
+Wenn der gewählte Typ richtig ist aber eine spezialisierte Variante existiert (z.B. Minikran → Spinnenkran für Glasmontage), gib einen subtype_note: gewählter Typ bleibt richtig, aber bei den Anbietern nach der Spezial-Variante filtern.
+
+Antworte IMMER über das Tool record_subtype_check. Kein freier Text.`
+
+const SUBTYPE_CHECK_TOOL = {
+  name: 'record_subtype_check',
+  description: 'Records whether the chosen crane type is suboptimal for the described project, and what to suggest instead.',
+  input_schema: {
+    type: 'object' as const,
+    properties: {
+      should_suggest: {
+        type: 'boolean' as const,
+        description: 'true only when the description clearly points to a different/specialized type that the user missed.',
+      },
+      hint_kind: {
+        type: 'string' as const,
+        enum: ['none', 'switch_type', 'subtype_note'],
+        description: 'none = no hint. switch_type = recommend a different crane type entirely. subtype_note = chosen type is fine but flag a subtype/specialization to look for at suppliers.',
+      },
+      suggested_type_slug: {
+        type: 'string' as const,
+        enum: ['', 'minikran', 'autokran', 'dachdeckerkran', 'raupenkran', 'anhaengerkran', 'mobilkran', 'baukran', 'ladekran'],
+        description: 'When hint_kind=switch_type: the slug to recommend. Empty for none/subtype_note.',
+      },
+      message: {
+        type: 'string' as const,
+        description: 'Short German message (max 35 words, Sie-Form). For switch_type explain why the suggested type fits better. For subtype_note name the specialty (e.g. "Spinnenkran für Glasmontage"). Empty when should_suggest=false.',
+      },
+    },
+    required: ['should_suggest', 'hint_kind', 'suggested_type_slug', 'message'],
+  },
+}
+
+export type SubtypeCheckResult = {
+  should_suggest: boolean
+  hint_kind: 'none' | 'switch_type' | 'subtype_note'
+  suggested_type_slug: string
+  message: string
+}
+
+export async function runSubtypeCheck(input: {
+  chosenTypeName: string
+  chosenTypeSlug: string
+  weightTons?: number | null
+  heightMeters?: number | null
+  projectDetails: string
+}): Promise<SubtypeCheckResult> {
+  const facts: string[] = [
+    `Gewählter Krantyp: ${input.chosenTypeName} (slug: ${input.chosenTypeSlug})`,
+  ]
+  if (input.weightTons != null) facts.push(`Tragkraft: ${input.weightTons} t`)
+  if (input.heightMeters != null) facts.push(`Höhe: ${input.heightMeters} m`)
+  const userMsg = `${facts.join('\n')}\n\nProjektbeschreibung des Kunden:\n"""\n${input.projectDetails}\n"""`
+
+  const payload = {
+    model: MODEL,
+    max_tokens: 400,
+    system: [
+      { type: 'text', text: SUBTYPE_CHECK_SYSTEM, cache_control: { type: 'ephemeral' } },
+    ],
+    tools: [SUBTYPE_CHECK_TOOL],
+    tool_choice: { type: 'tool', name: 'record_subtype_check' },
+    messages: [{ role: 'user', content: userMsg }],
+  }
+
+  const res = await callAnthropic(payload)
+  const block = res.content?.find((b: { type: string }) => b.type === 'tool_use')
+  if (!block) throw new Error('subtype-check: no tool_use in response')
+  return block.input as SubtypeCheckResult
+}
+
 // === Anthropic API call ===
 
 interface AnthropicResponse {

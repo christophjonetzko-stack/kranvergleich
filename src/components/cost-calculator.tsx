@@ -6,6 +6,21 @@ import { cranePrices } from '@/data/crane-prices'
 import { getCraneTypeIdBySlug } from '@/data/crane-types'
 import { trackPageEvent } from '@/lib/track'
 import { TAX_LABEL } from '@/lib/country'
+import { SubtypeCheck } from './subtype-check'
+
+// STEPS answer values are upper-bound buckets ('5' = "1–5 t", '20' = "5–20 t").
+// SubtypeCheck wants approximate numerics for context — use the upper bound
+// directly; the AI is meant to take it as a coarse hint not a precise figure.
+function parseTonsFromAnswer(v: string | undefined): number | null {
+  if (!v) return null
+  const n = parseInt(v, 10)
+  return Number.isFinite(n) ? n : null
+}
+function parseMetersFromAnswer(v: string | undefined): number | null {
+  if (!v) return null
+  const n = parseInt(v, 10)
+  return Number.isFinite(n) ? n : null
+}
 
 // --- Step definitions ---
 
@@ -229,6 +244,12 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     customerConfirmationSent: boolean
   } | null>(null)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
+  // Live value of the optional Projektdetails textarea — needs to be
+  // controlled state so the SubtypeCheck addon can watch it via prop and
+  // run an AI subtype suggestion when the description points to a more
+  // specialized crane type than the Q&A picked.
+  const [projectDetailsLive, setProjectDetailsLive] = useState('')
+  const [locationLive, setLocationLive] = useState('')
 
   // Pick up `?dryrun=1` after mount so we don't diverge between SSR and the
   // client during hydration; a prerendered page can't read the URL, and the
@@ -265,6 +286,8 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     setLeadError(null)
     setLeadSuccess(null)
     setDsgvoConsent(false)
+    setProjectDetailsLive('')
+    setLocationLive('')
   }
 
   // Submit Sammelanfrage — /api/leads auto-selects up to 10 nearest firms
@@ -538,7 +561,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
               </div>
               <div>
                 <label htmlFor="calc-location" className="block text-[12px] text-gray-600 mb-1">PLZ oder Stadt Einsatzort *</label>
-                <input id="calc-location" name="location" required placeholder="z.B. 10115 oder Berlin" maxLength={80} className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+                <input id="calc-location" name="location" required placeholder="z.B. 10115 oder Berlin" maxLength={80} value={locationLive} onChange={(e) => setLocationLive(e.target.value)} className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
               </div>
               <div>
                 <label htmlFor="calc-phone" className="block text-[12px] text-gray-600 mb-1">Telefon (optional)</label>
@@ -556,9 +579,19 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
                   id="calc-project-details"
                   name="project_details"
                   rows={3}
+                  value={projectDetailsLive}
+                  onChange={(e) => setProjectDetailsLive(e.target.value)}
                   placeholder={`z.B. 12 Dachfenster, Stahlträger 4 m, enge Zufahrt über Hinterhof… (Helfen Sie den ${result.name}-Anbietern, Ihnen ein präzises Angebot zu machen.)`}
                   maxLength={2000}
                   className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-y min-h-[72px]"
+                />
+                <SubtypeCheck
+                  chosenTypeName={result.name}
+                  chosenTypeSlug={result.slug.replace(/-mieten$/, '')}
+                  weightTons={parseTonsFromAnswer(answers['weight'])}
+                  heightMeters={parseMetersFromAnswer(answers['height'])}
+                  projectDetails={projectDetailsLive}
+                  cityForRedirect={locationLive}
                 />
               </div>
             </div>

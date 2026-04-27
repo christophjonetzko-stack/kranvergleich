@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { runCoach, runBerater, type BeraterMessage } from '@/lib/ai-helper'
+import { runCoach, runBerater, runSubtypeCheck, type BeraterMessage } from '@/lib/ai-helper'
 
 // Rate limit per IP — same shape as /api/leads (5/min). Coach gets called on
 // every typing pause so we want a slightly higher ceiling than the lead form.
@@ -53,6 +53,28 @@ export async function POST(request: Request) {
       const craneTypeName =
         typeof body.craneTypeName === 'string' ? body.craneTypeName.slice(0, 80) : null
       const result = await runCoach({ description, craneTypeName })
+      return NextResponse.json(result)
+    }
+
+    if (body.mode === 'subtype-check') {
+      const projectDetails = String(body.projectDetails ?? '').slice(0, MAX_DESCRIPTION_LEN)
+      const chosenTypeSlug = String(body.chosenTypeSlug ?? '').slice(0, 40)
+      const chosenTypeName = String(body.chosenTypeName ?? '').slice(0, 40)
+      // Skip the AI call entirely when there's nothing useful to check —
+      // saves tokens and avoids "kein Hinweis" responses when the user
+      // didn't write any free-text description.
+      if (!projectDetails.trim() || !chosenTypeSlug || projectDetails.trim().length < 20) {
+        return NextResponse.json({ should_suggest: false, hint_kind: 'none', suggested_type_slug: '', message: '' })
+      }
+      const weightTons = typeof body.weightTons === 'number' ? body.weightTons : null
+      const heightMeters = typeof body.heightMeters === 'number' ? body.heightMeters : null
+      const result = await runSubtypeCheck({
+        chosenTypeName,
+        chosenTypeSlug,
+        weightTons,
+        heightMeters,
+        projectDetails,
+      })
       return NextResponse.json(result)
     }
 
