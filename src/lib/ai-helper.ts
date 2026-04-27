@@ -242,13 +242,24 @@ Wenn das System dir Verfügbarkeitsdaten für eine PLZ liefert (Block "[VERFÜGB
 a) Wenn der funktional ideale Krantyp ≥3 Anbieter ≤50 km hat: empfehle ihn — Standardfall.
 
 b) Wenn der ideale Typ KEINEN Anbieter ≤50 km hat (oder nächster >100 km), prüfe ob ein anderer Krantyp den konkreten Anwendungsfall (Tragkraft + Höhe + Zufahrt) ebenfalls abdeckt UND lokal verfügbar ist:
-   - JA → empfehle den lokal verfügbaren Typ statt des idealen, mit kurzer Begründung. Beispiel: "Ein Dachdeckerkran wäre für Ihre Fensterpaletten spezialisiert, der nächste ist aber 200 km entfernt. Bei 1,5 t auf 22 m übernimmt das ein Mobilkran genauso gut — und wir haben 6 Anbieter in Ihrer Nähe."
+   - JA → empfehle den lokal verfügbaren Typ statt des idealen, mit kurzer Begründung. Beispiel: "Ein Dachdeckerkran wäre für Ihre Fensterpaletten spezialisiert, der nächste Anbieter ist aber 200 km entfernt. Bei 1,5 t auf 22 m übernimmt das ein Mobilkran genauso gut — und wir haben 4 Anbieter ab 21 km."
    - NEIN, weil Spezialausrüstung wirklich nötig ist (Spinnenkran für enge Glasmontage; Raupenkran für weiches Gelände; Dachdeckerkran-Klemmen für spezielle Ziegelmontage; …) → empfehle den idealen Typ im größeren Radius mit Hinweis auf Transportkosten. Beispiel: "Spinnenkran ist für enge Glasmontage wirklich die richtige Wahl. Der nächste Anbieter ist 80 km entfernt, planen Sie ca. 600-1000 € Transport ein."
 
 c) Funktional substituierbar (für b/JA-Fall):
    - Autokran ↔ Mobilkran (beide telescopic mobile crane, ~80% Überlapp)
    - Mobilkran kann Dachdeckerkran ersetzen, wenn Last < 2 t und Höhe < 25 m und keine speziellen Dachklemmen nötig
    - Mobilkran/Autokran KÖNNEN keinen Spinnenkran/Minikran ersetzen, wenn enge Zufahrt das Problem ist (Footprint zählt)
+
+ZAHLENREGEL (kritisch — keine Halluzinationen):
+Wenn du in deiner Antwort eine Anbieterzahl, eine Distanz oder einen Radius nennst, MUSST du die exakten Werte aus dem VERFÜGBARKEITSDATEN-Block für genau jenen Krantyp übernehmen, den du erwähnst. Nicht runden, nicht schätzen, nicht zwischen Typen mischen.
+
+Konkret:
+- "X Anbieter ≤50 km" für Typ Y → schreibe genau diese Zahl X.
+- "nächster N km" für Typ Y → schreibe "nächster Anbieter N km entfernt" oder "ab N km", aber NIE eine andere Zahl.
+- Wenn du sagst "der nächste Dachdeckerkran ist weit weg", füge die exakte Distanz aus den Daten hinzu (z.B. "200 km entfernt").
+- Wenn die Daten "0 Anbieter ≤50 km, nächster 200 km" zeigen, schreibe das so. Nicht "in der Nähe", nicht "verfügbar".
+
+Wenn keine VERFÜGBARKEITSDATEN vorliegen (PLZ noch nicht genannt), nenne KEINE Zahlen über Anbieter oder Distanzen — frage einfach nach der PLZ.
 
 Antworte IMMER über das Tool record_recommendation. Kein freier Text.`
 
@@ -300,21 +311,24 @@ export type BeraterResult = {
 }
 
 export async function runBerater(messages: BeraterMessage[]): Promise<BeraterResult> {
-  // Scan all user messages so far for a 5-digit PLZ — if found, fetch
-  // supplier availability and inject it into a SECOND system block (after
-  // the cached one, so the cache prefix stays stable across turns). Claude
-  // sees the data and applies the VERFÜGBARKEITSREGEL from the system
-  // prompt above. Falls back gracefully when there's no PLZ yet (early
-  // turns, before user reveals location).
-  const plzMatch = messages
-    .filter((m) => m.role === 'user')
-    .map((m) => m.content.match(/\b(\d{5})\b/))
-    .find((m) => m !== null)
+  // Scan user messages for a 5-digit PLZ. Take the LAST one (in case the
+  // user changed their mind mid-conversation — earlier "10115 Berlin" then
+  // "actually we moved to 89584", we want availability data for 89584, not
+  // Berlin). Falls back gracefully when no PLZ has been mentioned yet.
+  let foundPlz: string | null = null
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role !== 'user') continue
+    const m = messages[i].content.match(/\b(\d{5})\b/)
+    if (m) {
+      foundPlz = m[1]
+      break
+    }
+  }
   let availabilityBlock: string | null = null
-  if (plzMatch) {
+  if (foundPlz) {
     try {
-      const av = await getAvailabilityByPlz(plzMatch[1])
-      if (av) availabilityBlock = formatAvailabilityForPrompt(plzMatch[1], av)
+      const av = await getAvailabilityByPlz(foundPlz)
+      if (av) availabilityBlock = formatAvailabilityForPrompt(foundPlz, av)
     } catch (err) {
       // Non-fatal — bot still works without availability context, just less
       // smart about local-vs-distant trade-off. Log for ops visibility.
