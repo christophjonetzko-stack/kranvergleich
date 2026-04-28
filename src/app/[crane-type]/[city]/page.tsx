@@ -79,13 +79,10 @@ export async function generateMetadata({
 
 export default async function CraneCityPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ 'crane-type': string; city: string }>
-  searchParams: Promise<{ project?: string }>
 }) {
   const { 'crane-type': craneTypeSlug, city: citySlug } = await params
-  const { project } = await searchParams
 
   const [craneType, city] = await Promise.all([
     getCraneTypeBySlug(craneTypeSlug),
@@ -200,7 +197,6 @@ export default async function CraneCityPage({
             referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
             cityContext={city.slug}
             typeContext={craneType.slug}
-            initialProjectDescription={project}
           />
         </section>
       ) : (
