@@ -33,13 +33,11 @@ const _extraCitiesDE: ExtendedCity[] = [
   { name: 'Halle', slug: 'halle', state: 'Sachsen-Anhalt', nearestSlug: 'leipzig' },
   { name: 'Hamm', slug: 'hamm', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Heidelberg', slug: 'heidelberg', state: 'Baden-Württemberg', nearestSlug: 'mannheim' },
-  { name: 'Kassel', slug: 'kassel', state: 'Hessen', nearestSlug: 'hannover' },
   { name: 'Koblenz', slug: 'koblenz', state: 'Rheinland-Pfalz', nearestSlug: 'koeln' },
   { name: 'Ludwigshafen', slug: 'ludwigshafen', state: 'Rheinland-Pfalz', nearestSlug: 'mannheim' },
   { name: 'Moers', slug: 'moers', state: 'Nordrhein-Westfalen', nearestSlug: 'duisburg' },
   { name: 'Mülheim', slug: 'muelheim', state: 'Nordrhein-Westfalen', nearestSlug: 'essen' },
   { name: 'Offenbach', slug: 'offenbach', state: 'Hessen', nearestSlug: 'frankfurt-am-main' },
-  { name: 'Osnabrück', slug: 'osnabrueck', state: 'Niedersachsen', nearestSlug: 'hannover' },
   { name: 'Pforzheim', slug: 'pforzheim', state: 'Baden-Württemberg', nearestSlug: 'karlsruhe' },
   { name: 'Remscheid', slug: 'remscheid', state: 'Nordrhein-Westfalen', nearestSlug: 'wuppertal' },
   { name: 'Salzgitter', slug: 'salzgitter', state: 'Niedersachsen', nearestSlug: 'braunschweig' },
@@ -131,6 +129,14 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'paderborn', name: 'Paderborn', state: 'Nordrhein-Westfalen', companyCount: 2 },
   { slug: 'recklinghausen', name: 'Recklinghausen', state: 'Nordrhein-Westfalen', companyCount: 1 },
   { slug: 'jena', name: 'Jena', state: 'Thüringen', companyCount: 1 },
+  // 2026-04-29 expansion — Kassel/Marburg/Osnabrück after company_regions audit;
+  // Kassel + Osnabrück promoted from _extraCitiesDE (deferred 2026-04-20 was outdated
+  // after today's bulk-fix), Marburg fully new. Coverage: Kassel 4 ✅ types + 1 ⚠️
+  // (Baukran/Ladekran/Raupenkran excluded by thin-content gate); Marburg 8 types
+  // covered; Osnabrück 7 ✅ + 0 Dachdeckerkran (excluded).
+  { slug: 'kassel',     name: 'Kassel',     state: 'Hessen',         companyCount: 7 },
+  { slug: 'marburg',    name: 'Marburg',    state: 'Hessen',         companyCount: 8 },
+  { slug: 'osnabrueck', name: 'Osnabrück',  state: 'Niedersachsen',  companyCount: 14 },
 ]
 
 // AT cities — populated 2026-04-26 after Phase B firm enrichment landed 20
