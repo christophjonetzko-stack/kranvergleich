@@ -141,6 +141,7 @@ leads_res = (
     sb.table("leads")
     .select("id,crane_type_id,city,project_description,preferred_date,duration_days,created_at")
     .gte("created_at", since_dt.isoformat())
+    .eq("is_test", False)
     .execute()
     .data
 )
