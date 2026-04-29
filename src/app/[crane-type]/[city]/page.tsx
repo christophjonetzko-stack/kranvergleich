@@ -53,12 +53,17 @@ export async function generateMetadata({
   const companies = await getCompaniesForCraneAndCity(craneType.id, city.id)
   const price = getPriceForCraneType(craneType.slug)
   const priceStr = price ? `ab ${price.dayFrom}€/Tag` : ''
-  const countStr = companies.length > 0 ? `${companies.length} Anbieter vergleichen` : 'Anbieter vergleichen'
 
   const ctInfo = craneTypesList.find((c) => c.slug === craneTypeSlug)
   const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
 
-  const title = `${craneType.name} mieten ${city.name}${priceStr ? ` — ${priceStr}` : ''} | ${countStr}`
+  // Tight title — keep under ~50 chars before the root layout's " | KranVergleich.de" suffix,
+  // so Google doesn't truncate the count + price (the actual CTR drivers).
+  const title = price && companies.length > 0
+    ? `${craneType.name} mieten ${city.name} — ${companies.length} Anbieter ab ${price.dayFrom}€`
+    : companies.length > 0
+      ? `${craneType.name} mieten ${city.name} — ${companies.length} Anbieter vergleichen`
+      : `${craneType.name} mieten ${city.name} — Preise & Anbieter`
   const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten in ${city.name}${priceStr ? `: Kosten ${priceStr}` : ''}. ${companies.length > 0 ? `${companies.length} Anbieter` : 'Anbieter'} in ${city.name} & Umgebung vergleichen. Preisliste, Bewertungen & kostenlose Angebote.`
   const canonical = `/${craneTypeSlug}/${citySlug}`
 
