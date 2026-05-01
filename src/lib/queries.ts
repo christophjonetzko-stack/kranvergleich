@@ -685,6 +685,10 @@ export async function submitLead(formData: {
   duration_days: number | null
   dsgvo_consent: boolean
   company_ids: string[]
+  // First page of the visitor session (sanitised in /api/leads). NULL when the
+  // browser has sessionStorage disabled or when the lead was placed before
+  // SessionEntryRecorder was deployed.
+  entry_path?: string | null
 }) {
   const { company_ids, ...leadData } = formData
   const sb = getServiceSupabase()

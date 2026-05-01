@@ -10,6 +10,7 @@ import { getSiteStats, getCraneTypes, getCompanyCountsPerCraneType } from '@/lib
 import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY, COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL } from '@/lib/country'
 import { NewsletterPanel } from '@/components/newsletter-panel'
+import { PageEventTracker } from '@/components/page-event-tracker'
 
 const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
 
@@ -66,6 +67,7 @@ export default async function HomePage() {
 
   return (
     <div>
+      <PageEventTracker />
       {/* Hero — Industrial · Search-first */}
       <section className="relative bg-white">
         {/* Engineering-grid background — desktop only, very subtle */}

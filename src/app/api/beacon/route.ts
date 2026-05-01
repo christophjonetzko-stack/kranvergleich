@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
 import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY } from '@/lib/country'
+import { classifyUserAgent } from '@/lib/device'
 
 // Page-level engagement tracking — see supabase/migrations/011_page_events.sql
 // for the DSGVO rationale. Same cookie-free, daily-salt, hashed-IP design as
@@ -13,10 +14,17 @@ const EVENT_TYPES = new Set([
   'calculator_recommendation_shown',
   'calculator_lead_submit_attempt',
   'calculator_lead_submit_success',
+  'calculator_form_validation_failed',
   'inline_sammelanfrage_submit',
   'scroll_depth_75',
   'click_city_link',
   'click_type_link',
+  'hero_search_submit',
+  'hero_project_describe_expanded',
+  'chatbot_opened',
+  'chatbot_message_sent',
+  'chatbot_recommendation_shown',
+  'chatbot_view_providers_clicked',
 ])
 
 // Matches /api/track for consistency. The base is not a secret — the daily
@@ -57,14 +65,25 @@ const PAGE_PATH_RE = /^\/[a-z0-9/_.-]{0,120}$/i
 // Context is a shallow object with whitelisted keys + primitive values.
 // Everything else is stripped — we never store raw user input verbatim.
 const CONTEXT_KEY_WHITELIST = new Set([
-  'step',                     // number, 1-4
-  'value',                    // string, slug-like
+  'step',                     // number, 1-4 (calculator)
+  'value',                    // string, slug-like (calculator answer)
   'crane_type',               // string, slug-like
   'city',                     // string, slug-like
   'matched_count',            // number
   'radius_km',                // number
   'project_details_filled',   // boolean
   'project_details_length',   // number
+  // Hero search (added 2026-05-01 — pre-decision instrumentation)
+  'has_crane_type',           // boolean — was the type select non-empty
+  'has_city',                 // boolean — was the city/PLZ field non-empty
+  'has_project',              // boolean — was the optional textarea expanded + filled
+  'project_length',           // number  — char count of the optional textarea
+  // Chatbot
+  'message_index',            // number  — 1-based index of the user message in the session
+  'type_slug',                // string  — slug-like, recommended crane type
+  // Calculator validation failure
+  'reason',                   // string  — slug-like (dsgvo / location_too_short / server_error)
+  'field',                    // string  — slug-like (which form field failed)
 ])
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/
 
@@ -114,6 +133,7 @@ export async function POST(request: Request) {
 
     const eventDate = new Date().toISOString().slice(0, 10)
     const ipHash = hashIp(ip, eventDate)
+    const device = classifyUserAgent(ua)
 
     const sb = getServiceSupabase()
     await sb.from('page_events').insert({
@@ -123,6 +143,7 @@ export async function POST(request: Request) {
       ip_hash: ipHash,
       event_date: eventDate,
       country: COUNTRY,
+      device,
     })
 
     return new NextResponse(null, { status: 204 })

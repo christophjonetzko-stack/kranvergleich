@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
 import { getServiceSupabase } from '@/lib/supabase'
+import { classifyUserAgent } from '@/lib/device'
 
 // Firm engagement tracking — see supabase/migrations/005_firm_events.sql for
 // the DSGVO rationale (no cookies, no fingerprint, IP pseudonymized with
@@ -88,6 +89,7 @@ export async function POST(request: Request) {
 
     const eventDate = new Date().toISOString().slice(0, 10)
     const ipHash = hashIp(ip, eventDate)
+    const device = classifyUserAgent(ua)
 
     const sb = getServiceSupabase()
     // UPSERT with ignore-duplicates: the unique (firm_id, ip_hash, event_type,
@@ -103,6 +105,7 @@ export async function POST(request: Request) {
           type_context: sanitizeContext(body.type_context),
           ip_hash: ipHash,
           event_date: eventDate,
+          device,
         },
         { onConflict: 'firm_id,ip_hash,event_type,event_date', ignoreDuplicates: true },
       )

@@ -16,6 +16,7 @@ import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { NewsletterPanel } from '@/components/newsletter-panel'
+import { PageEventTracker } from '@/components/page-event-tracker'
 import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
@@ -131,6 +132,7 @@ export default async function CraneCityPage({
 
   return (
     <>
+    <PageEventTracker />
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
       <nav className="text-[13px] text-gray-400 mb-6">

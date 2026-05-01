@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CompanyWithCranes } from '@/lib/types'
+import { getSessionEntryPath } from './session-entry-recorder'
 
 interface LeadFormProps {
   craneTypeId?: string
@@ -72,6 +73,7 @@ export function LeadForm({
           dsgvo_consent: dsgvoConsent,
           company_ids: selectedCompanies,
           website_url: formData.get('website_url') || '',
+          entry_path: getSessionEntryPath(),
         }),
       })
 

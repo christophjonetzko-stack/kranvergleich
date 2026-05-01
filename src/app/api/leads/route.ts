@@ -197,6 +197,22 @@ export async function POST(request: Request) {
     const preferredDate = truncate(body.preferred_date || '', 20)
     const durationDays = typeof body.duration_days === 'number' ? Math.min(Math.max(0, Math.round(body.duration_days)), 3650) : null
 
+    // entry_path: client sends the first URL of the session from sessionStorage
+    // (see SessionEntryRecorder). Validate against the same regex /api/beacon
+    // uses for page_path so junk / open-redirect-style values are dropped.
+    const PATH_RE = /^\/[a-z0-9/_.-]{0,120}$/i
+    const rawEntry = typeof body.entry_path === 'string' ? body.entry_path : null
+    const entryPath = rawEntry && PATH_RE.test(rawEntry) ? rawEntry : null
+
+    // city_context / type_context: slug-like context tags forwarded to the
+    // firm_events form_submit rows so reports can answer "this lead came from
+    // /autokran-mieten/berlin" without joining back to leads.
+    const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/
+    const sanitizeSlug = (v: unknown): string | null =>
+      typeof v === 'string' && SLUG_RE.test(v.trim()) ? v.trim() : null
+    const cityContext = sanitizeSlug(body.city_context)
+    const typeContext = sanitizeSlug(body.type_context)
+
     const lead = await submitLead({
       crane_type_id: body.crane_type_id || null,
       city,
@@ -208,6 +224,7 @@ export async function POST(request: Request) {
       duration_days: durationDays,
       dsgvo_consent: body.dsgvo_consent,
       company_ids: companyIds,
+      entry_path: entryPath,
     })
 
     // Escape all user input for HTML emails
@@ -259,8 +276,8 @@ export async function POST(request: Request) {
       const rows = companyIds.map((firmId) => ({
         firm_id: firmId,
         event_type: 'form_submit',
-        city_context: null,
-        type_context: null,
+        city_context: cityContext,
+        type_context: typeContext,
         ip_hash: ipHash,
         event_date: eventDate,
       }))

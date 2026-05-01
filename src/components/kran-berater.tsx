@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { trackPageEvent } from '@/lib/track'
 
 const AVATAR_SRC = '/images/kran-berater-avatar.png'
 
@@ -108,6 +109,14 @@ export function KranBerater() {
   const [loading, setLoading] = useState(false)
   const [hydrated, setHydrated] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  // chatbot_opened fires once per page load (the very first time the dialog
+  // opens). Re-opens of the same instance are not tracked — they're zero-cost
+  // re-engagements, not new sessions.
+  const openedTrackedRef = useRef(false)
+  // Re-fire chatbot_recommendation_shown only when the suggestion's type_slug
+  // actually changes; React state update may set the same suggestion object
+  // identity-wise across re-renders.
+  const lastTrackedTypeSlugRef = useRef<string | null>(null)
 
   // Hydrate from localStorage post-mount (avoid SSR mismatch).
   useEffect(() => {
@@ -149,6 +158,10 @@ export function KranBerater() {
     }
 
     const next: Msg[] = [...messages, { role: 'user', content: text }]
+    // Count user messages in `next` (this turn included) so message_index is
+    // 1-based and stable per send. Drop-off analysis groups by this index.
+    const userMessageIndex = next.filter((m) => m.role === 'user').length
+    trackPageEvent('chatbot_message_sent', { message_index: userMessageIndex })
     setMessages(next)
     setInput('')
     setLoading(true)
@@ -183,6 +196,10 @@ export function KranBerater() {
             plz_or_city: data.plz_or_city ?? '',
             project_summary: data.project_summary ?? '',
           })
+          if (lastTrackedTypeSlugRef.current !== data.type_slug) {
+            trackPageEvent('chatbot_recommendation_shown', { type_slug: data.type_slug })
+            lastTrackedTypeSlugRef.current = data.type_slug
+          }
         }
       }
     } catch {
@@ -197,6 +214,7 @@ export function KranBerater() {
 
   function handleViewProviders() {
     if (!suggestion) return
+    trackPageEvent('chatbot_view_providers_clicked', { type_slug: suggestion.type_slug })
     const url = buildTargetUrl(suggestion)
     setOpen(false)
     router.push(url)
@@ -217,7 +235,13 @@ export function KranBerater() {
         <button
           type="button"
           aria-label="Kran-Berater öffnen"
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            if (!openedTrackedRef.current) {
+              trackPageEvent('chatbot_opened')
+              openedTrackedRef.current = true
+            }
+            setOpen(true)
+          }}
           className="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white pl-1.5 pr-4 py-1.5 shadow-lg transition-colors"
         >
           <span className="relative inline-block h-9 w-9 rounded-full overflow-hidden bg-white ring-2 ring-white shrink-0">

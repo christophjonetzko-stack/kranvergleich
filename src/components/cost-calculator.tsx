@@ -7,6 +7,7 @@ import { getCraneTypeIdBySlug } from '@/data/crane-types'
 import { trackPageEvent } from '@/lib/track'
 import { TAX_LABEL } from '@/lib/country'
 import { SubtypeCheck } from './subtype-check'
+import { getSessionEntryPath } from './session-entry-recorder'
 
 // STEPS answer values are upper-bound buckets ('5' = "1–5 t", '20' = "5–20 t").
 // SubtypeCheck wants approximate numerics for context — use the upper bound
@@ -299,6 +300,11 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
 
     if (!dsgvoConsent) {
       setLeadError('Bitte stimmen Sie der Datenschutzerklärung zu.')
+      // Diagnose the recommendation→attempt drop (87% in the 2026-04-29 audit).
+      // Reason fires only on actual click — readers who never press submit
+      // produce no row, so high counts here mean "users tried but tripped on
+      // DSGVO" while low counts mean "users left before clicking at all".
+      trackPageEvent('calculator_form_validation_failed', { reason: 'dsgvo', field: 'dsgvo' })
       return
     }
 
@@ -306,6 +312,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     const location = String(form.get('location') || '').trim()
     if (location.length < 2) {
       setLeadError('Bitte geben Sie eine PLZ oder Stadt ein.')
+      trackPageEvent('calculator_form_validation_failed', { reason: 'location_too_short', field: 'location' })
       return
     }
 
@@ -348,6 +355,13 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
           auto_select_nearest: true,
           dry_run: dryRun,
           website_url: form.get('website_url') || '',
+          // Carries the FIRST page of the visitor's session so the lead can
+          // be attributed to the entry point (deeplink vs. homepage).
+          entry_path: getSessionEntryPath(),
+          // The calculator sits on /kran-mieten-preise — set type_context so
+          // firm_events form_submit rows show "this lead came from the
+          // recommendation pipeline" instead of NULL.
+          type_context: result.slug.replace(/-mieten$/, ''),
         }),
       })
       if (!res.ok) {
@@ -378,6 +392,7 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
       })
     } catch (err) {
       setLeadError(err instanceof Error ? err.message : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
+      trackPageEvent('calculator_form_validation_failed', { reason: 'server_error' })
     } finally {
       setLeadSending(false)
     }
@@ -631,12 +646,26 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
             </p>
           </form>
 
-          <button
-            onClick={handleReset}
-            className="text-[12px] text-gray-400 hover:text-gray-600 mt-3 transition-colors"
-          >
-            ← Neu berechnen
-          </button>
+          <div className="flex items-center justify-between mt-3 gap-3">
+            <button
+              onClick={handleReset}
+              className="text-[12px] text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              ← Neu berechnen
+            </button>
+            {/* Escape route — users who don't want to submit a form yet should
+                still be able to browse providers. Without this, the only path
+                forward from the recommendation was the gated form, and the
+                2026-04-29 audit showed 87% of step-4 completions never clicked
+                submit. Linking to the listing keeps them in the funnel
+                instead of bouncing. */}
+            <Link
+              href={`/${result.slug}`}
+              className="text-[12px] text-gray-500 hover:text-gray-900 hover:underline transition-colors"
+            >
+              Alle {result.name}-Anbieter ohne Anfrage ansehen →
+            </Link>
+          </div>
         </div>
 
         <p className="text-[11px] text-gray-400 mt-3">

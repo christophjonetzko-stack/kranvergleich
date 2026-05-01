@@ -11,10 +11,17 @@ export type PageEventType =
   | 'calculator_recommendation_shown'
   | 'calculator_lead_submit_attempt'
   | 'calculator_lead_submit_success'
+  | 'calculator_form_validation_failed'
   | 'inline_sammelanfrage_submit'
   | 'scroll_depth_75'
   | 'click_city_link'
   | 'click_type_link'
+  | 'hero_search_submit'
+  | 'hero_project_describe_expanded'
+  | 'chatbot_opened'
+  | 'chatbot_message_sent'
+  | 'chatbot_recommendation_shown'
+  | 'chatbot_view_providers_clicked'
 
 export function trackPageEvent(
   eventType: PageEventType,

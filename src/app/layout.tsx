@@ -3,6 +3,7 @@ import { Archivo, Archivo_Narrow, JetBrains_Mono } from 'next/font/google'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { KranBerater } from '@/components/kran-berater'
+import { SessionEntryRecorder } from '@/components/session-entry-recorder'
 import { BASE_URL, BRAND_NAME, COUNTRY_LABEL, OG_LOCALE } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 import './globals.css'
@@ -56,6 +57,7 @@ export default function RootLayout({
       className={`h-full antialiased ${archivo.variable} ${archivoNarrow.variable} ${jbMono.variable}`}
     >
       <body className="min-h-full flex flex-col">
+        <SessionEntryRecorder />
         <Header />
         <div className="h-1 bg-[#FFD100]" aria-hidden />
         <main className="flex-1">{children}</main>
