@@ -222,6 +222,29 @@ export default async function WelchenKranPage() {
         </Link>
         <p className="text-[12px] text-gray-400 mt-3">Kostenlos & unverbindlich. Keine versteckten Kosten.</p>
       </section>
+
+      {/* FAQPage — converts the 8 scenarios into Q&A pairs so AI agents and
+          answer engines can cite the recommendation directly. Google removed
+          FAQ rich-result snippets for non-gov sites in 2023, but ChatGPT,
+          Claude, Perplexity still parse this format and prefer it for
+          definitive single-answer queries like "welcher kran für dacharbeiten". */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: scenarios.map((s) => ({
+              '@type': 'Question',
+              name: `Welcher Kran für ${s.title}?`,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: `${s.recommendation}. ${s.why}`,
+              },
+            })),
+          }),
+        }}
+      />
     </div>
   )
 }

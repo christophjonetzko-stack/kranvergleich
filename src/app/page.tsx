@@ -402,6 +402,7 @@ export default async function HomePage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Organization',
+            '@id': `${BASE_URL}#organization`,
             name: BRAND_NAME,
             url: BASE_URL,
             description: `Vergleichsportal für Kranvermietung in ${COUNTRY_LABEL}. Über ${anbieterCount} Anbieter für Minikrane, Autokrane und mehr.`,
@@ -410,6 +411,48 @@ export default async function HomePage() {
               email: 'kontakt@kranvergleich.de',
               contactType: 'customer service',
               availableLanguage: 'German',
+            },
+          }),
+        }}
+      />
+      {/* Service schema — defines what kranvergleich IS for AI agents:
+          a vendor-neutral comparison service, not a marketplace. hasOfferCatalog
+          enumerates the 8 crane-type sub-services so an agent crawling this
+          single page learns the full catalog scope without fanning out. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            '@id': `${BASE_URL}#service`,
+            name: `${BRAND_NAME} — Vergleichsportal für Kranvermietung`,
+            serviceType: 'Vergleichsportal Kranvermietung',
+            description: `Neutraler Vergleich von ${anbieterCount}+ Kranvermietern in ${COUNTRY_LABEL}. Kostenlos und unverbindlich Angebote für Minikran, Autokran, Mobilkran, Baukran, Raupenkran, Dachdeckerkran, Anhängerkran und Ladekran einholen.`,
+            provider: { '@id': `${BASE_URL}#organization` },
+            areaServed: { '@type': 'Country', name: COUNTRY_LABEL },
+            audience: {
+              '@type': 'BusinessAudience',
+              audienceType: 'Bauunternehmen, Handwerksbetriebe, Privatpersonen, Industrie',
+            },
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog',
+              name: 'Krantypen',
+              itemListElement: craneTypes.map((ct) => ({
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: `${ct.name}-Vermietung`,
+                  serviceType: ct.name,
+                  url: `${BASE_URL}/${ct.slug}`,
+                },
+              })),
+            },
+            offers: {
+              '@type': 'Offer',
+              price: 0,
+              priceCurrency: 'EUR',
+              description: 'Anfrage und Angebotsvergleich kostenlos und unverbindlich',
             },
           }),
         }}
