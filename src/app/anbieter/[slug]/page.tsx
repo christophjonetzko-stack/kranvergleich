@@ -6,7 +6,7 @@ import { getCraneTypeNameById } from '@/data/crane-types'
 import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { LeadForm } from '@/components/lead-form'
 import { TrackProfileView, TrackedLink, RevealablePhone } from '@/components/track'
-import { BRAND_NAME } from '@/lib/country'
+import { BRAND_NAME, BASE_URL } from '@/lib/country'
 
 export const revalidate = 86400
 
@@ -107,6 +107,67 @@ export default async function CompanyPage({
       ? `Das Unternehmen bietet ${craneTypeNames.join(', ')} zur Miete an und`
       : 'Das Unternehmen'
   } bedient ${company.city} und Umgebung.`
+
+  // --- Schema.org enrichments (for AI agents + AEO) ---
+  const profileUrl = `${BASE_URL}/anbieter/${slug}`
+
+  // areaServed: explicit service_regions or fallback to home city; add GeoCircle when geo+radius known.
+  // Lets agents resolve "does this firm serve city X" without parsing prose.
+  const areaServed: object[] = []
+  const regions = company.service_regions && company.service_regions.length > 0
+    ? company.service_regions
+    : [company.city]
+  regions.forEach((r) => areaServed.push({ '@type': 'City', name: r }))
+  if (company.lat != null && company.lng != null && company.service_radius_km) {
+    areaServed.push({
+      '@type': 'GeoCircle',
+      geoMidpoint: { '@type': 'GeoCoordinates', latitude: company.lat, longitude: company.lng },
+      geoRadius: company.service_radius_km * 1000,
+    })
+  }
+
+  const priceRangeText = (() => {
+    const lo = company.price_day_from
+    const hi = company.price_day_to
+    if (lo && hi) return `€${lo}–${hi} / Tag`
+    if (lo) return `ab €${lo} / Tag`
+    return null
+  })()
+
+  // hasOfferCatalog: one Offer per crane in fleet, with firm-specific spec from company_cranes.
+  // Firm-level max_capacity_kg / max_height_m / max_reach_m beat the generic typical_* on CraneType
+  // because they describe THIS firm's actual machine, not the segment average.
+  const offerCatalog = company.company_cranes.length > 0 ? {
+    '@type': 'OfferCatalog',
+    name: `Krane bei ${company.name}`,
+    itemListElement: company.company_cranes.map((cr) => {
+      const ct = allCraneTypes.find((t) => t.id === cr.crane_type_id)
+      if (!ct) return null
+      const additionalProperty: object[] = []
+      if (cr.max_capacity_kg) additionalProperty.push({ '@type': 'PropertyValue', name: 'Maximale Tragkraft', value: cr.max_capacity_kg, unitCode: 'KGM' })
+      if (cr.max_height_m) additionalProperty.push({ '@type': 'PropertyValue', name: 'Maximale Hubhöhe', value: cr.max_height_m, unitCode: 'MTR' })
+      if (cr.max_reach_m) additionalProperty.push({ '@type': 'PropertyValue', name: 'Maximale Ausladung', value: cr.max_reach_m, unitCode: 'MTR' })
+      if (cr.has_operator) additionalProperty.push({ '@type': 'PropertyValue', name: 'Mit Kranführer', value: 'Ja' })
+      if (cr.electric) additionalProperty.push({ '@type': 'PropertyValue', name: 'Elektroantrieb', value: 'Ja' })
+      return {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: `${ct.name}-Vermietung`,
+          serviceType: ct.name,
+          ...(additionalProperty.length > 0 && { additionalProperty }),
+        },
+        ...(ct.price_day_from && {
+          priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            price: ct.price_day_from,
+            priceCurrency: 'EUR',
+            referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'DAY' },
+          },
+        }),
+      }
+    }).filter(Boolean),
+  } : null
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -553,19 +614,34 @@ export default async function CompanyPage({
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'LocalBusiness',
+            '@id': profileUrl,
+            mainEntityOfPage: profileUrl,
             name: company.name,
             description: company.description || description,
+            url: company.website || profileUrl,
+            ...(company.website && { sameAs: [company.website] }),
+            ...((company.logo_url || company.google_maps_photo_url) && {
+              image: company.logo_url || company.google_maps_photo_url,
+            }),
             address: {
               '@type': 'PostalAddress',
               streetAddress: company.address,
               addressLocality: company.city,
               addressRegion: company.state,
               postalCode: company.zip,
-              addressCountry: 'DE',
+              addressCountry: company.country,
             },
+            ...(company.lat != null && company.lng != null && {
+              geo: {
+                '@type': 'GeoCoordinates',
+                latitude: company.lat,
+                longitude: company.lng,
+              },
+            }),
+            ...(areaServed.length > 0 && { areaServed }),
+            ...(priceRangeText && { priceRange: priceRangeText }),
             telephone: company.phone,
             ...(displayEmail && { email: displayEmail }),
-            ...(company.website && { url: company.website }),
             ...(company.google_rating && {
               aggregateRating: {
                 '@type': 'AggregateRating',
@@ -573,6 +649,7 @@ export default async function CompanyPage({
                 reviewCount: company.google_reviews_count,
               },
             }),
+            ...(offerCatalog && { hasOfferCatalog: offerCatalog }),
           }),
         }}
       />

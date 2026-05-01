@@ -622,6 +622,10 @@ export default async function CraneTypePage({
           threshold (avoids cargo-cult schema on under-sampled pages). */}
       {price && (() => {
         const aggRating = computeAggregateRating(companies)
+        const additionalProperty: object[] = []
+        if (craneType.typical_capacity_kg) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Tragkraft', value: craneType.typical_capacity_kg })
+        if (craneType.typical_height_m) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Hubhöhe', value: craneType.typical_height_m })
+        if (craneType.typical_reach_m) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Ausladung', value: craneType.typical_reach_m })
         return (
           <script
             type="application/ld+json"
@@ -633,6 +637,7 @@ export default async function CraneTypePage({
                 description: craneType.description,
                 category: 'Kranvermietung',
                 brand: { '@type': 'Brand', name: BRAND_NAME },
+                ...(additionalProperty.length > 0 && { additionalProperty }),
                 offers: {
                   '@type': 'AggregateOffer',
                   priceCurrency: 'EUR',

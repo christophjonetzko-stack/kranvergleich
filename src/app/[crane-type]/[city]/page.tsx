@@ -325,30 +325,36 @@ export default async function CraneCityPage({
               '@type': 'ItemList',
               name: `${craneType.name}-Vermieter in ${city.name}`,
               numberOfItems: companies.length,
-              itemListElement: companies.slice(0, 10).map((company, i) => ({
-                '@type': 'ListItem',
-                position: i + 1,
-                item: {
-                  '@type': 'LocalBusiness',
-                  name: company.name,
-                  address: {
-                    '@type': 'PostalAddress',
-                    addressLocality: company.city,
-                    addressRegion: company.state,
-                    postalCode: company.zip,
-                    addressCountry: 'DE',
-                  },
-                  telephone: company.phone,
-                  ...(company.website && { url: company.website }),
-                  ...(company.google_rating && {
-                    aggregateRating: {
-                      '@type': 'AggregateRating',
-                      ratingValue: company.google_rating,
-                      reviewCount: company.google_reviews_count,
+              itemListElement: companies.slice(0, 10).map((company, i) => {
+                const lo = company.price_day_from
+                const hi = company.price_day_to
+                const priceRange = lo && hi ? `€${lo}–${hi} / Tag` : lo ? `ab €${lo} / Tag` : null
+                return {
+                  '@type': 'ListItem',
+                  position: i + 1,
+                  item: {
+                    '@type': 'LocalBusiness',
+                    name: company.name,
+                    address: {
+                      '@type': 'PostalAddress',
+                      addressLocality: company.city,
+                      addressRegion: company.state,
+                      postalCode: company.zip,
+                      addressCountry: company.country,
                     },
-                  }),
-                },
-              })),
+                    telephone: company.phone,
+                    ...(company.website && { url: company.website }),
+                    ...(priceRange && { priceRange }),
+                    ...(company.google_rating && {
+                      aggregateRating: {
+                        '@type': 'AggregateRating',
+                        ratingValue: company.google_rating,
+                        reviewCount: company.google_reviews_count,
+                      },
+                    }),
+                  },
+                }
+              }),
             }),
           }}
         />
@@ -359,6 +365,13 @@ export default async function CraneCityPage({
           schema on small-sample city×type combos). */}
       {price && companies.length > 0 && (() => {
         const aggRating = computeAggregateRating(companies)
+        // Technical params (typical_*) ride on the Product so AI agents can match
+        // user constraints (weight/height/reach) to the crane type without parsing
+        // body copy. Strings — may include ranges like "8-60 t" — pass-through.
+        const additionalProperty: object[] = []
+        if (craneType.typical_capacity_kg) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Tragkraft', value: craneType.typical_capacity_kg })
+        if (craneType.typical_height_m) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Hubhöhe', value: craneType.typical_height_m })
+        if (craneType.typical_reach_m) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Ausladung', value: craneType.typical_reach_m })
         return (
           <script
             type="application/ld+json"
@@ -370,6 +383,7 @@ export default async function CraneCityPage({
                 description: `${craneType.name} in ${city.name} mieten. ${companies.length} Anbieter im Vergleich, Preise ab ${price.dayFrom}€/Tag.`,
                 category: 'Kranvermietung',
                 brand: { '@type': 'Brand', name: BRAND_NAME },
+                ...(additionalProperty.length > 0 && { additionalProperty }),
                 areaServed: { '@type': 'City', name: city.name },
                 offers: {
                   '@type': 'AggregateOffer',
