@@ -633,9 +633,14 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
               </div>
             )}
 
+            {/* Button stays clickable when DSGVO is unchecked — handleSubmitLead
+                catches it and surfaces an inline error. Pre-fix: disabled={!dsgvoConsent}
+                meant clicks did nothing silently AND calculator_form_validation_failed
+                (reason='dsgvo') never fired, leaving the audit blind to "users try
+                to submit but DSGVO blocks them" vs. "users never click at all". */}
             <button
               type="submit"
-              disabled={leadSending || !dsgvoConsent}
+              disabled={leadSending}
               className="w-full text-[14px] font-medium bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
               {leadSending ? 'Wird gesendet…' : `Kostenlose Angebote für ${result.name} anfragen`}
