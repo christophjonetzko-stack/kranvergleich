@@ -48,3 +48,13 @@ scripts/crawl4ai_enrichment_log.txt
 scripts/crawl4ai_enrichment_output.txt
 scripts/enrichment_results.csv
 kranvergleich/
+
+# Python runtime artefacts in scripts/
+scripts/__pycache__/
+scripts/*.log
+scripts/*_log.txt
+scripts/*_output.txt
+scripts/firm_reports/
+
+# Supabase CLI auto-generated state
+supabase/.temp/
