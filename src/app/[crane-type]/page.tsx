@@ -151,16 +151,22 @@ export default async function CraneTypePage({
             )}
           </div>
 
-          {/* Trust bar — same visual language as home hero */}
+          {/* Trust bar — same visual language as home hero. Rating only
+              renders with a real review count behind it; otherwise we'd be
+              showing the queries.ts fallback (4.2) as if it were data. */}
           <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-neutral-600">
-            <li className="inline-flex items-center gap-1.5">
-              <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
-              <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
-                {siteStats.avgRating.toString().replace('.', ',')}
-              </span>
-              <span>Google</span>
-            </li>
-            <li aria-hidden className="text-neutral-300">·</li>
+            {siteStats.avgRating !== null && (
+              <>
+                <li className="inline-flex items-center gap-1.5">
+                  <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
+                  <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
+                    {siteStats.avgRating.toString().replace('.', ',')}
+                  </span>
+                  <span>Google</span>
+                </li>
+                <li aria-hidden className="text-neutral-300">·</li>
+              </>
+            )}
             <li>DSGVO-konform</li>
             <li aria-hidden className="text-neutral-300">·</li>
             <li>Kostenlos &amp; unverbindlich</li>

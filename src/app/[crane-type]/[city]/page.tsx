@@ -165,14 +165,18 @@ export default async function CraneCityPage({
                 <li aria-hidden className="text-neutral-300">·</li>
               </>
             )}
-            <li className="inline-flex items-center gap-1.5">
-              <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
-              <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
-                {siteStats.avgRating.toString().replace('.', ',')}
-              </span>
-              <span>Google</span>
-            </li>
-            <li aria-hidden className="text-neutral-300">·</li>
+            {siteStats.avgRating !== null && (
+              <>
+                <li className="inline-flex items-center gap-1.5">
+                  <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
+                  <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
+                    {siteStats.avgRating.toString().replace('.', ',')}
+                  </span>
+                  <span>Google</span>
+                </li>
+                <li aria-hidden className="text-neutral-300">·</li>
+              </>
+            )}
             <li>DSGVO-konform</li>
             <li aria-hidden className="text-neutral-300">·</li>
             <li>Kostenlos &amp; unverbindlich</li>

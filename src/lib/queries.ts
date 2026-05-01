@@ -47,7 +47,11 @@ export function computeAggregateRating(
 export async function getSiteStats(): Promise<{
   anbieterCount: number
   staedteCount: number
-  avgRating: number
+  // null when the rated-firm sample is empty or rounds to 0 reviews after the
+  // floor-to-100 — callers must not render a star rating without a real count
+  // behind it. Previously this defaulted to a hard-coded 4.2 which leaked as a
+  // placeholder ("★ 4,2 (0)") whenever data hadn't been enriched yet.
+  avgRating: number | null
   totalReviews: number
 }> {
   // Country scoping: companies are filtered through company_regions -> cities.country
@@ -76,7 +80,7 @@ export async function getSiteStats(): Promise<{
   const cityCount = cityCountRes.count
   const ratingData = ratingDataRes.data
 
-  let avgRating = 4.2
+  let avgRating: number | null = null
   let totalReviews = 0
   if (ratingData && ratingData.length > 0) {
     const sum = ratingData.reduce((acc, r) => acc + (r.google_rating ?? 0), 0)
@@ -84,11 +88,17 @@ export async function getSiteStats(): Promise<{
     totalReviews = ratingData.reduce((acc, r) => acc + (r.google_reviews_count ?? 0), 0)
   }
 
+  // Floor reviews to the nearest 100 — round numbers read as curated, not
+  // precise-but-stale. Pair the rating to the floored count: if the floor
+  // wipes the count to 0, drop the rating too so the trust bar can't show
+  // "★ 4,2 (0)" — the two fields are surfaced together or not at all.
+  const flooredReviews = Math.floor(totalReviews / 100) * 100
+
   return {
     anbieterCount: roundDown10(firmCount ?? 740),
     staedteCount: roundDown10(cityCount ?? 40),
-    avgRating,
-    totalReviews: Math.floor(totalReviews / 100) * 100,
+    avgRating: flooredReviews > 0 ? avgRating : null,
+    totalReviews: flooredReviews,
   }
 }
 

@@ -107,19 +107,27 @@ export default async function HomePage() {
             Anbieter vergleichen · Preise sehen · anfragen in 1 Klick
           </p>
 
-          {/* Trust bar — inline list with hairline separators */}
+          {/* Trust bar — inline list with hairline separators.
+              The Google rating row only renders when getSiteStats returns a
+              non-null avgRating (i.e. a real review count is behind it).
+              With 0 reviews the row read as a placeholder ("★ 4,2 (0)") and
+              undermined the rest of the bar. */}
           <ul className="mt-5 sm:mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-neutral-600">
-            <li className="inline-flex items-center gap-1.5">
-              <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
-              <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
-                {avgRating.toString().replace('.', ',')}
-              </span>
-              <span>Google</span>
-              <span className="font-[var(--font-mono)] text-neutral-400">
-                ({totalReviews.toLocaleString('de-DE')})
-              </span>
-            </li>
-            <li aria-hidden className="w-px h-3 bg-neutral-300" />
+            {avgRating !== null && (
+              <>
+                <li className="inline-flex items-center gap-1.5">
+                  <span className="text-[#FFD100] text-[15px] leading-none" aria-hidden>★</span>
+                  <span className="font-[var(--font-mono)] tabular-nums text-neutral-900 font-semibold">
+                    {avgRating.toString().replace('.', ',')}
+                  </span>
+                  <span>Google</span>
+                  <span className="font-[var(--font-mono)] text-neutral-400">
+                    ({totalReviews.toLocaleString('de-DE')})
+                  </span>
+                </li>
+                <li aria-hidden className="w-px h-3 bg-neutral-300" />
+              </>
+            )}
             <li>{anbieterCount.toLocaleString('de-DE')}+ Anbieter</li>
             <li aria-hidden className="w-px h-3 bg-neutral-300" />
             <li>{staedteCount} Städte</li>
