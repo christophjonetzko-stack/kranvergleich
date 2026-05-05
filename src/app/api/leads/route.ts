@@ -78,13 +78,12 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
   return typeof str === 'string' ? str.slice(0, max) : ''
 }
 
-// Resend FROM address is country-aware. The AT subdomain (send.kranvergleich.at)
-// must have its DKIM/SPF/DMARC verified in Resend before kranvergleich.at goes live;
-// until then, AT lead submissions will fail at the email send step. AT domain hookup
-// is a tydzień 2-3 task per the launch plan.
-// BASE_URL/DOMAIN/BRAND_NAME/COUNTRY_LABEL are imported from @/lib/country (single source of truth).
+// Both countries send from send.kranvergleich.de — Resend Free plan caps at 1 verified
+// domain. Display name carries the country brand ("KranVergleich Österreich") so the
+// AT recipient still sees a localized sender. Switch the AT branch to send.kranvergleich.at
+// once we upgrade to Pro and add the AT subdomain.
 const FROM_EMAIL = COUNTRY === 'AT'
-  ? 'KranVergleich <noreply@send.kranvergleich.at>'
+  ? 'KranVergleich Österreich <noreply@send.kranvergleich.de>'
   : 'KranVergleich <noreply@send.kranvergleich.de>'
 
 // --- Rate limiting: max 5 requests per minute per IP ---
