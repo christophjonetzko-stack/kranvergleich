@@ -199,9 +199,16 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
       {/* Outer container — single rounded card. Pill aesthetic on desktop
           when collapsed, but switches to rounded-3xl when project field
           expands so the textarea attaches cleanly inside the same surface
-          (no floating overlay, layout stays stable). */}
+          (no floating overlay, layout stays stable).
+          overflow-x-clip + overflow-y-visible is the modern CSS combo that
+          actually allows axis-asymmetric overflow (the older overflow-x-hidden
+          + overflow-y-visible silently coerces the visible axis to auto and
+          shows scrollbars on long content). Keeps the rounded-full pill
+          clipping any child edges on x while letting the custom Krantyp
+          dropdown panel extend below the card without being clipped. Without
+          this fix the listbox renders into the DOM but is invisible. */}
       <div
-        className={`bg-white shadow-lg sm:border sm:border-gray-200 transition-all overflow-hidden ${
+        className={`bg-white shadow-lg sm:border sm:border-gray-200 transition-all overflow-x-clip overflow-y-visible ${
           showProjectField ? 'sm:rounded-3xl' : 'sm:rounded-full'
         }`}
       >
