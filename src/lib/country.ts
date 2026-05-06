@@ -44,13 +44,44 @@ export async function getCompanyIdsInCountry(): Promise<Set<string>> {
   const now = Date.now()
   if (_companyIdsCache && _companyIdsCache.expires > now) return _companyIdsCache.ids
 
-  const { data } = await supabase
-    .from('company_regions')
-    .select('company_id, cities!inner(country, is_active)')
-    .eq('cities.country', COUNTRY)
-    .eq('cities.is_active', true)
+  // company_regions has 2554 rows as of 2026-05-06; the default 1000-row PostgREST
+  // cap silently truncated this query — the bug masqueraded as a count-side
+  // problem (home page Autokran 246 instead of 403) but the actual upstream
+  // truncation lives here: ids was incomplete, so every downstream caller that
+  // filters by inCountryIds dropped firms whose region rows were past the cap.
+  // Paginates the bare company_regions table (no JOIN — JOIN range semantics in
+  // PostgREST appear to misbehave for this case) then filters country in JS via
+  // the cities table.
+  const cityIdsByCountry = await (async () => {
+    const { data: cityRows } = await supabase
+      .from('cities')
+      .select('id')
+      .eq('country', COUNTRY)
+      .eq('is_active', true)
+    return new Set<string>((cityRows ?? []).map((c) => c.id))
+  })()
 
-  const ids = new Set<string>((data ?? []).map((r: { company_id: string }) => r.company_id))
+  const allRegions: Array<{ company_id: string; city_id: string }> = []
+  const PAGE = 1000
+  for (let offset = 0; offset < 100_000; offset += PAGE) {
+    const { data: page, error } = await supabase
+      .from('company_regions')
+      .select('company_id, city_id')
+      .range(offset, offset + PAGE - 1)
+    if (error) {
+      console.error('getCompanyIdsInCountry pagination error:', error)
+      break
+    }
+    if (!page || page.length === 0) break
+    allRegions.push(...page)
+    if (page.length < PAGE) break
+  }
+  console.log(`[getCompanyIdsInCountry] paginated ${allRegions.length} company_regions rows for country ${COUNTRY}`)
+
+  const ids = new Set<string>()
+  for (const r of allRegions) {
+    if (cityIdsByCountry.has(r.city_id)) ids.add(r.company_id)
+  }
   _companyIdsCache = { ids, expires: now + COMPANY_IDS_TTL_MS }
   return ids
 }

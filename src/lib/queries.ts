@@ -350,28 +350,29 @@ export async function getCompanyCountsPerCraneType(): Promise<Map<string, number
   if (inCountryIds.size === 0) return new Map()
 
   // company_cranes has 2023 rows as of 2026-05-06; default 1000-row cap silently
-  // truncated home-page counts. Inline pagination instead of the helper, in case
-  // the INNER JOIN on companies confuses the wrapper's type inference at runtime
-  // (sitemap's regions paginator works fine but home stayed at truncated counts
-  // until this rewrite).
+  // truncated home-page counts. Two earlier rewrites (wrapper + inline-with-JOIN)
+  // both stayed at truncated 246-Autokran on production despite local TS test
+  // returning the full 1853 rows. Hypothesis: the `companies!inner` JOIN confuses
+  // PostgREST's row-range semantics in build-time pre-render. This version drops
+  // the JOIN entirely — paginates the bare company_cranes table, then filters
+  // active+relevant + country in JS using inCountryIds (already an
+  // active+relevant+country gate from getCompanyIdsInCountry).
   const data: Array<{ crane_type_id: string; company_id: string }> = []
   const PAGE = 1000
   for (let offset = 0; offset < 100_000; offset += PAGE) {
     const { data: page, error } = await supabase
       .from('company_cranes')
-      .select('crane_type_id, company_id, companies!inner(is_active, is_relevant)')
-      .eq('companies.is_active', true)
-      .eq('companies.is_relevant', true)
+      .select('crane_type_id, company_id')
       .range(offset, offset + PAGE - 1)
     if (error) {
       console.error('getCompanyCountsPerCraneType pagination error:', error)
       break
     }
     if (!page || page.length === 0) break
-    data.push(...(page as Array<{ crane_type_id: string; company_id: string }>))
+    data.push(...page)
     if (page.length < PAGE) break
   }
-  console.log(`[getCompanyCountsPerCraneType] paginated ${data.length} rows`)
+  console.log(`[getCompanyCountsPerCraneType] paginated ${data.length} rows of company_cranes`)
 
   const perType = new Map<string, Set<string>>()
   for (const row of data) {
