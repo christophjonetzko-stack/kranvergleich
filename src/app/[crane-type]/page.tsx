@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getSiteStats, computeAggregateRating } from '@/lib/queries'
+import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getCompanyCountsPerCraneType, getSiteStats, computeAggregateRating } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL } from '@/lib/country'
 import { CompanySection } from '@/components/company-section'
@@ -31,8 +31,13 @@ export async function generateMetadata({
   const craneType = await getCraneTypeBySlug(craneTypeSlug)
   if (!craneType) return {}
 
-  const companies = await getCompaniesForCraneType(craneType.id)
-  const count = companies.length
+  // count = real catalog total for this crane type (from the paginated counts
+  // map). getCompaniesForCraneType caps the returned list at 50 for the SEO
+  // listing — using its length as the title count showed "49 Anbieter" when
+  // the catalog actually had 403, eroding trust on the most-trafficked hub
+  // page. Title/description must reflect catalog depth, not list-render cap.
+  const counts = await getCompanyCountsPerCraneType()
+  const count = counts.get(craneType.id) ?? 0
   const priceStr = craneType.price_day_from ? `ab ${craneType.price_day_from}€/Tag` : ''
 
   // Title: ≤60 Zeichen, mit Preis + Anbieterzahl (Google-Snippet-optimiert)
@@ -81,11 +86,15 @@ export default async function CraneTypePage({
   // doesn't rank the destination for those searches.
   const craneTypeStatic = craneTypesList.find((ct) => ct.slug === craneTypeSlug)
 
-  const [companies, cities, siteStats] = await Promise.all([
+  const [companies, cities, siteStats, counts] = await Promise.all([
     getCompaniesForCraneType(craneType.id, plz),
     getCities(),
     getSiteStats(),
+    getCompanyCountsPerCraneType(),
   ])
+  // Real catalog total for this crane type — companies.length is capped at 50
+  // (SEO listing limit). Trust signals must show the full catalog depth.
+  const totalCount = counts.get(craneType.id) ?? companies.length
 
   const faqs = getFAQsForCraneType(craneType.slug)
   const price = getPriceForCraneType(craneType.slug)
@@ -142,8 +151,8 @@ export default async function CraneTypePage({
 
           {/* Specs inline */}
           <div className="flex flex-wrap gap-4 text-[13px] text-neutral-500 mb-3">
-            {companies.length > 0 && (
-              <span>{companies.length} Anbieter</span>
+            {totalCount > 0 && (
+              <span>{totalCount} Anbieter</span>
             )}
             {craneType.typical_capacity_kg && (
               <span>Tragkraft: {craneType.typical_capacity_kg}</span>
@@ -184,9 +193,9 @@ export default async function CraneTypePage({
         <a href="#preise" className="text-[13px] text-blue-600 hover:underline">
           Preisübersicht
         </a>
-        {companies.length > 0 && (
+        {totalCount > 0 && (
           <a href="#anbieter" className="text-[13px] text-blue-600 hover:underline">
-            {companies.length} Anbieter
+            {totalCount} Anbieter
           </a>
         )}
         {companies.some((c) => c.lat != null && c.lng != null) && (
@@ -267,7 +276,7 @@ export default async function CraneTypePage({
       {companies.length > 0 && (
         <section id="anbieter" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {craneType.name}-Anbieter in {COUNTRY_LABEL} ({companies.length})
+            {craneType.name}-Anbieter in {COUNTRY_LABEL} ({totalCount})
           </h2>
           <CompanySection
             companies={companies}
@@ -564,7 +573,7 @@ export default async function CraneTypePage({
               Sie möchten einen <strong className="text-gray-900">{craneType.name}</strong>
               {synonyms.length > 0 && <> (auch {synonyms.slice(0, 3).join(', ')} genannt)</>}
               {' '}mieten oder leihen in {COUNTRY_LABEL}? Auf {BRAND_NAME} finden Sie{' '}
-              {companies.length > 0 ? `${companies.length} ` : ''}{craneType.name}-Vermieter im direkten Vergleich.
+              {totalCount > 0 ? `${totalCount} ` : ''}{craneType.name}-Vermieter im direkten Vergleich.
               {price && (
                 <> Die Tagesmiete liegt zwischen ca. {price.dayFrom.toLocaleString('de-DE')}€ und{' '}
                 {price.dayTo.toLocaleString('de-DE')}€ (Richtwerte, netto).
@@ -651,8 +660,8 @@ export default async function CraneTypePage({
                   priceCurrency: 'EUR',
                   lowPrice: price.dayFrom,
                   highPrice: price.dayTo,
-                  ...(companies.length > 0 && {
-                    offerCount: companies.length,
+                  ...(totalCount > 0 && {
+                    offerCount: totalCount,
                     availability: 'https://schema.org/InStock',
                   }),
                   priceSpecification: {
