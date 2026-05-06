@@ -70,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/datenschutz`, lastModified: toDate(DATE_LEGAL), changeFrequency: 'yearly', priority: 0.3 },
   ]
 
-  const ratgeberArticles: Array<{ slug: string; priority: number }> = [
+  const ratgeberArticles: Array<{ slug: string; priority: number; date?: string }> = [
     { slug: 'was-kostet-ein-kran', priority: 0.8 },
     { slug: 'welchen-kran-brauche-ich', priority: 0.7 },
     { slug: 'kran-mieten-privatperson', priority: 0.7 },
@@ -78,12 +78,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { slug: 'kran-mieten-tipps', priority: 0.7 },
     { slug: 'kran-mieten-hausbau', priority: 0.8 },
     { slug: 'solaranlage-kran-mieten', priority: 0.8 },
+    { slug: 'bootskran-mieten', priority: 0.8, date: '2026-05-06' },
+    { slug: 'pool-kran-mieten', priority: 0.8, date: '2026-05-06' },
+    { slug: 'whirlpool-kran-mieten', priority: 0.7, date: '2026-05-06' },
     { slug: 'kran-aufstellen-genehmigung', priority: 0.7 },
     { slug: 'krantypen', priority: 0.8 },
   ]
   const ratgeberPages: MetadataRoute.Sitemap = ratgeberArticles.map((a) => ({
     url: `${baseUrl}/ratgeber/${a.slug}`,
-    lastModified: toDate(DATE_RATGEBER),
+    lastModified: toDate(a.date ?? DATE_RATGEBER),
     changeFrequency: 'monthly' as const,
     priority: a.priority,
   }))

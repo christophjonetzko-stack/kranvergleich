@@ -44,6 +44,21 @@ const articles = [
     description: 'Solarmodule aufs Dach: Welcher Kran, was kostet er und wie viele Module pro Tag schafft man? Praxis-Ratgeber für PV-Installation.',
   },
   {
+    slug: 'bootskran-mieten',
+    title: 'Bootskran mieten: Yacht & Segelboot heben',
+    description: 'Yacht oder Segelboot kranen — Mobilkran 50t ab 600€, Krantraverse + Saison-Vorlauf in der Krängungs-Spitze. Kosten nach Bootslänge und Lage.',
+  },
+  {
+    slug: 'pool-kran-mieten',
+    title: 'Pool mit Kran über das Haus heben',
+    description: 'GFK-Pool oder Fertigpool in den Garten heben — Mobilkran 50t ab 700€. Auslage entscheidet, nicht das Pool-Gewicht.',
+  },
+  {
+    slug: 'whirlpool-kran-mieten',
+    title: 'Whirlpool mit Kran heben: Garten oder Dachterrasse',
+    description: 'Mobilkran 35–50t ab 450€ für Garten-Hub. Wann Sie wirklich einen Kran brauchen — und wann der Spa-Dolly reicht.',
+  },
+  {
     slug: 'kran-mieten-privatperson',
     title: 'Kran mieten als Privatperson — Was ist möglich?',
     description: 'Minikran ab 250€/Tag und Anhängerkran ab 150€/Tag ohne Führerschein. Kosten, Versicherung und Tipps für Privatpersonen.',
