@@ -65,6 +65,13 @@ export default async function HomePage() {
   const tableCraneTypes = [...craneTypes].sort(
     (a, b) => (companyCounts.get(b.id) ?? 0) - (companyCounts.get(a.id) ?? 0)
   )
+  // Slug-keyed counts for the SearchBox dropdown — companyCounts is keyed by
+  // crane_type_id (DB primary key), but the dropdown options come from the
+  // static `craneTypes` catalog which uses slugs everywhere.
+  const countsBySlug: Record<string, number> = {}
+  for (const ct of craneTypes) {
+    countsBySlug[ct.slug] = companyCounts.get(ct.id) ?? 0
+  }
 
   return (
     <div>
@@ -100,7 +107,7 @@ export default async function HomePage() {
 
           {/* SearchBox — LCP, above the fold on all viewports */}
           <div className="mt-7 sm:mt-9">
-            <SearchBox />
+            <SearchBox craneTypeCounts={countsBySlug} />
           </div>
 
           {/* Procedural hint — addresses "what happens after Suchen" (gap left

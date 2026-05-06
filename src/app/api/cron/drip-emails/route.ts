@@ -98,7 +98,7 @@ const DRIP_EMAILS = [
         <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:16px 0;">
           <p style="font-size:14px;color:#1a1a1a;margin:0 0 8px;font-weight:600;">Warum über ${BRAND_NAME}?</p>
           <ul style="margin:0;padding-left:18px;color:#4b5563;font-size:14px;line-height:1.8;">
-            <li>740+ geprüfte Anbieter in 50+ Städten</li>
+            <li>700+ geprüfte Anbieter in 80+ Städten</li>
             <li>Echte Google-Bewertungen</li>
             <li>100% kostenlos & unverbindlich</li>
           </ul>

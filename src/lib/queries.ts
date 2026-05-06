@@ -117,7 +117,12 @@ export async function getSiteStats(): Promise<{
   const flooredReviews = Math.floor(totalReviews / 100) * 100
 
   return {
-    anbieterCount: roundDown10(firmCount ?? 740),
+    // Fallback was 740 from launch-era catalog; updated 2026-05-06 to 700
+    // after Stage A+B catalog cleanup (mig 017-021) cut 79 off-niche / wartung-
+    // only firms. Real DE active+relevant count today is 638; AT 75. Fallback
+    // rarely triggers (firmCount only null on connection failure) but should
+    // sit at a value the catalog can defend, not an aspirational round number.
+    anbieterCount: roundDown10(firmCount ?? 700),
     staedteCount: roundDown10(cityCount ?? 40),
     avgRating: flooredReviews > 0 ? avgRating : null,
     totalReviews: flooredReviews,

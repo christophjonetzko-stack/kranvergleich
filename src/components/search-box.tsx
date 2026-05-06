@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { craneTypes } from '@/data/crane-types'
 import { resolveSearchTarget } from '@/lib/search'
@@ -15,9 +15,37 @@ interface CityResult {
   label: string
 }
 
-export function SearchBox() {
+interface SearchBoxProps {
+  /** crane-type-slug → Anbieter count map. Passed from server page so the
+   *  dropdown can sort by popularity and show "Autokran — 403 Anbieter"
+   *  instead of a bare label. Empty map = fall back to the static catalog
+   *  order with no counts. */
+  craneTypeCounts?: Record<string, number>
+}
+
+export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
   const router = useRouter()
   const [craneType, setCraneType] = useState('')
+  const [craneTypeOpen, setCraneTypeOpen] = useState(false)
+  const [craneTypeActiveIndex, setCraneTypeActiveIndex] = useState(-1)
+  const craneTypeWrapperRef = useRef<HTMLDivElement>(null)
+
+  // Sort the catalog by Anbieter count desc when a counts map is available.
+  // Most popular first lifts the user's first scan to the type they're most
+  // likely after (Autokran 403 vs. Dachdeckerkran 47). Falls back to the
+  // static sort_order from data/crane-types.ts when counts aren't provided
+  // (e.g. on pages that haven't been migrated to pass the prop yet).
+  const sortedTypes = useMemo(() => {
+    if (!craneTypeCounts) return craneTypes
+    return [...craneTypes].sort((a, b) => {
+      const aN = craneTypeCounts[a.slug] ?? 0
+      const bN = craneTypeCounts[b.slug] ?? 0
+      return bN - aN
+    })
+  }, [craneTypeCounts])
+
+  const selectedType = sortedTypes.find((t) => t.slug === craneType)
+  const craneTypeLabel = selectedType ? selectedType.name : 'Egal — alle Typen'
   const [cityQuery, setCityQuery] = useState('')
   const [results, setResults] = useState<CityResult[]>([])
   const [isOpen, setIsOpen] = useState(false)
@@ -35,16 +63,53 @@ export function SearchBox() {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click — both the city autocomplete and the
+  // custom crane-type dropdown share this handler. Each ref-guards its own
+  // surface so a click inside one closes only the other.
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+      const target = e.target as Node
+      if (wrapperRef.current && !wrapperRef.current.contains(target)) {
         setIsOpen(false)
+      }
+      if (craneTypeWrapperRef.current && !craneTypeWrapperRef.current.contains(target)) {
+        setCraneTypeOpen(false)
+        setCraneTypeActiveIndex(-1)
       }
     }
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
+
+  function handleCraneTypeKeyDown(e: React.KeyboardEvent) {
+    // sortedTypes + 1 (the "Egal — alle Typen" leading row) is the navigable list.
+    const total = sortedTypes.length + 1
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setCraneTypeOpen(true)
+      setCraneTypeActiveIndex((prev) => (prev < total - 1 ? prev + 1 : 0))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setCraneTypeOpen(true)
+      setCraneTypeActiveIndex((prev) => (prev > 0 ? prev - 1 : total - 1))
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      if (!craneTypeOpen) {
+        setCraneTypeOpen(true)
+        return
+      }
+      if (craneTypeActiveIndex === 0) {
+        setCraneType('')
+      } else if (craneTypeActiveIndex > 0) {
+        setCraneType(sortedTypes[craneTypeActiveIndex - 1].slug)
+      }
+      setCraneTypeOpen(false)
+      setCraneTypeActiveIndex(-1)
+    } else if (e.key === 'Escape') {
+      setCraneTypeOpen(false)
+      setCraneTypeActiveIndex(-1)
+    }
+  }
 
   function handleInputChange(value: string) {
     setCityQuery(value)
@@ -141,14 +206,31 @@ export function SearchBox() {
         }`}
       >
         <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-stretch p-3 sm:p-1.5">
-          {/* Krantyp field — icon + uppercase label + select. Daibau-style
-              "Welche Leistung?" pattern: micro-label tells the user what
-              this segment is, placeholder is the actual default. */}
-          <div className="w-full sm:flex-1 text-left">
-            <label htmlFor="sb-cranetype" className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
+          {/* Krantyp field — custom dropdown. Replaces the native <select>
+              (system blue highlight, system font in option list, no per-type
+              counts) with a brand-styled disclosure: button + popover ul,
+              same uppercase micro-label pattern as before. Sorted by Anbieter
+              count desc when counts are provided so the most popular type
+              (Autokran ~400) lands first. Counts shown inline in the option
+              row turn the dropdown into a trust signal at the moment of
+              choice. Single component handles desktop + mobile (the previous
+              implementation duplicated a separate <select> for mobile). */}
+          <div ref={craneTypeWrapperRef} className="w-full sm:flex-1 text-left relative">
+            <label htmlFor="sb-cranetype-button" className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
               Krantyp
             </label>
-            <div className="relative flex items-center">
+            <button
+              id="sb-cranetype-button"
+              type="button"
+              onClick={() => {
+                setCraneTypeOpen((v) => !v)
+                setCraneTypeActiveIndex(-1)
+              }}
+              onKeyDown={handleCraneTypeKeyDown}
+              aria-haspopup="listbox"
+              aria-expanded={craneTypeOpen}
+              className="relative flex items-center w-full text-left h-12 sm:h-auto bg-white sm:bg-transparent rounded-lg sm:rounded-none border border-gray-300 sm:border-0 px-4 sm:px-0 sm:pl-12 sm:pr-3 sm:py-1.5"
+            >
               <span className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" aria-hidden>
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 21h18" />
@@ -159,32 +241,78 @@ export function SearchBox() {
                   <path d="M17 13v2" />
                 </svg>
               </span>
-              <div className="hidden sm:flex flex-col flex-1 sm:pl-12 sm:pr-3 sm:py-1.5 cursor-pointer">
+              <span className="hidden sm:flex flex-col flex-1 min-w-0">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-500 leading-none">Krantyp</span>
-                <select
-                  id="sb-cranetype"
-                  value={craneType}
-                  onChange={(e) => setCraneType(e.target.value)}
-                  className="appearance-none bg-transparent text-[14px] font-medium text-neutral-900 cursor-pointer focus:outline-none mt-0.5 pr-4"
-                >
-                  <option value="">Egal — alle Typen</option>
-                  {craneTypes.map((ct) => (
-                    <option key={ct.slug} value={ct.slug}>{ct.name}</option>
-                  ))}
-                </select>
-              </div>
-              {/* Mobile select — full styled select (label sits above per the mobile <label> tag). */}
-              <select
-                value={craneType}
-                onChange={(e) => setCraneType(e.target.value)}
-                className="sm:hidden w-full h-12 bg-white pl-4 pr-3 text-[15px] font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer appearance-none rounded-lg border border-gray-300"
+                <span className="text-[14px] font-medium text-neutral-900 mt-0.5 truncate">{craneTypeLabel}</span>
+              </span>
+              <span className="sm:hidden flex-1 text-[15px] font-medium text-gray-900 truncate">{craneTypeLabel}</span>
+              <span aria-hidden className="ml-2 text-neutral-400">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </span>
+            </button>
+
+            {craneTypeOpen && (
+              <ul
+                role="listbox"
+                aria-labelledby="sb-cranetype-button"
+                className="absolute z-50 left-0 right-0 sm:right-auto sm:min-w-[280px] mt-2 bg-white border border-gray-200 rounded-xl shadow-lg max-h-80 overflow-y-auto py-1"
               >
-                <option value="">Egal — alle Typen</option>
-                {craneTypes.map((ct) => (
-                  <option key={ct.slug} value={ct.slug}>{ct.name}</option>
-                ))}
-              </select>
-            </div>
+                <li role="option" aria-selected={craneType === ''}>
+                  <button
+                    type="button"
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      setCraneType('')
+                      setCraneTypeOpen(false)
+                    }}
+                    onMouseEnter={() => setCraneTypeActiveIndex(0)}
+                    className={`w-full text-left px-4 py-2.5 text-[13px] flex items-center justify-between gap-3 transition-colors ${
+                      craneTypeActiveIndex === 0
+                        ? 'bg-neutral-100 text-neutral-950'
+                        : 'text-neutral-700 hover:bg-neutral-50'
+                    }`}
+                  >
+                    <span className="font-medium">Egal — alle Typen</span>
+                    <span className="text-[11px] text-neutral-400">alle anzeigen</span>
+                  </button>
+                </li>
+                {sortedTypes.map((ct, i) => {
+                  const idx = i + 1
+                  const count = craneTypeCounts?.[ct.slug]
+                  const active = craneTypeActiveIndex === idx
+                  const selected = craneType === ct.slug
+                  return (
+                    <li key={ct.slug} role="option" aria-selected={selected}>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault()
+                          setCraneType(ct.slug)
+                          setCraneTypeOpen(false)
+                        }}
+                        onMouseEnter={() => setCraneTypeActiveIndex(idx)}
+                        className={`w-full text-left px-4 py-2.5 text-[13px] flex items-center justify-between gap-3 transition-colors ${
+                          active
+                            ? 'bg-neutral-100 text-neutral-950'
+                            : selected
+                              ? 'bg-neutral-50 text-neutral-950'
+                              : 'text-neutral-700 hover:bg-neutral-50'
+                        }`}
+                      >
+                        <span className="font-medium">{ct.name}</span>
+                        {typeof count === 'number' && count > 0 && (
+                          <span className="text-[11px] font-[var(--font-mono)] tabular-nums text-neutral-400">
+                            {count} Anbieter
+                          </span>
+                        )}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </div>
 
           <div className="hidden sm:block w-px self-stretch bg-gray-200 shrink-0 my-2" />
