@@ -10,6 +10,28 @@ function roundDown10(n: number): number {
   return Math.floor(n / 10) * 10
 }
 
+// PostgREST silently caps a single .select() at 1000 rows. Tables that crossed
+// that line (company_cranes 2023, company_regions 2554 as of 2026-05-06) silently
+// truncated home-page Anbieter counts (172 vs real 403 for Autokran) and
+// sitemap city completeness. Any unfiltered or weakly-filtered select on a
+// growing table MUST go through this paginator.
+async function selectAllPaginated<T>(
+  query: () => { range: (start: number, end: number) => PromiseLike<{ data: T[] | null }> },
+): Promise<T[]> {
+  const PAGE = 1000
+  const all: T[] = []
+  let offset = 0
+  // Hard ceiling avoids a runaway loop on a malformed query.
+  while (offset < 100_000) {
+    const { data } = await query().range(offset, offset + PAGE - 1)
+    if (!data || data.length === 0) break
+    all.push(...data)
+    if (data.length < PAGE) break
+    offset += PAGE
+  }
+  return all
+}
+
 /**
  * Weighted-average AggregateRating from a set of companies' Google ratings.
  *
@@ -266,8 +288,11 @@ export async function getCitiesWithMinCompanies(
   // listed e.g. /minikran-mieten/wien (0 AT Minikran firms) which then served
   // a noindex tag — Google sees that as "Excluded by noindex" and erodes
   // trust in the sitemap. The arg used to be `_craneTypeId` (TODO leftover).
-  const [regionsRes, activeRes] = await Promise.all([
-    supabase.from('company_regions').select('company_id, city_id'),
+  const [allRegions, activeRes] = await Promise.all([
+    // company_regions has 2554 rows as of 2026-05-06 — must paginate.
+    selectAllPaginated<{ company_id: string; city_id: string }>(() =>
+      supabase.from('company_regions').select('company_id, city_id'),
+    ),
     supabase.from('companies').select('id').eq('is_active', true).eq('is_relevant', true),
   ])
 
@@ -280,7 +305,6 @@ export async function getCitiesWithMinCompanies(
     typeFilter = new Set((data ?? []).map((c) => c.company_id))
   }
 
-  const allRegions = regionsRes.data ?? []
   const activeIds = new Set((activeRes.data ?? []).map(c => c.id))
   if (allRegions.length === 0 || activeIds.size === 0) return []
 
@@ -325,14 +349,18 @@ export async function getCompanyCountsPerCraneType(): Promise<Map<string, number
   const inCountryIds = await getCompanyIdsInCountry()
   if (inCountryIds.size === 0) return new Map()
 
-  const { data } = await supabase
-    .from('company_cranes')
-    .select('crane_type_id, company_id, companies!inner(is_active, is_relevant)')
-    .eq('companies.is_active', true)
-    .eq('companies.is_relevant', true)
+  // company_cranes has 2023 rows as of 2026-05-06 — must paginate so the
+  // home-page Anbieter count per crane type doesn't silently drop ~50% of firms.
+  const data = await selectAllPaginated<{ crane_type_id: string; company_id: string }>(() =>
+    supabase
+      .from('company_cranes')
+      .select('crane_type_id, company_id, companies!inner(is_active, is_relevant)')
+      .eq('companies.is_active', true)
+      .eq('companies.is_relevant', true),
+  )
 
   const perType = new Map<string, Set<string>>()
-  for (const row of (data ?? []) as Array<{ crane_type_id: string; company_id: string }>) {
+  for (const row of data) {
     if (!inCountryIds.has(row.company_id)) continue
     const set = perType.get(row.crane_type_id) ?? new Set<string>()
     set.add(row.company_id)
