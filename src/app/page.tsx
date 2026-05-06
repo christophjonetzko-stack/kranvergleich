@@ -18,6 +18,7 @@ const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
 // thumbnails live in the static catalog (synced with /public/images/crane-types/).
 const craneImageBySlug = new Map(craneTypeStatic.map((ct) => [ct.slug, ct.image]))
 
+// 24h ISR — revalidated 2026-05-06 after pagination fix to refresh Anbieter counts.
 export const revalidate = 86400
 
 // Dynamic metadata — pulls live anbieterCount into the title/description so
