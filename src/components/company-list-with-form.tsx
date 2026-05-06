@@ -55,6 +55,11 @@ interface CompanyListWithFormProps {
    *  InquiryBar so the inquiry textarea opens with the user's home-page
    *  description already inside. */
   initialProjectDescription?: string
+  /** Real catalog total for this slice (e.g. 332 Mobilkran in DE). When the
+   *  parent page caps the displayed list (50 on hub pages), this lets the
+   *  filter counter show "X von Y angezeigt" instead of just "48 Anbieter"
+   *  next to a header that already advertises the higher total. */
+  totalCount?: number
 }
 
 export function CompanyListWithForm({
@@ -69,6 +74,7 @@ export function CompanyListWithForm({
   cityContext,
   typeContext,
   initialProjectDescription,
+  totalCount,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
@@ -282,7 +288,9 @@ export function CompanyListWithForm({
           </select>
 
           <span className="text-[13px] text-gray-400 ml-auto">
-            {filtered.length} Anbieter
+            {totalCount && totalCount > filtered.length
+              ? `${filtered.length} von ${totalCount} angezeigt`
+              : `${filtered.length} Anbieter`}
           </span>
         </div>
       )}

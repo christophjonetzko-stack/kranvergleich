@@ -21,6 +21,10 @@ interface CompanySectionProps {
   /** Threaded through from page-level searchParams.project to the inquiry
    *  textarea — captures user's intent at the search step. */
   initialProjectDescription?: string
+  /** Real catalog total — passed to CompanyListWithForm so the filter counter
+   *  can show "X von Y angezeigt" instead of conflicting with a higher count
+   *  in the section h2. Optional; falls back to companies.length. */
+  totalCount?: number
 }
 
 export function CompanySection({
@@ -36,6 +40,7 @@ export function CompanySection({
   cityContext,
   typeContext,
   initialProjectDescription,
+  totalCount,
 }: CompanySectionProps) {
   const [mapCompanies, setMapCompanies] = useState(() =>
     companies
@@ -79,6 +84,7 @@ export function CompanySection({
         cityContext={cityContext}
         typeContext={typeContext}
         initialProjectDescription={initialProjectDescription}
+        totalCount={totalCount}
       />
 
       {mapCompanies.length > 0 && (

@@ -288,6 +288,7 @@ export default async function CraneTypePage({
             referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
             typeContext={craneType.slug}
             initialProjectDescription={project}
+            totalCount={totalCount}
           />
         </section>
       )}
