@@ -80,27 +80,38 @@ export async function getSiteStats(): Promise<{
   // (handles cross-country firms like Boels — Sitz DE, branches in AT). Cities count
   // uses cities.country directly. Empty country (no AT data yet) short-circuits the
   // company queries to avoid generating an invalid empty `IN ()` against PostgREST.
-  const inCountryIds = [...(await getCompanyIdsInCountry())]
-  const noCompanies = inCountryIds.length === 0
+  const inCountryIds = await getCompanyIdsInCountry()
+  const noCompanies = inCountryIds.size === 0
 
-  const [firmCountRes, cityCountRes, ratingDataRes] = await Promise.all([
+  // After the 2026-05-06 upstream pagination fix, inCountryIds grew from
+  // a truncated 536 to the real ~800 — large enough that .in('id', list)
+  // pushed the request URL past PostgREST's length limit and the count
+  // query started returning null, falling back to the hard-coded 700.
+  // Fetch the full active+relevant company set without an IN-list (small,
+  // ~700 rows even at full catalog) and intersect in JS.
+  const [activeRelevantRes, ratingRes, cityCountRes] = await Promise.all([
     noCompanies
-      ? Promise.resolve({ count: 0 } as { count: number | null })
-      : supabase.from('companies').select('*', { count: 'exact', head: true }).in('id', inCountryIds).eq('is_active', true).eq('is_relevant', true),
-    supabase.from('cities').select('*', { count: 'exact', head: true }).eq('country', COUNTRY).eq('is_active', true),
+      ? Promise.resolve({ data: [] as Array<{ id: string }> })
+      : supabase.from('companies').select('id').eq('is_active', true).eq('is_relevant', true),
     noCompanies
-      ? Promise.resolve({ data: [] as Array<{ google_rating: number | null; google_reviews_count: number | null }> })
+      ? Promise.resolve({
+          data: [] as Array<{ id: string; google_rating: number | null; google_reviews_count: number | null }>,
+        })
       : supabase
           .from('companies')
-          .select('google_rating, google_reviews_count')
-          .in('id', inCountryIds)
+          .select('id, google_rating, google_reviews_count')
           .eq('is_active', true)
           .eq('is_relevant', true)
           .not('google_rating', 'is', null),
+    supabase.from('cities').select('*', { count: 'exact', head: true }).eq('country', COUNTRY).eq('is_active', true),
   ])
-  const firmCount = firmCountRes.count
   const cityCount = cityCountRes.count
-  const ratingData = ratingDataRes.data
+
+  const activeRelevantIds = new Set<string>((activeRelevantRes.data ?? []).map((c) => c.id))
+  let firmCount = 0
+  for (const id of inCountryIds) if (activeRelevantIds.has(id)) firmCount += 1
+
+  const ratingData = (ratingRes.data ?? []).filter((r) => inCountryIds.has(r.id))
 
   let avgRating: number | null = null
   let totalReviews = 0
@@ -117,12 +128,13 @@ export async function getSiteStats(): Promise<{
   const flooredReviews = Math.floor(totalReviews / 100) * 100
 
   return {
-    // Fallback was 740 from launch-era catalog; updated 2026-05-06 to 700
-    // after Stage A+B catalog cleanup (mig 017-021) cut 79 off-niche / wartung-
-    // only firms. Real DE active+relevant count today is 638; AT 75. Fallback
-    // rarely triggers (firmCount only null on connection failure) but should
-    // sit at a value the catalog can defend, not an aspirational round number.
-    anbieterCount: roundDown10(firmCount ?? 700),
+    // firmCount is now a JS-side intersection (always a number, never null),
+    // so the old `?? 700` fallback only matters when the entire country has
+    // zero firms — which would be a launch-state condition, not normal ops.
+    // The 2026-05-06 pagination saga left this number stuck at the fallback
+    // because .in('id', 800-uuid-list) pushed the request URL past PostgREST's
+    // limit and silently nulled out the count.
+    anbieterCount: roundDown10(firmCount > 0 ? firmCount : 700),
     staedteCount: roundDown10(cityCount ?? 40),
     avgRating: flooredReviews > 0 ? avgRating : null,
     totalReviews: flooredReviews,
