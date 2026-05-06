@@ -349,15 +349,29 @@ export async function getCompanyCountsPerCraneType(): Promise<Map<string, number
   const inCountryIds = await getCompanyIdsInCountry()
   if (inCountryIds.size === 0) return new Map()
 
-  // company_cranes has 2023 rows as of 2026-05-06 — must paginate so the
-  // home-page Anbieter count per crane type doesn't silently drop ~50% of firms.
-  const data = await selectAllPaginated<{ crane_type_id: string; company_id: string }>(() =>
-    supabase
+  // company_cranes has 2023 rows as of 2026-05-06; default 1000-row cap silently
+  // truncated home-page counts. Inline pagination instead of the helper, in case
+  // the INNER JOIN on companies confuses the wrapper's type inference at runtime
+  // (sitemap's regions paginator works fine but home stayed at truncated counts
+  // until this rewrite).
+  const data: Array<{ crane_type_id: string; company_id: string }> = []
+  const PAGE = 1000
+  for (let offset = 0; offset < 100_000; offset += PAGE) {
+    const { data: page, error } = await supabase
       .from('company_cranes')
       .select('crane_type_id, company_id, companies!inner(is_active, is_relevant)')
       .eq('companies.is_active', true)
-      .eq('companies.is_relevant', true),
-  )
+      .eq('companies.is_relevant', true)
+      .range(offset, offset + PAGE - 1)
+    if (error) {
+      console.error('getCompanyCountsPerCraneType pagination error:', error)
+      break
+    }
+    if (!page || page.length === 0) break
+    data.push(...(page as Array<{ crane_type_id: string; company_id: string }>))
+    if (page.length < PAGE) break
+  }
+  console.log(`[getCompanyCountsPerCraneType] paginated ${data.length} rows`)
 
   const perType = new Map<string, Set<string>>()
   for (const row of data) {
