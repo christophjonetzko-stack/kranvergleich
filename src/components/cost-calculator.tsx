@@ -251,6 +251,12 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
   // specialized crane type than the Q&A picked.
   const [projectDetailsLive, setProjectDetailsLive] = useState('')
   const [locationLive, setLocationLive] = useState('')
+  // Hides phone/date/project-details by default — 2026-05-01 audit showed 25
+  // recommendations vs 0 submit_attempts despite 101 step_completions in W18.
+  // Hypothesis: 7 visible fields below recommendation = too much friction on
+  // mobile (form scrolls below fold). Compact form (4 required only) closes
+  // visual gap to submit button. Optional fields stay reachable via toggle.
+  const [showOptionalFields, setShowOptionalFields] = useState(false)
 
   // Pick up `?dryrun=1` after mount so we don't diverge between SSR and the
   // client during hydration; a prerendered page can't read the URL, and the
@@ -578,38 +584,52 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
                 <label htmlFor="calc-location" className="block text-[12px] text-gray-600 mb-1">PLZ oder Stadt Einsatzort *</label>
                 <input id="calc-location" name="location" required placeholder="z.B. 10115 oder Berlin" maxLength={80} value={locationLive} onChange={(e) => setLocationLive(e.target.value)} className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
               </div>
-              <div>
-                <label htmlFor="calc-phone" className="block text-[12px] text-gray-600 mb-1">Telefon (optional)</label>
-                <input id="calc-phone" name="phone" type="tel" placeholder="+49 170 1234567" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="calc-date" className="block text-[12px] text-gray-600 mb-1">Wunschtermin (optional)</label>
-                <input id="calc-date" name="date" type="date" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="calc-project-details" className="block text-[12px] text-gray-600 mb-1">
-                  Projektdetails (optional) — was soll konkret gehoben werden?
-                </label>
-                <textarea
-                  id="calc-project-details"
-                  name="project_details"
-                  rows={3}
-                  value={projectDetailsLive}
-                  onChange={(e) => setProjectDetailsLive(e.target.value)}
-                  placeholder={`z.B. 12 Dachfenster, Stahlträger 4 m, enge Zufahrt über Hinterhof… (Helfen Sie den ${result.name}-Anbietern, Ihnen ein präzises Angebot zu machen.)`}
-                  maxLength={2000}
-                  className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-y min-h-[72px]"
-                />
-                <SubtypeCheck
-                  chosenTypeName={result.name}
-                  chosenTypeSlug={result.slug.replace(/-mieten$/, '')}
-                  weightTons={parseTonsFromAnswer(answers['weight'])}
-                  heightMeters={parseMetersFromAnswer(answers['height'])}
-                  projectDetails={projectDetailsLive}
-                  cityForRedirect={locationLive}
-                />
-              </div>
+              {showOptionalFields && (
+                <>
+                  <div>
+                    <label htmlFor="calc-phone" className="block text-[12px] text-gray-600 mb-1">Telefon (optional)</label>
+                    <input id="calc-phone" name="phone" type="tel" placeholder="+49 170 1234567" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="calc-date" className="block text-[12px] text-gray-600 mb-1">Wunschtermin (optional)</label>
+                    <input id="calc-date" name="date" type="date" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="calc-project-details" className="block text-[12px] text-gray-600 mb-1">
+                      Projektdetails (optional) — was soll konkret gehoben werden?
+                    </label>
+                    <textarea
+                      id="calc-project-details"
+                      name="project_details"
+                      rows={3}
+                      value={projectDetailsLive}
+                      onChange={(e) => setProjectDetailsLive(e.target.value)}
+                      placeholder={`z.B. 12 Dachfenster, Stahlträger 4 m, enge Zufahrt über Hinterhof… (Helfen Sie den ${result.name}-Anbietern, Ihnen ein präzises Angebot zu machen.)`}
+                      maxLength={2000}
+                      className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-y min-h-[72px]"
+                    />
+                    <SubtypeCheck
+                      chosenTypeName={result.name}
+                      chosenTypeSlug={result.slug.replace(/-mieten$/, '')}
+                      weightTons={parseTonsFromAnswer(answers['weight'])}
+                      heightMeters={parseMetersFromAnswer(answers['height'])}
+                      projectDetails={projectDetailsLive}
+                      cityForRedirect={locationLive}
+                    />
+                  </div>
+                </>
+              )}
             </div>
+
+            {!showOptionalFields && (
+              <button
+                type="button"
+                onClick={() => setShowOptionalFields(true)}
+                className="text-[12px] text-blue-600 hover:text-blue-700 underline self-start"
+              >
+                + Telefon, Wunschtermin & Projektdetails (optional)
+              </button>
+            )}
 
             <label className="flex gap-2 items-start cursor-pointer">
               <input
@@ -641,13 +661,13 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
             <button
               type="submit"
               disabled={leadSending}
-              className="w-full text-[14px] font-medium bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="w-full text-[15px] font-semibold bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
-              {leadSending ? 'Wird gesendet…' : `Kostenlose Angebote für ${result.name} anfragen`}
+              {leadSending ? 'Wird gesendet…' : `${result.name}-Angebote jetzt erhalten →`}
             </button>
 
-            <p className="text-[11px] text-center text-gray-400">
-              Kostenlos · unverbindlich · keine versteckten Gebühren
+            <p className="text-[11px] text-center text-gray-500">
+              Kostenlos · unverbindlich · Antwort meist innerhalb 24 h
             </p>
           </form>
 
