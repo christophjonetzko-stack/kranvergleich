@@ -349,14 +349,9 @@ export async function getCompanyCountsPerCraneType(): Promise<Map<string, number
   const inCountryIds = await getCompanyIdsInCountry()
   if (inCountryIds.size === 0) return new Map()
 
-  // company_cranes has 2023 rows as of 2026-05-06; default 1000-row cap silently
-  // truncated home-page counts. Two earlier rewrites (wrapper + inline-with-JOIN)
-  // both stayed at truncated 246-Autokran on production despite local TS test
-  // returning the full 1853 rows. Hypothesis: the `companies!inner` JOIN confuses
-  // PostgREST's row-range semantics in build-time pre-render. This version drops
-  // the JOIN entirely — paginates the bare company_cranes table, then filters
-  // active+relevant + country in JS using inCountryIds (already an
-  // active+relevant+country gate from getCompanyIdsInCountry).
+  // company_cranes has 2023 rows as of 2026-05-06; the default 1000-row cap
+  // silently truncated home-page counts. Pagination of the bare table avoids
+  // the resource-embedding JOIN range bug that masked earlier fix attempts.
   const data: Array<{ crane_type_id: string; company_id: string }> = []
   const PAGE = 1000
   for (let offset = 0; offset < 100_000; offset += PAGE) {
@@ -374,9 +369,22 @@ export async function getCompanyCountsPerCraneType(): Promise<Map<string, number
   }
   console.log(`[getCompanyCountsPerCraneType] paginated ${data.length} rows of company_cranes`)
 
+  // inCountryIds covers DE/AT region membership but NOT companies.is_active /
+  // is_relevant — those flags live on the companies row, not company_regions.
+  // Intersect now so the home-page Anbieter count excludes deactivated firms
+  // (614e560 dropped the SQL-level filter to dodge the JOIN range bug, so
+  // active+relevant filtering must happen here in JS instead).
+  const { data: activeRows } = await supabase
+    .from('companies')
+    .select('id')
+    .eq('is_active', true)
+    .eq('is_relevant', true)
+  const activeIds = new Set<string>((activeRows ?? []).map((c) => c.id))
+
   const perType = new Map<string, Set<string>>()
   for (const row of data) {
     if (!inCountryIds.has(row.company_id)) continue
+    if (!activeIds.has(row.company_id)) continue
     const set = perType.get(row.crane_type_id) ?? new Set<string>()
     set.add(row.company_id)
     perType.set(row.crane_type_id, set)
