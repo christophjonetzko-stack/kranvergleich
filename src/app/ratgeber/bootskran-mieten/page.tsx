@@ -4,6 +4,7 @@ import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
+// touched 2026-05-07 to trigger Vercel route invalidation
 export const revalidate = 86400
 
 export const metadata: Metadata = {
