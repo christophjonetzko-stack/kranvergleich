@@ -313,6 +313,33 @@ export default async function WhirlpoolKranMietenPage() {
               bevor Sie den Spa kaufen.
             </p>
           </div>
+          <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4">
+            <p className="text-[13px] text-gray-700 mb-2">
+              <strong className="text-gray-900">Markt-Übersicht 2026 — was andere Quellen nennen:</strong>
+            </p>
+            <ul className="text-[13px] text-gray-700 space-y-1.5 list-disc pl-5">
+              <li>
+                Whirlpool-Transport mit Kraneinsatz (komplettes Paket inkl. Fahrzeug + Hub):{' '}
+                <strong className="text-gray-900">800–1.500€</strong> (Quelle: whirlpool-zuhause.de,
+                Stand Anfang 2026).
+              </li>
+              <li>
+                Reine Kranmiete (ohne Transport, nur der Hub vor Ort):{' '}
+                <strong className="text-gray-900">200–500€/Stunde</strong>, abhängig von Hubhöhe und
+                Krangröße (gleiche Quelle).
+              </li>
+              <li>
+                LKW-Entladekran mit kleinerer Tragfähigkeit (bis ca. 1,2 t):{' '}
+                <strong className="text-gray-900">120€/Std. + 120€ Anfahrt, Mindestabnahme 2 Std.</strong>{' '}
+                (Erfahrungswert aus dem Großraum Berlin).
+              </li>
+            </ul>
+            <p className="text-[12px] text-gray-500 mt-2">
+              Diese Werte ergänzen — und bestätigen weitgehend — unsere Tabelle oben.
+              Die Eigenkalkulation der Faustregel-Box ist auf den deutschen Marktdurchschnitt
+              ausgelegt; lokale Quotes können je nach Region und Saison 20–40% abweichen.
+            </p>
+          </div>
         </section>
 
         {/* Section 4: Dachterrasse Sonderfall */}

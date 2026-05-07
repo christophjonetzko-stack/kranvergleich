@@ -329,6 +329,29 @@ export default async function PoolKranMietenPage() {
               spricht.
             </p>
           </div>
+          <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4">
+            <p className="text-[13px] text-gray-700 mb-2">
+              <strong className="text-gray-900">Aus der Praxis — zwei Datenpunkte aus dem Forum:</strong>
+            </p>
+            <ul className="text-[13px] text-gray-700 space-y-1.5 list-disc pl-5">
+              <li>
+                Pool 4,5×3 m, ländliche Lage, Autokran 3 Std. inkl. Anfahrt:{' '}
+                <strong className="text-gray-900">210€</strong> + ca. 30–40€ Straßensperrung
+                (Bericht eines Pool-Eigners im poolpowershop-Forum, Frühjahr 2021).
+              </li>
+              <li>
+                Pool 8×3 m, Pauschal-Angebot 699€ wurde am Einsatztag auf{' '}
+                <strong className="text-gray-900">1.700€ nachträglich erhöht</strong>{' '}
+                (Zusatzkosten für Kran-Stillstand und Mehraufwand). Lehre: schriftlichen
+                Festpreis mit Stillstandsklausel verlangen.
+              </li>
+            </ul>
+            <p className="text-[12px] text-gray-500 mt-2">
+              Beide Werte sind regional &amp; zeitlich gebunden — heute liegen ländliche
+              Süd-Quotes ca. 25–35% höher als 2021, Großstadt-Tarife (Berlin, München, Hamburg)
+              eher 30–50% über den ländlichen Werten.
+            </p>
+          </div>
         </section>
 
         {/* Section 4: Einsatzplanung */}

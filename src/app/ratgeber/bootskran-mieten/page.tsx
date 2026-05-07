@@ -313,6 +313,27 @@ export default async function BootskranMietenPage() {
               regelmäßigem Bedarf rechnet sich der Marina-Vertrag fast immer.
             </p>
           </div>
+          <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4">
+            <p className="text-[13px] text-gray-700 mb-2">
+              <strong className="text-gray-900">Regionaler Hinweis Bodensee &amp; Binnen-Yacht:</strong>{' '}
+              Am Bodensee, an der Müritz und in Bayern haben Marinas und Yachtclubs oft eigene
+              Saison-Verträge mit lokalen Kran-Anbietern — die Wochen-Pauschale liegt dort 25–40%
+              unter Einzelhub-Preisen aus Großstädten. Der Mobilkran-Stundensatz inklusive Kranführer
+              startet im Süden in ländlichen Regionen bei rund 80–120€/Std., in Berlin und München
+              eher bei 120–180€/Std.
+            </p>
+            <p className="text-[13px] text-gray-700">
+              Anbieter in Ihrer Nähe finden Sie über die Übersicht{' '}
+              <Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">
+                Mobilkran mieten
+              </Link>{' '}
+              oder{' '}
+              <Link href="/autokran-mieten" className="text-blue-600 hover:underline">
+                Autokran mieten
+              </Link>{' '}
+              — beide Listen lassen sich nach Region filtern.
+            </p>
+          </div>
         </section>
 
         {/* Section 4: Einsatzplanung & Wetter */}
