@@ -7,6 +7,7 @@ import { seoCities } from '@/data/cities-static'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -21,6 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: `Kranverleih in ${COUNTRY_LABEL}: ${anbieterCount}+ Anbieter für Minikran, Autokran, Baukran und mehr. Preise vergleichen und kostenlos Angebote anfragen.`,
       type: 'website',
       url: '/kranverleih',
+          images: [OG_IMAGE],
     },
   }
 }

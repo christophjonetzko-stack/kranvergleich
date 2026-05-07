@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
       'PV-Module aufs Dach heben: Dachdeckerkran ab 200€/Tag für Standard-Einfamilienhäuser, Autokran für große Anlagen. Kosten pro kWp, Zeitplanung und Spezialausrüstung.',
     type: 'article',
     url: '/ratgeber/solaranlage-kran-mieten',
+      images: [OG_IMAGE],
   },
 }
 

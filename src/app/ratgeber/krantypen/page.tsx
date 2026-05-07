@@ -4,6 +4,7 @@ import { cranePrices } from '@/data/crane-prices'
 import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, TAX_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
       'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze.',
     type: 'article',
     url: '/ratgeber/krantypen',
+      images: [OG_IMAGE],
   },
 }
 

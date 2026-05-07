@@ -5,6 +5,7 @@ import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, TAX_LABEL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 import { cranePrices } from '@/data/crane-prices'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
       'Komplette Mietpreis-Übersicht aller 8 Krantypen: Tag, Woche, Monat. Plus Kaufpreise und Break-even-Rechnung.',
     type: 'website',
     url: '/ratgeber/was-kostet-ein-kran',
+      images: [OG_IMAGE],
   },
 }
 

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
       'Whirlpool über Haus oder auf Dachterrasse heben: Mobilkran 35–50t ab 450€, bei Penthouse-Lage Autokran ab 1.200€. Wann Sie wirklich einen Kran brauchen — und wann nicht.',
     type: 'article',
     url: '/ratgeber/whirlpool-kran-mieten',
+      images: [OG_IMAGE],
   },
 }
 

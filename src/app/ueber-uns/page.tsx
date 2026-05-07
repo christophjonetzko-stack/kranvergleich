@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -17,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: `${BRAND_NAME} ist ${COUNTRY_LABEL}s Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte.`,
       type: 'website',
       url: '/ueber-uns',
+          images: [OG_IMAGE],
     },
   }
 }

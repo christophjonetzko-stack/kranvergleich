@@ -21,6 +21,7 @@ import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
 import { BRAND_NAME, BASE_URL } from '@/lib/country'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -77,6 +78,7 @@ export async function generateMetadata({
       description,
       type: 'website',
       url: canonical,
+          images: [OG_IMAGE],
     },
     // noindex pages with fewer than 3 companies to avoid thin content penalty
     ...(companies.length < 3 && { robots: { index: false, follow: true } }),

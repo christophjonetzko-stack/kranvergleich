@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 // touched 2026-05-07 to trigger Vercel route invalidation
 export const revalidate = 86400
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
       'Yacht oder Segelboot kranen: Mobilkran 50t ab 600€/Einsatz, Autokran 100t für schwere Boote ab 1.200€. Kosten nach Bootslänge, Krantraverse und Saison-Vorlauf.',
     type: 'article',
     url: '/ratgeber/bootskran-mieten',
+    images: [OG_IMAGE],
   },
 }
 

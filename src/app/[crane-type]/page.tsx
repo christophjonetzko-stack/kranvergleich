@@ -14,6 +14,7 @@ import { getFAQsForCraneType } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
 import { getRatgeberForCraneType } from '@/data/crane-ratgeber'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -61,6 +62,7 @@ export async function generateMetadata({
       description,
       type: 'website',
       url: canonical,
+          images: [OG_IMAGE],
     },
   }
 }

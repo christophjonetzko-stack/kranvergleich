@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { COUNTRY, BRAND_NAME } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 // Country-aware statute references. Identity stays the same (Anita Jonetzko, Ehingen, DE)
 // per memory project_kranvergleich_at_priority_2026_04_23.md: cross-border ECG-AT
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
     description: `Impressum von ${BRAND_NAME} — Angaben gemäß ${STATUTE.base}.`,
     type: 'website',
     url: '/impressum',
+      images: [OG_IMAGE],
   },
 }
 

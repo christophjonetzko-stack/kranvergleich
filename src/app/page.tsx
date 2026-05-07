@@ -11,6 +11,7 @@ import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY, COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL } from '@/lib/country'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 import { PageEventTracker } from '@/components/page-event-tracker'
+import { OG_IMAGE } from '@/lib/og-image'
 
 const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
 
@@ -43,6 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       type: 'website',
       url: '/',
+          images: [OG_IMAGE],
     },
   }
 }

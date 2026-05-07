@@ -7,6 +7,7 @@ import { CompanyMapWrapper } from '@/components/company-map-wrapper'
 import { LeadForm } from '@/components/lead-form'
 import { TrackProfileView, TrackedLink, RevealablePhone } from '@/components/track'
 import { BRAND_NAME, BASE_URL } from '@/lib/country'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -59,6 +60,7 @@ export async function generateMetadata({
       description,
       type: 'website',
       url: canonical,
+          images: [OG_IMAGE],
     },
     // Thin content (~250 words): deindex to free crawl budget for city×type pages.
     // `follow` keeps link equity flowing to the city×type destinations.

@@ -43,6 +43,13 @@ export const metadata: Metadata = {
     type: 'website',
     locale: OG_LOCALE,
     siteName: BRAND_NAME,
+    // og:image is injected automatically by app/opengraph-image.tsx (Next 16 file
+    // convention); listing it here would double-emit. Same for twitter:image via
+    // app/twitter-image.tsx. We still set twitter.card so the preview renders as
+    // a large card (summary_large_image) instead of the default tiny summary.
+  },
+  twitter: {
+    card: 'summary_large_image',
   },
 }
 

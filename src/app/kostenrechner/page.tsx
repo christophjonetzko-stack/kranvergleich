@@ -6,6 +6,7 @@ import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL } from '@/lib/country'
 import { cranePrices } from '@/data/crane-prices'
+import { OG_IMAGE } from '@/lib/og-image'
 
 // Display name + tonnage band per slug for the Preis-Referenztabelle below.
 // Same vocabulary as /ratgeber/was-kostet-ein-kran (kept consistent so a user
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
       'Kran-Kostenrechner: In 4 Schritten den passenden Kran finden und Kosten schätzen.',
     type: 'website',
     url: '/kostenrechner',
+      images: [OG_IMAGE],
   },
 }
 

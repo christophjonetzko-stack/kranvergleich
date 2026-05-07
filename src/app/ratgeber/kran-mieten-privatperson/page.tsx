@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
 import { getSiteStats } from '@/lib/queries'
 import { BRAND_NAME } from '@/lib/country'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
       'Kran mieten als Privatperson? Ja \u2014 Minikran ab 250\u20AC/Tag und Anh\u00E4ngerkran ab 150\u20AC/Tag ohne F\u00FChrerschein.',
     type: 'website',
     url: '/ratgeber/kran-mieten-privatperson',
+      images: [OG_IMAGE],
   },
 }
 

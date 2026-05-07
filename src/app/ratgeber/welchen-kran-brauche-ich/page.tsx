@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
       'Welchen Kran brauche ich? Minikran, Autokran oder Baukran — unser Ratgeber hilft Ihnen, den richtigen Kran für Ihr Projekt zu finden.',
     type: 'website',
     url: '/ratgeber/welchen-kran-brauche-ich',
+      images: [OG_IMAGE],
   },
 }
 

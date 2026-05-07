@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
       'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite — nicht nur aus Pool-Gewicht.',
     type: 'article',
     url: '/ratgeber/pool-kran-mieten',
+      images: [OG_IMAGE],
   },
 }
 

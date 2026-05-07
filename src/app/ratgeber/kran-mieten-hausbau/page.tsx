@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getSiteStats } from '@/lib/queries'
 import { COUNTRY_LABEL, TAX_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
       'Hausbau-Guide für Bauherren: Welcher Kran für welche Bauphase? Kostenbeispiel für ein typisches Einfamilienhaus, Timing und Genehmigungen.',
     type: 'article',
     url: '/ratgeber/kran-mieten-hausbau',
+      images: [OG_IMAGE],
   },
 }
 

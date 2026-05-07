@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { COUNTRY, BRAND_NAME } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
+import { OG_IMAGE } from '@/lib/og-image'
 
 // DSGVO is EU-wide so the substance is identical in DE and AT. The two deltas:
 // - Cookie/terminal-equipment statute: § 25 TDDDG (DE) vs § 165 TKG 2021 (AT)
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
     description: `Datenschutzerklärung von ${BRAND_NAME} — Informationen zur Verarbeitung personenbezogener Daten.`,
     type: 'website',
     url: '/datenschutz',
+      images: [OG_IMAGE],
   },
 }
 
