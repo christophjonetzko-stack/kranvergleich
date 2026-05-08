@@ -578,12 +578,20 @@ async function _computeFirmMatchesFromCoords(
   const all: CompanyWithCranes[] = []
   for (let i = 0; i < companyIds.length; i += batchSize) {
     const batch = companyIds.slice(i, i + batchSize)
+    // Lead-routing query: drop email-less firms so Kostenrechner auto-select
+    // never picks one (Resend has no delivery target, owner-alert noise, no
+    // customer value). Catalog/SEO queries (city listings, sitemap, schema
+    // offerCount) keep showing them — frontend CTA on CompanyCard already
+    // swaps "Angebot anfragen" for the phone CTA. Faza 2 cold-letter pipeline
+    // re-activates a firm by populating `email`, no flag needed.
     const { data } = await supabase
       .from('companies')
       .select(`*, company_cranes (*)`)
       .in('id', batch)
       .eq('is_active', true)
       .eq('is_relevant', true)
+      .not('email', 'is', null)
+      .neq('email', '???')
     if (data) all.push(...data)
   }
 

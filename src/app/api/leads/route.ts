@@ -212,6 +212,29 @@ export async function POST(request: Request) {
     const cityContext = sanitizeSlug(body.city_context)
     const typeContext = sanitizeSlug(body.type_context)
 
+    // Defensive filter: drop firms whose email is null/sentinel BEFORE persisting
+    // the lead. Frontend already hides the "Auswählen" CTA for these (CompanyCard
+    // canInquire, anbieter profile gate) and the auto-select query filters them
+    // too — this catches stale client state, forged requests, and any new code
+    // path that forgets the rule. Firms still appear in catalog/SEO; until they
+    // get an email (Faza 2 cold-letter QR), they're inert from the lead pipeline.
+    let droppedNoEmail: { id: string; name: string }[] = []
+    if (companyIds.length > 0) {
+      const sb = getServiceSupabase()
+      const { data: lookup } = await sb
+        .from('companies')
+        .select('id, name, email')
+        .in('id', companyIds)
+      const validIds = new Set<string>()
+      for (const c of lookup ?? []) {
+        if (c.email && c.email.trim() !== '???') validIds.add(c.id)
+        else droppedNoEmail.push({ id: c.id, name: c.name })
+      }
+      if (droppedNoEmail.length > 0) {
+        companyIds = companyIds.filter((id) => validIds.has(id))
+      }
+    }
+
     const lead = await submitLead({
       crane_type_id: body.crane_type_id || null,
       city,
@@ -249,8 +272,9 @@ export async function POST(request: Request) {
     }
     const safeCraneType = craneTypeName ? escapeHtml(craneTypeName) : null
 
-    // Fetch selected companies upfront — used by both the owner notification
-    // (company list) and the downstream per-company lead emails.
+    // Fetch selected companies (same shape as before; companyIds is now
+    // pre-filtered, so all rows have email — `companiesWithoutEmail` stays
+    // for backwards compat with downstream branches but is always empty).
     let selectedCompanies: { id: string; name: string; email: string | null }[] = []
     if (companyIds.length > 0) {
       const sb = getServiceSupabase()
@@ -423,7 +447,7 @@ export async function POST(request: Request) {
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Stadt</td><td>${safeCity}</td></tr>
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Wunschtermin</td><td>${safeDate}</td></tr>
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Mietdauer</td><td>${durationDays ? `${durationDays} Tage` : '–'}</td></tr>
-            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;vertical-align:top;">Anbieter</td><td>${companyCount} ausgewählt (${companiesWithEmail.length} mit E-Mail, ${companiesWithoutEmail.length} ohne)${companyListHtml}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;vertical-align:top;">Anbieter</td><td>${companyCount} ausgewählt${companyListHtml}</td></tr>
           </table>
           ${safeDesc ? `<p style="margin-top:12px;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;">${safeDesc}</p>` : ''}
           <p style="margin-top:16px;font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
@@ -459,18 +483,23 @@ export async function POST(request: Request) {
       `,
     })
 
-    // Forward leads for companies without email to owner — also wrapped in
-    // env-var safety net (reuses ownerEmail resolved above; no second lookup).
-    if (companiesWithoutEmail.length > 0 && ownerEmail) {
-      const missingNames = companiesWithoutEmail.map((c) => escapeHtml(c.name)).join(', ')
-      await sendResendEmail('missing-email notification', {
+    // Anomaly alert: a request reached /api/leads with company_ids pointing at
+    // email-less firms despite the frontend gates and the auto-select filter.
+    // Should be rare (stale client cache, forged body, or a regression in one
+    // of the gates). Logged as an alert so we notice and trace the source.
+    // No manual forwarding needed — those firms are intentionally inert and
+    // get re-activated only by adding an email (Faza 2 cold-letter QR flow).
+    if (droppedNoEmail.length > 0 && ownerEmail) {
+      const droppedNames = droppedNoEmail.map((c) => escapeHtml(c.name)).join(', ')
+      await sendResendEmail('pre-filter dropped firms', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `${BRAND_NAME} - ⚠️ Anfrage ohne Firmen-E-Mail: ${missingNames}`,
+        subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedNoEmail.length} E-Mail-lose Firma(en) entfernt`,
         html: `
-            <h3>Firmen ohne E-Mail-Adresse — manuelle Weiterleitung nötig</h3>
-            <p>Folgende Firmen wurden vom Kunden ausgewählt, haben aber keine E-Mail in der Datenbank:</p>
-            <ul>${companiesWithoutEmail.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
+            <h3>Anomalie: Lead enthielt Firmen ohne E-Mail</h3>
+            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen (kein Resend-Ziel). Sie bleiben im Katalog/SEO sichtbar, der Endkunde sieht sie nicht in der Auswahl. Kein manuelles Weiterleiten nötig — Aktivierung läuft über die Faza-2-Briefkampagne.</p>
+            <ul>${droppedNoEmail.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
+            <p>Hinweis: Frontend-Gates (CompanyCard CTA + Profil-Form) sollten diese IDs gar nicht erst weiterreichen. Wenn diese Mail häufiger kommt, prüfen ob Cache/Stale-State oder ein Regress in der Filter-Logik vorliegt.</p>
             <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
             <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
           `,
