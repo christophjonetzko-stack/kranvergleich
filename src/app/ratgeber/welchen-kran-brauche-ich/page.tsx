@@ -208,6 +208,124 @@ export default async function WelchenKranPage() {
         </p>
       </section>
 
+      {/* Echte Anfragen 2026 — worked-examples z 5 anonimizowanych realnych
+          leadów z 23.04 - 07.05. Komplement do abstrakcyjnych scenarios u góry.
+          Anonimizowane (no Vorname, no PLZ, no firm names) per DSGVO Art. 6. */}
+      <section className="mb-10 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Echte Anfragen 2026: 5 anonymisierte Beispiele
+        </h2>
+        <p className="text-[14px] text-gray-500 leading-relaxed mb-6">
+          Theorie ist das eine. Hier sind fünf reale Anfragen der letzten 30 Tage,
+          anonymisiert. Jede zeigt, wie aus einem „ich brauche einen Kran" eine
+          konkrete Maschinenklasse, ein Preisrahmen und die typischen Stolperstellen
+          werden.
+        </p>
+
+        {/* Beispiel 1 — Fensterpaletten / Autokran */}
+        <article className="mb-7">
+          <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
+            1. Fensterpaletten aufs Dach: 30-Tonner für 1,5 t auf 22 m Höhe
+          </h3>
+          <div className="text-[14px] text-gray-600 leading-relaxed space-y-2.5">
+            <p><strong className="text-gray-800">Was der Kunde wollte.</strong> Eine Privatperson aus Berlin mit Bauunternehmer-Hintergrund will Fensterpaletten auf das Dach eines Wohnhauses heben. Lasten max. 1,5 t, Hubhöhe rund 22 m, Einsatzdauer ein Tag. Der Kran kann auf dem eigenen Grundstück abstützen.</p>
+            <p><strong className="text-gray-800">Welcher Kran tatsächlich passt.</strong> Hier reicht ein Autokran mit 30-40 t Nennhublast. Das klingt überdimensioniert für 1,5 t, ist es aber nicht: Bei 22 m Hubhöhe und einer realistischen Auslage von 8-12 m sinkt die effektive Hublast eines 30-Tonners auf 3-5 t. Rechnet man die Sicherheitsmarge mit ein, bleibt der 30-Tonner die richtige Klasse. Der Bediener ist beim Autokran immer dabei.</p>
+            <p><strong className="text-gray-800">Was es kostet (Richtwert, Stand Mai 2026).</strong> Ein Tageseinsatz mit 30-40 t Autokran inkl. Bediener kostet bei typischen SME-Anbietern aus unserem Katalog rund 800-1.400 € netto, dazu Anfahrt 1-3 €/km. Für eine Berliner Adresse mit Anbieter im Stadtgebiet sind 900-1.600 € netto Gesamt realistisch. Richtwerte, keine Festpreise.</p>
+            <p><strong className="text-gray-800">Häufige Fehler.</strong> Tonnage am Mast ist nicht gleich Tonnage an der Spitze. Wer denkt „1,5 t, da reicht ein 5-Tonner", verkennt, dass die Tragkraft mit jedem Meter Auslage stark fällt. Bei einem 5-Tonner auf 10 m Auslage bleiben oft nur 1,2 t, ohne jede Sicherheitsmarge. Lieber eine Klasse größer wählen als zu knapp dimensionieren.</p>
+            <p>
+              <Link href="/autokran-mieten" className="text-blue-600 hover:underline text-[14px]">
+                Mehr zu Autokran mieten &rarr;
+              </Link>
+            </p>
+          </div>
+        </article>
+
+        {/* Beispiel 2 — Glasscheiben / Minikran z Glassauger */}
+        <article className="mb-7">
+          <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
+            2. Glasscheiben aufs Terrassendach: Minikran mit Glassauger
+          </h3>
+          <div className="text-[14px] text-gray-600 leading-relaxed space-y-2.5">
+            <p><strong className="text-gray-800">Was der Kunde wollte.</strong> Eine Privatperson aus Norddeutschland, selbst Baumaschinist, plant 13 Terrassenscheiben (450 × 80 cm) auf ein Terrassengestell zu legen. Durchfahrt zum Hof: 3 m. Untergrund: fester Rasen. Trotz eigener Maschinenerfahrung wünscht der Kunde einen Bediener.</p>
+            <p><strong className="text-gray-800">Welcher Kran tatsächlich passt.</strong> Ein klassischer Fall für einen Minikran mit Glassauger-Anbaugerät. Eine Tragkraft von 1-3 t reicht bei rund 200-300 kg pro Scheibe locker; entscheidender ist die Reichweite von 8-15 m, je nach Gestellposition. Minikrane fahren durch 80-90 cm breite Türen, der 3-m-Durchgang ist also kein Hindernis. Auf festem Rasen halten sie gut, während größere Mobilkrane mit ihren Stützen den Boden durchbrechen würden.</p>
+            <p><strong className="text-gray-800">Was es kostet (Richtwert, Stand Mai 2026).</strong> Ein Minikran-Tageseinsatz mit Bediener und Glassauger liegt bei 600-1.200 € netto. Der Aufschlag für den Glassauger macht je nach Modell 150-300 € aus. Bei typischen SME-Anbietern aus unserem Katalog ist das ein Standardpaket. Richtwerte, keine Festpreise.</p>
+            <p><strong className="text-gray-800">Häufige Fehler.</strong> Ein Glassauger sieht einfach aus, ist er aber nicht. Eine 200-kg-Scheibe an der Saugplatte zu führen, ohne sie anzukippen oder bei Wind aus der Bahn kommen zu lassen, braucht Übung. Bei Glasmontagen ist der Bediener die wichtigste Investition, nicht der Kran selbst. Zweiter Punkt: Ab Windstärke 4 fällt eine Glasmontage praktisch immer aus, der Termin sollte also mit Wetter-Reserve geplant werden.</p>
+            <p>
+              <Link href="/minikran-mieten" className="text-blue-600 hover:underline text-[14px]">
+                Mehr zu Minikran mieten &rarr;
+              </Link>
+            </p>
+          </div>
+        </article>
+
+        {/* Beispiel 3 — Holzrahmenhaus / Mobilkran 45-60t */}
+        <article className="mb-7">
+          <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
+            3. Holzrahmenhaus aufstellen: 45-60-Tonner über mehrere Tage
+          </h3>
+          <div className="text-[14px] text-gray-600 leading-relaxed space-y-2.5">
+            <p><strong className="text-gray-800">Was der Kunde wollte.</strong> Eine Privatperson aus Mittelfranken will ein Holzrahmenhaus auf eine fertige Bodenplatte stellen. Einsatzdauer 4-5 Tage, Hakenlast mindestens 2 t, Bediener inkl., Termin Ende Juni / Anfang Juli 2026.</p>
+            <p><strong className="text-gray-800">Welcher Kran tatsächlich passt.</strong> Für Holzrahmenhäuser ist die 45-60 t Mobilkran-Klasse die übliche Wahl. Die geforderten 2 t Hakenlast beziehen sich auf einzelne Wand- und Dachelemente, die der Kran an einer Auslage von 10-15 m sicher heben muss. Ein 45-Tonner liefert in dieser Auslage 2-3 t, also ausreichend, aber nicht reichlich. Die 60-t-Klasse ist die sichere Variante für schwerere Wandelemente oder größere Auslagen. Eine Hubhöhe von 30 m deckt typische Holzhaus-Höhen (max. 7 m First) plus Auslagenanforderung problemlos ab. Ein Bediener ist Pflicht: Ab Klasse 30+ verlangt die BetrSichV einen gültigen Kranführerschein.</p>
+            <p><strong className="text-gray-800">Was es kostet (Richtwert, Stand Mai 2026).</strong> Ein 45-60 t Mobilkran für 4-5 Tage inkl. Bediener kostet bei typischen SME-Anbietern aus unserem Katalog 4.800-9.500 € netto. Innerhalb dieser Spanne entscheiden Anfahrt, regionale Preise und ob An- und Abfahrt am gleichen Tag erfolgen oder ob der Kran über Nacht vor Ort bleibt. Bei mehrtägigen Hausaufstellungen wird der Kran meist stationiert, das spart Hin- und Rückfahrkosten.</p>
+            <p><strong className="text-gray-800">Häufige Fehler.</strong> An erster Stelle der Wind: Wandelemente eines Holzrahmenhauses haben große Flächen, und ab 6 Bft (rund 40 km/h) fällt der Aufbau aus. Wer den Termin auf einen einzigen Tag legt, riskiert Stillstandskosten. Zweiter Punkt: die tragfähige Aufstellfläche. Ein 45-Tonner stützt sich mit rund 30 t pro Stütze ab. Besteht die Standfläche neben der Bodenplatte aus weichem Erdreich, sind Stützplatten oder eine Bauwegeplatte zwingend.</p>
+            <p>
+              <Link href="/mobilkran-mieten" className="text-blue-600 hover:underline text-[14px]">
+                Mehr zu Mobilkran mieten &rarr;
+              </Link>
+            </p>
+          </div>
+        </article>
+
+        {/* Beispiel 4 — Stahlhalle / Mobilkran 50-80t albo Raupenkran */}
+        <article className="mb-7">
+          <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
+            4. Stahlhalle aufrichten: 50-80-Tonner für Sandwich-Elemente
+          </h3>
+          <div className="text-[14px] text-gray-600 leading-relaxed space-y-2.5">
+            <p><strong className="text-gray-800">Was der Kunde wollte.</strong> Ein Bauunternehmer aus Niedersachsen plant eine Stahlhalle 45 × 25 m, max. 6,5 m hoch, Aufbau mit Sandwichelementen. Einsatzdauer max. 4 Tage.</p>
+            <p><strong className="text-gray-800">Welcher Kran tatsächlich passt.</strong> Hier zählt nicht die Hubhöhe (6,5 m sind einfach), sondern die Auslage. Eine Halle von 45 × 25 m bedeutet, dass der Kran aus einer Position eine ganze Hallenseite bedienen muss, was Auslagen von 15-25 m verlangt. Sandwichelemente wiegen rund 1 t pro Stück, sind aber großflächig und entsprechend windangriffsanfällig. Mit Sicherheitsmarge auf 20 m Auslage plus Wind-Reserve braucht es einen 50-80 t Mobilkran. Bei unbefestigtem Baustellengrund ist alternativ ein Raupenkran sinnvoll, denn der verteilt das Gewicht über die Kettenfläche statt über vier Punkt-Stützen.</p>
+            <p><strong className="text-gray-800">Was es kostet (Richtwert, Stand Mai 2026).</strong> Ein 50-80 t Mobilkran für 4 Tage inkl. Bediener: 5.500-12.000 € netto bei typischen SME-Anbietern aus unserem Katalog. Die Spanne ist groß, denn die obere Klasse (80 t) ist bei voll ausgelasteten Mietparks oft knapp und entsprechend teurer. Frühe Reservierung lohnt sich, vor allem in der Hauptsaison März bis Oktober.</p>
+            <p><strong className="text-gray-800">Häufige Fehler.</strong> Sandwichelemente werden gerne unterschätzt. Optisch wirken sie leicht, durch ihre große Fläche sind sie aber extrem windsensibel. Schon bei 30 km/h Wind gerät ein Element am Haken ins Schwingen. Das verlängert nicht nur den Einsatz, sondern erhöht auch das Beschädigungsrisiko jedes einzelnen Elements. Zweiter Punkt: Standfläche prüfen. Bei großen Hallen-Aufbauten steht der Kran oft auf nicht-verdichtetem Baustellenuntergrund. Ohne Stützplatten oder Raupenkran droht Absinken, und bei einem 70-Tonner unter Last ist das ein Notfall.</p>
+            <p>
+              <Link href="/mobilkran-mieten" className="text-blue-600 hover:underline text-[14px]">
+                Mehr zu Mobilkran mieten &rarr;
+              </Link>
+              <span className="text-gray-400 mx-1.5">·</span>
+              <Link href="/raupenkran-mieten" className="text-blue-600 hover:underline text-[14px]">
+                Raupenkran mieten &rarr;
+              </Link>
+            </p>
+          </div>
+        </article>
+
+        {/* Beispiel 5 — Whirlpool transport / Ladekran */}
+        <article>
+          <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
+            5. Whirlpool transportieren: Ladekran mit Pritsche, kein Mobilkran
+          </h3>
+          <div className="text-[14px] text-gray-600 leading-relaxed space-y-2.5">
+            <p><strong className="text-gray-800">Was der Kunde wollte.</strong> Eine Privatperson aus NRW will einen Whirlpool (2,13 × 2,13 m, 1 m hoch, 400 kg) von Dortmund nach Bocholt transportieren, rund 80 km. Anlieferung über Garten oder Hofzufahrt.</p>
+            <p><strong className="text-gray-800">Welcher Kran tatsächlich passt.</strong> Der Kunde hat richtig erkannt: kein Mobilkran, sondern ein Ladekran auf einem LKW mit Pritsche. Die 400 kg sind für jeden Ladekran ab 6 t Klasse mühelos. Entscheidend ist die Reichweite von 6-8 m, um den Whirlpool über Zaun, Hecke oder Carport in den Zielgarten zu setzen. Eine reine Anlieferung mit Hubwagen funktioniert bei Whirlpools meist nicht, denn der Aufstellort liegt selten direkt an der Straße. Der LKW-Fahrer ist gleichzeitig Ladekran-Bediener; ein zweiter Kranführer entfällt.</p>
+            <p><strong className="text-gray-800">Was es kostet (Richtwert, Stand Mai 2026).</strong> Ein Ladekran-Einsatz mit Pritsche für 80 km Transport plus 2-3 Stunden vor Ort kostet 600-1.200 € netto. Längere Strecken oder komplexe Anlieferungen (Tor zu schmal, Auslage über mehrere Hecken) erhöhen den Preis. Im SME-Bereich rechnen viele Anbieter mit Tageskostensatz plus km-Pauschale.</p>
+            <p><strong className="text-gray-800">Häufige Fehler.</strong> Vorher Maße nehmen. Ein Whirlpool von 2,13 m Breite passt durch viele, aber nicht alle Tore und Hofdurchfahrten. Wer das nicht vor der Buchung misst, riskiert, dass der LKW vor Ort wenden muss, was Zusatzstunden oder eine Stornierung auslöst. Zweiter Punkt: Nicht das Gewicht ist hier das Problem, sondern die Empfindlichkeit der Bodenwanne. Beim Absetzen muss der Untergrund eben sein, sonst verzieht sich die Wanne und der spätere Wasserstand wird schief.</p>
+            <p>
+              <Link href="/ladekran-mieten" className="text-blue-600 hover:underline text-[14px]">
+                Mehr zu Ladekran mieten &rarr;
+              </Link>
+            </p>
+          </div>
+        </article>
+
+        <p className="text-[14px] text-gray-500 leading-relaxed mt-6 pt-5 border-t border-gray-100">
+          Ihre Anfrage liegt nah an einem dieser Beispiele?{' '}
+          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
+            Im Kostenrechner
+          </Link>{' '}
+          geben Sie Krantyp, Standort und Projektdetails ein und erhalten Angebote
+          von Anbietern in Ihrer Nähe. Antwort meist innerhalb 24 h.
+        </p>
+      </section>
+
       <section className="bg-blue-50 border border-blue-100 rounded-lg p-6 text-center">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
           Noch unsicher? Lassen Sie sich kostenlos beraten
