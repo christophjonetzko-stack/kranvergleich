@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     question: 'Wer beantragt die Genehmigung — ich oder der Kranvermieter?',
-    answer: `Grundsätzlich ist der Auftraggeber (Bauherr) verantwortlich. In der Praxis helfen viele Kranvermieter bei der Antragstellung oder übernehmen sie komplett. Fragen Sie bei der Buchung danach — auf ${BRAND_NAME} können Sie dies direkt in Ihrer Anfrage angeben.`,
+    answer: `Rechtlich ist der Auftraggeber (Bauherr) verantwortlich. In der Praxis helfen viele Kranvermieter bei der Antragstellung oder übernehmen sie komplett. Fragen Sie bei der Buchung danach — auf ${BRAND_NAME} können Sie dies direkt in Ihrer Anfrage angeben.`,
   },
 ]
 
