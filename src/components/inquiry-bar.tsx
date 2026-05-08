@@ -114,30 +114,38 @@ export function InquiryBar({
         </div>
       )}
 
-      {/* Sticky bar — bottom of screen */}
+      {/* Sticky bar — floating card (bottom-right desktop, full-width drawer
+          on mobile). Replaces the prior full-width banner-cookie look — see
+          memory feedback_cta_color_convention (blue=transaction). Outer
+          wrapper is pointer-events-none so the floating shell doesn't block
+          clicks on content beneath; the card itself opts back in. */}
       {count > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-blue-600 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] animate-in slide-in-from-bottom duration-300">
-          <div className="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
-            <div className="min-w-0 text-white">
-              <p className="text-sm font-semibold">
-                {count} {count === 1 ? 'Anbieter' : 'Anbieter'} ausgewahlt
-              </p>
-              <p className="text-xs text-blue-200 truncate">
-                {selectedCompanies.map((c) => c.name).join(', ')}
-              </p>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={onClearSelection}
-                className="text-xs text-blue-200 hover:text-white transition-colors hidden sm:block"
-              >
-                Zurucksetzen
-              </button>
+        <div className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 sm:left-auto sm:max-w-md sm:px-6 sm:pb-6 pointer-events-none animate-in slide-in-from-bottom fade-in duration-300">
+          <div className="pointer-events-auto bg-blue-600 rounded-2xl shadow-2xl ring-1 ring-blue-700/30 px-4 py-3.5 sm:px-5 sm:py-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Count + label */}
+              <div className="shrink-0 flex items-center gap-2.5 text-white">
+                <span className="text-2xl sm:text-3xl font-bold leading-none tabular-nums">{count}</span>
+                <span className="text-[13px] sm:text-sm font-medium leading-tight">
+                  {count === 1 ? 'Anbieter' : 'Anbieter'}<br className="sm:hidden" /> ausgewählt
+                </span>
+              </div>
+              {/* Primary CTA */}
               <button
                 onClick={() => setIsOpen(true)}
-                className="px-5 py-2.5 bg-white hover:bg-gray-100 text-blue-600 text-sm font-semibold rounded-md transition-colors"
+                className="ml-auto shrink-0 px-4 py-2.5 sm:px-5 sm:py-3 bg-white hover:bg-gray-50 text-blue-700 text-sm font-semibold rounded-lg transition-colors shadow-sm inline-flex items-center gap-1.5"
               >
                 Sammelanfrage senden
+                <span aria-hidden>&rarr;</span>
+              </button>
+              {/* Clear (secondary) */}
+              <button
+                onClick={onClearSelection}
+                className="shrink-0 -mr-1 p-1.5 text-blue-200 hover:text-white hover:bg-blue-700/40 rounded-md transition-colors"
+                aria-label="Auswahl zurücksetzen"
+                title="Auswahl zurücksetzen"
+              >
+                <span aria-hidden className="block leading-none text-lg font-medium">&times;</span>
               </button>
             </div>
           </div>
