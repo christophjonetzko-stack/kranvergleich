@@ -104,6 +104,10 @@ export default async function CraneCityPage({
     getCities(),
     getSiteStats(),
   ])
+  // Currency signal — refreshes monthly via 24h ISR (text only flips on
+  // month boundary). Per AEO rules in seo-content-de skill: include "Stand"
+  // timestamp so AI engines + Bauunternehmer see the page is current.
+  const lastUpdated = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
   // Manually written city FAQ (from Supabase) takes priority over template FAQ.
   // Override is city-wide (not crane-type-specific) — local info like permits, costs, logistics.
   const templateFaqs = getFAQsForCraneAndCity(craneType.slug, city.name, craneType.name)
@@ -181,6 +185,8 @@ export default async function CraneCityPage({
                 <li aria-hidden className="text-neutral-300">·</li>
               </>
             )}
+            <li className="font-[var(--font-mono)] text-neutral-500">Stand: {lastUpdated}</li>
+            <li aria-hidden className="text-neutral-300">·</li>
             <li>DSGVO-konform</li>
             <li aria-hidden className="text-neutral-300">·</li>
             <li>Kostenlos &amp; unverbindlich</li>

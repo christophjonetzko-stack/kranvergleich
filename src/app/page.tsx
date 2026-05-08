@@ -60,6 +60,10 @@ export default async function HomePage() {
     getCompanyCountsPerCraneType(),
   ])
   const { anbieterCount, staedteCount, avgRating, totalReviews } = siteStats
+  // Currency signal for the trust-bar — refreshes monthly (ISR 24h
+  // rebuild, but the rendered text only changes when the month flips).
+  // Per seo-content-de skill / AEO rules: include year or "Stand" timestamp.
+  const lastUpdated = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
   const topCities = seoCities.slice(0, 12)
   // Sort table rows by Anbieter count descending — descending coverage reads
   // as "expanding catalog" rather than making the niche types (Dachdeckerkran,
@@ -143,6 +147,8 @@ export default async function HomePage() {
             <li>{anbieterCount.toLocaleString('de-DE')}+ Anbieter</li>
             <li aria-hidden className="w-px h-3 bg-neutral-300" />
             <li>{staedteCount} Städte</li>
+            <li aria-hidden className="w-px h-3 bg-neutral-300" />
+            <li className="font-[var(--font-mono)] text-neutral-500">Stand: {lastUpdated}</li>
             <li aria-hidden className="w-px h-3 bg-neutral-300" />
             <li>DSGVO-konform</li>
             <li aria-hidden className="w-px h-3 bg-neutral-300" />
