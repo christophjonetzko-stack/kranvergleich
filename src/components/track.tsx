@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState, type AnchorHTMLAttributes, type ReactNode } from 'react'
+import { useEffect, useState, useSyncExternalStore, type AnchorHTMLAttributes, type ReactNode } from 'react'
+import { craneTypes } from '@/data/crane-types'
 
 // Firm engagement tracker. Client-only because /anbieter/[slug] is cached
 // with revalidate=86400 — SSR hits would only fire on cache revalidation,
@@ -140,5 +141,81 @@ export function RevealablePhone({
       {revealedPrefix}
       {phone}
     </a>
+  )
+}
+
+// Crane-type URL segments (e.g. "autokran-mieten") used by listing pages
+// /[crane-type]/[city]. Source of truth: data/crane-types.ts.
+const CRANE_TYPE_URL_SEGMENTS = new Set(craneTypes.map((t) => t.slug))
+
+// Sniff city/type context from same-origin referrer URL. Used on profile pages
+// /anbieter/[slug] where the page URL itself carries no listing context — we
+// want to know which listing brought the visitor here so website_click events
+// can be attributed back to a city × type combo.
+function parseReferrerContext(): { cityContext: string | null; typeContext: string | null } {
+  if (typeof window === 'undefined' || !document.referrer) {
+    return { cityContext: null, typeContext: null }
+  }
+  try {
+    const url = new URL(document.referrer)
+    if (url.origin !== window.location.origin) {
+      return { cityContext: null, typeContext: null }
+    }
+    const segs = url.pathname.split('/').filter(Boolean)
+    if (segs[0] && CRANE_TYPE_URL_SEGMENTS.has(segs[0])) {
+      // Match DB convention: type slug stored without "-mieten" suffix
+      // (consistent with cost-calculator.tsx and the 10 existing rows).
+      const typeContext = segs[0].replace(/-mieten$/, '')
+      const cityContext = segs[1] || null
+      return { typeContext, cityContext }
+    }
+    return { cityContext: null, typeContext: null }
+  } catch {
+    return { cityContext: null, typeContext: null }
+  }
+}
+
+// Stable empty result returned during SSR. useSyncExternalStore requires the
+// server snapshot to be referentially stable across calls.
+const EMPTY_REFERRER_CTX = { cityContext: null, typeContext: null } as const
+
+// Memoize the client snapshot so useSyncExternalStore sees a stable reference
+// across renders (document.referrer is immutable after first navigation).
+let cachedReferrerCtx: { cityContext: string | null; typeContext: string | null } | null = null
+function getClientReferrerCtx() {
+  if (cachedReferrerCtx === null) cachedReferrerCtx = parseReferrerContext()
+  return cachedReferrerCtx
+}
+
+function useReferrerContext(): { cityContext: string | null; typeContext: string | null } {
+  return useSyncExternalStore(
+    () => () => {}, // nothing to subscribe to — referrer is immutable
+    getClientReferrerCtx,
+    () => EMPTY_REFERRER_CTX,
+  )
+}
+
+interface TrackedWebsiteLinkProps extends Omit<TrackedLinkProps, 'eventType' | 'cityContext' | 'typeContext'> {
+  // Optional explicit overrides (rare — usually omit and let referrer sniff fill in).
+  cityContextOverride?: string | null
+  typeContextOverride?: string | null
+}
+
+// Drop-in replacement for `<TrackedLink eventType="website_click" />` that
+// auto-fills city_context / type_context from document.referrer. Use on
+// profile pages where the URL itself carries no listing context.
+export function TrackedWebsiteLink({
+  cityContextOverride,
+  typeContextOverride,
+  ...props
+}: TrackedWebsiteLinkProps) {
+  const referrerCtx = useReferrerContext()
+  return (
+    <TrackedLink
+      {...props}
+      eventType="website_click"
+      cityContext={cityContextOverride ?? referrerCtx.cityContext}
+      typeContext={typeContextOverride ?? referrerCtx.typeContext}
+    />
   )
 }
