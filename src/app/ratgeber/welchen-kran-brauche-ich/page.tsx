@@ -6,9 +6,9 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Welchen Kran brauche ich? — Der große Kran-Ratgeber',
+  title: 'Welchen Kran brauche ich? Kran-Ratgeber',
   description:
-    'Welchen Kran brauche ich? Minikran, Autokran oder Baukran — unser Ratgeber hilft Ihnen, den richtigen Kran für Ihr Projekt zu finden. Mit Empfehlungen nach Einsatzzweck.',
+    'Welchen Kran brauche ich? Minikran, Autokran oder Baukran — unser Ratgeber hilft Ihnen, den richtigen Kran für Ihr Projekt zu finden. Empfehlungen nach Einsatzzweck.',
   alternates: { canonical: '/ratgeber/welchen-kran-brauche-ich' },
   openGraph: {
     title: 'Welchen Kran brauche ich? — Der große Kran-Ratgeber',

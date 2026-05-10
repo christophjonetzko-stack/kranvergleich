@@ -8,12 +8,12 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran mieten für den Hausbau: Welcher Kran wann? | Einfamilienhaus 2026',
+  title: 'Kran für Hausbau: Welcher Kran wann?',
   description:
-    'Hausbau-Guide für Bauherren: Welcher Kran für welche Bauphase (Rohbau, Dachstuhl, Dacheindeckung)? Kostenbeispiel für ein typisches Einfamilienhaus, Timing und Genehmigungen.',
+    'Hausbau-Guide: Welcher Kran für welche Bauphase (Rohbau, Dachstuhl, Dacheindeckung)? Kostenbeispiel Einfamilienhaus, Timing und Genehmigungen.',
   alternates: alternatesFor('/ratgeber/kran-mieten-hausbau'),
   openGraph: {
-    title: 'Kran mieten für den Hausbau: Welcher Kran wann? | Einfamilienhaus 2026',
+    title: 'Kran für Hausbau mieten: Welcher Kran wann? — Einfamilienhaus 2026',
     description:
       'Hausbau-Guide für Bauherren: Welcher Kran für welche Bauphase? Kostenbeispiel für ein typisches Einfamilienhaus, Timing und Genehmigungen.',
     type: 'article',

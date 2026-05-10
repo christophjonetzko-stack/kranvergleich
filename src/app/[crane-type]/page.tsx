@@ -41,10 +41,11 @@ export async function generateMetadata({
   const count = counts.get(craneType.id) ?? 0
   const priceStr = craneType.price_day_from ? `ab ${craneType.price_day_from}€/Tag` : ''
 
-  // Title: ≤60 Zeichen, mit Preis + Anbieterzahl (Google-Snippet-optimiert)
-  const title = priceStr
-    ? `${craneType.name} mieten — ${priceStr} | ${count} Anbieter vergleichen`
-    : `${craneType.name} mieten — Preise 2026 | ${count} Anbieter vergleichen`
+  // Title: kept under ~40 chars before the layout's " | KranVergleich.de" suffix
+  // (~19 chars) so the full SERP title stays under Google's ~580px ≈ 60-char
+  // truncation limit. Price moved to description (it doesn't drive clicks at
+  // hub level — the count + crane-type name does).
+  const title = `${craneType.name} mieten — ${count} Anbieter`
 
   // Description: ≤155 Zeichen, damit Google nicht abschneidet. Konkrete Zahlen, klarer CTA.
   const description = priceStr

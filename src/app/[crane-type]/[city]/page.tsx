@@ -56,17 +56,21 @@ export async function generateMetadata({
   const price = getPriceForCraneType(craneType.slug)
   const priceStr = price ? `ab ${price.dayFrom}€/Tag` : ''
 
-  const ctInfo = craneTypesList.find((c) => c.slug === craneTypeSlug)
-  const synonymStr = ctInfo?.synonyms?.slice(0, 2).join(', ') ?? ''
-
-  // Tight title — keep under ~50 chars before the root layout's " | KranVergleich.de" suffix,
-  // so Google doesn't truncate the count + price (the actual CTR drivers).
-  const title = price && companies.length > 0
-    ? `${craneType.name} mieten ${city.name} — ${companies.length} Anbieter ab ${price.dayFrom}€`
-    : companies.length > 0
-      ? `${craneType.name} mieten ${city.name} — ${companies.length} Anbieter vergleichen`
-      : `${craneType.name} mieten ${city.name} — Preise & Anbieter`
-  const description = `${craneType.name}${synonymStr ? ` (${synonymStr})` : ''} mieten in ${city.name}${priceStr ? `: Kosten ${priceStr}` : ''}. ${companies.length > 0 ? `${companies.length} Anbieter` : 'Anbieter'} in ${city.name} & Umgebung vergleichen. Preisliste, Bewertungen & kostenlose Angebote.`
+  // Title: keep under ~41 chars before the layout's " | KranVergleich.de" suffix
+  // (19 chars) so the full SERP title stays under Google's ~580px ≈ 60-char
+  // truncation limit. Previously the title carried name + city + count + price
+  // and ran to 63-69 chars, getting truncated and killing CTR. Price moved to
+  // description; count alone drives the click. Long crane-type + long city
+  // combos (Dachdeckerkran in Frankfurt am Main, etc.) drop the count to fit.
+  const titleWithCount = `${craneType.name} mieten ${city.name} — ${companies.length} Anbieter`
+  const title = companies.length > 0 && titleWithCount.length <= 41
+    ? titleWithCount
+    : `${craneType.name} mieten ${city.name}`
+  // Description: ≤155 chars. Synonyms dropped (they crowd the snippet without
+  // ranking benefit — meta-desc is not a ranking factor). Trailer compressed.
+  const description = companies.length > 0
+    ? `${craneType.name} mieten in ${city.name}${priceStr ? `: Kosten ${priceStr}` : ''}. ${companies.length} Anbieter in ${city.name} vergleichen. Bewertungen, Preise & kostenlose Angebote.`
+    : `${craneType.name} mieten in ${city.name}${priceStr ? `: ${priceStr}` : ''}. Anbieter vergleichen, Preise & kostenlose Angebote anfragen.`
   const canonical = `/${craneTypeSlug}/${citySlug}`
 
   return {

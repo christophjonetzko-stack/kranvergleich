@@ -10,9 +10,9 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Was kostet ein Kran? Miet- & Kaufpreise 2026 im Vergleich',
+  title: 'Was kostet ein Kran? Mietpreise 2026',
   description:
-    'Was kostet ein Kran zur Miete oder zum Kauf? Tagespreise ab 150€ (Anhängerkran) bis 5.000€ (Raupenkran). Komplette Mietpreis-Tabelle aller 8 Krantypen 2026.',
+    'Was kostet ein Kran zur Miete? Tagespreise ab 150€ (Anhängerkran) bis 5.000€ (Raupenkran). Komplette Mietpreis-Tabelle aller 8 Krantypen 2026.',
   alternates: alternatesFor('/ratgeber/was-kostet-ein-kran'),
   openGraph: {
     title: 'Was kostet ein Kran? Mietpreise 2026 ab 150€/Tag',
