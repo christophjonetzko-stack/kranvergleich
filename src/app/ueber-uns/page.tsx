@@ -12,6 +12,12 @@ import { OG_IMAGE } from '@/lib/og-image'
 // bio is a credibility risk per user's "compromise rule".
 const LINKEDIN_URL = 'https://www.linkedin.com/in/christoph-jonetzko-9464223a9'
 
+// Currency stamps — mirror the constants in /[crane-type]/page.tsx. TODO:
+// centralize in @/lib/site-meta when a third page needs them. Two-place
+// duplication is acceptable, three would justify the lift.
+const DATA_LAST_VERIFIED_ISO = '2026-05-06'
+const DATA_LAST_VERIFIED_LABEL = 'Mai 2026'
+
 export const revalidate = 86400
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -41,32 +47,42 @@ export default async function UeberUnsPage() {
         <span className="text-gray-900">Über uns</span>
       </nav>
 
-      <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-6">
-        Über {BRAND_NAME}
+      {/* Pitch headline (P1, Priestley) — leads with strongest credentials
+          (Liebherr Werk Ehingen + 28 years operator practice) before any
+          generic "About us" framing. Borrowed-credibility front-and-center
+          for DACH crane B2B audience. Reviewer suggested "transparenteste"
+          superlative — rejected (UWG §5/§6 Spitzenstellungswerbung risk per
+          feedback_uwg_abmahnung_priority + skill linkedin-kranvergleich
+          Pre-flight #3b). Concrete number ("713 Kranvermieter") replaces
+          superlative — Priestley "authority through specificity" without
+          legal exposure. */}
+      <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 leading-tight mb-4">
+        Vier Jahre bei Liebherr in Ehingen. 28 Jahre Baumaschinen-Handel.
+        Heute baue ich die Vergleichs-Datenbank für 713 Kranvermieter
+        in Deutschland und Österreich.
       </h1>
 
-      <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Was ist {BRAND_NAME}?</h2>
-          <p>
-            {BRAND_NAME} ist ein unabhängiges Vergleichsportal für Kranvermietung in
-            {' '}{COUNTRY_LABEL}. Wir helfen Bauunternehmern, Handwerkern und Projektleitern, den
-            passenden Kran zum besten Preis zu finden — schnell, transparent und kostenlos.
-          </p>
-        </section>
+      {/* Credential pull-quote — visual highlight of three strongest signals,
+          extracted from the bio prose so they don't get buried below the fold.
+          Clean typography (no emoji bullets) for DACH Mittelstand B2B feel. */}
+      <div className="border-l-2 border-gray-300 pl-4 py-1 space-y-1.5 text-[14px] text-gray-600 mb-8">
+        <p><span className="font-semibold text-gray-900">4 Jahre Liebherr-Werk Ehingen</span> · LTM 1230 bis LTM 1650 (230 bis 700 Tonnen)</p>
+        <p><span className="font-semibold text-gray-900">28 Jahre eigenes Handelsunternehmen</span> · LKW- und Baumaschinen-Ersatzteile, 10 Mitarbeiter</p>
+        <p><span className="font-semibold text-gray-900">Programmatic SEO + KI-Datenanalyse</span> · technische Basis der Plattform</p>
+      </div>
 
-        {/* Author / E-E-A-T section — named human behind the catalog, with full
-            domain-specific bio. Facts mirror the public LinkedIn profile (Liebherr
-            Werk Ehingen LTM 1230–1650, 28 years parts trading, programmatic SEO)
-            so cross-channel checks pass. Person JSON-LD at the end of the page
-            links via @id back to this section. */}
+      <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
+        {/* Author / E-E-A-T section — named human behind the catalog. Bio now
+            narrative-focused (motivation + perspective from both sides) since
+            hard facts moved up to the credential pull-quote. Person JSON-LD at
+            end of the page links via @id back to this section. */}
         <section id="christoph">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Wer steht hinter {BRAND_NAME}?</h2>
           <div className="flex flex-col sm:flex-row gap-5 sm:gap-6">
             <div className="relative shrink-0 w-32 sm:w-44 aspect-[2/3] overflow-hidden rounded-md bg-gray-100">
               <Image
                 src="/team/christoph-jonetzko.jpg"
-                alt="Christoph Jonetzko, Gründer von KranVergleich.de"
+                alt="Christoph Jonetzko, ex-Liebherr Ehingen, Gründer von KranVergleich.de"
                 fill
                 sizes="(min-width: 640px) 176px, 128px"
                 className="object-cover"
@@ -75,51 +91,88 @@ export default async function UeberUnsPage() {
             <div className="flex-1 space-y-3">
               <div>
                 <p className="text-base font-semibold text-gray-900">Christoph Jonetzko</p>
-                <p className="text-[13px] text-gray-500">Gründer</p>
+                <p className="text-[13px] text-gray-500">ex-Liebherr Ehingen · Branchenkenner aus 28 Jahren Praxis</p>
               </div>
               <p>
-                Ich bin Gründer von {BRAND_NAME}. Vor dem Start der Plattform war ich vier Jahre
-                im Werk Ehingen bei Liebherr — bei den Modellreihen LTM 1230 bis LTM 1650, also
-                230 bis 700 Tonnen. Davor habe ich 28 Jahre lang ein eigenes Handelsunternehmen
-                für LKW- und Baumaschinen-Ersatzteile geführt: 10 Mitarbeiter, Ladengeschäft,
-                Online-Shop, Marktplatzvertrieb.
-              </p>
-              <p>
-                Diese operative Praxis verbinde ich heute mit programmatischem SEO und
-                KI-gestützter Datenanalyse. Ziel ist es, eine der digital am wenigsten
-                erschlossenen B2B-Branchen sichtbarer zu machen — für Bauunternehmer und
-                Kranvermieter gleichermaßen.
+                Was Bauunternehmer in der Praxis sehen, sehe ich von beiden Seiten. Aus dem Werk:
+                bei Liebherr lernt man, was hinter einem LTM 1230 steckt, wie ein 230-Tonner
+                geplant, gebaut und übergeben wird. Aus dem Handel: 28 Jahre eigenes Geschäft
+                mit Ersatzteilen für LKW und Baumaschinen lehren, was zwischen Anbieter und
+                Bauunternehmer typischerweise schiefläuft — fragmentierte Auswahl, undurchsichtige
+                Preise, langsame Antworten.
               </p>
             </div>
           </div>
         </section>
 
+        {/* Aim + Game — Priestley P1 closing. Aim = current concrete work
+            (AT expansion, verifiable via per-country firm counts in /). Game =
+            long-term mission. Kept as prose, not bullet block, per DACH B2B
+            reviewer guidance (no grant-application style). */}
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Unsere Daten</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Wofür ich baue</h2>
           <p>
-            Unsere Datenbank umfasst über {anbieterCount} Kranvermieter in ganz {COUNTRY_LABEL}. Die Daten
-            stammen aus öffentlich zugänglichen Quellen (Google Maps) und werden regelmäßig
-            aktualisiert. Wir zeigen echte Google-Bewertungen, Kontaktdaten und — wo verfügbar
-            — Preisinformationen.
+            Aktuell erweitere ich die Datenbank von Deutschland auf Österreich. Bereits über
+            75 Kranvermieter aus 9 österreichischen Bundesländern sind gelistet, der nächste
+            Schritt ist die Vertiefung in Wien, Niederösterreich und der Steiermark.
+          </p>
+          <p className="mt-3">
+            Mein Ziel: eine der digital am wenigsten erschlossenen B2B-Branchen so transparent
+            machen, dass Bauunternehmer in wenigen Minuten den passenden Kran finden und
+            Vermieter Anfragen erhalten, die wirklich zu ihrer Flotte passen.
           </p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Für Suchende: 100% kostenlos</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Unsere Daten</h2>
           <p>
-            Die Nutzung von {BRAND_NAME} ist für Suchende komplett kostenlos. Sie können
-            Anbieter vergleichen, Profile ansehen und kostenlos Angebote anfragen — bei einem
-            oder mehreren Anbietern gleichzeitig. Es gibt keine versteckten Kosten.
+            Die Datenbank umfasst über {anbieterCount} Kranvermieter in ganz {COUNTRY_LABEL}. Daten
+            stammen aus öffentlich zugänglichen Quellen, werden manuell geprüft und regelmäßig
+            aktualisiert. Sichtbar sind echte Google-Bewertungen, Kontaktdaten und — wo verfügbar
+            — Preisinformationen. Stand: {DATA_LAST_VERIFIED_LABEL}.
+          </p>
+        </section>
+
+        {/* Industry-perspective section — Priestley "vital, not functional"
+            language: shows POV on the market, not just operator copy. Three
+            facts are verifiable from the catalog (33 firms without email,
+            day rates 230 to 1500 EUR, regional vs nationwide split). Seeds
+            material for future content (Krankosten-Studie 2026 in plan). */}
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Was ich in 28 Jahren Praxis sehe</h2>
+          <ul className="space-y-2.5 list-disc pl-5 marker:text-gray-300">
+            <li>
+              33 von 713 Kranverleihern in unserem Katalog haben keine E-Mail-Adresse
+              veröffentlicht. Anfragen laufen dort über Telefon — oder gar nicht.
+            </li>
+            <li>
+              Die meisten Vermieter nennen Preise erst auf Anfrage. Tagessätze reichen von
+              230 € für einen Minikran bis 1.500 € für einen 100-Tonner-Mobilkran.
+            </li>
+            <li>
+              Bauunternehmer kennen die großen Namen wie Boels, BKL oder Felbermayr. Aber
+              700+ kleinere Vermieter sind regional verankert — oft die schnellere und
+              günstigere Wahl für lokale Projekte.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Für Bauunternehmer</h2>
+          <p>
+            Nutzung kostenfrei. Anbieter vergleichen, Profile ansehen und Angebote bei einem oder
+            mehreren Vermietern gleichzeitig anfragen. Keine Vermittlungsprovision, keine
+            versteckten Gebühren.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Für Kranvermieter</h2>
           <p>
-            Sind Sie Kranvermieter und möchten Ihr Profil aktualisieren oder Premium-Funktionen
-            nutzen? Kontaktieren Sie uns unter{' '}
-            <a href="mailto:impressum@kranvergleich.de" className="text-blue-600 hover:underline">
-              impressum@kranvergleich.de
+            Listing kostenlos. Wenn Sie Kranvermieter sind und Ihr Profil aktualisieren oder neue
+            Modelle eintragen möchten — schreiben Sie mir direkt an{' '}
+            <a href="mailto:christoph@kranvergleich.de" className="text-blue-600 hover:underline">
+              christoph@kranvergleich.de
             </a>.
           </p>
         </section>
@@ -153,7 +206,8 @@ export default async function UeberUnsPage() {
             name: 'Christoph Jonetzko',
             jobTitle: 'Gründer',
             description:
-              'Gründer von KranVergleich.de. Vor dem Start der Plattform vier Jahre im Werk Ehingen bei Liebherr (Modellreihen LTM 1230 bis LTM 1650, 230 bis 700 Tonnen). Davor 28 Jahre eigenes Handelsunternehmen für LKW- und Baumaschinen-Ersatzteile.',
+              'Gründer von KranVergleich.de. Vier Jahre Werk Ehingen bei Liebherr (LTM 1230 bis LTM 1650, 230 bis 700 Tonnen). 28 Jahre eigenes Handelsunternehmen für LKW- und Baumaschinen-Ersatzteile. Heute Aufbau einer transparenten Kranvermieter-Datenbank für Deutschland und Österreich mit programmatischem SEO und KI-gestützter Datenanalyse.',
+            dateModified: DATA_LAST_VERIFIED_ISO,
             image: `${BASE_URL}/team/christoph-jonetzko.jpg`,
             url: `${BASE_URL}/ueber-uns#christoph`,
             worksFor: {

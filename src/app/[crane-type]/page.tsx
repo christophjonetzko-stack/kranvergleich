@@ -199,12 +199,14 @@ export default async function CraneTypePage({
 
       {/* Author byline + currency stamp combined — E-E-A-T signal (named human
           responsible for the catalog) plus freshness signal in one subtle line.
-          Anchor "Christoph Jonetzko, Gründer" links to /ueber-uns#christoph
-          where the full bio + Person JSON-LD entity lives. */}
+          Anchor uses the strongest single credential ("ex-Liebherr Ehingen")
+          rather than generic role ("Gründer"), per Priestley P1 framework —
+          DACH crane B2B audience recognises Liebherr Ehingen as the institution
+          for mobile cranes. Links to /ueber-uns#christoph where full bio lives. */}
       <p className="text-[11px] text-gray-400 mb-6">
         Geprüft von{' '}
         <Link href="/ueber-uns#christoph" className="text-gray-500 hover:text-gray-700 hover:underline">
-          Christoph Jonetzko, Gründer
+          Christoph Jonetzko, ex-Liebherr Ehingen
         </Link>
         {' '}· Stand: {DATA_LAST_VERIFIED_LABEL}
       </p>
