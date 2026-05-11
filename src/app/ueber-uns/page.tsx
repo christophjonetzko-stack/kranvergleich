@@ -12,11 +12,10 @@ import { OG_IMAGE } from '@/lib/og-image'
 // bio is a credibility risk per user's "compromise rule".
 const LINKEDIN_URL = 'https://www.linkedin.com/in/christoph-jonetzko-9464223a9'
 
-// Currency stamps — mirror the constants in /[crane-type]/page.tsx. TODO:
-// centralize in @/lib/site-meta when a third page needs them. Two-place
-// duplication is acceptable, three would justify the lift.
+// ISO date = last manual catalog audit, fed into schema.org dateModified.
+// Update only on real verification. Visible "Stand:" label below uses
+// build-time current month (lastUpdatedLabel) so the page never reads stale.
 const DATA_LAST_VERIFIED_ISO = '2026-05-06'
-const DATA_LAST_VERIFIED_LABEL = 'Mai 2026'
 
 export const revalidate = 86400
 
@@ -41,6 +40,7 @@ export default async function UeberUnsPage() {
   // Post #1 and is consistent across all prose). getSiteStats() still runs
   // in generateMetadata() for the title/description per-domain count, but
   // we don't need it in the component body anymore.
+  const lastUpdatedLabel = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -145,7 +145,7 @@ export default async function UeberUnsPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Meine Datenbank</h2>
           <p>
             Meine Datenbank umfasst 713 manuell geprüfte Kranvermieter in
-            Deutschland und Österreich (Stand: {DATA_LAST_VERIFIED_LABEL}).
+            Deutschland und Österreich (Stand: {lastUpdatedLabel}).
             Die Daten stammen aus öffentlich zugänglichen Quellen; ich pflege
             sie manuell und aktualisiere sie regelmäßig. Sichtbar sind echte
             Google-Bewertungen, Kontaktdaten und, wo der Vermieter sie
