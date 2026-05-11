@@ -197,7 +197,17 @@ export default async function CraneTypePage({
         </div>
       </div>
 
-      <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: {DATA_LAST_VERIFIED_LABEL}</p>
+      {/* Author byline + currency stamp combined — E-E-A-T signal (named human
+          responsible for the catalog) plus freshness signal in one subtle line.
+          Anchor "Christoph Jonetzko, Gründer" links to /ueber-uns#christoph
+          where the full bio + Person JSON-LD entity lives. */}
+      <p className="text-[11px] text-gray-400 mb-6">
+        Geprüft von{' '}
+        <Link href="/ueber-uns#christoph" className="text-gray-500 hover:text-gray-700 hover:underline">
+          Christoph Jonetzko, Gründer
+        </Link>
+        {' '}· Stand: {DATA_LAST_VERIFIED_LABEL}
+      </p>
 
       {/* Table of Contents — horizontal pills */}
       <nav className="mb-8 border border-gray-200 rounded-lg px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
