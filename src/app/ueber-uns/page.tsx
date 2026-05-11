@@ -71,12 +71,10 @@ export default async function UeberUnsPage() {
       </p>
 
       <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
-        {/* Wer steht hinter — moved UP before "Drei Beobachtungen" per
-            reviewer #4 final synthesis (bio establishes credibility first,
-            then insights validate POV). Photo block deduplicated from
-            5 elements (photo + tagline + name + jobTitle + bio) to 3
-            (photo + tagline + combined name·credentials caption) + bio
-            below in right column. */}
+        {/* Wer steht hinter — bio establishes credibility before "Drei
+            Beobachtungen" insights validate POV. Photo block kept minimal:
+            photo + tagline only. Name lives in alt-text + JSON-LD Person
+            schema; full bio sits in the right column. */}
         <section id="christoph">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Wer steht hinter {BRAND_NAME}?</h2>
           <div className="flex flex-col sm:flex-row gap-5 sm:gap-6">
@@ -92,9 +90,6 @@ export default async function UeberUnsPage() {
               </div>
               <p className="text-[12px] text-gray-600 italic leading-snug">
                 „Ich mache die deutsche Kranvermietung transparent."
-              </p>
-              <p className="text-[11px] text-gray-500 leading-snug">
-                Christoph Jonetzko · ex-Liebherr Ehingen · 28 Jahre Baumaschinen-Praxis
               </p>
             </div>
             <div className="flex-1">
