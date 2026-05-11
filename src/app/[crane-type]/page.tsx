@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getCompanyCountsPerCraneType, getSiteStats, computeAggregateRating } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL, BASE_URL } from '@/lib/country'
 import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
@@ -17,6 +17,15 @@ import { getRatgeberForCraneType } from '@/data/crane-ratgeber'
 import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
+
+// Bump on every meaningful catalog refresh (firm count change, price audit,
+// content rewrite). Surfaces both as JSON-LD dateModified (Product + Service)
+// and as the visible "Daten zuletzt geprüft" stamp under the hero. Keeping
+// both sourced from one constant prevents the drift that triggered the GSC
+// freshness-signal mismatch (visible "April 2026" while catalog cleanup
+// landed 06.05 in mig 021).
+const DATA_LAST_VERIFIED_ISO = '2026-05-06'
+const DATA_LAST_VERIFIED_LABEL = 'Mai 2026'
 
 export async function generateStaticParams() {
   const craneTypes = await getCraneTypes()
@@ -188,7 +197,7 @@ export default async function CraneTypePage({
         </div>
       </div>
 
-      <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
+      <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: {DATA_LAST_VERIFIED_LABEL}</p>
 
       {/* Table of Contents — horizontal pills */}
       <nav className="mb-8 border border-gray-200 rounded-lg px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -688,11 +697,44 @@ export default async function CraneTypePage({
                     worstRating: 1,
                   },
                 }),
+                dateModified: DATA_LAST_VERIFIED_ISO,
               }),
             }}
           />
         )
       })()}
+      {/* Service + areaServed — entity-level signal that KranVergleich operates
+          a comparison service for this crane type across the country. Product
+          schema above describes "the thing rented"; Service describes "what we
+          do". areaServed gives Google a strong geographic-scope cue, which the
+          Product schema lacks. Provider is KranVergleich (the aggregator),
+          NOT the individual firms — they're listed elsewhere as LocalBusiness
+          in the city ItemList. Keeps the entity model honest. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            serviceType: `${craneType.name}-Vermietung Vergleich`,
+            name: `${craneType.name} mieten — Anbieter-Vergleich`,
+            description: totalCount > 0
+              ? `Vergleichen Sie ${totalCount} Anbieter für ${craneType.name}-Vermietung in ${COUNTRY_LABEL}. Tages-, Wochen- & Monatspreise im direkten Preisvergleich.`
+              : `Anbieter-Vergleich für ${craneType.name}-Vermietung in ${COUNTRY_LABEL}. Tages-, Wochen- & Monatspreise im direkten Preisvergleich.`,
+            provider: {
+              '@type': 'Organization',
+              name: BRAND_NAME,
+              url: BASE_URL,
+            },
+            areaServed: {
+              '@type': 'Country',
+              name: COUNTRY_LABEL,
+            },
+            category: 'Kranvermietung',
+            dateModified: DATA_LAST_VERIFIED_ISO,
+          }),
+        }}
+      />
     </div>
     <NewsletterPanel />
     </>
