@@ -69,6 +69,14 @@ export default function ImpressumPage() {
         </section>
 
         <section>
+          <h2 className="text-xl font-semibold">Umsatzsteuer</h2>
+          <p>
+            Kleinunternehmer gemäß § 19 UStG. Es wird keine Umsatzsteuer
+            berechnet und in Rechnungen nicht ausgewiesen.
+          </p>
+        </section>
+
+        <section>
           <h2 className="text-xl font-semibold">Verantwortlich für den Inhalt nach {STATUTE.content_responsibility}</h2>
           <p>
             Christoph Jonetzko<br />
