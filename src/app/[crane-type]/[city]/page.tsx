@@ -9,6 +9,7 @@ import {
   getCompaniesForCraneAndCity,
   getCitiesWithMinCompanies,
   getCompanyCountsPerCity,
+  getCompanyCountsPerCraneType,
   computeAggregateRating,
   getSiteStats,
 } from '@/lib/queries'
@@ -20,7 +21,7 @@ import { PageEventTracker } from '@/components/page-event-tracker'
 import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
-import { BRAND_NAME, BASE_URL } from '@/lib/country'
+import { BRAND_NAME, BASE_URL, COUNTRY_LABEL } from '@/lib/country'
 import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
@@ -103,11 +104,13 @@ export default async function CraneCityPage({
 
   if (!craneType || !city) notFound()
 
-  const [companies, allCities, siteStats] = await Promise.all([
+  const [companies, allCities, siteStats, craneTypeCounts] = await Promise.all([
     getCompaniesForCraneAndCity(craneType.id, city.id),
     getCities(),
     getSiteStats(),
+    getCompanyCountsPerCraneType(),
   ])
+  const totalForType = craneTypeCounts.get(craneType.id) ?? 0
   // Currency signal — refreshes monthly via 24h ISR (text only flips on
   // month boundary). Per AEO rules in seo-content-de skill: include "Stand"
   // timestamp so AI engines + Bauunternehmer see the page is current.
@@ -309,6 +312,20 @@ export default async function CraneCityPage({
           </div>
         </div>
       </div>
+
+      {/* Hub upsell — boosts parent /{craneType.slug} authority for country-wide queries.
+          Anchor text uses the hub's own SEO target ("{craneType.name} mieten") rather
+          than generic "hier" — internal-link power is anchor-text gated for Google.
+          COUNTRY_LABEL keeps phrasing correct on kranvergleich.at (Österreich) vs .de. */}
+      {totalForType > 0 && (
+        <p className="text-[13px] text-gray-500 mb-4">
+          Suchen Sie in ganz {COUNTRY_LABEL}?{' '}
+          <Link href={`/${craneType.slug}`} className="text-blue-600 hover:underline">
+            {craneType.name} mieten — alle {totalForType} Anbieter im Vergleich
+          </Link>
+          .
+        </p>
+      )}
 
       {/* Cross-link to main price page — boosts /kran-mieten-preise authority for "preisliste" queries */}
       <p className="text-[13px] text-gray-500 mb-10">
