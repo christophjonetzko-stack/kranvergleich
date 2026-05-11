@@ -183,6 +183,12 @@ export function Header() {
                     >
                       Ratgeber
                     </Link>
+                    <Link
+                      href="/ueber-uns"
+                      className="block px-4 py-2 text-[13px] text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+                    >
+                      Über uns
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -263,6 +269,13 @@ export function Header() {
                 className="block py-2 text-[14px] text-gray-500 hover:text-gray-900 transition-colors"
               >
                 Ratgeber
+              </Link>
+              <Link
+                href="/ueber-uns"
+                onClick={() => setMobileOpen(false)}
+                className="block py-2 text-[14px] text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                Über uns
               </Link>
             </div>
           </div>

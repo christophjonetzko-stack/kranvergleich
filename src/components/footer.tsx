@@ -60,10 +60,18 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Rechtliches */}
+          {/* Unternehmen + Rechtliches */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Rechtliches</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Unternehmen</h3>
             <ul className="space-y-1.5">
+              <li>
+                <Link
+                  href="/ueber-uns"
+                  className="text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Über uns
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/impressum"
