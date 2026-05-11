@@ -642,7 +642,7 @@ export default async function CompanyPage({
             ...(priceRangeText && { priceRange: priceRangeText }),
             telephone: company.phone,
             ...(displayEmail && { email: displayEmail }),
-            ...(company.google_rating && {
+            ...(company.google_rating && (company.google_reviews_count ?? 0) > 0 && {
               aggregateRating: {
                 '@type': 'AggregateRating',
                 ratingValue: company.google_rating,

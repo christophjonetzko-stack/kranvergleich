@@ -363,7 +363,7 @@ export default async function CraneCityPage({
                     telephone: company.phone,
                     ...(company.website && { url: company.website }),
                     ...(priceRange && { priceRange }),
-                    ...(company.google_rating && {
+                    ...(company.google_rating && (company.google_reviews_count ?? 0) > 0 && {
                       aggregateRating: {
                         '@type': 'AggregateRating',
                         ratingValue: company.google_rating,
