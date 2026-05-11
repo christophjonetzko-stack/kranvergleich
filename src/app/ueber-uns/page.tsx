@@ -61,20 +61,32 @@ export default async function UeberUnsPage() {
         gibt es nur auf Anfrage. Das ändere ich.
       </h1>
 
+      {/* Mid-page CTA banner — second waitlist exposure between hook and
+          one-liner (Priestley 7-11-4: multiple exposures within one page).
+          Secondary visual weight (blue-50 vs primary blue-600 CTA below).
+          Same mailto target as the primary CTA in the final section. */}
+      <a
+        href="mailto:christoph@kranvergleich.de?subject=Vorab-Zugang%20Kran-Preisindex%202026&body=Hallo%20Christoph%2C%0A%0Aich%20m%C3%B6chte%20mich%20f%C3%BCr%20den%20Vorab-Zugang%20zum%20Kran-Preisindex%202026%20eintragen.%0A%0AName%2FFirma%3A%20%0A%0AGr%C3%BC%C3%9Fe"
+        className="block mb-6 px-4 py-2.5 text-[13px] text-blue-700 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors"
+      >
+        <span className="font-semibold">Aktuell im Aufbau:</span> Kran-Preisindex 2026 — Vorab-Zugang sichern →
+      </a>
+
       {/* Single-line pitch (Name / Same / Fame / Aim in one sentence).
           Colon-separator instead of em-dash (Phase 2 humanization rule I —
           even functional em-dashes replaced when colon/period works). */}
       <p className="text-[15px] sm:text-base text-gray-700 leading-relaxed mb-10">
         Ich bin Christoph Jonetzko. Nach 4 Jahren bei Liebherr Ehingen und
         28 Jahren im Baumaschinen-Handel mache ich die deutsche Kranvermietung
-        transparent: 713 geprüfte Vermieter, ein Vergleich in wenigen Minuten.
+        transparent: 713 geprüfte Vermieter, ein Vergleich in unter 3 Minuten.
       </p>
 
       <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
         {/* Wer steht hinter — bio establishes credibility before "Drei
-            Beobachtungen" insights validate POV. Photo block kept minimal:
-            photo + tagline only. Name lives in alt-text + JSON-LD Person
-            schema; full bio sits in the right column. */}
+            Beobachtungen" insights validate POV. Photo block: photo +
+            tagline + credentials caption (ex-Liebherr + 28 Jahre — visible
+            credibility marker). Name not duplicated as visible text; it
+            lives in alt-text + JSON-LD Person schema. */}
         <section id="christoph">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Wer steht hinter {BRAND_NAME}?</h2>
           <div className="flex flex-col sm:flex-row gap-5 sm:gap-6">
@@ -91,6 +103,9 @@ export default async function UeberUnsPage() {
               <p className="text-[12px] text-gray-600 italic leading-snug">
                 „Ich mache die deutsche Kranvermietung transparent."
               </p>
+              <p className="text-[11px] text-gray-500 leading-snug">
+                ex-Liebherr Ehingen · 28 Jahre Baumaschinen-Praxis
+              </p>
             </div>
             <div className="flex-1">
               <p>
@@ -98,8 +113,10 @@ export default async function UeberUnsPage() {
                 Aus dem Werk: bei Liebherr lernt man, was hinter einem LTM 1230
                 steckt, wie ein 230-Tonner geplant, gebaut und übergeben wird.
                 Aus dem Handel: 28 Jahre eigenes Geschäft mit Ersatzteilen für
-                LKW und Baumaschinen zeigen, wo zwischen Anbieter und Bau-
-                unternehmer Reibung entsteht.
+                LKW und Baumaschinen, zuletzt mit 10 Mitarbeitern, zeigen, was
+                zwischen Anbieter und Bauunternehmer typischerweise schiefläuft:
+                Anfragen bleiben unbeantwortet, Preisangaben dauern Wochen,
+                Vermieter sind für ein konkretes Projekt nicht erreichbar.
               </p>
             </div>
           </div>
@@ -131,7 +148,7 @@ export default async function UeberUnsPage() {
           </ul>
         </section>
 
-        {/* Meine Datenbank — moved before "Wofür ich baue" per reviewer #4
+        {/* Meine Datenbank — moved before "Was als Nächstes kommt: Kran-Preisindex 2026" per reviewer #4
             flow (data context → mission). Stand inline in first sentence
             (was separate sentence). 713 hardcoded (matches LinkedIn Post #1
             and prose elsewhere on page). "Manuell geprüft" inline anchors
@@ -148,7 +165,7 @@ export default async function UeberUnsPage() {
           </p>
         </section>
 
-        {/* Wofür ich baue — final content section. Page ends on CTA per
+        {/* Was als Nächstes kommt: Kran-Preisindex 2026 — final content section. Page ends on CTA per
             reviewer #4 (end on call-to-action, not on metadata/contact).
             Game first ("Mein Ziel"), Aim second ("Aktuell entwickle ich").
             "Die erste systematische" — claim approved 4x across reviewer
@@ -158,10 +175,10 @@ export default async function UeberUnsPage() {
             existing systematic Kranpreis-Index found, soften to "eine
             systematische". */}
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Wofür ich baue</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Was als Nächstes kommt: Kran-Preisindex 2026</h2>
           <p>
             Mein Ziel: eine der digital am wenigsten erschlossenen B2B-Branchen
-            so transparent machen, dass Bauunternehmer in wenigen Minuten den
+            so transparent machen, dass Bauunternehmer in unter 3 Minuten den
             passenden Kran finden und Vermieter Anfragen erhalten, die zu ihrer
             Flotte passen.
           </p>
@@ -185,6 +202,19 @@ export default async function UeberUnsPage() {
               Vorab-Zugang zum Preisindex 2026 sichern →
             </a>
           </div>
+
+          {/* Secondary supply-side block — Kranvermieter contact, smaller
+              font, below primary CTA so it doesn't compete for demand-side
+              attention. */}
+          <p className="mt-6 text-[12px] text-gray-500">
+            Sie sind Kranvermieter?{' '}
+            <a
+              href="mailto:christoph@kranvergleich.de?subject=Listing%20auf%20KranVergleich.de"
+              className="text-gray-700 hover:text-gray-900 underline"
+            >
+              christoph@kranvergleich.de
+            </a>
+          </p>
         </section>
       </div>
 
