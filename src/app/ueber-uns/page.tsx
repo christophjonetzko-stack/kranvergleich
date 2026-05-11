@@ -37,7 +37,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function UeberUnsPage() {
-  const { anbieterCount } = await getSiteStats()
+  // Catalog count is hardcoded inline (713 total DE+AT, matches LinkedIn
+  // Post #1 and is consistent across all prose). getSiteStats() still runs
+  // in generateMetadata() for the title/description per-domain count, but
+  // we don't need it in the component body anymore.
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -81,7 +84,7 @@ export default async function UeberUnsPage() {
           </h2>
           <ul className="space-y-2.5 list-disc pl-5 marker:text-gray-300">
             <li>
-              33 von 713 Vermietern in unserem Katalog haben keine E-Mail-Adresse
+              33 von 713 Vermietern in meinem Katalog haben keine E-Mail-Adresse
               veröffentlicht. Anfragen laufen dort über Telefon oder gar nicht.
             </li>
             <li>
@@ -162,36 +165,34 @@ export default async function UeberUnsPage() {
           </p>
         </section>
 
-        {/* Meine Datenbank — solo founder voice, NOT "Unsere Daten" (per
-            reviewer #2 — "Wir" defensive when solo, "Ich/Meine" authentic).
-            Em-dashes around "wo verfügbar" replaced with comma sub-clause
-            per Phase 2 rule I. Semicolon between data-source and pflege
-            replaces clause-stacking. Vermieter tertiary CTA lives in this
-            section's footer (per reviewer #2: small link, demand-side is
-            primary user). */}
+        {/* Meine Datenbank — solo founder voice, NOT "Unsere Daten" (reviewer #2
+            "Wir" defensive when solo). Catalog count hardcoded to 713 (total
+            DE+AT, matches LinkedIn Post #1 "713 Kranverleihern aus 16 + 9
+            Bundesländern") — previously used getSiteStats().anbieterCount
+            which returns per-domain count (610 DE / 70 AT), causing prose
+            mismatch with hardcoded 713 elsewhere on the page (reviewer #3
+            HARD catch). "Manuell geprüft" inline anchors the "geprüft"
+            claim from the pitch one-liner. */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Meine Datenbank</h2>
           <p>
-            Meine Datenbank umfasst {anbieterCount} Kranvermieter in Deutschland
-            und Österreich. Die Daten stammen aus öffentlich zugänglichen
-            Quellen; ich pflege sie manuell und aktualisiere sie regelmäßig.
-            Sichtbar sind echte Google-Bewertungen, Kontaktdaten und, wo der
-            Vermieter sie veröffentlicht, Preisinformationen. Stand: {DATA_LAST_VERIFIED_LABEL}.
-          </p>
-          <p className="text-[12px] text-gray-400 mt-3">
-            Sind Sie Kranvermieter? Listing kostenlos —{' '}
-            <a href="mailto:christoph@kranvergleich.de" className="text-blue-600 hover:underline">
-              christoph@kranvergleich.de
-            </a>.
+            Meine Datenbank umfasst 713 manuell geprüfte Kranvermieter in
+            Deutschland und Österreich. Die Daten stammen aus öffentlich
+            zugänglichen Quellen; ich pflege sie manuell und aktualisiere sie
+            regelmäßig. Sichtbar sind echte Google-Bewertungen, Kontaktdaten
+            und, wo der Vermieter sie veröffentlicht, Preisinformationen.
+            Stand: {DATA_LAST_VERIFIED_LABEL}.
           </p>
         </section>
 
         {/* Primary CTA — Oversubscribed waitlist mechanic (Priestley: launch
             waitlist BEFORE product, +40% sales). Interim mailto link until
-            real waitlist endpoint built. Subject + body prefilled with
-            German Sie-Form intro. Demand-side capture; supply-side stays as
-            tertiary in Daten section above. Single primary action per
-            reviewer #2 (NOT two equal CTAs Bauunternehmer/Kranvermieter). */}
+            real waitlist endpoint built. Reviewer #3 catch: Bauunternehmer
+            (demand) MUST appear BEFORE Kranvermieter (supply) — demand is
+            monetization path, supply is outbound-driven. Previously Vermieter
+            link lived in Daten section ABOVE this primary CTA — visually
+            inverted hierarchy. Now Vermieter tertiary moved below this block
+            with separator. */}
         <section className="border border-gray-200 bg-gray-50 rounded-md p-5 my-2 not-prose">
           <p className="text-[15px] text-gray-900 font-semibold mb-2">
             Sind Sie Bauunternehmer und möchten Preise vorab kennen?
@@ -207,6 +208,18 @@ export default async function UeberUnsPage() {
             Vorab-Zugang sichern →
           </a>
         </section>
+
+        {/* Tertiary supply-side CTA — below primary Bauunternehmer CTA with
+            visual separator (border-t). Small text-link only, NOT a button.
+            Reviewer #3: supply-side Vermieter have their own conversion path
+            via outbound — this page does not need to convert supply-side,
+            only provide the email for those who self-identify. */}
+        <p className="text-[12px] text-gray-400 border-t border-gray-100 pt-3 mt-1">
+          Sind Sie Kranvermieter? Listing kostenlos —{' '}
+          <a href="mailto:christoph@kranvergleich.de" className="text-blue-600 hover:underline">
+            christoph@kranvergleich.de
+          </a>.
+        </p>
 
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Kontakt</h2>
