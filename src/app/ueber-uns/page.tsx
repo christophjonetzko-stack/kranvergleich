@@ -50,12 +50,11 @@ export default async function UeberUnsPage() {
         <span className="text-gray-900">Über uns</span>
       </nav>
 
-      {/* Hook headline — Priestley P1 problem-statement opener (review #2).
-          Replaces previous CV-format headline ("Vier Jahre… 28 Jahre… Heute…")
-          per reviewer #2 critique. Problem → evidence → evidence → commitment
-          structure. NOT superlative-claim (UWG §5/§6 safe) — "die digital am
-          wenigsten erschlossene B2B-Branche" is industry observation from 28
-          years operator experience, not market-leadership claim about us. */}
+      {/* Hook headline — Priestley P1 problem-statement opener. 4 sentences,
+          decreasing length (claim → evidence → evidence → commitment). NOT
+          superlative-claim (UWG safe) — "die digital am wenigsten erschlossene
+          B2B-Branche" is industry observation from 28 years operator
+          experience, not market-leadership claim about us. */}
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 leading-tight mb-4">
         Die deutsche Kranvermietung ist die digital am wenigsten erschlossene
         B2B-Branche. 33 von 713 Vermietern haben keine E-Mail-Adresse. Preise
@@ -72,12 +71,49 @@ export default async function UeberUnsPage() {
       </p>
 
       <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
-        {/* Drei Beobachtungen — insights as proof of POV, moved UP from bottom-
-            of-page bonus to hook-validation position (review #2). Verb-led
-            bullets, no judgment adjectives ("undurchsichtig" / "fragmentiert"
-            / "langsam" forbidden per reviewer + skill rule). Numbers carry
-            the message; absence of adjectives keeps it sachlich (DACH B2B
-            norm). 33/713 mirrors LinkedIn Post #1 stat-tile exactly. */}
+        {/* Wer steht hinter — moved UP before "Drei Beobachtungen" per
+            reviewer #4 final synthesis (bio establishes credibility first,
+            then insights validate POV). Photo block deduplicated from
+            5 elements (photo + tagline + name + jobTitle + bio) to 3
+            (photo + tagline + combined name·credentials caption) + bio
+            below in right column. */}
+        <section id="christoph">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Wer steht hinter {BRAND_NAME}?</h2>
+          <div className="flex flex-col sm:flex-row gap-5 sm:gap-6">
+            <div className="flex flex-col gap-2 shrink-0 w-32 sm:w-44">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-gray-100">
+                <Image
+                  src="/team/christoph-jonetzko.jpg"
+                  alt="Christoph Jonetzko, Gründer von KranVergleich.de"
+                  fill
+                  sizes="(min-width: 640px) 176px, 128px"
+                  className="object-cover"
+                />
+              </div>
+              <p className="text-[12px] text-gray-600 italic leading-snug">
+                „Ich mache die deutsche Kranvermietung transparent."
+              </p>
+              <p className="text-[11px] text-gray-500 leading-snug">
+                Christoph Jonetzko · ex-Liebherr Ehingen · 28 Jahre Baumaschinen-Praxis
+              </p>
+            </div>
+            <div className="flex-1">
+              <p>
+                Was Bauunternehmer in der Praxis sehen, sehe ich von beiden Seiten.
+                Aus dem Werk: bei Liebherr lernt man, was hinter einem LTM 1230
+                steckt, wie ein 230-Tonner geplant, gebaut und übergeben wird.
+                Aus dem Handel: 28 Jahre eigenes Geschäft mit Ersatzteilen für
+                LKW und Baumaschinen zeigen, wo zwischen Anbieter und Bau-
+                unternehmer Reibung entsteht.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Drei Beobachtungen — insights AFTER bio establishes credibility
+            (reviewer #4 final flow: bio first as identity, then insights as
+            evidence of POV). Verb-led bullets, no judgment adjectives.
+            33/713 mirrors LinkedIn Post #1 stat-tile. */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
             Drei Beobachtungen aus 28 Jahren in der Branche
@@ -100,139 +136,60 @@ export default async function UeberUnsPage() {
           </ul>
         </section>
 
-        {/* Wer steht hinter — bio AS proof (after hook + insights). Photo gets
-            a visible caption ("Ich mache die deutsche Kranvermietung trans-
-            parent.") per reviewer #2 — repeats mission instead of credential
-            (those are already in pitch above + name block on the right).
-            Bio prose stripped of adjectives ("fragmentiert" / "undurchsichtig"
-            / "langsam") per reviewer + skill rule. "Reibung entsteht" replaces
-            adjective trio — verb-led, sachlich. */}
-        <section id="christoph">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Wer steht hinter {BRAND_NAME}?</h2>
-          <div className="flex flex-col sm:flex-row gap-5 sm:gap-6">
-            <div className="flex flex-col gap-2 shrink-0 w-32 sm:w-44">
-              <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-gray-100">
-                <Image
-                  src="/team/christoph-jonetzko.jpg"
-                  alt="Christoph Jonetzko, ex-Liebherr Ehingen, Gründer von KranVergleich.de"
-                  fill
-                  sizes="(min-width: 640px) 176px, 128px"
-                  className="object-cover"
-                />
-              </div>
-              <p className="text-[12px] text-gray-600 italic leading-snug">
-                „Ich mache die deutsche Kranvermietung transparent."
-              </p>
-            </div>
-            <div className="flex-1 space-y-3">
-              <div>
-                <p className="text-base font-semibold text-gray-900">Christoph Jonetzko</p>
-                <p className="text-[13px] text-gray-500">ex-Liebherr Ehingen · Branchenkenner aus 28 Jahren Praxis</p>
-              </div>
-              <p>
-                Was Bauunternehmer in der Praxis sehen, sehe ich von beiden Seiten.
-                Aus dem Werk: bei Liebherr lernt man, was hinter einem LTM 1230
-                steckt, wie ein 230-Tonner geplant, gebaut und übergeben wird.
-                Aus dem Handel: 28 Jahre eigenes Geschäft mit Ersatzteilen für
-                LKW und Baumaschinen zeigen, wo zwischen Anbieter und Bau-
-                unternehmer Reibung entsteht.
-              </p>
-            </div>
-          </div>
+        {/* Meine Datenbank — moved before "Wofür ich baue" per reviewer #4
+            flow (data context → mission). Stand inline in first sentence
+            (was separate sentence). 713 hardcoded (matches LinkedIn Post #1
+            and prose elsewhere on page). "Manuell geprüft" inline anchors
+            "geprüft" claim from the pitch one-liner. */}
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Meine Datenbank</h2>
+          <p>
+            Meine Datenbank umfasst 713 manuell geprüfte Kranvermieter in
+            Deutschland und Österreich (Stand: {DATA_LAST_VERIFIED_LABEL}).
+            Die Daten stammen aus öffentlich zugänglichen Quellen; ich pflege
+            sie manuell und aktualisiere sie regelmäßig. Sichtbar sind echte
+            Google-Bewertungen, Kontaktdaten und, wo der Vermieter sie
+            veröffentlicht, Preisinformationen.
+          </p>
         </section>
 
-        {/* Wofür ich baue — Aim (Kran-Preisindex 2026, Oversubscribed pre-
-            launch mechanic per Priestley) + Game (mission). Name "DACH"
-            prefix dropped from index title (memory feedback_dach_geographic_
-            precision — no CH firms in catalog), geographic scope explicit
-            via "in Deutschland und Österreich". Reviewer-suggested "die
-            erste systematische Übersicht" softened to "eine systematische"
-            (UWG §5/§6 — "erste" is Spitzenstellungswerbung trigger without
-            verifiable proof). "Erscheint Q3 2026" matches memory backlink
-            plan (Krankosten-Studie Czerwiec → ship Q3). */}
+        {/* Wofür ich baue — final content section. Page ends on CTA per
+            reviewer #4 (end on call-to-action, not on metadata/contact).
+            Game first ("Mein Ziel"), Aim second ("Aktuell entwickle ich").
+            "Die erste systematische" — claim approved 4x across reviewer
+            iterations and explicitly authorized by user text-paste. Pre-
+            launch claim requires WebSearch verification of competitive
+            landscape before Q3 2026 product launch (Phase 3 note); if
+            existing systematic Kranpreis-Index found, soften to "eine
+            systematische". */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Wofür ich baue</h2>
           <p>
-            Aktuell entwickle ich den Kran-Preisindex 2026: eine systematische
-            Übersicht von Tagessätzen über alle Tonnage-Klassen und Bundesländer
-            in Deutschland und Österreich. Erscheint Q3 2026.
-          </p>
-          <p className="mt-3">
             Mein Ziel: eine der digital am wenigsten erschlossenen B2B-Branchen
             so transparent machen, dass Bauunternehmer in wenigen Minuten den
             passenden Kran finden und Vermieter Anfragen erhalten, die zu ihrer
             Flotte passen.
           </p>
-        </section>
-
-        {/* Meine Datenbank — solo founder voice, NOT "Unsere Daten" (reviewer #2
-            "Wir" defensive when solo). Catalog count hardcoded to 713 (total
-            DE+AT, matches LinkedIn Post #1 "713 Kranverleihern aus 16 + 9
-            Bundesländern") — previously used getSiteStats().anbieterCount
-            which returns per-domain count (610 DE / 70 AT), causing prose
-            mismatch with hardcoded 713 elsewhere on the page (reviewer #3
-            HARD catch). "Manuell geprüft" inline anchors the "geprüft"
-            claim from the pitch one-liner. */}
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Meine Datenbank</h2>
-          <p>
-            Meine Datenbank umfasst 713 manuell geprüfte Kranvermieter in
-            Deutschland und Österreich. Die Daten stammen aus öffentlich
-            zugänglichen Quellen; ich pflege sie manuell und aktualisiere sie
-            regelmäßig. Sichtbar sind echte Google-Bewertungen, Kontaktdaten
-            und, wo der Vermieter sie veröffentlicht, Preisinformationen.
-            Stand: {DATA_LAST_VERIFIED_LABEL}.
+          <p className="mt-3">
+            Aktuell entwickle ich den Kran-Preisindex 2026 — die erste
+            systematische Übersicht von Tagessätzen über alle Tonnage-Klassen
+            und Bundesländer in Deutschland und Österreich. Erscheint Q3 2026.
           </p>
-        </section>
 
-        {/* Primary CTA — Oversubscribed waitlist mechanic (Priestley: launch
-            waitlist BEFORE product, +40% sales). Interim mailto link until
-            real waitlist endpoint built. Reviewer #3 catch: Bauunternehmer
-            (demand) MUST appear BEFORE Kranvermieter (supply) — demand is
-            monetization path, supply is outbound-driven. Previously Vermieter
-            link lived in Daten section ABOVE this primary CTA — visually
-            inverted hierarchy. Now Vermieter tertiary moved below this block
-            with separator. */}
-        <section className="border border-gray-200 bg-gray-50 rounded-md p-5 my-2 not-prose">
-          <p className="text-[15px] text-gray-900 font-semibold mb-2">
-            Sind Sie Bauunternehmer und möchten Preise vorab kennen?
-          </p>
-          <p className="text-[13px] text-gray-600 mb-3">
-            Tragen Sie sich für den Vorab-Zugang zum Kran-Preisindex 2026 ein.
-            Sie erhalten den Index direkt nach Erscheinen.
-          </p>
-          <a
-            href="mailto:christoph@kranvergleich.de?subject=Vorab-Zugang%20Kran-Preisindex%202026&body=Hallo%20Christoph%2C%0A%0Aich%20m%C3%B6chte%20mich%20f%C3%BCr%20den%20Vorab-Zugang%20zum%20Kran-Preisindex%202026%20eintragen.%0A%0AName%2FFirma%3A%20%0A%0AGr%C3%BC%C3%9Fe"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-[14px] font-semibold rounded hover:bg-blue-700 transition-colors"
-          >
-            Vorab-Zugang sichern →
-          </a>
-        </section>
-
-        {/* Tertiary supply-side CTA — below primary Bauunternehmer CTA with
-            visual separator (border-t). Small text-link only, NOT a button.
-            Reviewer #3: supply-side Vermieter have their own conversion path
-            via outbound — this page does not need to convert supply-side,
-            only provide the email for those who self-identify. */}
-        <p className="text-[12px] text-gray-400 border-t border-gray-100 pt-3 mt-1">
-          Sind Sie Kranvermieter? Listing kostenlos —{' '}
-          <a href="mailto:christoph@kranvergleich.de" className="text-blue-600 hover:underline">
-            christoph@kranvergleich.de
-          </a>.
-        </p>
-
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Kontakt</h2>
-          <p>
-            Anita Jonetzko<br />
-            Kapellenstraße 6/1<br />
-            89584 Ehingen<br />
-            E-Mail:{' '}
-            <a href="mailto:impressum@kranvergleich.de" className="text-blue-600 hover:underline">
-              impressum@kranvergleich.de
-            </a><br />
-            Telefon: +49 1522 3338503
-          </p>
+          {/* Primary CTA — Oversubscribed waitlist mechanic (Priestley: launch
+              waitlist BEFORE product, +40% sales). Interim mailto link until
+              real waitlist endpoint built (next-session task: minimal inline
+              form with email + DSGVO checkbox + Resend confirmation).
+              Reviewer #4 wants a real form here; mailto is acknowledged
+              friction until then. */}
+          <div className="mt-5">
+            <a
+              href="mailto:christoph@kranvergleich.de?subject=Vorab-Zugang%20Kran-Preisindex%202026&body=Hallo%20Christoph%2C%0A%0Aich%20m%C3%B6chte%20mich%20f%C3%BCr%20den%20Vorab-Zugang%20zum%20Kran-Preisindex%202026%20eintragen.%0A%0AName%2FFirma%3A%20%0A%0AGr%C3%BC%C3%9Fe"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-blue-600 text-white text-[15px] font-semibold rounded hover:bg-blue-700 transition-colors"
+            >
+              Vorab-Zugang zum Preisindex 2026 sichern →
+            </a>
+          </div>
         </section>
       </div>
 

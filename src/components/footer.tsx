@@ -73,6 +73,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <a
+                  href="mailto:christoph@kranvergleich.de?subject=Listing%20auf%20KranVergleich.de"
+                  className="text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Für Kranvermieter
+                </a>
+              </li>
+              <li>
                 <Link
                   href="/impressum"
                   className="text-[13px] text-gray-500 hover:text-gray-900 transition-colors"
