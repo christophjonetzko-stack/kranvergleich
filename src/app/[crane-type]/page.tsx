@@ -18,14 +18,11 @@ import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
 
-// Bump on every meaningful catalog refresh (firm count change, price audit,
-// content rewrite). Surfaces both as JSON-LD dateModified (Product + Service)
-// and as the visible "Daten zuletzt geprüft" stamp under the hero. Keeping
-// both sourced from one constant prevents the drift that triggered the GSC
-// freshness-signal mismatch (visible "April 2026" while catalog cleanup
-// landed 06.05 in mig 021).
+// ISO date = last manual catalog audit, fed into JSON-LD dateModified
+// (Product + Service). Bump only on real verification (firm count change,
+// price audit, content rewrite). Visible "Stand:" label below uses
+// build-time current month (lastUpdatedLabel) so the page never reads stale.
 const DATA_LAST_VERIFIED_ISO = '2026-05-06'
-const DATA_LAST_VERIFIED_LABEL = 'Mai 2026'
 
 export async function generateStaticParams() {
   const craneTypes = await getCraneTypes()
@@ -86,6 +83,7 @@ export default async function CraneTypePage({
 }) {
   const { 'crane-type': craneTypeSlug } = await params
   const { plz, project } = await searchParams
+  const lastUpdatedLabel = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
   const craneType = await getCraneTypeBySlug(craneTypeSlug)
   if (!craneType) notFound()
 
@@ -208,7 +206,7 @@ export default async function CraneTypePage({
         <Link href="/ueber-uns#christoph" className="text-gray-500 hover:text-gray-700 hover:underline">
           Christoph Jonetzko, ex-Liebherr Ehingen
         </Link>
-        {' '}· Stand: {DATA_LAST_VERIFIED_LABEL}
+        {' '}· Stand: {lastUpdatedLabel}
       </p>
 
       {/* Table of Contents — horizontal pills */}
