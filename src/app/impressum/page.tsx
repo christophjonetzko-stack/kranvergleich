@@ -3,7 +3,7 @@ import { COUNTRY, BRAND_NAME } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 import { OG_IMAGE } from '@/lib/og-image'
 
-// Country-aware statute references. Identity stays the same (Anita Jonetzko, Ehingen, DE)
+// Country-aware statute references. Identity stays the same (Christoph Jonetzko, Ehingen, DE)
 // per memory project_kranvergleich_at_priority_2026_04_23.md: cross-border ECG-AT
 // Impressum may point at the DE Sitz; no AT entity required. Only the cited statute
 // names change between deployments.
@@ -47,7 +47,7 @@ export default function ImpressumPage() {
         <section>
           <h2 className="text-xl font-semibold">Angaben gemäß {STATUTE.base}</h2>
           <p>
-            <strong>Anita Jonetzko</strong><br />
+            <strong>Christoph Jonetzko</strong><br />
             Kapellenstraße 6/1<br />
             89584 Ehingen<br />
             Deutschland
@@ -71,7 +71,7 @@ export default function ImpressumPage() {
         <section>
           <h2 className="text-xl font-semibold">Verantwortlich für den Inhalt nach {STATUTE.content_responsibility}</h2>
           <p>
-            Anita Jonetzko<br />
+            Christoph Jonetzko<br />
             Kapellenstraße 6/1<br />
             89584 Ehingen
           </p>
