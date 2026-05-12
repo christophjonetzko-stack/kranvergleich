@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
 import { Resend, type CreateEmailOptions } from 'resend'
-import { submitLead, getCompaniesForCraneTypeNearLocation, type FirmMatch } from '@/lib/queries'
+import { submitLead, getCompaniesForCraneTypeNearLocation, getSiteStats, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById } from '@/data/crane-types'
@@ -213,17 +213,20 @@ export async function POST(request: Request) {
     const typeContext = sanitizeSlug(body.type_context)
 
     // Defensive filter: drop firms BEFORE persisting the lead when they fail
-    // any of three gates — irrelevant/inactive (is_relevant=false or is_active=
-    // false, hidden from frontend lists and the catalog), or email-less (no
-    // Resend target). Frontend already hides each of these cases (queries.ts
-    // adds .eq('is_active', true).eq('is_relevant', true) to every list query;
-    // the auto-select path inherits the same filter). This catches stale
-    // client state, forged requests, and the case where a firm was hidden
-    // (is_relevant=false) AFTER a user already loaded the form, so their
-    // submission carries a now-stale ID. The klickrent reply on 2026-05-12
-    // surfaced this exact path for Kara's lead from 2026-04-23.
+    // any of four gates — irrelevant/inactive (is_relevant=false or is_active=
+    // false, hidden from frontend lists and the catalog), email-less (no
+    // Resend target), or test-flagged ("(TEST)" suffix in name). Frontend
+    // already hides each of these cases (queries.ts adds .eq('is_active',
+    // true).eq('is_relevant', true) to every list query; the auto-select
+    // path inherits the same filter). This catches stale client state,
+    // forged requests, and the case where a firm was hidden after a user
+    // already loaded the form, so their submission carries a now-stale ID.
+    // The klickrent reply on 2026-05-12 surfaced this exact path for Kara's
+    // lead from 2026-04-23.
+    const TEST_NAME_RE = /\(test\)/i
     let droppedNoEmail: { id: string; name: string }[] = []
     let droppedIrrelevant: { id: string; name: string; is_active: boolean; is_relevant: boolean }[] = []
+    let droppedTestFlagged: { id: string; name: string }[] = []
     if (companyIds.length > 0) {
       const sb = getServiceSupabase()
       const { data: lookup } = await sb
@@ -236,10 +239,14 @@ export async function POST(request: Request) {
           droppedIrrelevant.push({ id: c.id, name: c.name, is_active: c.is_active, is_relevant: c.is_relevant })
           continue
         }
+        if (TEST_NAME_RE.test(c.name)) {
+          droppedTestFlagged.push({ id: c.id, name: c.name })
+          continue
+        }
         if (c.email && c.email.trim() !== '???') validIds.add(c.id)
         else droppedNoEmail.push({ id: c.id, name: c.name })
       }
-      if (droppedNoEmail.length > 0 || droppedIrrelevant.length > 0) {
+      if (droppedNoEmail.length > 0 || droppedIrrelevant.length > 0 || droppedTestFlagged.length > 0) {
         companyIds = companyIds.filter((id) => validIds.has(id))
       }
     }
@@ -310,6 +317,33 @@ export async function POST(request: Request) {
       }
     }
     const safeMismatchHint = craneTypeMismatchHint ? escapeHtml(craneTypeMismatchHint) : null
+
+    // Dispatch shape for the receiving firm:
+    //   - Sammelanfrage: the lead went to >1 supplier in parallel; copy
+    //     surfaces the "wer zuerst reagiert, gewinnt" oversubscribed framing.
+    //   - Exclusive: single-firm dispatch; copy says "der Kunde hat Sie gewählt".
+    // The numeric `otherSuppliersCount` excludes the receiving firm itself,
+    // so a 7-firm Sammelanfrage shows "an 6 weitere Anbieter" to each.
+    const isSammelanfrage = companyIds.length > 1
+    const otherSuppliersCount = Math.max(0, companyIds.length - 1)
+
+    // Catalog size for the "Über KranVergleich.de" mini-pitch. Pulled live so
+    // the copy stays honest as the firm count grows (or shrinks after cleanup
+    // — mig 017-021 dropped 79 firms on 2026-05-06). Memory
+    // feedback_dach_geographic_precision: claim only what the catalog covers
+    // (currently DE + AT, zero CH; "DACH" overshoot is a credibility-killer).
+    const siteStats = await getSiteStats().catch(() => ({ anbieterCount: 0 }))
+    const anbieterCount = siteStats.anbieterCount
+
+    // Founder signature — env-driven so the name can be rotated without a
+    // code change once the team grows. Fallbacks keep the mail well-formed
+    // even when the Vercel env vars haven't been wired yet (Person schema
+    // on /ueber-uns already names Christoph Jonetzko as Gründer, so the
+    // default matches that public identity).
+    const founderName = process.env.KRANVERGLEICH_FOUNDER_NAME || 'Christoph Jonetzko'
+    const founderEmail = process.env.KRANVERGLEICH_FOUNDER_EMAIL || 'christoph@kranvergleich.de'
+    const safeFounderName = escapeHtml(founderName)
+    const safeFounderEmail = escapeHtml(founderEmail)
 
     // Fetch selected companies (same shape as before; companyIds is now
     // pre-filtered, so all rows have email — `companiesWithoutEmail` stays
@@ -387,11 +421,22 @@ export async function POST(request: Request) {
                 ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
                 ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
               </table>
+              ${isSammelanfrage
+                ? `<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;"><strong>Diese Anfrage wurde an ${otherSuppliersCount} weitere Anbieter in ${safeCity} gesendet.</strong> Wer zuerst reagiert, hinterlässt den besten Eindruck.</p>`
+                : `<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;"><strong>Diese Anfrage wurde exklusiv an Sie weitergeleitet.</strong> Der Kunde hat Ihr Profil ausgewählt.</p>`}
               ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
-              <p style="font-size:12px;color:#9ca3af;">
-                Vermittelt über <a href="${BASE_URL}" style="color:#2563eb;">${BRAND_NAME}</a> · echte Kundenanfrage, kein Newsletter.
+              <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;">
+                <strong style="color:#1a1a1a;">Über ${BRAND_NAME}</strong><br>
+                ${BRAND_NAME} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage prüfen wir manuell, bevor sie an Sie geht. Keine Bots, keine Massenmails. ${anbieterCount > 0 ? `Über ${anbieterCount} geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind bereits gelistet.` : `Geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind bereits gelistet.`}
+              </p>
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
+              <p style="font-size:14px;color:#374151;line-height:1.55;margin:0;">
+                Mit freundlichen Grüßen<br>
+                <strong>${safeFounderName}</strong><br>
+                Gründer, ${BRAND_NAME}<br>
+                <a href="mailto:${safeFounderEmail}" style="color:#2563eb;">${safeFounderEmail}</a>
               </p>
             </div>
           `
@@ -574,6 +619,28 @@ export async function POST(request: Request) {
             <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen, weil sie <code>is_active=false</code> oder <code>is_relevant=false</code> tragen. Beide Flags blenden Firmen aus dem Frontend-Katalog und den Auswahllisten aus — eine Lead-Submission mit diesen IDs deutet auf veralteten UI-Zustand oder eine geforgte Anfrage hin.</p>
             <ul>${droppedIrrelevant.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id}, is_active=${c.is_active}, is_relevant=${c.is_relevant})</li>`).join('')}</ul>
             <p>Hinweis: Wenn diese Mail häufiger kommt, prüfen ob die Form ihre Firmenliste cached oder ob ein Code-Pfad die Filter umgeht.</p>
+            <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
+            <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
+          `,
+      })
+    }
+
+    // Anomaly alert: a firm carrying "(TEST)" in its companies.name made it
+    // into a real lead dispatch. The frontend filters would normally hide
+    // anything flagged this way, so a submission means either a test row
+    // leaked into production (mass-import slip), a name was edited to
+    // include the marker but is_active / is_relevant weren't lowered, or
+    // a forged request. Surface so we can clean the row.
+    if (droppedTestFlagged.length > 0 && ownerEmail) {
+      await sendResendEmail('pre-filter dropped test-flagged firms', {
+        from: FROM_EMAIL,
+        to: ownerEmail,
+        subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedTestFlagged.length} test-markierte Firma(en) entfernt`,
+        html: `
+            <h3>Anomalie: Lead enthielt mit „(TEST)" markierte Firmen</h3>
+            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen, weil ihr Name den Marker „(TEST)" enthält. In Produktions-Mails sollen solche Einträge nie auftauchen.</p>
+            <ul>${droppedTestFlagged.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
+            <p>Hinweis: Entweder den Namen bereinigen oder is_active=false / is_relevant=false setzen, damit der Datensatz auch frontend-seitig verschwindet.</p>
             <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
             <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
           `,

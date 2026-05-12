@@ -49,7 +49,29 @@ LEAD = {
         "stehen.\n\nVielen Dank im Voraus."
     ),
 }
-COMPANY_NAME = "4K-Vierke Bau (TEST)"
+# No "(TEST)" suffix — production /api/leads now defensively skips any firm
+# whose companies.name matches /\(test\)/i, so a test send that included the
+# marker would never render through the production code path and the visual
+# comparison would diverge. Plain name keeps the test mail visually identical
+# to what a real recipient would see.
+COMPANY_NAME = "4K-Vierke Bau"
+
+# Dispatch shape for this test — Kara's lead went to 7 firms (Sammelanfrage).
+# isSammelanfrage drives the oversubscribed-framing copy under the table;
+# otherSuppliersCount = receiving firm sees how many OTHERS got the same lead.
+IS_SAMMELANFRAGE = True
+OTHER_SUPPLIERS_COUNT = 6
+
+# Catalog stat for the "Über KranVergleich.de" mini-pitch. Pulled live in
+# production (getSiteStats); hard-coded here to current value 2026-05-12 so
+# the visual test doesn't make a Supabase round-trip. Kept honest: catalog
+# is DE + AT only (zero CH), so the German copy says "Deutschland und
+# Österreich" — never "DACH" (memory feedback_dach_geographic_precision).
+ANBIETER_COUNT = 713
+
+# Founder signature defaults — mirror the env-driven path in production.
+FOUNDER_NAME = os.environ.get("KRANVERGLEICH_FOUNDER_NAME") or "Christoph Jonetzko"
+FOUNDER_EMAIL = os.environ.get("KRANVERGLEICH_FOUNDER_EMAIL") or "christoph@kranvergleich.de"
 
 CRANE_KEYWORDS = [
     ("Autokran", re.compile(r"\bautokran\b", re.IGNORECASE)),
@@ -121,6 +143,22 @@ def build_html(company_name: str, lead: dict) -> str:
             f"</p>"
         )
 
+    if IS_SAMMELANFRAGE:
+        urgency_html = (
+            f'<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;">'
+            f"<strong>Diese Anfrage wurde an {OTHER_SUPPLIERS_COUNT} weitere Anbieter "
+            f"in {esc(city)} gesendet.</strong> Wer zuerst reagiert, hinterlässt den besten "
+            f"Eindruck."
+            f"</p>"
+        )
+    else:
+        urgency_html = (
+            f'<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;">'
+            f"<strong>Diese Anfrage wurde exklusiv an Sie weitergeleitet.</strong> "
+            f"Der Kunde hat Ihr Profil ausgewählt."
+            f"</p>"
+        )
+
     return f"""
             <div style="font-family:system-ui;max-width:560px;">
               <h2 style="font-size:18px;color:#1a1a1a;">{headline}</h2>
@@ -134,11 +172,20 @@ def build_html(company_name: str, lead: dict) -> str:
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 {''.join(rows)}
               </table>
+              {urgency_html}
               {mismatch_html}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
-              <p style="font-size:12px;color:#9ca3af;">
-                Vermittelt über <a href="{BASE_URL}" style="color:#2563eb;">{BRAND_NAME}</a> · echte Kundenanfrage, kein Newsletter.
+              <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;">
+                <strong style="color:#1a1a1a;">Über {BRAND_NAME}</strong><br>
+                {BRAND_NAME} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage prüfen wir manuell, bevor sie an Sie geht. Keine Bots, keine Massenmails. Über {ANBIETER_COUNT} geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind bereits gelistet.
+              </p>
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
+              <p style="font-size:14px;color:#374151;line-height:1.55;margin:0;">
+                Mit freundlichen Grüßen<br>
+                <strong>{esc(FOUNDER_NAME)}</strong><br>
+                Gründer, {BRAND_NAME}<br>
+                <a href="mailto:{esc(FOUNDER_EMAIL)}" style="color:#2563eb;">{esc(FOUNDER_EMAIL)}</a>
               </p>
             </div>
     """
@@ -184,10 +231,13 @@ def main():
     print()
     print(f"-> Check {TO_EMAIL} inbox. Verify:")
     print(f"   - Subject leads with 'Neue Kundenanfrage Ladekran (Berlin, 2026-04-27)' BEFORE portal name")
-    print(f"   - H2 says 'Kundenanfrage: Ladekran · Berlin · 2026-04-27' (project-led, not portal-led)")
-    print(f"   - First paragraph: 'ein Kunde hat Sie auf KranVergleich.de ausgewählt' (customer-action first)")
-    print(f"   - Amber 'Hinweis' box visible BEFORE Projektbeschreibung: 'Kunde nennt Autokran, gewählt wurde Ladekran'")
-    print(f"   - Footer attribution: 'Vermittelt über KranVergleich.de · echte Kundenanfrage, kein Newsletter.'")
+    print(f"   - Greeting: 'Sehr geehrtes Team von 4K-Vierke Bau' — no '(TEST)' suffix")
+    print(f"   - H2: 'Kundenanfrage: Ladekran · Berlin · 2026-04-27' (project-led)")
+    print(f"   - Order: Projektbeschreibung → Tabelle → urgency line → (optional Hinweis) → closing")
+    print(f"   - Urgency line (Sammelanfrage): 'Diese Anfrage wurde an 6 weitere Anbieter in Berlin gesendet. Wer zuerst reagiert, hinterlässt den besten Eindruck.'")
+    print(f"   - Amber 'Hinweis' under urgency line: 'Kunde nennt Autokran, gewählt wurde Ladekran'")
+    print(f"   - Über-{BRAND_NAME} block: DE+AT only (no DACH/CH overshoot), '{ANBIETER_COUNT} geprüfte Kranfirmen'")
+    print(f"   - Signature: 'Mit freundlichen Grüßen / {FOUNDER_NAME} / Gründer, {BRAND_NAME} / {FOUNDER_EMAIL}'")
 
 
 if __name__ == "__main__":
