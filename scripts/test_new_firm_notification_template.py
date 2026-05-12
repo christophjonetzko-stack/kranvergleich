@@ -10,6 +10,9 @@ Once approved, /api/leads in route.ts already uses the same shape.
 """
 from __future__ import annotations
 
+import base64
+import hashlib
+import hmac
 import html
 import os
 import re
@@ -29,6 +32,13 @@ FROM_EMAIL = "Christoph Jonetzko · KranVergleich.de <christoph@send.kranverglei
 TO_EMAIL = "christoph.jonetzko@gmail.com"
 BRAND_NAME = "KranVergleich.de"
 BASE_URL = "https://kranvergleich.de"
+
+# Signal-back loop URLs. Test send needs real lead/supplier UUIDs because
+# the production route validates the (lead, supplier) pair against
+# lead_companies. Kara × 4K-Vierke is a known-good pair from wave 1.
+TEST_LEAD_ID = "1db7c1ff-03a2-47b2-8a1c-5da526cffa09"     # Kara
+TEST_SUPPLIER_ID = "38b2a6d3-f34a-49ab-bc91-78fcd2649388"  # 4K-Vierke Bau
+LEAD_RESPONSE_SECRET = os.environ.get("LEAD_RESPONSE_SECRET", "")
 
 # Kara's lead 2026-04-23 — exact data so the test mail looks like what
 # 4K-Vierke Bau would have received under the new template
@@ -86,6 +96,15 @@ CRANE_KEYWORDS = [
 ]
 
 
+def sign_lead_response(lead_id: str, supplier_id: str, action: str) -> str:
+    """Mirror of src/lib/lead-response-sig.ts: HMAC-SHA256, first 22 base64url chars."""
+    if not LEAD_RESPONSE_SECRET:
+        return "NO_SECRET_LOCAL"
+    payload = f"{lead_id}:{supplier_id}:{action}".encode("utf-8")
+    digest = hmac.new(LEAD_RESPONSE_SECRET.encode("utf-8"), payload, hashlib.sha256).digest()
+    return base64.urlsafe_b64encode(digest).rstrip(b"=").decode("ascii")[:22]
+
+
 def detect_mismatch(chosen: str, description: str) -> str | None:
     for name, regex in CRANE_KEYWORDS:
         if name == chosen:
@@ -99,7 +118,7 @@ def esc(s: str) -> str:
     return html.escape(s or "", quote=True)
 
 
-def build_html(company_name: str, lead: dict) -> str:
+def build_html(company_name: str, lead: dict, accept_url: str, decline_url: str) -> str:
     crane = lead["crane_type_name"]
     city = lead["city"]
     date = lead["preferred_date"]
@@ -182,6 +201,13 @@ def build_html(company_name: str, lead: dict) -> str:
               </p>
               {mismatch_html}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
+              <p style="margin:16px 0 8px 0;font-size:14px;color:#1a1a1a;">
+                <strong>Können Sie das Projekt übernehmen?</strong> Ein Klick reicht.
+              </p>
+              <div style="margin:0 0 16px 0;">
+                <a href="{accept_url}" style="display:inline-block;padding:10px 16px;background:#059669;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;margin-right:8px;margin-bottom:6px;">&#10003; Ja, ich erstelle ein Angebot</a>
+                <a href="{decline_url}" style="display:inline-block;padding:10px 16px;background:#6b7280;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;">&#10005; Nein, nicht passend</a>
+              </div>
               {urgency_html}
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;">
@@ -212,6 +238,11 @@ def date_short(iso_date: str | None) -> str | None:
 
 
 def main():
+    accept_sig = sign_lead_response(TEST_LEAD_ID, TEST_SUPPLIER_ID, "accept")
+    decline_sig = sign_lead_response(TEST_LEAD_ID, TEST_SUPPLIER_ID, "decline")
+    accept_url = f"{BASE_URL}/api/lead-response/{TEST_LEAD_ID}/{TEST_SUPPLIER_ID}?action=accept&sig={accept_sig}"
+    decline_url = f"{BASE_URL}/api/lead-response/{TEST_LEAD_ID}/{TEST_SUPPLIER_ID}?action=decline&sig={decline_sig}"
+
     short = date_short(LEAD["preferred_date"])
     parts = [LEAD["crane_type_name"] or "Kran"]
     if LEAD.get("city"):
@@ -233,7 +264,7 @@ def main():
         "to": [TO_EMAIL],
         "reply_to": LEAD["customer_email"],
         "subject": subject,
-        "html": build_html(COMPANY_NAME, LEAD),
+        "html": build_html(COMPANY_NAME, LEAD, accept_url, decline_url),
         "headers": {
             "X-KV-Lead-Id": "TEST-template-2026-05-12",
             "X-KV-Company-Id": "TEST-vierke-bau",
@@ -259,7 +290,9 @@ def main():
     print(f"   - H2: 'Kundenanfrage: Ladekran · Berlin · 2026-04-27'")
     print(f"   - Mietdauer row: '1 Tag' (singular), not '1 Tage'")
     print(f"   - Trust stamp row UNDER table: '✓ E-Mail-Adresse geprüft (Format + Domain-Check) · ✓ Telefonnummer geprüft (libphonenumber) · ✓ DSGVO-konforme Einwilligung dokumentiert'")
-    print(f"   - Order: Projektbeschreibung → Tabelle → trust-stamp row → Hinweis (if applicable) → CTA → urgency line → Über → signature")
+    print(f"   - Order: Projektbeschreibung → Tabelle → trust-stamp row → Hinweis (if applicable) → CTA text → signal-back buttons (✓ Ja / ✗ Nein) → urgency line → Über → signature")
+    print(f"   - Signal-back buttons: green '✓ Ja, ich erstelle ein Angebot' + grey '✗ Nein, nicht passend'. Each click goes to /api/lead-response/<lead>/<supplier>?... with HMAC sig.")
+    print(f"   - Sig present: {'YES' if LEAD_RESPONSE_SECRET else 'NO — LEAD_RESPONSE_SECRET missing in .env.local'}")
     print(f"   - Urgency line position: BELOW 'Bitte antworten Sie direkt...' CTA, ABOVE 'Über KranVergleich.de'")
     print(f"   - Über block: DE+AT only (no DACH/CH overshoot), '{ANBIETER_COUNT} geprüfte Kranfirmen'")
     print(f"   - Signature: 'Mit freundlichen Grüßen / {FOUNDER_NAME} / Gründer, {BRAND_NAME} / {FOUNDER_EMAIL}'")

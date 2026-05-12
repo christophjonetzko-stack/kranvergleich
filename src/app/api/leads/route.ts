@@ -4,6 +4,7 @@ import { promises as dns } from 'node:dns'
 import { Resend, type CreateEmailOptions } from 'resend'
 import { z } from 'zod'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
+import { signLeadResponse } from '@/lib/lead-response-sig'
 import { submitLead, getCompaniesForCraneTypeNearLocation, getSiteStats, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
@@ -476,7 +477,10 @@ export async function POST(request: Request) {
     const headlineDate = safeDate !== '–' ? safeDate : null
     const headlineBits = [safeCraneType || 'Kran', headlineCity, headlineDate].filter(Boolean)
     const headline = `Kundenanfrage: ${headlineBits.join(' · ')}`
-    const buildCompanyEmailHtml = (companyName: string) => `
+    const buildCompanyEmailHtml = (
+      companyName: string,
+      ctaUrls: { accept: string; decline: string },
+    ) => `
             <div style="font-family:system-ui;max-width:560px;">
               <h2 style="font-size:18px;color:#1a1a1a;">${headline}</h2>
               <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:0 0 6px 0;">
@@ -511,6 +515,19 @@ export async function POST(request: Request) {
               </p>
               ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
+              <!--
+                Signal-back loop CTAs (mig 026, 2026-05-12). HMAC-signed
+                per-(lead, supplier) so a firm can't react on another firm's
+                behalf even if they guess the URL shape. Clicks log to
+                lead_responses + roll up into lead_companies.feedback_*.
+              -->
+              <p style="margin:16px 0 8px 0;font-size:14px;color:#1a1a1a;">
+                <strong>Können Sie das Projekt übernehmen?</strong> Ein Klick reicht.
+              </p>
+              <div style="margin:0 0 16px 0;">
+                <a href="${ctaUrls.accept}" style="display:inline-block;padding:10px 16px;background:#059669;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;margin-right:8px;margin-bottom:6px;">&#10003; Ja, ich erstelle ein Angebot</a>
+                <a href="${ctaUrls.decline}" style="display:inline-block;padding:10px 16px;background:#6b7280;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;">&#10005; Nein, nicht passend</a>
+              </div>
               ${isSammelanfrage
                 ? `<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;"><strong>Diese Anfrage wurde an ${otherSuppliersCount} weitere Anbieter in ${safeCity} gesendet.</strong> Wer zuerst reagiert, hinterlässt den besten Eindruck.</p>`
                 : `<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;"><strong>Diese Anfrage wurde exklusiv an Sie weitergeleitet.</strong> Der Kunde hat Ihr Profil ausgewählt.</p>`}
@@ -543,12 +560,20 @@ export async function POST(request: Request) {
     const firmResults: { company_id: string; ok: boolean }[] = []
     if (!dryRun) {
       for (const company of companiesWithEmail) {
+        // Per-(lead, supplier) HMAC-signed accept / decline links for the
+        // signal-back loop (mig 026). Signing here so each firm gets its
+        // own unguessable URL; the route handler verifies sig and refuses
+        // forged links with a 403 + owner alert.
+        const acceptSig = signLeadResponse(lead.id, company.id, 'accept')
+        const declineSig = signLeadResponse(lead.id, company.id, 'decline')
+        const acceptUrl = `${BASE_URL}/api/lead-response/${lead.id}/${company.id}?action=accept&sig=${acceptSig}`
+        const declineUrl = `${BASE_URL}/api/lead-response/${lead.id}/${company.id}?action=decline&sig=${declineSig}`
         const result = await sendResendEmail(`company email (${company.name})`, {
           from: FROM_EMAIL,
           to: company.email!,
           replyTo: customerEmail,
           subject: firmSubject,
-          html: buildCompanyEmailHtml(company.name),
+          html: buildCompanyEmailHtml(company.name, { accept: acceptUrl, decline: declineUrl }),
         })
         firmResults.push({ company_id: company.id, ok: result.ok })
         await new Promise((r) => setTimeout(r, 200))
