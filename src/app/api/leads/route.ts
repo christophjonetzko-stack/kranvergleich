@@ -281,6 +281,36 @@ export async function POST(request: Request) {
     }
     const safeCraneType = craneTypeName ? escapeHtml(craneTypeName) : null
 
+    // Crane-type mismatch hint: if the customer's project_description mentions a
+    // crane type different from the one they picked in the form, surface it to
+    // the receiving firm so they don't read the table-vs-body contradiction
+    // as a marketing pitch (Kara's 2026-04-23 lead — DB shows Ladekran, project
+    // text says "Autokran" — was misread by 4K-Vierke Bau as a portal pitch,
+    // 2026-05-12 reply). Many of these pairs are colloquial synonyms in the
+    // 4-6t Mobilkran segment, but flagging them lets the firm make the call.
+    const CRANE_KEYWORDS: Array<[string, RegExp]> = [
+      ['Autokran', /\bautokran\b/i],
+      ['Mobilkran', /\bmobilkran\b/i],
+      ['Ladekran', /\bladekran\b/i],
+      ['Minikran', /\bminikran\b/i],
+      ['Baukran', /\bbaukran\b/i],
+      ['Turmdrehkran', /\bturm(drehkran|kran)\b/i],
+      ['Dachdeckerkran', /\bdachdecker(kran)?\b/i],
+      ['Raupenkran', /\braupenkran\b/i],
+      ['Anhängerkran', /\banh(ä|a)nger(kran)?\b/i],
+    ]
+    let craneTypeMismatchHint: string | null = null
+    if (craneTypeName && projectDescription) {
+      for (const [name, regex] of CRANE_KEYWORDS) {
+        if (name === craneTypeName) continue
+        if (regex.test(projectDescription)) {
+          craneTypeMismatchHint = name
+          break
+        }
+      }
+    }
+    const safeMismatchHint = craneTypeMismatchHint ? escapeHtml(craneTypeMismatchHint) : null
+
     // Fetch selected companies (same shape as before; companyIds is now
     // pre-filtered, so all rows have email — `companiesWithoutEmail` stays
     // for backwards compat with downstream branches but is always empty).
@@ -326,14 +356,26 @@ export async function POST(request: Request) {
 
     // Per-company email template. Defined before sending so the same HTML is
     // reused by every firm email and (if needed) a retry script.
+    //
+    // Framing rewritten 2026-05-12: previously opened with "Neue Anfrage über
+    // KranVergleich.de" + "ein potenzieller Kunde hat über KranVergleich.de
+    // eine Anfrage an Sie gesendet". 4K-Vierke Bau read that as a portal
+    // outbound pitch and ignored Kara's real lead from 2026-04-23. New framing
+    // leads with the customer's intent (crane type + city + date in the h2),
+    // puts the firm's action — "Sie wurden ausgewählt" — first, and demotes
+    // the portal name to attribution.
+    const headlineCity = safeCity !== '–' ? safeCity : null
+    const headlineDate = safeDate !== '–' ? safeDate : null
+    const headlineBits = [safeCraneType || 'Kran', headlineCity, headlineDate].filter(Boolean)
+    const headline = `Kundenanfrage: ${headlineBits.join(' · ')}`
     const buildCompanyEmailHtml = (companyName: string) => `
             <div style="font-family:system-ui;max-width:560px;">
-              <h2 style="font-size:18px;color:#1a1a1a;">Neue Anfrage über ${BRAND_NAME}</h2>
+              <h2 style="font-size:18px;color:#1a1a1a;">${headline}</h2>
               <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:0 0 6px 0;">
                 Sehr geehrtes Team von <strong>${escapeHtml(companyName)}</strong>,
               </p>
               <p style="color:#4b5563;font-size:14px;line-height:1.6;">
-                ein potenzieller Kunde hat über ${BRAND_NAME} eine Anfrage an Sie gesendet.
+                ein Kunde hat Sie auf ${BRAND_NAME} ausgewählt und sucht ein Angebot für sein Projekt:
               </p>
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 ${safeCraneType ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
@@ -344,11 +386,12 @@ export async function POST(request: Request) {
                 ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
                 ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
               </table>
+              ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
               ${safeDesc ? `<p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>${safeDesc}</p>` : ''}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:12px;color:#9ca3af;">
-                Diese Anfrage wurde über <a href="${BASE_URL}" style="color:#2563eb;">${BRAND_NAME}</a> vermittelt.
+                Vermittelt über <a href="${BASE_URL}" style="color:#2563eb;">${BRAND_NAME}</a> · echte Kundenanfrage, kein Newsletter.
               </p>
             </div>
           `
@@ -371,7 +414,7 @@ export async function POST(request: Request) {
           from: FROM_EMAIL,
           to: company.email!,
           replyTo: customerEmail,
-          subject: `${BRAND_NAME} - Neue Kranvermietungs-Anfrage von ${safeName} — ${safeCity}`,
+          subject: `Neue Kundenanfrage ${craneTypeName || 'Kran'}${city ? ` (${city}${preferredDate ? `, ${preferredDate}` : ''})` : ''} — über ${BRAND_NAME}`,
           html: buildCompanyEmailHtml(company.name),
         })
         firmResults.push({ company_id: company.id, ok: result.ok })
