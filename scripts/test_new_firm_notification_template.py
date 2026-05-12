@@ -173,6 +173,13 @@ def build_html(company_name: str, lead: dict) -> str:
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 {''.join(rows)}
               </table>
+              <p style="margin:8px 0 16px 0;padding:8px 0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;font-size:12px;color:#4b5563;line-height:1.5;">
+                <span style="color:#059669;">&#10003;</span> E-Mail-Adresse geprüft (Format + Domain-Check)
+                &nbsp;&middot;&nbsp;
+                <span style="color:#059669;">&#10003;</span> Telefonnummer geprüft (libphonenumber)
+                &nbsp;&middot;&nbsp;
+                <span style="color:#059669;">&#10003;</span> DSGVO-konforme Einwilligung dokumentiert
+              </p>
               {mismatch_html}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               {urgency_html}
@@ -251,7 +258,8 @@ def main():
     print(f"   - Greeting: 'Sehr geehrtes Team von 4K-Vierke Bau' — no '(TEST)' suffix")
     print(f"   - H2: 'Kundenanfrage: Ladekran · Berlin · 2026-04-27'")
     print(f"   - Mietdauer row: '1 Tag' (singular), not '1 Tage'")
-    print(f"   - Order: Projektbeschreibung → Tabelle → Hinweis (if applicable) → CTA → urgency line → Über → signature")
+    print(f"   - Trust stamp row UNDER table: '✓ E-Mail-Adresse geprüft (Format + Domain-Check) · ✓ Telefonnummer geprüft (libphonenumber) · ✓ DSGVO-konforme Einwilligung dokumentiert'")
+    print(f"   - Order: Projektbeschreibung → Tabelle → trust-stamp row → Hinweis (if applicable) → CTA → urgency line → Über → signature")
     print(f"   - Urgency line position: BELOW 'Bitte antworten Sie direkt...' CTA, ABOVE 'Über KranVergleich.de'")
     print(f"   - Über block: DE+AT only (no DACH/CH overshoot), '{ANBIETER_COUNT} geprüfte Kranfirmen'")
     print(f"   - Signature: 'Mit freundlichen Grüßen / {FOUNDER_NAME} / Gründer, {BRAND_NAME} / {FOUNDER_EMAIL}'")

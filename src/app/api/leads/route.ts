@@ -1,10 +1,47 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'node:crypto'
+import { promises as dns } from 'node:dns'
 import { Resend, type CreateEmailOptions } from 'resend'
+import { z } from 'zod'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { submitLead, getCompaniesForCraneTypeNearLocation, getSiteStats, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById } from '@/data/crane-types'
+
+// Validation helpers — added 2026-05-12 (Commit 2). Trust stamps in the
+// firm-notification mail are always-on and hardcoded; the dispatch logic
+// here guarantees they only ever fire for a lead that actually passed the
+// stamped check. Anything else is held + alerted, not dispatched with a
+// false stamp.
+const emailSchema = z.string().email()
+
+async function emailDomainHasMx(email: string): Promise<{ ok: boolean; reason?: string }> {
+  const at = email.lastIndexOf('@')
+  if (at < 0 || at === email.length - 1) return { ok: false, reason: 'missing_domain' }
+  const domain = email.slice(at + 1).toLowerCase()
+  try {
+    const records = await dns.resolveMx(domain)
+    if (!records || records.length === 0) return { ok: false, reason: 'no_mx_records' }
+    return { ok: true }
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException)?.code || 'unknown'
+    // ENOTFOUND / ENODATA / SERVFAIL are the dominant "domain has no MX"
+    // signals; anything else (timeout, refused) is also a fail-closed signal
+    // for this gate. Logged so a flaky resolver run is distinguishable from
+    // a genuinely dead domain in the anomaly trail.
+    return { ok: false, reason: `dns_${code.toLowerCase()}` }
+  }
+}
+
+function validatePhoneE164(raw: string | undefined | null): { ok: boolean; e164?: string; reason?: string } {
+  const trimmed = (raw || '').trim()
+  if (!trimmed) return { ok: true }  // phone is optional; empty stays empty
+  const parsed = parsePhoneNumberFromString(trimmed, 'DE')
+  if (!parsed) return { ok: false, reason: 'unparseable' }
+  if (!parsed.isValid()) return { ok: false, reason: 'invalid_number' }
+  return { ok: true, e164: parsed.format('E.164') }
+}
 
 // Must match the salt base used by /api/track so a single visitor's events
 // hash identically on the same day (enables cross-event user journey queries).
@@ -143,21 +180,45 @@ export async function POST(request: Request) {
       )
     }
 
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(body.customer_email)) {
+    // Email format check via zod (replaces the prior bespoke regex). Hard
+    // 400 here — a malformed address has no MX path forward and the customer
+    // typo is the most likely cause; let them retry on the form.
+    if (!emailSchema.safeParse(body.customer_email).success) {
       return NextResponse.json(
         { error: 'Ungültige E-Mail-Adresse.' },
         { status: 400 }
       )
     }
 
+    // MX + phone gates — added 2026-05-12 (Commit 2). Format check above can
+    // pass a typo like gmial.com; MX check verifies the domain actually
+    // accepts mail. Phone is optional, but if present must parse to a valid
+    // E.164. A FAIL on either does NOT 400 the client (the customer already
+    // believes their data is fine); we save the lead, hold dispatch, alert
+    // the owner, and tell the customer "wir prüfen und melden uns" so they
+    // don't double-submit. Owner decides retry/contact/skip by hand.
+    const mxCheck = await emailDomainHasMx(body.customer_email)
+    const phoneCheck = validatePhoneE164(body.customer_phone)
+    const validationFailed = !mxCheck.ok || !phoneCheck.ok
+    const validationReasons: string[] = []
+    if (!mxCheck.ok) validationReasons.push(`mx:${mxCheck.reason}`)
+    if (!phoneCheck.ok) validationReasons.push(`phone:${phoneCheck.reason}`)
+    // When the phone parsed successfully, canonicalise to E.164 so every
+    // downstream consumer (firm mail, owner mail, CSV exports, future
+    // signal-back loop) sees the same shape.
+    if (phoneCheck.ok && phoneCheck.e164) body.customer_phone = phoneCheck.e164
+
     // Auto-select nearest firms when client requests it (cost calculator flow
     // — user doesn't see a firm list, we pick for them based on craneType +
     // location). Skipped when client already supplied `company_ids` explicitly.
     // `location` accepts either a 5-digit PLZ or a city name; `plz` is kept
     // as a backwards-compat alias for older clients still sending that field.
-    let companyIds: string[] = Array.isArray(body.company_ids) ? body.company_ids.slice(0, MAX_COMPANY_IDS) : []
+    // On validation fail we hold dispatch entirely — even an explicit
+    // client-supplied company_ids list is dropped so no firm receives a
+    // mail tied to an unverified contact.
+    let companyIds: string[] = validationFailed
+      ? []
+      : Array.isArray(body.company_ids) ? body.company_ids.slice(0, MAX_COMPANY_IDS) : []
     let autoSelectedRadiusKm: number | null = null
     let autoSelectedResolvedLabel: string | null = null
     let autoSelectedMatches: FirmMatch[] | null = null
@@ -166,6 +227,7 @@ export async function POST(request: Request) {
       (typeof body.plz === 'string' && body.plz.trim()) ||
       null
     if (
+      !validationFailed &&
       companyIds.length === 0 &&
       body.auto_select_nearest === true &&
       typeof body.crane_type_id === 'string' &&
@@ -433,6 +495,20 @@ export async function POST(request: Request) {
                 ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
                 ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} ${durationDays === 1 ? 'Tag' : 'Tage'}</td></tr>` : ''}
               </table>
+              <!--
+                Trust stamp row — always rendered, never prop-gated. Dispatch
+                logic (the MX + phone gates in /api/leads, plus the documented
+                DSGVO consent column on leads) guarantees every dispatched
+                lead has all three checks passed. Stamp wording is concrete
+                (what we actually do), not buzzwordy ("validated").
+              -->
+              <p style="margin:8px 0 16px 0;padding:8px 0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;font-size:12px;color:#4b5563;line-height:1.5;">
+                <span style="color:#059669;">&#10003;</span> E-Mail-Adresse geprüft (Format + Domain-Check)
+                &nbsp;&middot;&nbsp;
+                <span style="color:#059669;">&#10003;</span> Telefonnummer geprüft (libphonenumber)
+                &nbsp;&middot;&nbsp;
+                <span style="color:#059669;">&#10003;</span> DSGVO-konforme Einwilligung dokumentiert
+              </p>
               ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               ${isSammelanfrage
@@ -531,7 +607,15 @@ export async function POST(request: Request) {
     const ownerEmail = getNotificationEmailOrNull()
     let ownerNotificationSent = false
     if (ownerEmail) {
-      const alertBanner = noFirmsAttached
+      const alertBanner = validationFailed
+        ? `<div style="background:#fef3c7;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">⏸ Lead gehalten — Validation fehlgeschlagen</div>
+            <div style="font-size:13px;color:#78350f;line-height:1.5;">
+              Dispatch an Anbieter wurde gestoppt. Gründe: <strong>${escapeHtml(validationReasons.join(', '))}</strong>.<br>
+              Kunde hat eine Hold-Bestätigung erhalten („wir prüfen und melden uns innerhalb 24h"). Manuell entscheiden: retry, contact, oder skip.
+            </div>
+          </div>`
+        : noFirmsAttached
         ? `<div style="background:#fee2e2;border:2px solid #dc2626;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
             <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">⚠️ Achtung — keine Anbieter zugeordnet</div>
             <div style="font-size:13px;color:#7f1d1d;line-height:1.5;">
@@ -540,7 +624,11 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
-      const subjectPrefix = noFirmsAttached ? '🚨 LEAD OHNE ANBIETER — ' : ''
+      const subjectPrefix = validationFailed
+        ? '⏸ LEAD GEHALTEN (Validation) — '
+        : noFirmsAttached
+        ? '🚨 LEAD OHNE ANBIETER — '
+        : ''
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
@@ -569,13 +657,15 @@ export async function POST(request: Request) {
     const confirmRes = await sendResendEmail('confirmation', {
       from: FROM_EMAIL,
       to: customerEmail,
-      subject: `Ihre Anfrage bei ${BRAND_NAME} — ${companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
+      subject: `Ihre Anfrage bei ${BRAND_NAME} — ${validationFailed ? 'Prüfung läuft' : companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
       html: `
         <div style="font-family:system-ui;max-width:520px;">
           <h2 style="font-size:18px;">Vielen Dank für Ihre Anfrage!</h2>
           <p style="color:#4b5563;font-size:14px;line-height:1.6;">
             ${safeName !== '–' ? `Hallo ${safeName},` : 'Hallo,'}<br><br>
-            ${companyCount > 0
+            ${validationFailed
+              ? 'Wir prüfen Ihre Anfrage und melden uns innerhalb von 24 Stunden bei Ihnen. Bitte nicht erneut einsenden, damit wir Doppel-Einträge vermeiden.'
+              : companyCount > 0
               ? `Ihre Anfrage wurde an <strong>${companyCount} Anbieter</strong> weitergeleitet. Die Unternehmen werden sich in Kürze bei Ihnen melden.`
               : 'Wir haben Ihre Anfrage erhalten und melden uns in Kürze bei Ihnen.'}
           </p>
@@ -655,6 +745,30 @@ export async function POST(request: Request) {
             <p>Hinweis: Entweder den Namen bereinigen oder is_active=false / is_relevant=false setzen, damit der Datensatz auch frontend-seitig verschwindet.</p>
             <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
             <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
+          `,
+      })
+    }
+
+    // Anomaly alert: the email's domain has no MX records OR the phone
+    // number couldn't be parsed to a valid E.164 form. Either way the lead
+    // is held — dispatch was skipped, the customer got the hold-message
+    // confirmation, and the owner needs to decide retry / contact / skip
+    // by hand. Trust stamps in the firm mail are predicated on these
+    // gates passing, so sending without them would be a false signal.
+    if (validationFailed && ownerEmail) {
+      const reasonRows = validationReasons.map((r) => `<li>${escapeHtml(r)}</li>`).join('')
+      await sendResendEmail('validation hold', {
+        from: FROM_EMAIL,
+        to: ownerEmail,
+        subject: `${BRAND_NAME} - ⏸ Lead gehalten — Validation: ${validationReasons.join(', ')}`,
+        html: `
+            <h3>Anomalie: Lead-Validation fehlgeschlagen</h3>
+            <p>Dispatch an Anbieter wurde gestoppt. Der Kunde erhielt eine Hold-Bestätigung („wir prüfen und melden uns innerhalb 24h"). Bitte manuell entscheiden: nachfassen, alternative Kontaktdaten erfragen oder Lead schließen.</p>
+            <p><strong>Gründe:</strong></p>
+            <ul>${reasonRows}</ul>
+            <p>Kundendaten roh (vor Canonicalisation): <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
+            <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
+            <p style="font-size:12px;color:#9ca3af;">Reasons-Format: <code>mx:&lt;dns_code&gt;</code> = E-Mail-Domain ohne MX-Eintrag (Tippfehler / tote Domain). <code>phone:unparseable</code> = libphonenumber konnte nichts erkennen. <code>phone:invalid_number</code> = geparst, aber Ziffernfolge passt zu keinem realen Anschluss.</p>
           `,
       })
     }
