@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env.local")
 RESEND_KEY = os.environ["RESEND_API_KEY"]
 
-FROM_EMAIL = "Christoph Jonetzko <christoph@send.kranvergleich.de>"
+FROM_EMAIL = "Christoph Jonetzko · KranVergleich.de <christoph@send.kranvergleich.de>"
 TO_EMAIL = "christoph.jonetzko@gmail.com"
 BRAND_NAME = "KranVergleich.de"
 BASE_URL = "https://kranvergleich.de"
@@ -129,7 +129,8 @@ def build_html(company_name: str, lead: dict) -> str:
     if date:
         rows.append(f'<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>{esc(date)}</td></tr>')
     if duration:
-        rows.append(f'<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>{duration} Tage</td></tr>')
+        unit = "Tag" if duration == 1 else "Tage"
+        rows.append(f'<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>{duration} {unit}</td></tr>')
 
     mismatch_html = ""
     if mismatch and crane:
@@ -172,9 +173,9 @@ def build_html(company_name: str, lead: dict) -> str:
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 {''.join(rows)}
               </table>
-              {urgency_html}
               {mismatch_html}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
+              {urgency_html}
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;">
                 <strong style="color:#1a1a1a;">Über {BRAND_NAME}</strong><br>
@@ -191,11 +192,26 @@ def build_html(company_name: str, lead: dict) -> str:
     """
 
 
+def date_short(iso_date: str | None) -> str | None:
+    if not iso_date:
+        return None
+    try:
+        from datetime import date
+        y, m, d = map(int, iso_date.split("-"))
+        date(y, m, d)  # validate
+        return f"{d:02d}.{m:02d}."
+    except (ValueError, TypeError):
+        return None
+
+
 def main():
-    subject = (
-        f"Neue Kundenanfrage {LEAD['crane_type_name']} "
-        f"({LEAD['city']}, {LEAD['preferred_date']}) — über {BRAND_NAME}"
-    )
+    short = date_short(LEAD["preferred_date"])
+    parts = [LEAD["crane_type_name"] or "Kran"]
+    if LEAD.get("city"):
+        parts.append(LEAD["city"])
+    if short:
+        parts.append(short)
+    subject = "Neue Anfrage: " + " · ".join(parts)
     mismatch = detect_mismatch(LEAD["crane_type_name"], LEAD["project_description"])
 
     print("=== Test mail config ===")
@@ -230,13 +246,14 @@ def main():
     print(f"OK    Resend id: {r.json().get('id')}")
     print()
     print(f"-> Check {TO_EMAIL} inbox. Verify:")
-    print(f"   - Subject leads with 'Neue Kundenanfrage Ladekran (Berlin, 2026-04-27)' BEFORE portal name")
+    print(f"   - Sender display: 'Christoph Jonetzko · KranVergleich.de'")
+    print(f"   - Subject: 'Neue Anfrage: Ladekran · Berlin · 27.04.' (short, project-led, no portal-name)")
     print(f"   - Greeting: 'Sehr geehrtes Team von 4K-Vierke Bau' — no '(TEST)' suffix")
-    print(f"   - H2: 'Kundenanfrage: Ladekran · Berlin · 2026-04-27' (project-led)")
-    print(f"   - Order: Projektbeschreibung → Tabelle → urgency line → (optional Hinweis) → closing")
-    print(f"   - Urgency line (Sammelanfrage): 'Diese Anfrage wurde an 6 weitere Anbieter in Berlin gesendet. Wer zuerst reagiert, hinterlässt den besten Eindruck.'")
-    print(f"   - Amber 'Hinweis' under urgency line: 'Kunde nennt Autokran, gewählt wurde Ladekran'")
-    print(f"   - Über-{BRAND_NAME} block: DE+AT only (no DACH/CH overshoot), '{ANBIETER_COUNT} geprüfte Kranfirmen'")
+    print(f"   - H2: 'Kundenanfrage: Ladekran · Berlin · 2026-04-27'")
+    print(f"   - Mietdauer row: '1 Tag' (singular), not '1 Tage'")
+    print(f"   - Order: Projektbeschreibung → Tabelle → Hinweis (if applicable) → CTA → urgency line → Über → signature")
+    print(f"   - Urgency line position: BELOW 'Bitte antworten Sie direkt...' CTA, ABOVE 'Über KranVergleich.de'")
+    print(f"   - Über block: DE+AT only (no DACH/CH overshoot), '{ANBIETER_COUNT} geprüfte Kranfirmen'")
     print(f"   - Signature: 'Mit freundlichen Grüßen / {FOUNDER_NAME} / Gründer, {BRAND_NAME} / {FOUNDER_EMAIL}'")
 
 

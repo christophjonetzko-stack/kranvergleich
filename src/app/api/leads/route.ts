@@ -79,12 +79,12 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
 }
 
 // Both countries send from send.kranvergleich.de — Resend Free plan caps at 1 verified
-// domain. Display name carries the country brand ("KranVergleich Österreich") so the
-// AT recipient still sees a localized sender. Switch the AT branch to send.kranvergleich.at
-// once we upgrade to Pro and add the AT subdomain.
-const FROM_EMAIL = COUNTRY === 'AT'
-  ? 'KranVergleich Österreich <noreply@send.kranvergleich.de>'
-  : 'KranVergleich <noreply@send.kranvergleich.de>'
+// domain. Display name puts the founder first (per Priestley/personal-brand framing,
+// 2026-05-12), then the per-country brand pulled from BRAND_NAME so AT recipients
+// still see a localized "KranVergleich.at" attribution. The sender mailbox stays on
+// the verified send.kranvergleich.de subdomain (proven on wave 1 follow-up, 23/23
+// delivered). Switch the AT mailbox to send.kranvergleich.at once Pro plan is live.
+const FROM_EMAIL = `Christoph Jonetzko · ${BRAND_NAME} <christoph@send.kranvergleich.de>`
 
 // --- Rate limiting: max 5 requests per minute per IP ---
 const RATE_LIMIT_WINDOW_MS = 60_000
@@ -318,6 +318,18 @@ export async function POST(request: Request) {
     }
     const safeMismatchHint = craneTypeMismatchHint ? escapeHtml(craneTypeMismatchHint) : null
 
+    // Compact "27.04." date for the subject line. date-fns isn't in the stack
+    // (verified 2026-05-12) so we format manually. Falls back to null when
+    // preferredDate is empty or unparseable; subject builder filters nulls.
+    const dateShort = (() => {
+      if (!preferredDate) return null
+      const d = new Date(preferredDate)
+      if (Number.isNaN(d.getTime())) return null
+      return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.`
+    })()
+    const subjectParts = [craneTypeName || 'Kran', city || null, dateShort].filter((p): p is string => Boolean(p))
+    const firmSubject = `Neue Anfrage: ${subjectParts.join(' · ')}`
+
     // Dispatch shape for the receiving firm:
     //   - Sammelanfrage: the lead went to >1 supplier in parallel; copy
     //     surfaces the "wer zuerst reagiert, gewinnt" oversubscribed framing.
@@ -419,13 +431,13 @@ export async function POST(request: Request) {
                 ${safePhone !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Telefon</td><td>${safePhone}</td></tr>` : ''}
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Stadt</td><td>${safeCity}</td></tr>
                 ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
-                ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
+                ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} ${durationDays === 1 ? 'Tag' : 'Tage'}</td></tr>` : ''}
               </table>
+              ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
+              <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               ${isSammelanfrage
                 ? `<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;"><strong>Diese Anfrage wurde an ${otherSuppliersCount} weitere Anbieter in ${safeCity} gesendet.</strong> Wer zuerst reagiert, hinterlässt den besten Eindruck.</p>`
                 : `<p style="margin:12px 0;font-size:14px;color:#374151;line-height:1.55;"><strong>Diese Anfrage wurde exklusiv an Sie weitergeleitet.</strong> Der Kunde hat Ihr Profil ausgewählt.</p>`}
-              ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
-              <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;">
                 <strong style="color:#1a1a1a;">Über ${BRAND_NAME}</strong><br>
@@ -459,7 +471,7 @@ export async function POST(request: Request) {
           from: FROM_EMAIL,
           to: company.email!,
           replyTo: customerEmail,
-          subject: `Neue Kundenanfrage ${craneTypeName || 'Kran'}${city ? ` (${city}${preferredDate ? `, ${preferredDate}` : ''})` : ''} — über ${BRAND_NAME}`,
+          subject: firmSubject,
           html: buildCompanyEmailHtml(company.name),
         })
         firmResults.push({ company_id: company.id, ok: result.ok })
