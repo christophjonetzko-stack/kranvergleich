@@ -212,25 +212,34 @@ export async function POST(request: Request) {
     const cityContext = sanitizeSlug(body.city_context)
     const typeContext = sanitizeSlug(body.type_context)
 
-    // Defensive filter: drop firms whose email is null/sentinel BEFORE persisting
-    // the lead. Frontend already hides the "Auswählen" CTA for these (CompanyCard
-    // canInquire, anbieter profile gate) and the auto-select query filters them
-    // too — this catches stale client state, forged requests, and any new code
-    // path that forgets the rule. Firms still appear in catalog/SEO; until they
-    // get an email (Faza 2 cold-letter QR), they're inert from the lead pipeline.
+    // Defensive filter: drop firms BEFORE persisting the lead when they fail
+    // any of three gates — irrelevant/inactive (is_relevant=false or is_active=
+    // false, hidden from frontend lists and the catalog), or email-less (no
+    // Resend target). Frontend already hides each of these cases (queries.ts
+    // adds .eq('is_active', true).eq('is_relevant', true) to every list query;
+    // the auto-select path inherits the same filter). This catches stale
+    // client state, forged requests, and the case where a firm was hidden
+    // (is_relevant=false) AFTER a user already loaded the form, so their
+    // submission carries a now-stale ID. The klickrent reply on 2026-05-12
+    // surfaced this exact path for Kara's lead from 2026-04-23.
     let droppedNoEmail: { id: string; name: string }[] = []
+    let droppedIrrelevant: { id: string; name: string; is_active: boolean; is_relevant: boolean }[] = []
     if (companyIds.length > 0) {
       const sb = getServiceSupabase()
       const { data: lookup } = await sb
         .from('companies')
-        .select('id, name, email')
+        .select('id, name, email, is_active, is_relevant')
         .in('id', companyIds)
       const validIds = new Set<string>()
       for (const c of lookup ?? []) {
+        if (!c.is_active || !c.is_relevant) {
+          droppedIrrelevant.push({ id: c.id, name: c.name, is_active: c.is_active, is_relevant: c.is_relevant })
+          continue
+        }
         if (c.email && c.email.trim() !== '???') validIds.add(c.id)
         else droppedNoEmail.push({ id: c.id, name: c.name })
       }
-      if (droppedNoEmail.length > 0) {
+      if (droppedNoEmail.length > 0 || droppedIrrelevant.length > 0) {
         companyIds = companyIds.filter((id) => validIds.has(id))
       }
     }
@@ -500,6 +509,28 @@ export async function POST(request: Request) {
             <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen (kein Resend-Ziel). Sie bleiben im Katalog/SEO sichtbar, der Endkunde sieht sie nicht in der Auswahl. Kein manuelles Weiterleiten nötig — Aktivierung läuft über die Faza-2-Briefkampagne.</p>
             <ul>${droppedNoEmail.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
             <p>Hinweis: Frontend-Gates (CompanyCard CTA + Profil-Form) sollten diese IDs gar nicht erst weiterreichen. Wenn diese Mail häufiger kommt, prüfen ob Cache/Stale-State oder ein Regress in der Filter-Logik vorliegt.</p>
+            <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
+            <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
+          `,
+      })
+    }
+
+    // Anomaly alert: a request reached /api/leads with company_ids pointing at
+    // firms that are flagged is_active=false (deactivated) or is_relevant=false
+    // (hidden from frontend, e.g. competitor portal misclassified at import).
+    // Frontend list queries filter both flags, so a submission with these IDs
+    // means stale UI state (form loaded before the flag flip) or a forged
+    // request. Surface so we can patch the gate that leaked the ID through.
+    if (droppedIrrelevant.length > 0 && ownerEmail) {
+      await sendResendEmail('pre-filter dropped irrelevant firms', {
+        from: FROM_EMAIL,
+        to: ownerEmail,
+        subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedIrrelevant.length} inaktive/irrelevante Firma(en) entfernt`,
+        html: `
+            <h3>Anomalie: Lead enthielt deaktivierte oder versteckte Firmen</h3>
+            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen, weil sie <code>is_active=false</code> oder <code>is_relevant=false</code> tragen. Beide Flags blenden Firmen aus dem Frontend-Katalog und den Auswahllisten aus — eine Lead-Submission mit diesen IDs deutet auf veralteten UI-Zustand oder eine geforgte Anfrage hin.</p>
+            <ul>${droppedIrrelevant.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id}, is_active=${c.is_active}, is_relevant=${c.is_relevant})</li>`).join('')}</ul>
+            <p>Hinweis: Wenn diese Mail häufiger kommt, prüfen ob die Form ihre Firmenliste cached oder ob ein Code-Pfad die Filter umgeht.</p>
             <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
             <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
           `,
