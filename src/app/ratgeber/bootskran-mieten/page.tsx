@@ -310,10 +310,13 @@ export default async function BootskranMietenPage() {
           </p>
           <div className="mt-4 bg-blue-50 border border-blue-100 rounded-lg p-4">
             <p className="text-[13px] text-gray-700">
-              <strong className="text-gray-900">Faustregel:</strong> Für eine 10-m-Yacht, die jährlich
-              zweimal gekrant wird (Krängung + Auswasserung), zahlen Sie bei Einzelbuchung 1.200–1.900€
-              pro Jahr. Marinas mit Saisonvertrag verlangen oft 600–1.000€ pro Boot — bei
-              regelmäßigem Bedarf rechnet sich der Marina-Vertrag fast immer.
+              <strong className="text-gray-900">Faustregel:</strong> Bei einer 10-m-Yacht hängt der
+              Jahrespreis stark vom Marina-Modell ab. Marinas mit eigenem Bootskran verlangen pro
+              Kranung 170–250€, also rund 340–500€ pro Jahr für zwei Hübe (Quelle: mein-boot.eu listet
+              z.B. 168€ für 8 t mit Liegeplatzvertrag). Wer den Mobilkran privat organisieren muss,
+              weil die Marina keinen Hub-Service anbietet, zahlt 600–950€ pro Einsatz und damit
+              1.200–1.900€ pro Jahr. Saisonverträge zwischen Marina und externem Kran-Anbieter
+              liegen meist 20–30% unter den Einzelhub-Preisen.
             </p>
           </div>
           <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4">
