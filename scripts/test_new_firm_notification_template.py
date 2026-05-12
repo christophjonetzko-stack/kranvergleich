@@ -130,11 +130,11 @@ def build_html(company_name: str, lead: dict) -> str:
               <p style="color:#4b5563;font-size:14px;line-height:1.6;">
                 ein Kunde hat Sie auf {BRAND_NAME} ausgewählt und sucht ein Angebot für sein Projekt:
               </p>
+              <p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>{safe_desc_html}</p>
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 {''.join(rows)}
               </table>
               {mismatch_html}
-              <p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>{safe_desc_html}</p>
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:12px;color:#9ca3af;">

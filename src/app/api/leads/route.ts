@@ -377,6 +377,7 @@ export async function POST(request: Request) {
               <p style="color:#4b5563;font-size:14px;line-height:1.6;">
                 ein Kunde hat Sie auf ${BRAND_NAME} ausgewählt und sucht ein Angebot für sein Projekt:
               </p>
+              ${safeDesc ? `<p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>${safeDesc}</p>` : ''}
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 ${safeCraneType ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Name</td><td><strong>${safeName}</strong></td></tr>
@@ -387,7 +388,6 @@ export async function POST(request: Request) {
                 ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
               </table>
               ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
-              ${safeDesc ? `<p style="margin:16px 0;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;line-height:1.5;"><strong>Projektbeschreibung:</strong><br>${safeDesc}</p>` : ''}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:12px;color:#9ca3af;">
