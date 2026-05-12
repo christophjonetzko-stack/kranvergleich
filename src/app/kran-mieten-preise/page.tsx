@@ -9,7 +9,7 @@ import { InlineSammelanfrageForm } from '@/components/inline-sammelanfrage-form'
 import { PageEventTracker } from '@/components/page-event-tracker'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL, DATA_LAST_VERIFIED_ISO } from '@/lib/country'
 import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
@@ -1078,6 +1078,37 @@ export default async function KranMietenPreisePage() {
               '@id': `${BASE_URL}/kran-mieten-preise`,
             },
             about: { '@type': 'Thing', name: `Kranvermietung Preise ${COUNTRY_LABEL} 2026` },
+          }),
+        }}
+      />
+      {/* Service + areaServed — entity-level signal that KranVergleich operates a
+          pricing-comparison service across all crane types. Article schema above
+          frames the page as editorial content; Service describes the underlying
+          aggregator function. areaServed gives Google a strong geographic-scope
+          cue for the price ranges shown. Provider is KranVergleich, NOT the
+          individual firms (those are listed elsewhere as LocalBusiness). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            serviceType: 'Kranvermietung Preisvergleich',
+            name: `Kran mieten Preise — Anbieter-Vergleich in ${COUNTRY_LABEL}`,
+            description: anbieterCount > 0
+              ? `Vergleichen Sie Tages-, Wochen- und Monatspreise für 8 Krantypen von ${anbieterCount} Anbietern in ${COUNTRY_LABEL}. Anhängerkran ab 150€, Autokran ab 500€, Mobilkran ab 600€.`
+              : `Tages-, Wochen- und Monatspreise für 8 Krantypen in ${COUNTRY_LABEL}. Anhängerkran ab 150€, Autokran ab 500€, Mobilkran ab 600€.`,
+            provider: {
+              '@type': 'Organization',
+              name: BRAND_NAME,
+              url: BASE_URL,
+            },
+            areaServed: {
+              '@type': 'Country',
+              name: COUNTRY_LABEL,
+            },
+            category: 'Kranvermietung',
+            dateModified: DATA_LAST_VERIFIED_ISO,
           }),
         }}
       />

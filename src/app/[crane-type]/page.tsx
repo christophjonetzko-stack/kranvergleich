@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getCraneTypeBySlug, getCraneTypes, getCities, getCompaniesForCraneType, getCompanyCountsPerCity, getCompanyCountsPerCraneType, getSiteStats, computeAggregateRating } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL, BASE_URL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME, TAX_LABEL, BASE_URL, DATA_LAST_VERIFIED_ISO } from '@/lib/country'
 import { CompanySection } from '@/components/company-section'
 import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
@@ -17,12 +17,6 @@ import { getRatgeberForCraneType } from '@/data/crane-ratgeber'
 import { OG_IMAGE } from '@/lib/og-image'
 
 export const revalidate = 86400
-
-// ISO date = last manual catalog audit, fed into JSON-LD dateModified
-// (Product + Service). Bump only on real verification (firm count change,
-// price audit, content rewrite). Visible "Stand:" label below uses
-// build-time current month (lastUpdatedLabel) so the page never reads stale.
-const DATA_LAST_VERIFIED_ISO = '2026-05-06'
 
 export async function generateStaticParams() {
   const craneTypes = await getCraneTypes()

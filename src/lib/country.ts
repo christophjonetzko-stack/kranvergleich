@@ -22,6 +22,12 @@ export const OG_LOCALE: string = COUNTRY === 'AT' ? 'de_AT' : 'de_DE'
 // expand to include the rate if/when price-listing copy needs it.
 export const TAX_LABEL: string = COUNTRY === 'AT' ? 'USt.' : 'MwSt.'
 
+// Catalog verification date — bumps only on real verification (firm-count change,
+// price audit, content rewrite, catalog cleanup migration). Consumed by Product
+// and Service JSON-LD as dateModified to signal freshness to Google. Visible
+// "Stand:" labels on pages use build-time current month, not this constant.
+export const DATA_LAST_VERIFIED_ISO: string = '2026-05-06'
+
 let _companyIdsCache: { ids: Set<string>; expires: number } | null = null
 const COMPANY_IDS_TTL_MS = 60_000
 

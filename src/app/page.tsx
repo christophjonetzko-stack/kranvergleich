@@ -8,7 +8,7 @@ import { craneTypes as craneTypeStatic } from '@/data/crane-types'
 import { seoCities } from '@/data/cities-static'
 import { getSiteStats, getCraneTypes, getCompanyCountsPerCraneType } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY, COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL } from '@/lib/country'
+import { COUNTRY, COUNTRY_LABEL, BRAND_NAME, BASE_URL, TAX_LABEL, DATA_LAST_VERIFIED_ISO } from '@/lib/country'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 import { PageEventTracker } from '@/components/page-event-tracker'
 import { OG_IMAGE } from '@/lib/og-image'
@@ -480,6 +480,7 @@ export default async function HomePage() {
               priceCurrency: 'EUR',
               description: 'Anfrage und Angebotsvergleich kostenlos und unverbindlich',
             },
+            dateModified: DATA_LAST_VERIFIED_ISO,
           }),
         }}
       />

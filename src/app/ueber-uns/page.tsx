@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
-import { COUNTRY_LABEL, BRAND_NAME, BASE_URL } from '@/lib/country'
+import { COUNTRY_LABEL, BRAND_NAME, BASE_URL, DATA_LAST_VERIFIED_ISO } from '@/lib/country'
 import { OG_IMAGE } from '@/lib/og-image'
 
 // LinkedIn URL — fed into Person.sameAs for entity linkage between LinkedIn
@@ -11,11 +11,6 @@ import { OG_IMAGE } from '@/lib/og-image'
 // public LinkedIn profile content; any divergence between LinkedIn and site
 // bio is a credibility risk per user's "compromise rule".
 const LINKEDIN_URL = 'https://www.linkedin.com/in/christoph-jonetzko-9464223a9'
-
-// ISO date = last manual catalog audit, fed into schema.org dateModified.
-// Update only on real verification. Visible "Stand:" label below uses
-// build-time current month (lastUpdatedLabel) so the page never reads stale.
-const DATA_LAST_VERIFIED_ISO = '2026-05-06'
 
 export const revalidate = 86400
 
