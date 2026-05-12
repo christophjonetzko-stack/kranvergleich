@@ -5,7 +5,9 @@ import { trackPageEvent } from '@/lib/track'
 
 /**
  * Drop-in analytics tracker for pillar content pages. Fires:
- *   - `scroll_depth_75` once when the visitor reaches 75% of scroll height.
+ *   - `scroll_depth_25` / `scroll_depth_50` / `scroll_depth_75` once each as the
+ *     visitor crosses those scroll-height milestones (each event fires at most
+ *     once per page-load; finer-grained funnel than a single 75% flag).
  *   - `click_city_link` / `click_type_link` on anchors marked with
  *     `data-track-city` / `data-track-type` attributes (via `pointerdown`
  *     capture — see the listener body for the navigation-timing rationale).
@@ -18,17 +20,30 @@ export function PageEventTracker() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // --- Scroll depth (75%) ---
-    let scrollFired = false
+    // --- Scroll depth (25% / 50% / 75%) ---
+    // 3 milestones give a coarse funnel: who skims past the fold (25%), who
+    // engages mid-page (50%), who reads to the end (75%). Each fires at most
+    // once. Listener detaches when the deepest milestone is reached.
+    const scrollFired: Record<number, boolean> = { 25: false, 50: false, 75: false }
+    const thresholds: Array<[number, 'scroll_depth_25' | 'scroll_depth_50' | 'scroll_depth_75']> = [
+      [0.25, 'scroll_depth_25'],
+      [0.50, 'scroll_depth_50'],
+      [0.75, 'scroll_depth_75'],
+    ]
     const onScroll = () => {
-      if (scrollFired) return
       const doc = document.documentElement
       const scrolled = window.scrollY + window.innerHeight
       const total = doc.scrollHeight
       if (total <= 0) return
-      if (scrolled / total >= 0.75) {
-        scrollFired = true
-        trackPageEvent('scroll_depth_75')
+      const ratio = scrolled / total
+      for (const [pct, eventName] of thresholds) {
+        const key = Math.round(pct * 100)
+        if (!scrollFired[key] && ratio >= pct) {
+          scrollFired[key] = true
+          trackPageEvent(eventName)
+        }
+      }
+      if (scrollFired[25] && scrollFired[50] && scrollFired[75]) {
         window.removeEventListener('scroll', onScroll)
       }
     }

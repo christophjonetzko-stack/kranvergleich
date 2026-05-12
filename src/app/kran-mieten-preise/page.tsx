@@ -146,6 +146,7 @@ export default async function KranMietenPreisePage() {
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
+          <li><a href="#kostenrechner" className="text-[13px] text-blue-600 hover:underline">Kostenrechner in 4 Schritten</a></li>
           <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle alle Krantypen</a></li>
           <li><a href="#autokran-kosten" className="text-[13px] text-blue-600 hover:underline">Autokran Kosten pro Tag &amp; Stunde</a></li>
           <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran mieten Kosten</a></li>
@@ -189,15 +190,14 @@ export default async function KranMietenPreisePage() {
         </div>
       </section>
 
-      {/* Full price table */}
-      <section id="preistabelle" className="mb-10 scroll-mt-20">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Kran mieten Preisliste — alle Krantypen 2026
-        </h2>
-        <PriceTable showAll />
-      </section>
-
-      {/* Cost calculator — interactive estimate for the visitor's specific project */}
+      {/* Cost calculator — interactive estimate for the visitor's specific project.
+          Hoisted above the static price table on 2026-05-12 as H3-test re-order:
+          baseline measurement (14d ending 2026-05-12) showed 25/84 GSC clicks
+          started step 1 (~30%) while a complete Preistabelle sat first. Hypothesis:
+          the table answered the price intent before the calculator could capture
+          it. Measure window closes 2026-05-27; remeasure same funnel
+          (GSC clicks → calculator_step_completed step=1 unique sessions →
+          calculator_lead_submit_success). Confirm if engagement ≥50%. */}
       <section id="kostenrechner" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
           Was kostet Ihr Projekt? Kostenrechner in 4 Schritten
@@ -207,6 +207,14 @@ export default async function KranMietenPreisePage() {
           eine unverbindliche Kostenschätzung plus Empfehlung für den passenden Krantyp.
         </p>
         <CostCalculator page="/kran-mieten-preise" />
+      </section>
+
+      {/* Full price table */}
+      <section id="preistabelle" className="mb-10 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          Kran mieten Preisliste — alle Krantypen 2026
+        </h2>
+        <PriceTable showAll />
       </section>
 
       {/* Backup path — Sammelanfrage ohne Kalkulator. Primary conversion happens
