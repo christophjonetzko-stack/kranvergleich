@@ -5,6 +5,12 @@
 // link click). Falls back to `fetch({ keepalive: true })` for browsers without
 // Beacon support. Silently no-ops during SSR and under `?dryrun=1` so debug
 // test sessions don't pollute the analytics table.
+//
+// Every event also carries the first-touch UTM payload from sessionStorage
+// (mig 027). Stamps null fields when no attribution is stored — that's the
+// expected case for organic / direct entry.
+
+import { getStoredUtm } from './utm'
 
 export type PageEventType =
   | 'calculator_step_completed'
@@ -33,10 +39,15 @@ export function trackPageEvent(
   // Skip in dry-run mode so debug submits don't inflate analytics.
   if (new URLSearchParams(window.location.search).get('dryrun') === '1') return
 
+  const utm = getStoredUtm()
   const body = JSON.stringify({
     event_type: eventType,
     page_path: window.location.pathname,
     context: context ?? null,
+    utm_source: utm.utm_source,
+    utm_medium: utm.utm_medium,
+    utm_campaign: utm.utm_campaign,
+    utm_content: utm.utm_content,
   })
 
   try {

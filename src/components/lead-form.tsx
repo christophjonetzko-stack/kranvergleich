@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getSessionEntryPath } from './session-entry-recorder'
+import { getStoredUtm } from '@/lib/utm'
 
 interface LeadFormProps {
   craneTypeId?: string
@@ -57,6 +58,7 @@ export function LeadForm({
 
     const formData = new FormData(e.currentTarget)
 
+    const utm = getStoredUtm()
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
@@ -74,6 +76,10 @@ export function LeadForm({
           company_ids: selectedCompanies,
           website_url: formData.get('website_url') || '',
           entry_path: getSessionEntryPath(),
+          utm_source: utm.utm_source,
+          utm_medium: utm.utm_medium,
+          utm_campaign: utm.utm_campaign,
+          utm_content: utm.utm_content,
         }),
       })
 

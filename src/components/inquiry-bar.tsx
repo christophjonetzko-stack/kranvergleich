@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import type { CompanyWithCranes } from '@/lib/types'
+import { getStoredUtm } from '@/lib/utm'
 
 interface InquiryBarProps {
   selectedCompanies: CompanyWithCranes[]
@@ -71,6 +72,7 @@ export function InquiryBar({
     setIsSubmitting(true)
     const formData = new FormData(e.currentTarget)
 
+    const utm = getStoredUtm()
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
@@ -87,6 +89,10 @@ export function InquiryBar({
           dsgvo_consent: dsgvoConsent,
           company_ids: selectedCompanies.map((c) => c.id),
           website_url: formData.get('website_url') || '',
+          utm_source: utm.utm_source,
+          utm_medium: utm.utm_medium,
+          utm_campaign: utm.utm_campaign,
+          utm_content: utm.utm_content,
         }),
       })
 

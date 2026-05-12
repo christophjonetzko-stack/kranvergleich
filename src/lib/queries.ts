@@ -765,6 +765,12 @@ export async function submitLead(formData: {
   // browser has sessionStorage disabled or when the lead was placed before
   // SessionEntryRecorder was deployed.
   entry_path?: string | null
+  // First-touch UTM (mig 027). NULL when the visitor entered without UTM
+  // params or before the capture component was deployed.
+  utm_source?: string | null
+  utm_medium?: string | null
+  utm_campaign?: string | null
+  utm_content?: string | null
 }) {
   const { company_ids, ...leadData } = formData
   const sb = getServiceSupabase()

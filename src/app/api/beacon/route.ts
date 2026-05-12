@@ -124,6 +124,10 @@ export async function POST(request: Request) {
       event_type?: unknown
       page_path?: unknown
       context?: unknown
+      utm_source?: unknown
+      utm_medium?: unknown
+      utm_campaign?: unknown
+      utm_content?: unknown
     } | null
     if (!body) return new NextResponse(null, { status: 400 })
 
@@ -137,6 +141,17 @@ export async function POST(request: Request) {
     const ipHash = hashIp(ip, eventDate)
     const device = classifyUserAgent(ua)
 
+    // UTM stamping (mig 027). Client sends first-touch payload from
+    // sessionStorage; we trust the values verbatim but clip to 120 chars
+    // so a forged URL can't bloat the column. NULL when the client sends
+    // no attribution (organic / direct entry).
+    const clipUtm = (v: unknown): string | null => {
+      if (typeof v !== 'string') return null
+      const trimmed = v.trim()
+      if (!trimmed) return null
+      return trimmed.length > 120 ? trimmed.slice(0, 120) : trimmed
+    }
+
     const sb = getServiceSupabase()
     await sb.from('page_events').insert({
       event_type: eventType,
@@ -146,6 +161,10 @@ export async function POST(request: Request) {
       event_date: eventDate,
       country: COUNTRY,
       device,
+      utm_source: clipUtm(body.utm_source),
+      utm_medium: clipUtm(body.utm_medium),
+      utm_campaign: clipUtm(body.utm_campaign),
+      utm_content: clipUtm(body.utm_content),
     })
 
     return new NextResponse(null, { status: 204 })

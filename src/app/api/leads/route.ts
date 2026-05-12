@@ -314,6 +314,20 @@ export async function POST(request: Request) {
       }
     }
 
+    // UTM attribution (mig 027). Clip every value to 120 chars so a forged
+    // URL can't bloat the column. NULL on absence — that's the expected
+    // case for organic / direct entry.
+    const clipUtm = (v: unknown): string | null => {
+      if (typeof v !== 'string') return null
+      const trimmed = v.trim()
+      if (!trimmed) return null
+      return trimmed.length > 120 ? trimmed.slice(0, 120) : trimmed
+    }
+    const utmSource = clipUtm(body.utm_source)
+    const utmMedium = clipUtm(body.utm_medium)
+    const utmCampaign = clipUtm(body.utm_campaign)
+    const utmContent = clipUtm(body.utm_content)
+
     const lead = await submitLead({
       crane_type_id: body.crane_type_id || null,
       city,
@@ -326,6 +340,10 @@ export async function POST(request: Request) {
       dsgvo_consent: body.dsgvo_consent,
       company_ids: companyIds,
       entry_path: entryPath,
+      utm_source: utmSource,
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+      utm_content: utmContent,
     })
 
     // Escape all user input for HTML emails

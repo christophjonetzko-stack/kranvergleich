@@ -8,6 +8,7 @@ import { trackPageEvent } from '@/lib/track'
 import { TAX_LABEL } from '@/lib/country'
 import { SubtypeCheck } from './subtype-check'
 import { getSessionEntryPath } from './session-entry-recorder'
+import { getStoredUtm } from '@/lib/utm'
 
 // STEPS answer values are upper-bound buckets ('5' = "1–5 t", '20' = "5–20 t").
 // SubtypeCheck wants approximate numerics for context — use the upper bound
@@ -344,6 +345,10 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
     // state (populated by the mount-time effect) to stay hydration-safe.
     const dryRun = isDryRunMode
 
+    // First-touch UTM payload from sessionStorage (mig 027). Stays null
+    // when the visitor entered organically / directly without UTM params.
+    const utm = getStoredUtm()
+
     try {
       const res = await fetch('/api/leads', {
         method: 'POST',
@@ -368,6 +373,10 @@ export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps 
           // firm_events form_submit rows show "this lead came from the
           // recommendation pipeline" instead of NULL.
           type_context: result.slug.replace(/-mieten$/, ''),
+          utm_source: utm.utm_source,
+          utm_medium: utm.utm_medium,
+          utm_campaign: utm.utm_campaign,
+          utm_content: utm.utm_content,
         }),
       })
       if (!res.ok) {
