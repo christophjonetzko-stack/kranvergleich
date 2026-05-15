@@ -16,10 +16,10 @@ const TYPE_CONTENT_DATES: Record<string, string> = {
   'mobilkran-mieten': '2026-04-19', // +3 sections: Tragkraft, Marken, Alternativen
   'baukran-mieten': '2026-04-20', // +3 sections: Tragkraftklassen, Marken, Alternativen
   'dachdeckerkran-mieten': '2026-04-20', // +3 sections: Tragkraftklassen, Marken, Alternativen
-  'minikran-mieten': '2026-03-15',
-  'raupenkran-mieten': '2026-03-15',
-  'anhaengerkran-mieten': '2026-03-15',
-  'ladekran-mieten': '2026-03-15',
+  'minikran-mieten': '2026-05-15', // +Tragkraftklassen section
+  'raupenkran-mieten': '2026-05-15', // +Tragkraftklassen section
+  'anhaengerkran-mieten': '2026-05-15', // +Tragkraftklassen section
+  'ladekran-mieten': '2026-05-15', // +Tragkraftklassen section
 }
 const DATE_CITY_REFRESH = '2026-04-18' // seoCities expansion + normalize_service_regions
 const DATE_HOME = '2026-04-19'          // tile layout + icon redesign
