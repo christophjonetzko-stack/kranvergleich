@@ -25,7 +25,7 @@ const DATE_CITY_REFRESH = '2026-04-18' // seoCities expansion + normalize_servic
 const DATE_HOME = '2026-04-19'          // tile layout + icon redesign
 const DATE_KRANVERLEIH = '2026-04-18'   // seoCities expansion
 const DATE_KOSTENRECHNER = '2026-03-12'
-const DATE_PRICES = '2026-04-20' // +Regionalpreise section, +Article schema
+const DATE_PRICES = '2026-05-15' // +hero CTA above fold + TOC collapsible on mobile
 const DATE_RATGEBER = '2026-03-01'
 const DATE_LEGAL = '2026-01-01'
 

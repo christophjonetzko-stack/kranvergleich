@@ -6,6 +6,7 @@ import { cranePrices } from '@/data/crane-prices'
 import { craneTypes } from '@/data/crane-types'
 import { FAQSection } from '@/components/faq-section'
 import { InlineSammelanfrageForm } from '@/components/inline-sammelanfrage-form'
+import { CollapsibleToc } from '@/components/collapsible-toc'
 import { PageEventTracker } from '@/components/page-event-tracker'
 import { getSiteStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
@@ -134,6 +135,18 @@ export default async function KranMietenPreisePage() {
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
         Was kostet ein Kran? Preise &amp; Kosten 2026
       </h1>
+
+      {/* Hero CTA — primary conversion path. Anchors to #angebot-anfragen
+          (direct Sammelanfrage, skips the 4-step calculator) so visitors
+          with clear intent can submit without scrolling 3138px / 2.7
+          fold-heights to find the form. Visual audit 2026-05-15. */}
+      <a
+        href="#angebot-anfragen"
+        className="mb-6 inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-blue-700 active:bg-blue-800 sm:w-auto"
+      >
+        Kostenlos Angebot anfragen →
+      </a>
+
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Komplette Mietkran-Preisliste für alle 8 Krantypen in {COUNTRY_LABEL}: Tagespreise, Wochenpreise und
         Monatspreise im Überblick — von Minikran über Autokran (Kranwagen) bis Schwerlastkran.
@@ -142,9 +155,10 @@ export default async function KranMietenPreisePage() {
       </p>
       <p className="text-[11px] text-gray-300 mb-8">Zuletzt aktualisiert: 20. April 2026 · Marktrecherche Q2/2026 über {anbieterCount}+ Anbieter</p>
 
-      {/* TOC */}
-      <nav className="mb-8 border border-gray-200 rounded-lg p-4">
-        <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
+      {/* TOC — collapsible on mobile (closed by default), always-visible on
+          md+. Audit 2026-05-15 showed the static TOC ate ~350px of mobile
+          fold above the wizard CTA. */}
+      <CollapsibleToc>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#kostenrechner" className="text-[13px] text-blue-600 hover:underline">Kostenrechner in 4 Schritten</a></li>
           <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle alle Krantypen</a></li>
@@ -162,7 +176,7 @@ export default async function KranMietenPreisePage() {
           <li><a href="#zusatzkosten" className="text-[13px] text-blue-600 hover:underline">Zusatzkosten</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen zu Kosten</a></li>
         </ul>
-      </nav>
+      </CollapsibleToc>
 
       {/* Quick summary cards */}
       <section className="mb-10">
