@@ -32,7 +32,6 @@ const _extraCitiesDE: ExtendedCity[] = [
   { name: 'Göttingen', slug: 'goettingen', state: 'Niedersachsen', nearestSlug: 'hannover' },
   { name: 'Halle', slug: 'halle', state: 'Sachsen-Anhalt', nearestSlug: 'leipzig' },
   { name: 'Hamm', slug: 'hamm', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
-  { name: 'Heidelberg', slug: 'heidelberg', state: 'Baden-Württemberg', nearestSlug: 'mannheim' },
   { name: 'Koblenz', slug: 'koblenz', state: 'Rheinland-Pfalz', nearestSlug: 'koeln' },
   { name: 'Ludwigshafen', slug: 'ludwigshafen', state: 'Rheinland-Pfalz', nearestSlug: 'mannheim' },
   { name: 'Moers', slug: 'moers', state: 'Nordrhein-Westfalen', nearestSlug: 'duisburg' },
@@ -137,6 +136,8 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'kassel',     name: 'Kassel',     state: 'Hessen',         companyCount: 7 },
   { slug: 'marburg',    name: 'Marburg',    state: 'Hessen',         companyCount: 8 },
   { slug: 'osnabrueck', name: 'Osnabrück',  state: 'Niedersachsen',  companyCount: 14 },
+  // 2026-05-18 fix — Heidelberg was stuck in _extraCitiesDE redirect list despite having a Supabase row + 23 firms (created 2026-04-18). GSC flagged the 307s as "Seite mit Weiterleitung". Promote to seoCitiesDE so all /{type}/heidelberg URLs render natively.
+  { slug: 'heidelberg', name: 'Heidelberg', state: 'Baden-Württemberg', companyCount: 23 },
 ]
 
 // AT cities — populated 2026-04-26 after Phase B firm enrichment landed 20
