@@ -337,6 +337,8 @@ export function CompanyListWithForm({
         craneTypeName={craneTypeName}
         cityName={cityName}
         initialProjectDescription={initialProjectDescription}
+        cityContext={cityContext}
+        typeContext={typeContext}
       />
     </div>
   )

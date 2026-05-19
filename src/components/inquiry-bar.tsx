@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getStoredUtm } from '@/lib/utm'
+import { getSessionEntryPath } from './session-entry-recorder'
 
 interface InquiryBarProps {
   selectedCompanies: CompanyWithCranes[]
@@ -27,6 +28,12 @@ interface InquiryBarProps {
    *  the home SearchBox and was forwarded here via ?project=… query param.
    *  Used as `defaultValue` so the user can still edit it before submitting. */
   initialProjectDescription?: string
+  /** City slug (e.g. "wuerzburg") forwarded to firm_events form_submit rows. */
+  cityContext?: string | null
+  /** Crane-type slug (e.g. "baukran-mieten") forwarded to firm_events. The
+   *  trailing `-mieten` is stripped on submit to match the convention used by
+   *  cost-calculator so downstream reports group consistently. */
+  typeContext?: string | null
 }
 
 export function InquiryBar({
@@ -37,6 +44,8 @@ export function InquiryBar({
   craneTypeName,
   cityName,
   initialProjectDescription,
+  cityContext,
+  typeContext,
 }: InquiryBarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
@@ -89,6 +98,9 @@ export function InquiryBar({
           dsgvo_consent: dsgvoConsent,
           company_ids: selectedCompanies.map((c) => c.id),
           website_url: formData.get('website_url') || '',
+          entry_path: getSessionEntryPath(),
+          city_context: cityContext ?? null,
+          type_context: typeContext ? typeContext.replace(/-mieten$/, '') : null,
           utm_source: utm.utm_source,
           utm_medium: utm.utm_medium,
           utm_campaign: utm.utm_campaign,
