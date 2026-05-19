@@ -259,6 +259,35 @@ export async function POST(request: Request) {
     const preferredDate = truncate(body.preferred_date || '', 20)
     const durationDays = typeof body.duration_days === 'number' ? Math.min(Math.max(0, Math.round(body.duration_days)), 3650) : null
 
+    // Capacity hint extraction — scans the customer's project description for
+    // "X t" / "X Tonnen" / "X kg" mentions and raises an owner-side spec-check
+    // alert when ≥3t is detected. The 3t threshold covers the boundary between
+    // Schnellmontage class (max ~2-2.5t, dominates the catalog for small/medium
+    // Bavarian/Franconian firms) and real Turmdrehkran/Obendreher territory
+    // needed for Mehrfamilienhaus Neubau projects. Surfaced after lead
+    // 54403ab6 (Greb, 4t @ 11m for Mehrfamilienhaus → matched on Baukran tag
+    // to Uebel whose Potain HD 21A maxes at 2t @ 12m). Soft alert, not a hard
+    // block: company_cranes.max_capacity_kg is only 1.1% populated catalog-wide,
+    // so an auto-filter would false-positive constantly. Owner reviews the
+    // banner + subject prefix and decides whether to manually reroute via
+    // the opt-in pattern (see scripts/send_optin_greb.py).
+    const CAPACITY_HINT_THRESHOLD_KG = 3000
+    const TONNE_RE = /(\d+(?:[,.]\d+)?)\s*(?:tonnen?|to|t)\b/gi
+    const KG_RE = /(\d+(?:[,.]\d+)?)\s*kg\b/gi
+    let capacityHintKg = 0
+    for (const m of projectDescription.matchAll(TONNE_RE)) {
+      const n = parseFloat(m[1].replace(',', '.'))
+      if (Number.isFinite(n)) capacityHintKg = Math.max(capacityHintKg, n * 1000)
+    }
+    for (const m of projectDescription.matchAll(KG_RE)) {
+      const n = parseFloat(m[1].replace(',', '.'))
+      if (Number.isFinite(n)) capacityHintKg = Math.max(capacityHintKg, n)
+    }
+    const highSpecAlert = capacityHintKg >= CAPACITY_HINT_THRESHOLD_KG
+    const capacityHintFormatted = capacityHintKg >= 1000
+      ? `${(capacityHintKg / 1000).toFixed(1).replace(/\.0$/, '')} t`
+      : `${Math.round(capacityHintKg)} kg`
+
     // entry_path: client sends the first URL of the session from sessionStorage
     // (see SessionEntryRecorder). Validate against the same regex /api/beacon
     // uses for page_path so junk / open-redirect-style values are dropped.
@@ -667,17 +696,31 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
-      const subjectPrefix = validationFailed
+      // Additive to the validationFailed / noFirmsAttached prefixes above —
+      // a high-spec lead can land on top of either. Independent banner so the
+      // owner sees both signals at once without one overriding the other.
+      const specBanner = highSpecAlert
+        ? `<div style="background:#fef3c7;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">🟡 SPEC CHECK: Tragkraft ${escapeHtml(capacityHintFormatted)} erwähnt</div>
+            <div style="font-size:13px;color:#78350f;line-height:1.5;">
+              Im Projekttext nennt der Kunde eine Tragkraft von <strong>${escapeHtml(capacityHintFormatted)}</strong>. Viele Baukran-Firmen im Katalog führen ausschließlich Schnellmontagekrane (max ~2 t) — bitte prüfen, ob die zugewiesenen Anbieter diese Spezifikation tatsächlich erfüllen können.<br><br>
+              Bei Spec-Mismatch: Opt-in-Mail an den Kunden mit Alternativvorschlägen schicken (Greb-Pattern, <code>scripts/send_optin_greb.py</code> als Template).
+            </div>
+          </div>`
+        : ''
+      const subjectPrefix = (validationFailed
         ? '⏸ LEAD GEHALTEN (Validation) — '
         : noFirmsAttached
         ? '🚨 LEAD OHNE ANBIETER — '
-        : ''
+        : '')
+        + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}) — ` : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
         subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${subjectPrefix}Neue Anfrage: ${safeName} — ${safeCity}`,
         html: `
           ${alertBanner}
+          ${specBanner}
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
             ${safeCraneType ? `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
