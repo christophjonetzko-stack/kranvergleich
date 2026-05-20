@@ -339,6 +339,43 @@ export async function POST(request: Request) {
       ? `${(capacityHintKg / 1000).toFixed(1).replace(/\.0$/, '')} t`
       : `${Math.round(capacityHintKg)} kg`
 
+    // Fit-check (D of the A+B+C+D auto-recovery sprint). Compare the extracted
+    // capacity_hint_kg against each auto-matched firm's company_cranes.max_
+    // capacity_kg for the matched crane_type_id. A firm is "undersized" when
+    // its declared max is below capacity_hint_kg × 1.2 (20% safety margin —
+    // covers minor rounding / mid-class equipment a firm might pull in from
+    // partners). Firms whose company_crane row has NULL max_capacity_kg are
+    // "unverified" and remain in dispatch (the 1.1% coverage caveat from the
+    // Greb 2026-05-19 audit — we can't filter on data we don't have).
+    //
+    // Conservative: we DO NOT auto-filter undersized firms here (data too
+    // sparse to be reliable). Instead the result feeds the owner-notification
+    // SPEC CHECK banner so Christoph reviews before firm dispatch happens.
+    // Tightening to auto-filter requires raising company_cranes coverage
+    // first (separate ops initiative).
+    const FIT_SAFETY_MARGIN = 1.2
+    const undersizedFirms: Array<{ name: string; max_capacity_kg: number }> = []
+    let unverifiedFirmCount = 0
+    if (capacityHintKg > 0 && autoSelectedMatches && body.crane_type_id) {
+      const requiredCapacityKg = capacityHintKg * FIT_SAFETY_MARGIN
+      for (const m of autoSelectedMatches) {
+        const cranesForType = (m.company.company_cranes ?? []).filter(
+          (cc: { crane_type_id: string }) => cc.crane_type_id === body.crane_type_id,
+        )
+        const maxCapKg = cranesForType.reduce<number | null>((acc, cc: { max_capacity_kg: number | null }) => {
+          if (cc.max_capacity_kg == null) return acc
+          return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
+        }, null)
+        if (maxCapKg == null) {
+          unverifiedFirmCount += 1
+        } else if (maxCapKg < requiredCapacityKg) {
+          undersizedFirms.push({ name: m.company.name, max_capacity_kg: maxCapKg })
+        }
+      }
+    }
+    const fitCheckRan = capacityHintKg > 0 && (autoSelectedMatches?.length ?? 0) > 0
+    const hasUndersizedMatches = undersizedFirms.length > 0
+
     // entry_path: client sends the first URL of the session from sessionStorage
     // (see SessionEntryRecorder). Validate against the same regex /api/beacon
     // uses for page_path so junk / open-redirect-style values are dropped.
@@ -775,12 +812,37 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
+      // Fit-check banner (D of the auto-recovery sprint) — fires when at
+      // least one auto-matched firm has declared company_cranes.max_capacity_kg
+      // < customer requirement × 1.2. Lists the undersized firms by name + max
+      // capacity so owner can choose: dispatch anyway, manually reroute via
+      // opt-in to bigger firms, or call customer to clarify. Coverage caveat
+      // — most firms in catalog have NULL max_capacity_kg (~1.1% populated),
+      // so a clean fit-check is the exception, not the rule. When fit-check
+      // ran and ALL firms were unverified (no data), we say so explicitly
+      // instead of pretending the routing was confirmed safe.
+      const fitCheckBanner = fitCheckRan && hasUndersizedMatches
+        ? `<div style="background:#fef2f2;border:2px solid #dc2626;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">⚠️ Fit-Check: ${undersizedFirms.length} Anbieter unter Bedarf (${escapeHtml(capacityHintFormatted)})</div>
+            <div style="font-size:13px;color:#7f1d1d;line-height:1.5;">
+              Folgende Anbieter wurden automatisch zugewiesen, melden aber maximale Tragkraft unter der Kundenanforderung × 1,2 Sicherheitsmarge:
+              <ul style="margin:6px 0 0 0;padding-left:18px;">
+                ${undersizedFirms
+                  .map((f) => `<li><strong>${escapeHtml(f.name)}</strong> — max ${(f.max_capacity_kg / 1000).toFixed(1).replace(/\.0$/, '')} t</li>`)
+                  .join('')}
+              </ul>
+              ${unverifiedFirmCount > 0 ? `<br>Weitere <strong>${unverifiedFirmCount}</strong> Anbieter ohne Capacity-Daten im Katalog (1,1% Coverage) — nicht prüfbar, ggf. auch zu klein.<br>` : ''}
+              <br>Empfehlung: Lead manuell prüfen vor Versand — bei Spec-Mismatch Opt-in-Mail an den Kunden mit Alternativvorschlägen (Greb/Kohlhaas-Pattern).
+            </div>
+          </div>`
+        : ''
       const subjectPrefix = (validationFailed
         ? '⏸ LEAD GEHALTEN (Validation) — '
         : noFirmsAttached
         ? '🚨 LEAD OHNE ANBIETER — '
         : '')
         + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}) — ` : '')
+        + (hasUndersizedMatches ? `⚠️ FIT-MISMATCH (${undersizedFirms.length}) — ` : '')
         + (aiInferredCraneType ? '🤖 AI-Krantyp — ' : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
@@ -789,6 +851,7 @@ export async function POST(request: Request) {
         html: `
           ${alertBanner}
           ${specBanner}
+          ${fitCheckBanner}
           ${aiInferredBanner}
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
