@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import {
   Dialog,
@@ -31,6 +31,54 @@ const AVATAR_SRC = '/images/kran-berater-avatar.png'
 
 const STORAGE_KEY = 'kran-berater-v1'
 const MAX_MESSAGES_UI = 12
+
+// Contextual prompt bubble — appears after PROMPT_DELAY_MS on high-bounce
+// pages (listings, ratgeber, anbieter detail) to surface the chatbot to
+// visitors who'd otherwise scan & leave. Dismissal persists PROMPT_DISMISS_TTL_MS
+// in localStorage so a recurring visitor isn't nagged on every page.
+const PROMPT_DELAY_MS = 10_000
+const PROMPT_DISMISS_TTL_MS = 7 * 24 * 60 * 60 * 1000
+const PROMPT_DISMISS_KEY = 'kran-berater-prompt-dismissed-at'
+
+// Pages where the floating chat CTA already has a native conversion path
+// nearby (hero search on /, calculator on /kran-mieten-preise) or where a
+// prompt would be off-tone (legal pages). Everything else is fair game.
+const PROMPT_SKIP_PATHS = new Set<string>([
+  '/',
+  '/kran-mieten-preise',
+  '/impressum',
+  '/datenschutz',
+  '/agb',
+  '/kontakt',
+  '/cookie-richtlinie',
+])
+
+function shouldShowPromptOnPath(pathname: string | null): boolean {
+  if (!pathname) return false
+  return !PROMPT_SKIP_PATHS.has(pathname)
+}
+
+function isPromptDismissed(): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    const raw = window.localStorage.getItem(PROMPT_DISMISS_KEY)
+    if (!raw) return false
+    const ts = parseInt(raw, 10)
+    if (!Number.isFinite(ts)) return false
+    return Date.now() - ts < PROMPT_DISMISS_TTL_MS
+  } catch {
+    return false
+  }
+}
+
+function markPromptDismissed(): void {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(PROMPT_DISMISS_KEY, String(Date.now()))
+  } catch {
+    // localStorage full / disabled — non-fatal.
+  }
+}
 
 type Msg = { role: 'user' | 'assistant'; content: string }
 
@@ -102,12 +150,14 @@ function buildTargetUrl(s: Suggestion): string {
 
 export function KranBerater() {
   const router = useRouter()
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Msg[]>([])
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [hydrated, setHydrated] = useState(false)
+  const [promptVisible, setPromptVisible] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   // chatbot_opened fires once per page load (the very first time the dialog
   // opens). Re-opens of the same instance are not tracked — they're zero-cost
@@ -138,6 +188,43 @@ export function KranBerater() {
     const el = scrollRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [messages, open, loading, suggestion])
+
+  // Contextual speech-bubble scheduler. Fires PROMPT_DELAY_MS after the user
+  // lands on a high-bounce path — IF (a) hydration is done so we can read
+  // localStorage / message history, (b) the path isn't on the skip list,
+  // (c) the user has not dismissed within the last PROMPT_DISMISS_TTL_MS,
+  // (d) the user has not previously used the chatbot in this browser, and
+  // (e) the dialog isn't currently open. Resets cleanly on pathname change
+  // for client-side navigations.
+  useEffect(() => {
+    if (!hydrated) return
+    setPromptVisible(false)
+    if (open) return
+    if (messages.length > 0) return
+    if (!shouldShowPromptOnPath(pathname)) return
+    if (isPromptDismissed()) return
+
+    const t = window.setTimeout(() => {
+      setPromptVisible(true)
+      trackPageEvent('chatbot_prompt_shown')
+    }, PROMPT_DELAY_MS)
+    return () => window.clearTimeout(t)
+  }, [hydrated, pathname, open, messages.length])
+
+  function openFromPrompt() {
+    setPromptVisible(false)
+    if (!openedTrackedRef.current) {
+      trackPageEvent('chatbot_opened')
+      openedTrackedRef.current = true
+    }
+    setOpen(true)
+  }
+
+  function dismissPrompt() {
+    setPromptVisible(false)
+    markPromptDismissed()
+    trackPageEvent('chatbot_prompt_dismissed')
+  }
 
   async function send() {
     const text = input.trim()
@@ -230,35 +317,74 @@ export function KranBerater() {
     <>
       {/* Floating launcher — bottom-right, hidden until React hydrates so the
           SSR HTML stays clean for SEO. Avatar shown in a circle stamp on the
-          dark pill so the bot reads as a person, not a generic AI emoji. */}
+          dark pill so the bot reads as a person, not a generic AI emoji.
+          The container stacks the optional speech-bubble prompt above the
+          button so both share the same right edge and z-index. */}
       {hydrated && (
-        <button
-          type="button"
-          aria-label="Kran-Berater öffnen"
-          onClick={() => {
-            if (!openedTrackedRef.current) {
-              trackPageEvent('chatbot_opened')
-              openedTrackedRef.current = true
-            }
-            setOpen(true)
-          }}
-          className="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white pl-1.5 pr-4 py-1.5 shadow-lg transition-colors"
-        >
-          <span className="relative inline-block h-9 w-9 rounded-full overflow-hidden bg-white ring-2 ring-white shrink-0">
-            <Image
-              src={AVATAR_SRC}
-              alt=""
-              width={36}
-              height={36}
-              priority
-              className="h-full w-full object-cover"
-            />
-          </span>
-          <span className="text-[13px] font-medium hidden sm:inline">Kran-Berater fragen</span>
-          {messages.length > 0 && (
-            <span aria-hidden className="ml-1 h-2 w-2 rounded-full bg-emerald-400" />
+        <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
+          {promptVisible && (
+            <div
+              role="button"
+              tabIndex={0}
+              aria-label="Kran-Berater öffnen — Hinweis"
+              onClick={openFromPrompt}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  openFromPrompt()
+                }
+              }}
+              className="relative max-w-[260px] cursor-pointer rounded-2xl bg-white px-4 py-3 pr-9 shadow-xl ring-1 ring-black/5 transition-colors hover:bg-gray-50"
+            >
+              <button
+                type="button"
+                aria-label="Hinweis schließen"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  dismissPrompt()
+                }}
+                className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full text-base leading-none text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+              >
+                ×
+              </button>
+              <p className="mb-0.5 text-[13px] font-medium text-gray-900">
+                Unsicher welcher Kran?
+              </p>
+              <p className="text-[12px] leading-snug text-gray-600">
+                In 30 Sekunden geklärt — fragen Sie kurz unseren Berater.
+              </p>
+            </div>
           )}
-        </button>
+          <button
+            type="button"
+            aria-label="Kran-Berater öffnen"
+            onClick={() => {
+              setPromptVisible(false)
+              if (!openedTrackedRef.current) {
+                trackPageEvent('chatbot_opened')
+                openedTrackedRef.current = true
+              }
+              setOpen(true)
+            }}
+            className="flex items-center gap-2.5 rounded-full bg-neutral-950 py-1.5 pl-1.5 pr-4 text-white shadow-xl transition-colors hover:bg-neutral-800"
+          >
+            <span className="relative inline-block h-9 w-9 shrink-0 overflow-hidden rounded-full bg-white ring-2 ring-white">
+              <Image
+                src={AVATAR_SRC}
+                alt=""
+                width={36}
+                height={36}
+                priority
+                className="h-full w-full object-cover"
+              />
+            </span>
+            <span className="text-[13px] font-medium sm:hidden">Beratung</span>
+            <span className="hidden text-[13px] font-medium sm:inline">Kran-Berater fragen</span>
+            {messages.length > 0 && (
+              <span aria-hidden className="ml-1 h-2 w-2 rounded-full bg-emerald-400" />
+            )}
+          </button>
+        </div>
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>

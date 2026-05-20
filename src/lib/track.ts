@@ -30,6 +30,8 @@ export type PageEventType =
   | 'chatbot_message_sent'
   | 'chatbot_recommendation_shown'
   | 'chatbot_view_providers_clicked'
+  | 'chatbot_prompt_shown'
+  | 'chatbot_prompt_dismissed'
 
 export function trackPageEvent(
   eventType: PageEventType,
