@@ -1,0 +1,2651 @@
+{
+  "summary": {
+    "total": 50,
+    "skipped_already_enriched": 6,
+    "skipped_no_website": 2,
+    "skipped_robots": 4,
+    "fetched_ok": 36,
+    "claude_ok": 36,
+    "claude_failed": 2,
+    "low_confidence": 5,
+    "empty_crane_types": 11,
+    "claude_total_input_tokens": 466540,
+    "claude_total_output_tokens": 68496,
+    "claude_total_cache_read": 111600,
+    "claude_total_cache_write": 0
+  },
+  "proposals": [
+    {
+      "slug": "akr-riebienski-autokrane",
+      "id": "5e104736-a109-4d30-858c-a7a23710e5ba",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [],
+        "associations": [
+          "IHK Niedersachsen"
+        ],
+        "brands_models": [],
+        "capacity_range": "35t",
+        "certifications": [],
+        "crane_types": [
+          "autokran-mieten"
+        ],
+        "description_long": "Die AKR Riebienski Autokrane mit Sitz in Hambühren ist ein inhabergeführtes Einzelunternehmen von Dietrich Riebienski und seit über 25 Jahren im Bereich der Autokranvermietung tätig. Im Mittelpunkt des Leistungsangebots steht ein 35-Tonnen-Autokran, der für eine Vielzahl von Hebearbeiten eingesetzt wird.\n\nZu den typischen Einsätzen zählen das Verlegen von Decken, das Ziehen von Dachstühlen, das Aufstellen von Industriehallen sowie das Bewegen von Maschinen. Ebenso versetzt das Unternehmen Pools, Saunen, Carports und Garagen und unterstützt mit dem Autokran bei Baumfällungen. Abschleppdienste werden ausdrücklich nicht angeboten.\n\nZum Kundenkreis gehören sowohl Privatpersonen als auch gewerbliche Auftraggeber. Das Unternehmen legt nach eigener Darstellung Wert auf Zuverlässigkeit, Flexibilität und Präzision bei der Auftragsabwicklung.\n\nDer geographische Tätigkeitsschwerpunkt liegt in Hambühren und Umgebung. Zum Einsatzgebiet zählen unter anderem Celle, Eschede, Loheide, Langlingen, Hermannsburg, Soltau und Wedemark. AKR Riebienski Autokrane ist Mitglied der IHK Niedersachsen.\n\nIn Notfällen ist das Unternehmen nach eigenen Angaben mobil auch außerhalb der regulären Öffnungszeiten erreichbar. Interessenten erhalten Auskunft telefonisch oder per E-Mail.",
+        "description_short": "Inhabergeführte Autokranvermietung in Hambühren mit 35-Tonnen-Autokran für Privat- und Gewerbekunden seit über 25 Jahren.",
+        "email": "autokrane@dietrich.shop",
+        "extraction_confidence": "high",
+        "legal_entity_type": "Einzelunternehmen",
+        "operator_included": true,
+        "phone": "+4950844369",
+        "service_areas": [
+          "Hambühren",
+          "Celle",
+          "Eschede",
+          "Loheide",
+          "Langlingen",
+          "Hermannsburg",
+          "Soltau",
+          "Wedemark"
+        ],
+        "specialties": [
+          "Autokranvermietung bei Baumfällungen",
+          "Versetzen von Pools, Saunen, Carports und Garagen",
+          "Aufstellen von Industriehallen",
+          "Dachstühle ziehen",
+          "Decken verlegen",
+          "Maschinen ziehen"
+        ],
+        "ust_id_nummer": "DE115235807"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 5587,
+        "output_tokens": 1298,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "bau-dienst-kiel-gmbh",
+      "id": "570d9abd-1cef-4b55-8772-f3ab10a1a770",
+      "fetch_status": "robots_disallow"
+    },
+    {
+      "slug": "bavarialift-gmbh",
+      "id": "6a8264d3-d16d-4c6f-8ba2-afeeb8a1f38b",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen",
+          "Gabelstapler-Anbaugeräte",
+          "Maschinentransport",
+          "Lagertechnik",
+          "UVV-Prüfung & Service",
+          "Kernbohranlagen",
+          "Schweiss-Technik"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Maeda Minikran",
+          "Maeda Raupenkran",
+          "Jekko",
+          "Giraf Track",
+          "VIAVAC",
+          "Sumner Materiallifte",
+          "Sumner Rohrböcke",
+          "Carrymate",
+          "MobyLift",
+          "PowerTower"
+        ],
+        "capacity_range": null,
+        "certifications": [
+          "CE-Kennzeichnung",
+          "UVV-Prüfung"
+        ],
+        "crane_types": [
+          "minikran-mieten",
+          "mobilkran-mieten",
+          "raupenkran-mieten",
+          "anhaengerkran-mieten",
+          "dachdeckerkran-mieten"
+        ],
+        "description_long": "Die Bavarialift GmbH mit Sitz in Pfreimd (Oberpfalz, Bayern) ist Spezialist für hebetechnische Anlagen und bietet sowohl Verkauf als auch Vermietung an. Das Sortiment umfasst Miniraupenkrane (u. a. Maeda und Jekko), Giraf Track, Mobil- und Industriekrane, Anhängerkrane sowie Dachdeckerkrane, die auch als Hubarbeitsbühne genutzt werden können. Laut Website erreichen die Anhänger-/Dachdeckerkrane eine maximale Arbeitshöhe von 31 Metern bei Nutzlasten bis 1.200 Kilogramm und einem Gesamtgewicht von 3,5 Tonnen, sodass der Transport zur Baustelle mit einem Sprinter möglich ist.\n\nErgänzend bietet Bavarialift Vakuum-Hebetechnik, Glassauger (Tragkraft 300 bis 1.700 kg, Sondermodelle bis 4,5 t), Paneel- und Steinsauger, Glastransportwagen, Glasmontagegeräte sowie Personen-, Lasten- und Montagelifte. Im Bereich stationärer Krantechnik finden Kunden Werkstatt-, Industrie- und Gegengewichtskrane sowie Leichtbaukrane und mobile Portalkräne. Weitere Produktgruppen sind Tracked Carriers, Treppensteiger, Gabelstapler-Anbaugeräte, Sumner-Materiallifte und -Rohrböcke, Carrymate-Produkte, Arbeitsbühnen, Leiter- und Seillifte, Schweiß-Technik sowie Kernbohranlagen.\n\nDie Mietflotte umfasst nach Angaben der Website unter anderem Glassauger und Glashebegeräte, Minikrane und Raupenkrane von Maeda bzw. Giraf Track, Mobil- und Anhängerkrane, Glaslifte und Glasroboter (auch Glas KS Robot), Paneelsauger, Glastransportwagen sowie Lasten- und Montagelifte. Bavarialift bietet darüber hinaus UVV-Prüfung und Service an.\n\nZu den typischen Einsatzbranchen zählen Baustellenmontage, Bauwerksanierung, Fenster- und Glasbau, Hallen- und Stahlbau, Industriemontagen, Messebau, Schreinerei und Tischlerei, Steinmetzbetriebe, Werft- und Schiffsbau, Wintergartenbau sowie Zimmerei und Holzbau. Geschäftsführer sind Anton Götz und Herbert Süß; das Unternehmen ist im Handelsregister beim Amtsgericht Amberg unter HRB 4637 eingetragen.",
+        "description_short": "Spezialist für hebetechnische Anlagen aus Pfreimd – Vermietung von Minikran, Raupenkran, Anhängerkran und Vakuumtechnik.",
+        "email": "office@bavarialift.de",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "HRB 4637 Amtsgericht Amberg",
+        "legal_entity_type": "GmbH",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+49960692322600",
+        "price_day_from": null,
+        "service_areas": [
+          "Pfreimd",
+          "Oberpfalz",
+          "Bayern"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Vakuum-Hebetechnik",
+          "Glassauger",
+          "Glasmontage",
+          "Paneelsauger",
+          "Glastransportwagen",
+          "Mobile Portalkräne",
+          "Stationäre Krantechnik",
+          "Personen- und Lastenlifte",
+          "Montagelifte",
+          "Tracked Carriers",
+          "Leichtbaukrane"
+        ],
+        "ust_id_nummer": "DE272472727"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 5,
+      "usage": {
+        "input_tokens": 9350,
+        "output_tokens": 2283,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "bernhard-resch-gmbh",
+      "id": "61ed67f7-8e01-451c-a107-474457e69c6e",
+      "fetch_status": "fetch_failed",
+      "crawl": {
+        "sub_path_statuses": {
+          "/": "fetch_err_SSLError",
+          "/impressum": "fetch_err_SSLError",
+          "/kontakt": "fetch_err_SSLError",
+          "/contact": "fetch_err_SSLError",
+          "/kontakte": "fetch_err_SSLError",
+          "/produkte": "fetch_err_SSLError",
+          "/produkt": "fetch_err_SSLError",
+          "/flotte": "fetch_err_SSLError",
+          "/fahrzeuge": "fetch_err_SSLError",
+          "/maschinen": "fetch_err_SSLError",
+          "/leistungen": "fetch_err_SSLError",
+          "/leistung": "fetch_err_SSLError",
+          "/services": "fetch_err_SSLError",
+          "/service": "fetch_err_SSLError",
+          "/angebot": "fetch_err_SSLError",
+          "/angebote": "fetch_err_SSLError",
+          "/krane": "fetch_err_SSLError",
+          "/kran-vermietung": "fetch_err_SSLError",
+          "/sortiment": "fetch_err_SSLError",
+          "/ueber-uns": "fetch_err_SSLError",
+          "/uber-uns": "fetch_err_SSLError",
+          "/about": "fetch_err_SSLError",
+          "/dachdeckerkran": "fetch_err_SSLError",
+          "/dachdeckeraufzug": "fetch_err_SSLError"
+        },
+        "chars_collected": 0
+      }
+    },
+    {
+      "slug": "boels-augsburg",
+      "id": "2d9a623e-89a5-4382-8238-7f161ff416cd",
+      "fetch_status": "ok",
+      "confidence": "low",
+      "extracted": {
+        "additional_services": [],
+        "associations": [],
+        "brands_models": [],
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Die Boels Rental Germany GmbH betreibt einen Standort in Augsburg-Lechhausen in der Südtiroler Straße 6. Aufgrund des sehr eingeschränkten öffentlich zugänglichen Website-Inhalts (die Seite zeigt im abgerufenen Korpus ausschließlich eine Sprach- und Länderauswahl) lassen sich konkrete Angaben zu Flotte, Krantypen, Tragfähigkeiten, Marken oder Dienstleistungen dieses Standorts nicht belegen. Interessenten wenden sich für detaillierte Informationen zum lokalen Angebot, zu Verfügbarkeiten und Konditionen direkt an die Niederlassung in Augsburg.",
+        "description_short": "Boels Rental Germany GmbH mit Mietstation in Augsburg-Lechhausen, Südtiroler Straße 6.",
+        "extraction_confidence": "low",
+        "legal_entity_type": "GmbH",
+        "service_areas": [
+          "Augsburg"
+        ],
+        "specialties": []
+      },
+      "company_update_keys": [
+        "service_regions",
+        "description"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 1376,
+        "output_tokens": 695,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "dach-pro-kranverleih",
+      "id": "62a85b85-d03c-4053-8cb9-bd70bd0f8e4d",
+      "fetch_status": "ok",
+      "confidence": "low",
+      "extracted": {
+        "additional_services": [],
+        "associations": [],
+        "brands_models": [],
+        "certifications": [],
+        "crane_types": [
+          "dachdeckerkran-mieten"
+        ],
+        "description_long": "Dach PRO ist ein in Troisdorf ansässiger Anbieter im Bereich Dachdeckerbedarf und betreibt unter der Marke \"Dach PRO Kranverleih\" ein Angebot zur Kranvermietung speziell für Dachhandwerker. Das Unternehmen ist primär als Online-Shop für Dachdecker-, Spengler- und Zimmererwerkzeuge sowie Persönliche Schutzausrüstung bekannt und vertreibt Produkte namhafter Marken wie Hikoki, Wuko, Buschmann, MASC, MetalManiak, ABS Safety, Stubai, Hultafors, mafell, Falzsid und Lockjaw.\n\nÜber das Produktangebot hinaus stellt Dach PRO im Rahmen seines Kranverleihs einen Dachdeckerkran zur Miete bereit, der für typische Anwendungen auf der Dachbaustelle geeignet ist – etwa zum Transport von Materialien wie Ziegeln, Dämmstoffen oder Werkzeugen auf das Dach. Detaillierte technische Daten zu Tragkraft, Reichweite oder konkretem Modell sind auf der vorliegenden Übersichtsseite nicht ausgewiesen; eine direkte Anfrage beim Anbieter wird empfohlen.\n\nDer Firmensitz in Troisdorf (Einsteinstraße 5a) liegt verkehrsgünstig in der Region Köln/Bonn, sodass sich der Kranverleih insbesondere für Kunden im Rheinland und Umgebung anbietet. Zielgruppe sind vor allem Dachdecker-, Spengler- und Zimmereibetriebe sowie Handwerksunternehmen, die für einzelne Bauvorhaben einen Dachdeckerkran benötigen, ohne in eine eigene Maschine investieren zu müssen.\n\nStärken des Unternehmens liegen erkennbar in der engen Ausrichtung auf das Dachhandwerk: Sowohl der Werkzeugbedarf als auch die Hebetechnik werden aus einer Hand angeboten. Über die Website können Interessenten weitere Informationen zum Kranverleih einholen sowie ergänzendes Werkzeug und Zubehör für die Baustelle beziehen. Für genaue Konditionen, Mietpreise, Lieferbedingungen und Verfügbarkeit ist eine individuelle Kontaktaufnahme erforderlich.",
+        "description_short": "Dachdeckerkran-Verleih aus Troisdorf, eingebettet in einen spezialisierten Online-Shop für Dachhandwerker.",
+        "extraction_confidence": "low",
+        "service_areas": [
+          "Troisdorf"
+        ],
+        "specialties": [
+          "Dachhandwerk",
+          "Dachdeckerbedarf"
+        ]
+      },
+      "company_update_keys": [
+        "service_regions",
+        "description"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 21360,
+        "output_tokens": 2033,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "dresden-krane-industrie-service-gmbh",
+      "id": "7faa6cd7-d78b-4760-847f-0f165fcc5bdd",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Wartung",
+          "UVV-Prüfung",
+          "Reparatur",
+          "Modernisierung",
+          "Montage und Demontage",
+          "Ersatzteilversorgung",
+          "Industrietor-Service",
+          "Regalprüfung",
+          "Prüfung von Produktionsanlagen"
+        ],
+        "associations": [
+          "Gütegemeinschaft Kranservice e.V. (GKS)"
+        ],
+        "brands_models": [],
+        "capacity_range": "\"1 t – 35 t\"",
+        "certifications": [
+          "RAL-GZ 741",
+          "DGUV Vorschrift 52",
+          "DGUV Vorschrift 54",
+          "DGUV Vorschrift 17",
+          "DGUV V3",
+          "DIN ISO 4309",
+          "VDE 0701-0702"
+        ],
+        "crane_types": [],
+        "description_long": "Die Dresden Krane + Industrie Service GmbH (DKS) mit Sitz in Pirna bei Dresden wurde 2018 gegründet und ist auf Service, Wartung, Prüfung und Modernisierung von Industriekranen, Hebezeugen, Industrietoren und technischen Anlagen spezialisiert. Das Unternehmen vermietet keine Krane, sondern bietet herstellerunabhängige Dienstleistungen rund um vorhandene Krananlagen und Fördertechnik.\n\nDas Leistungsspektrum umfasst die Konzeption, Lieferung und Montage von Industriekranen vom kompakten Profilträgerkran mit 1 t Traglast bis zum Zweiträgerkran mit 35 t und zwei Katzen. Hinzu kommen Arbeitsplatzkrane, Säulen- und Wandschwenkkrane, Leichtkransysteme sowie Elektrokettenzüge, Elektroseilzüge und Handflaschenzüge. Im Bereich Kranservice und Instandhaltung führt DKS jährliche UVV-Prüfungen nach DGUV Vorschrift 52 (Krane), DGUV V54 (Winden, Hub- und Zuggeräte), DGUV V17 (Anschlag- und Lastaufnahmemittel), DGUV V3 sowie DIN ISO 4309 für Drahtseile durch.\n\nWeitere Schwerpunkte sind Reparatur und Störungsbeseitigung, Modernisierungen (z. B. Umbau auf Funkfernsteuerung, Frequenzumrichter, Überlastsicherungen, Lastkollektivspeicher zur Ermittlung der Restnutzungsdauer/SWP) sowie die fachgerechte Montage und Demontage von Brücken-, Portal- und Schwenkkranen einschließlich Stahlbau. Original-Ersatzteile aller namhaften Hersteller werden geliefert und teils ab Lager Pirna bereitgehalten.\n\nIm Industrieservice prüft DKS Industrietore nach ASR A1.7, Regale nach DGUV Regel 108-007, Leitern und Tritte nach DGUV Info 208-016 sowie Regalbediengeräte und Produktionsanlagen. Die Arbeit erfolgt herstellerunabhängig und markenoffen.\n\nSeit 2018 ist DKS Mitglied der Gütegemeinschaft Kranservice e.V. (GKS) und verpflichtet sich damit zu den Güte- und Prüfbestimmungen RAL-GZ 741. Kunden im sächsischen Raum profitieren von kurzen Wegen, persönlichen Ansprechpartnern und der Möglichkeit eines Serviceeinsatzes bereits am Folgetag.",
+        "description_short": "Herstellerunabhängiger Kranservice aus Pirna: Wartung, UVV-Prüfung, Reparatur und Modernisierung von Krananlagen.",
+        "email": "info@dks-dresden.de",
+        "extraction_confidence": "high",
+        "founded_year": 2018,
+        "handelsregister_nummer": "\"HRB 37612 Amtsgericht Dresden\"",
+        "legal_entity_type": "\"GmbH\"",
+        "opening_hours": {
+          "monday": "08:00-16:30",
+          "tuesday": "08:00-16:30",
+          "wednesday": "08:00-16:30",
+          "thursday": "08:00-16:30",
+          "friday": "08:00-16:30",
+          "saturday": null,
+          "sunday": null
+        },
+        "operator_included": null,
+        "phone": "\"+4935014701848\"",
+        "service_areas": [
+          "Pirna",
+          "Dresden",
+          "Sachsen"
+        ],
+        "specialties": [
+          "Herstellerunabhängiger Kranservice",
+          "UVV-Prüfung nach DGUV V52",
+          "Modernisierung und Umrüstung von Krananlagen",
+          "SWP-Berechnung (Restnutzungsdauer)",
+          "Industrietor-Prüfung nach ASR A1.7",
+          "Regalprüfung nach DGUV 108-007",
+          "Prüfung von Anschlag- und Lastaufnahmemitteln"
+        ],
+        "ust_id_nummer": "\"DE317220971\""
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 12432,
+        "output_tokens": 2116,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "edmund-froemling-gmbh",
+      "id": "fb18ce41-0a9f-426d-882a-e286dd31884b",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Krantransporte",
+          "Kranmontagen",
+          "Montage- und Hubarbeiten",
+          "Kranservice und Reparatur",
+          "Wartung"
+        ],
+        "associations": [
+          "IHK Region Stuttgart"
+        ],
+        "brands_models": [
+          "Potain Unterdreher 20m–45m Ausladung"
+        ],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [
+          "baukran-mieten",
+          "ladekran-mieten"
+        ],
+        "description_long": "Die Edmund Frömling GmbH ist ein Familienunternehmen mit Sitz in Schwieberdingen bei Stuttgart und bietet seit 1989 Dienstleistungen rund um Kranservice, Hebetechnik und Montagelogistik an. Der Schwerpunkt des Unternehmens liegt auf der Vermietung, Montage und Wartung von Potain-Baukranen, insbesondere Unterdreher-Kranen mit Ausladungen von 20 bis 45 Metern. Ergänzend führt das Unternehmen Montage- und Hubarbeiten mit eigenen Ladekranen durch und ist damit ein erfahrener Partner für Aufgaben wie die Montage von Außenbalkonen, Fenstern und vergleichbaren Bauelementen.\n\nZu den Leistungen gehören zudem Krantransporte: Mit den vorhandenen Transportachsen werden eigene sowie kundenseitige Krane sicher zu Baustellen im Großraum Stuttgart befördert. Über Schnellläuferachsen kann der Transportservice auch bundesweit angeboten werden. Im Bereich Service und Reparatur übernimmt die Edmund Frömling GmbH regelmäßige Wartungen und Instandsetzungen an Baukranen und arbeitet hierzu mit spezialisierten Fachfirmen zusammen.\n\nTypische Kunden sind Bauunternehmen, Handwerksbetriebe und Bauherren im Raum Stuttgart, die auf zuverlässige Hebetechnik und einen erfahrenen Ansprechpartner für Baustellenlogistik angewiesen sind. Das Unternehmen beschreibt seinen Arbeitsstil als direkt und serviceorientiert und betont langjährige Kundenbeziehungen, die auf Fachkompetenz und Zuverlässigkeit beruhen.\n\nGeografisch liegt der Fokus auf dem Großraum Stuttgart; Krantransporte und überregionale Einsätze werden darüber hinaus deutschlandweit angeboten. Der Firmensitz befindet sich in der Battnerstraße 10 in Schwieberdingen, ein zusätzlicher Lagerplatz wird am Felsenbergweg 11 betrieben. Die Beratung erfolgt nach Terminvereinbarung von Montag bis Freitag telefonisch, per Fax oder per E-Mail; auch Vor-Ort-Termine sind möglich. Eingetragen ist das Unternehmen beim Amtsgericht Ludwigsburg unter HRB 205381.",
+        "description_short": "Familienunternehmen aus Schwieberdingen mit Vermietung, Montage und Service von Potain-Baukranen im Raum Stuttgart.",
+        "email": "froemling@kranservice-stuttgart.de",
+        "extraction_confidence": "high",
+        "founded_year": 1989,
+        "handelsregister_nummer": "HRB 205381 Amtsgericht Ludwigsburg",
+        "legal_entity_type": "GmbH",
+        "operator_included": null,
+        "phone": "+497152908879",
+        "price_day_from": null,
+        "service_areas": [
+          "Stuttgart",
+          "Großraum Stuttgart",
+          "Schwieberdingen",
+          "Deutschland"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Potain-Baukrane",
+          "Kranmontagen",
+          "Krantransporte",
+          "Montagelogistik",
+          "Wartung und Reparatur von Baukranen"
+        ],
+        "ust_id_nummer": "DE195971189"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 4150,
+        "output_tokens": 1802,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "ehrlich-aufzug-und-krantechnik-gmbh",
+      "id": "e625c086-660f-4eb0-b9ef-9047b1bb5fcb",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Hebebühnen-Vermietung",
+          "Möbelaufzüge",
+          "Bauaufzüge",
+          "Solarmodulaufzüge",
+          "Leiterlifte",
+          "Kranzubehör (Schuttkübel, Ziegelzangen, Ziegelverteiler, Hubarbeitskorb, Palettengabel, Dachständer)",
+          "Kundendienst und Wartung",
+          "Grundüberholungen",
+          "Vor-Ort-Service",
+          "Ersatzteilversand",
+          "Finanzierung (Kauf, Mietkauf, Leasing)",
+          "Gebrauchtgeräteankauf",
+          "Ausbildung Kranführerschein",
+          "Sonderanfertigungen Aluminium",
+          "Werkstattersatzwagen"
+        ],
+        "associations": [],
+        "brands_models": [
+          "AMAK 60 E",
+          "AMAK 65e E",
+          "AMAK 80.1 E",
+          "AMAK 170 E",
+          "AMAK 180 E",
+          "AMAK 230 E",
+          "AMAK 28 E",
+          "AMAK 33 E",
+          "AMAK 33e E",
+          "AMAK 35.3 E",
+          "AMAK 35e E",
+          "GEDA Leiterlift",
+          "GEDA Schrägaufzug",
+          "GEDA Akku Leiter LIFT"
+        ],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [
+          "autokran-mieten",
+          "anhaengerkran-mieten",
+          "dachdeckerkran-mieten"
+        ],
+        "description_long": "Die Ehrlich Aufzug- und Krantechnik GmbH mit Sitz in Jahnatal (Ortsteil Pulsitz, Sachsen) ist Vertriebs-, Service- und Mietpartner der AMAK-Krane in Deutschland. Das Unternehmen bietet ein umfassendes Programm rund um Auto- und Anhängerkrane, Hebebühnen sowie Aufzugstechnik – sowohl im Verkauf von Neu- und Gebrauchtgeräten als auch in der Vermietung.\n\nDie Vermietflotte umfasst Krane der Baureihen AMAK 28 E bis AMAK 230 E, darunter mehrere vollelektrische Modelle (AMAK 33e E, 35e E, 65e E). Ergänzend stehen fahrbare und anhängbare Hebebühnen, Möbelaufzüge (z. B. Shorty 25 E, Roadrunner 25-29 E, Topworker 25 E), GEDA Schrägaufzüge, Leiterlifte sowie Solarmodulaufzüge zur Verfügung. Für den Krankunden bietet das Unternehmen passendes Zubehör wie Schuttkübel, Ziegelzangen, Ziegelverteiler, Hubarbeitskörbe, Palettengabeln, Dachständer und Solarmodulverteiler an.\n\nTypische Einsatzfelder sind Dachdeckerei, Solarmontage, Bauhandwerk sowie Umzugs- und Logistikbetriebe. Über die Vermietung hinaus betreibt Ehrlich einen eigenen Service mit rund 1.700 m² Werkhallen: Kundendienst, Wartung, Grundüberholungen, Lackierungen sowie sachkundige und sachverständige Prüfungen werden bei Bedarf auch vor Ort durchgeführt. Für die Dauer von Reparatur oder Wartung kann ein Werkstattersatzwagen genutzt werden. Im Ersatzteilservice bevorratet das Unternehmen Komponenten für Auto- und Anhängerkrane, Hebebühnen, Schrägaufzüge und Leiterlifte namhafter Hersteller; Motoren von Honda, Hatz, Yanmar und Kubota werden im Austausch angeboten.\n\nErgänzend bietet Ehrlich die Ausbildung zum Kranführer (Kranführerschein) sowie individuelle Finanzierungslösungen (Kauf, Mietkauf, Leasing) und den Ankauf von Gebrauchtgeräten an. Sonderanfertigungen in Aluminium, etwa Werkzeugkisten und Aluminiumkonstruktionen, runden das Leistungsspektrum ab. Geführt wird das Unternehmen von den Geschäftsführern Uwe Ehrlich und Ronny Ehrlich.",
+        "description_short": "AMAK-Vertriebs-, Service- und Mietpartner für Auto- und Anhängerkrane, Hebebühnen sowie Aufzugstechnik in Sachsen.",
+        "email": "info@ehrlich-krane.com",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "HRB 12243 Amtsgericht Chemnitz",
+        "legal_entity_type": "GmbH",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+493432421954",
+        "price_day_from": null,
+        "service_areas": [
+          "Jahnatal",
+          "Sachsen",
+          "Deutschland"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "AMAK-Krane Vertrieb und Vermietung",
+          "Vollelektrische Krane",
+          "Solarmodulmontage-Logistik",
+          "Dachdecker-Zubehör (Ziegelzangen, Ziegelverteiler)",
+          "Möbelaufzüge",
+          "Kranführer-Ausbildung",
+          "Aluminium-Sonderanfertigungen"
+        ],
+        "ust_id_nummer": "DE248366862"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 3,
+      "usage": {
+        "input_tokens": 9149,
+        "output_tokens": 2644,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "eifrig-keldenich-aufzuege",
+      "id": "9865dc24-925f-43b5-8f37-6028c38c636d",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [
+          "Wartung nach DIN EN 13015"
+        ],
+        "crane_types": [],
+        "description_long": "Die Eifrig & Keldenich Aufzüge mit Sitz in der Kreuzstraße 68 in Braunschweig ist ein Familienunternehmen, das seit 1908 im Bereich Aufzugsbau und Lifte tätig ist. Inhaber ist Dipl. Ing. Theodor Eifrig; das Unternehmen wird in der fünften Generation geführt. Der Tätigkeitsschwerpunkt liegt auf Planung, Fertigung, Einbau, Modernisierung, Wartung und Reparatur von Aufzugs- und Liftanlagen für private, gewerbliche und öffentliche Auftraggeber.\n\nDas Leistungsspektrum umfasst Personen- und Lastenaufzüge, Luxusaufzüge aus Glas und Edelstahl, Krankenaufzüge mit Platz für Betten, Küchenaufzüge, Aufzüge für Akten- und Materialtransport, barrierefreie Lifte sowie Außenaufzüge. Ergänzend bietet das Unternehmen Homelifte, Plattform- und Treppenlifte sowie Hebebühnen für Rollstuhlfahrer an. Jede Anlage wird nach Angaben des Anbieters individuell auf die baulichen Gegebenheiten und die Wünsche der Kunden zugeschnitten.\n\nIm Servicebereich führt Eifrig & Keldenich herstellerunabhängige Reparaturen an Anlagen aller Fabrikate durch und bietet modulare Wartungskonzepte nach DIN EN 13015 an. Zu den weiteren Leistungen zählen Notrufsysteme, eine Servicezentrale sowie proaktive Wartung mit dem Ziel, Ausfallzeiten zu reduzieren und die Lebensdauer der Anlagen zu verlängern. Das Unternehmen legt nach eigener Darstellung Wert auf transparente Kosten und persönliche Betreuung.\n\nGeographisch ist das Unternehmen vor allem in Braunschweig und Umgebung tätig. Hinweis: Eifrig & Keldenich ist ein Anbieter für Aufzüge und Lifte, nicht für Kranvermietung. Hebezeuge wie Mobil-, Auto- oder Dachdeckerkrane gehören nicht zum Portfolio.",
+        "description_short": "Familienunternehmen aus Braunschweig seit 1908 – Aufzugsbau, Lifte, Modernisierung, Wartung und Reparatur.",
+        "email": "info@eifrig-keldenich.com",
+        "extraction_confidence": "high",
+        "founded_year": 1908,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "GmbH",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+49531577088",
+        "price_day_from": null,
+        "service_areas": [
+          "Braunschweig"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Aufzugsbau",
+          "Homelifte",
+          "Plattformlifte",
+          "Treppenlifte",
+          "Rollstuhl-Hebebühnen",
+          "Modernisierung von Aufzügen",
+          "Wartung und Reparatur von Aufzügen"
+        ],
+        "ust_id_nummer": "DE308703980"
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 6993,
+        "output_tokens": 1607,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "esda-geraetetechnik-gmbh",
+      "id": "1b56533b-8979-41f7-a2b2-cc68c1da4263",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen-Vermietung",
+          "PKW-Anhänger-Vermietung",
+          "Holzspalter-Vermietung",
+          "Schrägaufzug-Vermietung",
+          "Bauschuttrutschen-Vermietung",
+          "Dachbaugeräte-Vermietung",
+          "Reparaturservice",
+          "UVV-Prüfung",
+          "Wartung",
+          "Vor-Ort-Service",
+          "Unfallbergung",
+          "Verkauf von Kranen und Baugeräten"
+        ],
+        "associations": [],
+        "brands_models": [
+          "AMAK 28 Alu-Anhängerkran",
+          "AMAK 33 Alu-Anhängerkran",
+          "AMAK 33 E Alu-Anhängerkran",
+          "AMAK 35.3 Alu-Anhängerkran",
+          "AMAK 35.3 E Alu-Anhängerkran",
+          "AMAK 60 Alu-Autokran",
+          "AMAK 65E Alu-Autokran",
+          "AMAK 80.1 Alu-Autokran",
+          "AMAK 170 Alu-Autokran",
+          "AMAK 230 Alu-Autokran",
+          "Schrägaufzug HV 26/6 KA",
+          "Theo 25 Lkw-Arbeitsbühne",
+          "Rudi 21 Lkw-Arbeitsbühne",
+          "Baulift ESGC 250"
+        ],
+        "capacity_range": "bis 7,5 t (AMAK Alu-Autokrane)",
+        "certifications": [
+          "Sachkundigen UVV-Prüfung",
+          "Sachverständigen UVV-Prüfung für Krane",
+          "TÜV-/DEKRA-Hauptuntersuchung und ASU-Abnahme"
+        ],
+        "crane_types": [
+          "autokran-mieten",
+          "anhaengerkran-mieten"
+        ],
+        "description_long": "Die ESDA Gerätetechnik GmbH mit Sitz in Bergisch Gladbach ist in den Bereichen Verkauf, Vermietung und Reparaturservice für Dachbau- und Hebetechnik tätig. Das Unternehmen bietet ein breites Programm aus eigenen ESDA-Produkten sowie den AMAK-Alukranen an. Im Vermietbereich stehen Ihnen Alu-Autokrane und Alu-Anhängerkrane der Marke AMAK, das Clad-Boy-Vakuum-Hebegerät, Teleskop- und Anhänger-Arbeitsbühnen, PKW-Anhänger, Holzspalter sowie Maschinen wie Schrägaufzüge und Steckliftgeräte zur Verfügung. Ergänzend werden Bauschuttrutschen und weitere Dachbaugeräte vermietet.\n\nIm Verkauf führt ESDA AMAK-Alukrane in zehn Modellen vom Anhängerkran AMAK 28 bis zum Autokran AMAK 230 inklusive akku-elektrischer Varianten (AMAK 33 E, 35.3 E, 65E), Schrägaufzüge des Typs HV 26/6 KA, die LKW-Arbeitsbühnen Theo 25 und Rudi 21, Barthau-Anhänger sowie ein umfangreiches Eigenprodukt-Sortiment: Bauschuttrutschen, Dachbaugeräte (z. B. Ziegelboy, Solarboy, Schieferböcke, Dachständer), Schilder, die Flachdach-Absturzsicherung Blitzfix, Baulifte (ESGC 250) sowie Kranzubehör.\n\nDer ESDA-Service umfasst Reparaturen an Alu-Auto- und Alu-Anhängerkranen, Schrägaufzügen und Bauliften aller Marken, PKW-Anhängern, Stromerzeugern und Honda-Industriemotoren. Geboten werden Wartung, Sachkundigen- und Sachverständigen-UVV-Prüfungen für Krane sowie Hauptuntersuchung und ASU-Abnahme durch TÜV oder DEKRA. Ein Vor-Ort-Service inklusive Unfallbergung ergänzt das Angebot.\n\nTypische Kunden sind Dachdecker-, Zimmerei- und Bauhandwerksbetriebe sowie der Fachhandel; der Verkauf erfolgt ausschließlich an gewerbliche Kunden. Die Bürozeiten sind Montag bis Freitag von 8:00 bis 17:00 Uhr, die Vermietung ist Montag bis Freitag von 7:00 bis 16:00 Uhr erreichbar. Das Unternehmen ist im Handelsregister Köln unter HRB 46194 eingetragen und wird von Horst Suhre und Sebastian Suhre vertreten.",
+        "description_short": "ESDA Gerätetechnik in Bergisch Gladbach vermietet, verkauft und repariert AMAK-Alu-Auto- und Anhängerkrane sowie Dachbaugeräte.",
+        "email": "geraetetechnik@esda.de",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "HRB 46194 Amtsgericht Köln",
+        "legal_entity_type": "GmbH",
+        "opening_hours": {
+          "monday": "08:00-17:00",
+          "tuesday": "08:00-17:00",
+          "wednesday": "08:00-17:00",
+          "thursday": "08:00-17:00",
+          "friday": "08:00-17:00",
+          "saturday": null,
+          "sunday": null
+        },
+        "operator_included": null,
+        "phone": "+49220293635-0",
+        "service_areas": [
+          "Bergisch Gladbach",
+          "Deutschland"
+        ],
+        "specialties": [
+          "AMAK-Alukrane (Vertragshändler/Vertrieb)",
+          "Dachdecker-Hebetechnik",
+          "Vakuum-Hebetechnik (Clad Boy)",
+          "UVV-Prüfung für Krane",
+          "Reparatur von Schrägaufzügen und Bauliften"
+        ],
+        "ust_id_nummer": "DE121976255"
+      },
+      "company_update_keys": [
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 15710,
+        "output_tokens": 2570,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "esser-noppeney-gmbh",
+      "id": "ce02fb46-e70b-424f-b2ff-b6cff7487c21",
+      "fetch_status": "ok",
+      "confidence": "low",
+      "extracted": {
+        "additional_services": [],
+        "associations": [
+          "Dachdeckerinnung",
+          "Kreishandwerkerschaft"
+        ],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [
+          "dachdeckerkran-mieten"
+        ],
+        "description_long": "Die Esser & Noppeney GmbH ist ein traditionsreicher Handwerksbetrieb mit Sitz im Gewerbepark Brand in Aachen. Das Unternehmen blickt auf eine rund 60-jährige Firmengeschichte zurück und beschäftigt durchschnittlich zehn Mitarbeiter. Schwerpunkt der Tätigkeit ist das Dachdecker- und Bauklempnerhandwerk in seiner gesamten Bandbreite.\n\nZum Leistungsspektrum gehören Steildach- und Flachdacharbeiten, Gründächer, der Einbau von Velux-Dachfenstern, Balkonabdichtungen, Fassadenbekleidungen, Wärmedämmung, Solarenergie (Solarthermie und Photovoltaik), Blitzschutz sowie Arbeiten im Bereich Denkmalschutz. Ergänzend bietet das Unternehmen einen Kranverleih an, der insbesondere im Zusammenhang mit Dachdeckerarbeiten zum Einsatz kommt.\n\nDie Kunden werden persönlich von den Geschäftsführern Horst Esser und Hardy Noppeney beraten – die fachliche und individuelle Beratung vor Ort wird als Chefsache verstanden. Das Unternehmen legt Wert auf eigene Präsenz an den Baustellen, regelmäßige Schulungen über Innung und Hersteller sowie auf die Ausbildung angehender Dachdeckergesellen. Zu den Referenzen zählen unter anderem eine Trespa-Fassade an der Kita Aachen-Laurensberg sowie ausgezeichnete Fassadenarbeiten – der Betrieb gewann in den Jahren 2005 und 2017 den Fassadenpreis.\n\nBei Fragen rund um Energieeinsparverordnung, Alt-Dachsanierung und entsprechende Fördermöglichkeiten steht das Unternehmen ebenfalls zur Verfügung. Esser & Noppeney ist Mitglied der Dachdeckerinnung und der Kreishandwerkerschaft. Der geographische Fokus liegt auf Aachen und der umliegenden Region. Detaillierte Angaben zur Kranflotte, zu Tragfähigkeiten oder Modellbezeichnungen werden auf der Website nicht veröffentlicht; interessierte Kunden wenden sich für Auskünfte direkt an den Betrieb.",
+        "description_short": "Aachener Dachdecker- und Bauklempnerbetrieb mit eigenem Kranverleih und über 60 Jahren Erfahrung am Dach.",
+        "email": null,
+        "extraction_confidence": "low",
+        "founded_year": null,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "GmbH",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+49241970205",
+        "price_day_from": null,
+        "service_areas": [
+          "Aachen",
+          "Laurensberg"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Dachdeckerarbeiten",
+          "Bauklempnerei",
+          "Flachdachbau",
+          "Gründächer",
+          "Fassadenbekleidung",
+          "Wärmedämmung",
+          "Solarthermie",
+          "Photovoltaik",
+          "Blitzschutz",
+          "Denkmalschutz",
+          "Velux Dachfenster"
+        ],
+        "ust_id_nummer": null
+      },
+      "company_update_keys": [
+        "service_regions",
+        "description"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 2477,
+        "output_tokens": 1978,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "gutkran",
+      "id": "f62f64e9-7f6c-4b6e-9233-6c303496951d",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühne (Mannkorb)"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Klaas K950 RSX"
+        ],
+        "capacity_range": "\"bis 5.000 kg\"",
+        "certifications": [],
+        "crane_types": [
+          "autokran-mieten",
+          "dachdeckerkran-mieten"
+        ],
+        "description_long": "GUTKRAN ist eine Kranvermietung mit Sitz in Laatzen bei Hannover. Der Betrieb stellt einen Klaas K950 RSX Autokran zur Verfügung, der über eine Hakenhöhe von rund 44 m verfügt und Lasten bis 5.000 kg heben kann. So lassen sich beispielsweise 5.000 kg etwa 8,50 m hoch und 6,50 m weit befördern. Der Dreiachser ist lenkbar und besitzt einen geringen Radstand von 3,70 m, was Einsätze in beengten Platzverhältnissen ermöglicht. Eine variable Abstützbasis sowie ein ausfahrbares Gegengewicht erweitern die Einsatzmöglichkeiten in engen Straßen und Hofeinfahrten.\n\nDer Oberwagen ist um 360° endlos drehbar, und die patentierte Klaas Seiltechnik erlaubt zügiges Teleskopieren unter Last. Optional steht ein Mannkorb (Arbeitsbühne) mit 230‑V‑Steckdose zur Verfügung, sodass auch Reparaturarbeiten an Dächern, Dachrinnen, Regenfallrohren und Fassaden möglich sind.\n\nZur Zielgruppe gehören Handwerksbetriebe wie Dachdecker, Zimmerleute, Tischler, Glaser, Metallbauer, Fassaden- und Solarbauer sowie Unternehmen aus Forstwirtschaft, Garten- und Landschaftsbau und Hallenbau. Auch Privatkunden werden bedient, etwa beim Einsetzen von Pools oder bei Baumarbeiten.\n\nDer Kran wird grundsätzlich inklusive Bedienpersonal und aller Betriebskosten vermietet; der Stundensatz beginnt bei 90 € zzgl. MwSt. sowie An- und Abfahrt. Auf Wunsch übernimmt GUTKRAN das Einholen von Sperrflächen-Genehmigungen und das Aufstellen von Verkehrsschildern im öffentlichen Raum.\n\nDas Einsatzgebiet umfasst Hannover und Umgebung. Sie erreichen GUTKRAN telefonisch unter +49 511 10582239 oder per E-Mail an info@gutkran.de.",
+        "description_short": "Kranvermietung aus Laatzen mit Klaas K950 RSX (44 m Hakenhöhe, 5 t) für Hannover und Umgebung – inkl. Bediener.",
+        "email": "info@gutkran.de",
+        "extraction_confidence": "high",
+        "operator_included": true,
+        "phone": "+4951110582239",
+        "price_day_from": null,
+        "service_areas": [
+          "Hannover",
+          "Laatzen",
+          "Region Hannover"
+        ],
+        "specialties": [
+          "Dacharbeiten",
+          "Fassadenarbeiten",
+          "Mannkorb-Einsätze",
+          "Einsätze bei beengten Platzverhältnissen",
+          "Pool-Einbringung",
+          "Baumarbeiten"
+        ]
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 1824,
+        "output_tokens": 1651,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "h-n-krane-gmbh-co-kg",
+      "id": "91d60399-9925-4f02-83b7-deb8531064d4",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Schwerlasttransport",
+          "Transportbegleitung",
+          "Genehmigungsorganisation",
+          "Teleskopstapler-Vermietung",
+          "Roto-Telestapler-Vermietung",
+          "Baggermatten-Vermietung",
+          "Lagerflächen-Vermietung",
+          "Container-Vermietung",
+          "Prüfgewichte-Vermietung",
+          "Krantechnische Beratung"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Magni RTH 8.27",
+          "Effer 955/8S"
+        ],
+        "capacity_range": "3,5 t bis 300 t",
+        "certifications": [],
+        "crane_types": [
+          "minikran-mieten",
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "baukran-mieten",
+          "ladekran-mieten"
+        ],
+        "description_long": "Die H.N. Krane GmbH & Co. KG wurde 1993 von Herbert Nadolny in Groß Schwaß gegründet und hat sich zu einem mittelständischen Dienstleister im Mobilkran- und Schwerlasttransportbereich entwickelt. Das Unternehmen versteht sich als Projektdienstleister und begleitet seine Kunden von der Auftragsannahme über die Organisation der erforderlichen Genehmigungen bis hin zu Transport, Transportbegleitung und Kraneinsatz.\n\nDer eigene Fuhrpark umfasst Teleskop-Autokrane (Straßen- und Geländekrane) von 50 t bis 300 t, Mobilbaukrane (MK) von 88 t bis 140 t, UNIC-Minikrane von 3,5 t bis 8 t sowie Ladekrane der Marken Palfinger und Effer mit 4,9 t bis 15,0 t. Ergänzend stehen drehbare Teleskopstapler (Roto) von 3 t bis 8 t zur Verfügung. Im Transportbereich verfügt H.N. Krane über LKW mit Semitieflader, Tiefbett und Ladearmen; Nutzlasten bis zu 80 Tonnen können mit eigener Technik realisiert werden. Für besonders schwere Aufgaben werden zusätzlich Subunternehmer eingebunden.\n\nZum Leistungsspektrum gehören außerdem die Vermietung von Baggermatten (Bongossiplatten) zur Sicherung von Zufahrtsstraßen und Standflächen auf unwegsamen Baustellen, Lagerflächenvermietung (rund 2.000 m² in Rostock/Brückenweg und Wismar), Container sowie Prüfgewichte.\n\nGeografisch ist H.N. Krane in Norddeutschland mit acht Standorten präsent: Hauptsitz in Groß Schwaß bei Rostock sowie Niederlassungen in Rostock, Stralsund, Wismar (Kritzow), Lübeck, Hamburg und Schwerin und einer Betriebsstätte in Waren (Müritz). Damit deckt das Unternehmen Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg ab. Die Niederlassung Schwerin befindet sich in der Pampower Straße 60.\n\nZu den Kunden zählen kleine und mittelständische Betriebe ebenso wie Großunternehmen aus verschiedenen Wirtschaftsbereichen. Geschäftsführerin ist Karina Wiechmann; das Unternehmen ist im Handelsregister beim Amtsgericht Rostock unter HRA 1102 eingetragen.",
+        "description_short": "Mobilkran- und Schwerlasttransportdienstleister mit Kranen von 3,5 t bis 300 t und acht Standorten in Norddeutschland.",
+        "email": "info@hn-krane.de",
+        "extraction_confidence": "high",
+        "founded_year": 1993,
+        "handelsregister_nummer": "HRA 1102 Amtsgericht Rostock",
+        "legal_entity_type": "GmbH & Co. KG",
+        "operator_included": null,
+        "phone": "+493856173468",
+        "service_areas": [
+          "Schwerin",
+          "Rostock",
+          "Stralsund",
+          "Wismar",
+          "Lübeck",
+          "Hamburg",
+          "Waren (Müritz)",
+          "Groß Schwaß",
+          "Mecklenburg-Vorpommern",
+          "Schleswig-Holstein"
+        ],
+        "specialties": [
+          "Mobilkran-Einsätze",
+          "Schwerlasttransporte bis 80 t Nutzlast",
+          "Projektdienstleistung inkl. Genehmigungsorganisation",
+          "Transportbegleitung"
+        ],
+        "ust_id_nummer": "DE813413662"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 5,
+      "usage": {
+        "input_tokens": 8202,
+        "output_tokens": 1952,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "heinrichs-gmbh-co-kg",
+      "id": "13492a7c-bb54-4a4f-a746-7f198f03d2bc",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Transport",
+          "Montage",
+          "Demontage",
+          "Bergungen",
+          "Partnerarbeiten"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": "30t – 220t",
+        "certifications": [],
+        "crane_types": [
+          "autokran-mieten",
+          "mobilkran-mieten"
+        ],
+        "description_long": "Die Heinrichs GmbH & Co. KG mit Sitz in Lichtenau (Nordrhein-Westfalen) ist ein Familienunternehmen, das auf Kranvermietung und Kranarbeiten spezialisiert ist. Unter dem Namen Heinrichs-Kran bietet das Unternehmen Hebearbeiten mit Autokranen im Hubkraftbereich von 30 bis 220 Tonnen an und deckt damit sowohl kompakte Einsätze in dicht bebauten Gebieten als auch größere Projekte im Hoch- und Tiefbau ab.\n\nZu den Leistungen zählen klassische Kranarbeiten, Montage- und Demontagearbeiten, Bergungen, Transporte sowie sogenannte Partnerarbeiten. Der Fuhrpark wird laufend modernisiert und gewartet, um Zuverlässigkeit und Sicherheit auf den Baustellen zu gewährleisten. Die Kranführer verfügen nach Unternehmensangaben über langjährige Erfahrung und werden kontinuierlich weitergebildet.\n\nZu den typischen Kunden zählen Bauträger, Maschinenhändler sowie Privatkunden, die professionelle Hebetechnik einschließlich Bedienung benötigen. Das Unternehmen beschreibt seine Arbeitsweise als lösungs- und kundenorientiert und bietet eine kostenlose Erstberatung an. Auch kurzfristige Anpassungen im Projektablauf können dank des breit aufgestellten Fuhrparks umgesetzt werden.\n\nGeografisch bedient Heinrichs-Kran die Regionen Westfalen, Ostwestfalen-Lippe, Hessen sowie den Hochsauerlandkreis. Zu den Einsatzorten gehören unter anderem Bielefeld, Paderborn, Lippstadt, Detmold, Lemgo, Geseke, Büren, Marsberg, Brilon, Korbach, Warburg, Willingen, Bad Arolsen, Salzkotten, Delbrück und viele weitere Städte und Gemeinden im erweiterten Umkreis des Firmensitzes.\n\nGeschäftsführer ist Thomas Heinrichs, vertretungsberechtigt zudem Heinrich Heinrichs. Das Unternehmen ist im Handelsregister beim Amtsgericht Paderborn unter HRA 5748 eingetragen. Heinrichs-Kran verweist auf eine langjährige Erfahrung in der Autokranvermietung und versteht sich als verlässlicher Partner für Hebe- und Transportaufgaben in Ostwestfalen-Lippe und angrenzenden Regionen.",
+        "description_short": "Autokranvermietung mit Hubkräften von 30 bis 220 Tonnen aus Lichtenau für Westfalen, OWL, Hessen und Hochsauerland.",
+        "email": "info@heinrichs-kran.de",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "HRA 5748 Amtsgericht Paderborn",
+        "legal_entity_type": "GmbH & Co. KG",
+        "operator_included": true,
+        "phone": "+4952959229002",
+        "service_areas": [
+          "Lichtenau",
+          "Bielefeld",
+          "Paderborn",
+          "Westfalen",
+          "Ostwestfalen-Lippe",
+          "Hessen",
+          "Hochsauerlandkreis",
+          "Lippstadt",
+          "Horn-Bad Meinberg",
+          "Lemgo",
+          "Geseke",
+          "Büren",
+          "Marsberg",
+          "Steinheim",
+          "Bad Arolsen",
+          "Olsberg",
+          "Twistetal",
+          "Willingen",
+          "Detmold",
+          "Brilon",
+          "Erwitte",
+          "Lage",
+          "Anröchte",
+          "Borgentreich",
+          "Hofgeismar",
+          "Brakel",
+          "Willebadessen",
+          "Diemelsee",
+          "Volkmarsen",
+          "Bestwig",
+          "Warburg",
+          "Korbach",
+          "Blomberg",
+          "Schieder-Schwalenberg",
+          "Barntrup",
+          "Dörentrup",
+          "Rietberg",
+          "Schloß Holte-Stukenbrock",
+          "Oerlinghausen",
+          "Bad Driburg",
+          "Breuna",
+          "Delbrück",
+          "Nieheim",
+          "Salzkotten",
+          "Liebenau",
+          "Beverungen"
+        ],
+        "specialties": [
+          "Kranarbeiten",
+          "Bergungen",
+          "Montage und Demontage",
+          "Transporte"
+        ],
+        "ust_id_nummer": "DE265645304"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 8988,
+        "output_tokens": 1996,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "herkules-lift-leipzig-gmbh",
+      "id": "11481cf7-b127-4276-b0bb-7afda80fb3c4",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen-Vermietung",
+          "Anhängerbühnen",
+          "LKW-Bühnen",
+          "Scherenbühnen",
+          "Mastbühnen",
+          "Aluminiumrollgerüste (auf Anfrage)"
+        ],
+        "associations": [],
+        "brands_models": [
+          "DINO 150T",
+          "DINO 180XT",
+          "DINO 260XTD",
+          "Scherenbühne SJIII3226",
+          "Scherenbühne SJIII4632",
+          "SINOBOOM ML-10 EJ"
+        ],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Die Herkules-Lift Leipzig GmbH ist ein 1990 gegründetes Vermietungsunternehmen mit Sitz in Leipzig und auf die Vermietung von Arbeitsbühnen spezialisiert. Das Sortiment umfasst Anhängerbühnen, LKW-Arbeitsbühnen, Scherenbühnen sowie Mastbühnen für Arbeitshöhen von rund 10 bis 30 Metern. Auf Anfrage stehen zusätzlich Aluminiumrollgerüste zur Verfügung.\n\nIm Bereich der Anhängerbühnen kommen Geräte des Herstellers DINO zum Einsatz, darunter die Modelle DINO 150T (15 m Arbeitshöhe), DINO 180XT (18 m) und DINO 260XTD (26 m). Bei den LKW-Arbeitsbühnen stehen Fahrzeuge mit 3,5 t bis 7,5 t zulässigem Gesamtgewicht und Arbeitshöhen von 12 m bis 30 m bereit, darunter Knickarm-, Teleskop- und Gelenk-Teleskop-Ausführungen auf Mercedes- und MAN-Fahrgestellen. Im Bereich der Scheren- und Mastbühnen sind unter anderem die Modelle SJIII3226, SJIII4632 sowie die Mastbühne SINOBOOM ML-10 EJ verfügbar. Die Bühnen erreichen je nach Modell Korbbelastungen von bis zu 320 kg.\n\nZielgruppe sind vor allem gewerbliche Kunden wie Maler, Glas- und Gebäudereiniger sowie die öffentliche Hand, etwa für Aufgaben in der Baumpflege. Auch Privatkunden zählen zunehmend zum Kundenkreis. Typische Einsatzbereiche der Arbeitsbühnen sind Fassadenarbeiten, Dacharbeiten, Wartung von Straßenbeleuchtung, Messebau sowie die Anbringung von Werbeplakaten.\n\nDer geographische Fokus liegt auf Leipzig und Umgebung. Anfragen können per Telefon, E-Mail oder über das Online-Mietanfrageformular gestellt werden. Die Geschäftszeiten sind Montag bis Freitag von 07:00 bis 17:00 Uhr, samstags nach Vereinbarung. Hinweis: Die Herkules-Lift Leipzig GmbH bietet ausschließlich Arbeitsbühnen an, jedoch keine Kranvermietung.",
+        "description_short": "Vermietung von Anhänger-, LKW-, Scheren- und Mastbühnen mit Arbeitshöhen bis 30 m in Leipzig seit 1990.",
+        "email": "herkules-lift-leipzig@t-online.de",
+        "extraction_confidence": "high",
+        "founded_year": 1990,
+        "handelsregister_nummer": "HRB 36881 Amtsgericht Leipzig",
+        "legal_entity_type": "GmbH",
+        "opening_hours": {
+          "monday": "07:00-17:00",
+          "tuesday": "07:00-17:00",
+          "wednesday": "07:00-17:00",
+          "thursday": "07:00-17:00",
+          "friday": "07:00-17:00",
+          "saturday": "auf Anfrage",
+          "sunday": null
+        },
+        "operator_included": null,
+        "phone": "+493414790355",
+        "service_areas": [
+          "Leipzig"
+        ],
+        "specialties": [
+          "Arbeitsbühnenvermietung",
+          "Fassadenarbeiten",
+          "Dacharbeiten",
+          "Straßenbeleuchtung",
+          "Messebau",
+          "Baumpflege"
+        ]
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 6425,
+        "output_tokens": 1862,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "joachim-appel-gbr",
+      "id": "7dd05cd1-f46b-4e92-b9b5-618ae1dda394",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [],
+        "associations": [],
+        "brands_models": [],
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Die Joachim Appel GbR (Inhaber Rainer Quenzel) mit Sitz in Hannover ist ein spezialisierter Dienstleister für Aufzugsanlagen und seit 1976 tätig. Das Unternehmen kümmert sich um Wartung, Instandhaltung und Reparatur von Fahrstühlen und Lastenaufzügen – unabhängig von Marke, Typ und Ausführung. Drei qualifizierte Mitarbeiter betreuen Kunden in Hannover, der Region sowie im norddeutschen Raum.\n\nIm Mittelpunkt der Leistungen steht die regelmäßige Wartung von Aufzügen einschließlich Gefahrenanalyse und schneller Behebung von Havarien. Ein Wartungsvertrag mit dem Unternehmen unterstützt Betreiber dabei, die Vorgaben der Betriebssicherheitsverordnung einzuhalten, einschließlich der jährlichen Überprüfung der Anlage durch Sachverständige. Daneben bietet das Unternehmen einen 24-Stunden-Notdienst, der über eine GSM-Sprechverbindung erreichbar ist; im Bedarfsfall wird eine Notbefreiung eingeleitet.\n\nHinweis: Die Joachim Appel GbR bietet ausweislich der Website keinen Kranverleih an. Das Leistungsspektrum konzentriert sich ausschließlich auf den Kundendienst rund um Aufzugsanlagen (Fahrstühle, Lastenaufzüge). Für Kranvermietung in Hannover und Umgebung sind andere Anbieter zuständig.",
+        "description_short": "Spezialisierter Aufzugs-Kundendienst aus Hannover mit Wartung, Reparatur und 24-Stunden-Notdienst seit 1976.",
+        "email": "appel-aufzuege@t-online.de",
+        "extraction_confidence": "high",
+        "founded_year": 1976,
+        "legal_entity_type": "GbR",
+        "opening_hours": {
+          "monday": "08:00-16:00",
+          "tuesday": "08:00-16:00",
+          "wednesday": "08:00-16:00",
+          "thursday": "08:00-16:00",
+          "friday": "08:00-16:00",
+          "saturday": null,
+          "sunday": null
+        },
+        "phone": "+49511635475",
+        "service_areas": [
+          "Hannover",
+          "Region Hannover",
+          "Norddeutschland"
+        ],
+        "specialties": [
+          "Aufzugswartung",
+          "Aufzugsreparatur",
+          "24-Stunden-Notdienst",
+          "GSM-Notrufanbindung",
+          "Fahrstühle",
+          "Lastenaufzüge"
+        ]
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 2600,
+        "output_tokens": 1275,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "kone",
+      "id": "dec061bf-feac-4b7b-a593-3d0915bfb7fe",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [],
+        "associations": [],
+        "brands_models": [],
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "KONE ist ein international tätiger Hersteller und Servicepartner für Aufzüge, Rolltreppen, Rollsteige sowie automatische Türen und Tore. Das Unternehmen bietet Lösungen für Neubauten und Bestandsgebäude, darunter Planung und Einbau neuer Anlagen, Modernisierung, Reparatur, Komplettaustausch sowie herstellerunabhängige Wartung. Ergänzt wird das Portfolio durch digitale Services wie KONE 24/7 Connect (vorausschauende Wartung), KONE Access (Gebäudezugang), KONE Destination (Zielwahlsteuerung), KONE Infotainment und KONE Monitoring. Der Standort in Kiel (Willy-Brandt-Ufer 10, 24143 Kiel) ist eine Niederlassung der KONE GmbH mit Hauptsitz in Hannover (Vahrenwalder Str. 317, 30179 Hannover) und betreut Kunden in Kiel und Umgebung bei Einbau, Wartung und Reparatur von Aufzügen, Rolltreppen und Automatiktüren. Typische Kunden sind Wohnungswirtschaft, Hausverwaltungen, Eigentümergemeinschaften, Facility Manager, Bauunternehmer, Architekten sowie Betreiber von Bürogebäuden, Hotels, Einzelhandel, Gesundheitseinrichtungen und öffentlichem Verkehr. KONE bietet keinen Kranverleih an. Das Unternehmen ist daher kein Anbieter im Sinne eines Kranvermietungsportals, sondern ein Aufzugs- und Rolltreppenhersteller mit Service- und Modernisierungsleistungen. Für Notfälle und Kundenservice ist eine 24/7-Hotline unter 0800 880 11 88 erreichbar; Anfragen per E-Mail erreichen das Unternehmen unter service.de@kone.com.",
+        "description_short": "KONE-Niederlassung Kiel: Einbau, Wartung, Reparatur und Modernisierung von Aufzügen, Rolltreppen und Automatiktüren.",
+        "email": "service.de@kone.com",
+        "extraction_confidence": "high",
+        "legal_entity_type": "GmbH",
+        "phone": "+49800880118",
+        "service_areas": [
+          "Kiel",
+          "Schleswig-Holstein"
+        ],
+        "specialties": [
+          "Aufzüge",
+          "Rolltreppen",
+          "Rollsteige",
+          "Automatiktüren",
+          "Aufzugswartung",
+          "Aufzugsmodernisierung",
+          "Nachträglicher Aufzugseinbau",
+          "Digitale Gebäudelösungen"
+        ]
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 49559,
+        "output_tokens": 1283,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "krandienst-kunze-e-k",
+      "id": "b892dd0a-a1ed-4ed2-8878-792ba2e85057",
+      "fetch_status": "ok",
+      "confidence": "\"high\"",
+      "extracted": {
+        "additional_services": [
+          "Transport",
+          "Sondertransport",
+          "Maschineneinbringung",
+          "Maschinenumzüge",
+          "Einholung von Sondergenehmigungen",
+          "Transportbegleitung",
+          "Gestellung Prüfballast",
+          "Gestellung Personenkorb"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Liebherr LTM 1230-5.1",
+          "Liebherr LTC 1050-3.1",
+          "Liebherr MK 88 Plus"
+        ],
+        "capacity_range": "\"30t – 230t\"",
+        "certifications": [],
+        "crane_types": [
+          "mobilkran-mieten",
+          "autokran-mieten"
+        ],
+        "description_long": "\"Die Krandienst Kunze e.K. mit Sitz in Radeberg bei Dresden ist ein inhabergeführtes, mittelständisches Unternehmen für Kranleistungen und Transporte im Großraum Sachsen. Inhaber Dirk Kunze und sein Team bieten Hebe- und Transportarbeiten rund um das Heben schwerer, sperriger und wertvoller Lasten an.\\n\\nDie Mobilkran-Flotte deckt Traglasten von 30 bis 230 Tonnen ab und ermöglicht Einsätze bis zu einer Höhe von rund 120 Metern. Zur Flotte gehören unter anderem der Liebherr LTM 1230-5.1 mit 230 t Tragfähigkeit und 75 m Teleskopausleger als größter Kran im Portfolio, der kompakte Taxikran Liebherr LTC 1050-3.1 mit 45 t Tragkraft für beengte Einsatzorte sowie der Mobilbaukran Liebherr MK 88 Plus mit 45 m Ausleger und einer Hakenhöhe von bis zu 59,1 m. Die Krane sind für den kombinierten Straßen- und Geländeeinsatz geeignet.\\n\\nZu den typischen Einsatzfeldern zählen Turmdrehkranmontagen, Anlagenmontagen (z. B. Regalbediengeräte in Logistikzentren, Industrieroboter, Pressen), Brückenmontagen und Brückeneinhübe, Maschineneinbringungen sowie Einsätze bei Rettungs- und Katastrophenfällen. Zu den Kunden gehören Unternehmen aus den Bereichen Anlagenbau, Stahlbau, Industrie, chemische Industrie, Bauwirtschaft, Erneuerbare Energien sowie Logistik – vom kleinen Betrieb bis zum Großunternehmen.\\n\\nAuf Wunsch übernimmt das Unternehmen einen Komplettservice, der Vorbesichtigung am Einsatzort, Kranstudien, Einsatzplanung und das Einholen behördlicher Genehmigungen umfasst. Auch das Absperren von Straßenabschnitten und die Abstimmung mit Behörden und Ämtern gehören zum Leistungsspektrum. Ergänzend werden Prüfballast und Personenkorb gestellt sowie Transporte und Transportbegleitungen organisiert. Geografischer Schwerpunkt ist der Großraum Sachsen mit Radeberg und Dresden als Ausgangspunkten.\"",
+        "description_short": "\"Inhabergeführter Krandienst aus Radeberg mit Liebherr-Mobilkranen von 30 bis 230 t für Industrie und Bau in Sachsen.\"",
+        "email": "\"info@kunze-krandienst.de\"",
+        "extraction_confidence": "\"high\"",
+        "founded_year": null,
+        "handelsregister_nummer": "\"HRA 5841 Amtsgericht Dresden\"",
+        "legal_entity_type": "\"e.K.\"",
+        "opening_hours": null,
+        "operator_included": true,
+        "phone": "\"+493528445016\"",
+        "price_day_from": null,
+        "service_areas": [
+          "Radeberg",
+          "Dresden",
+          "Sachsen"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Turmdrehkranmontagen",
+          "Anlagenmontagen",
+          "Brückenmontagen / Brückeneinhub",
+          "Maschineneinbringung",
+          "Einsätze bei Rettungs- und Katastrophenfällen",
+          "Schwerlasthebearbeiten",
+          "Komplettservice mit Kranstudien und Einsatzplanung"
+        ],
+        "ust_id_nummer": "\"DE242041784\""
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 10622,
+        "output_tokens": 2160,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "krane-kueper",
+      "id": "5d8369a1-074f-4051-b32d-c65e3a78dc9a",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [],
+        "associations": [],
+        "brands_models": [
+          "MAN 8.180 Böcker Kran 35/3000",
+          "Mercedes-Benz 815 Emminghaus Kran E30",
+          "Mercedes Böcker-Kran 32/2000",
+          "MAN Böcker 32/1200"
+        ],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Krane Küper ist ein Nutzfahrzeughandel mit Sitz in Lohne (Oldenburg), der sich auf den An- und Verkauf von gebrauchten LKW mit Kran spezialisiert hat. Inhaber ist Karl-Heinz Küper. Das Unternehmen handelt mit Montage- und Alukranen sowie weiteren Krantypen, darunter Ladekrane, Mobilkrane, Dachdeckerkrane, Autokrane, Teleskopkrane und komplette LKW mit Kran.\n\nIm Angebot finden Sie nach Angaben der Firma Modelle bekannter Hersteller wie Palfinger, Böcker, Klaas, Emminghaus Autokrane sowie F.A.S Krantechnik. Die angebotenen Fahrzeuge eignen sich nach Darstellung der Firma für unterschiedliche Einsatzbereiche, beispielsweise für Zimmerer, Dachdecker, Montagearbeiten oder den Hallenbau. Die Angebotsliste wird laufend aktualisiert; vergangene Inserate umfassten unter anderem MAN- und Mercedes-Fahrgestelle mit Böcker- und Emminghaus-Kranen.\n\nNeben dem Verkauf bietet Krane Küper auch den Ankauf gebrauchter Kranfahrzeuge an. Interessenten können über das Kontaktformular eine Fahrzeugbeschreibung und Preisvorstellung übermitteln; das Unternehmen meldet sich anschließend zurück.\n\nHinweis: Krane Küper ist ein Handelsbetrieb für gebrauchte Kranfahrzeuge und kein klassischer Kranvermieter. Eine Vermietung von Kranen wird auf der Website nicht ausgewiesen. Interessenten, die einen Kran kaufen oder verkaufen möchten, erreichen das Unternehmen telefonisch oder per E-Mail über die im Impressum hinterlegten Kontaktdaten.",
+        "description_short": "Nutzfahrzeughandel in Lohne (Oldenburg) für An- und Verkauf gebrauchter LKW mit Kran namhafter Hersteller.",
+        "email": "info@krane-kueper.de",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "Einzelunternehmen",
+        "operator_included": null,
+        "phone": "+49444271105",
+        "price_day_from": null,
+        "service_areas": [
+          "Lohne (Oldenburg)"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "An- und Verkauf gebrauchter LKW mit Kran",
+          "Handel mit Montagekranen und Alukranen",
+          "Gebrauchtkranhandel"
+        ],
+        "ust_id_nummer": null
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 5660,
+        "output_tokens": 1528,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "kranprofi",
+      "id": "8a573810-d738-40ad-af22-522212bf8b1a",
+      "fetch_status": "ok",
+      "confidence": "low",
+      "extracted": {
+        "crane_types": [
+          "autokran-mieten"
+        ],
+        "specialties": [],
+        "brands_models": [],
+        "service_areas": [
+          "Lübeck",
+          "Stockelsdorf",
+          "Norddeutschland"
+        ],
+        "additional_services": [],
+        "certifications": [],
+        "associations": [],
+        "description_short": "Autokran-Vermietung aus Stockelsdorf bei Lübeck mit drei eigenen Kranen, 24/7 verfügbar in Norddeutschland.",
+        "description_long": "Die Firma KranProfi (Erik K. C. Hornemann e.K., Inhaber Jens Hornemann) mit Sitz in der Waldenburger Straße 2 in 23617 Stockelsdorf bei Lübeck ist ein Kranvermietungsbetrieb für Norddeutschland. Das Unternehmen verfügt nach eigenen Angaben über drei eigene Autokrane und bietet Kranarbeiten aller Art an, insbesondere wenn es darum geht, große Gewichte zu bewegen.\n\nDie Autokrane stehen rund um die Uhr an sieben Tagen die Woche zur Verfügung. Eine 24-Stunden-Hotline ermöglicht Kunden eine zeitnahe Beauftragung auch außerhalb üblicher Geschäftszeiten. Als Betrieb mit kleiner Verwaltungsstruktur legt KranProfi den Fokus auf Pünktlichkeit und wirtschaftliche Arbeitspreise.\n\nDie Mitarbeiter sind nach Angaben des Unternehmens im Umgang mit den Kranen erfahren und auf die Anforderungen des täglichen Hebebetriebs eingestellt. Zu den typischen Auftraggebern zählen Unternehmer und Bauherren, die für ihre Projekte zuverlässige Hebetechnik benötigen. Eine Beratung vor Ort gehört zum Leistungsspektrum, wie die Galerie auf der Website zeigt.\n\nDer geographische Schwerpunkt liegt im Großraum Lübeck/Stockelsdorf sowie im weiteren norddeutschen Raum. Über das Kontaktformular auf der Website oder telefonisch unter (0451) 49 89 336 können Interessenten Anfragen für Kraneinsätze stellen. Detaillierte Angaben zur Flotte, zu konkreten Krantypen, Tragfähigkeiten oder Auslegerlängen werden auf der Website nicht veröffentlicht; Anfragen sollten daher direkt mit dem Anbieter abgestimmt werden.",
+        "extraction_confidence": "low",
+        "email": "kranprofi@yahoo.de",
+        "phone": "+4945149893 36",
+        "legal_entity_type": "e.K.",
+        "operator_included": true
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 1383,
+        "output_tokens": 1216,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "kranservice-schlug",
+      "id": "83a15225-5988-4631-9a93-37a983ab991c",
+      "fetch_status": "ok",
+      "confidence": "low",
+      "extracted": {
+        "additional_services": [
+          "Zubehör-Verleih"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [
+          "Dachdeckermeister"
+        ],
+        "crane_types": [
+          "dachdeckerkran-mieten"
+        ],
+        "description_long": "Kranservice Schlug aus Wachtberg im Rhein-Sieg-Kreis ist ein inhabergeführter Betrieb von Dachdeckermeister Tobias Schlug. Das Unternehmen bietet die Vermietung von Mietkranen sowie passendem Zubehör an und richtet sich an Kunden im Großraum Wachtberg und Umgebung.\n\nAuf der Website werden ein Mietkran-Verleih sowie ein Zubehör-Verleih als Kernleistungen genannt. Die genauen technischen Daten der Krane (Tragkraft, Reichweite, Hersteller, Modelle) sind auf der Website nicht im Detail aufgeführt. Da der Inhaber Dachdeckermeister ist, eignet sich das Angebot insbesondere für Arbeiten rund um Dach, Fassade und Materialtransport in die Höhe.\n\nTypische Einsatzbereiche sind handwerkliche Projekte, bei denen Lasten sicher und effizient bewegt werden müssen, beispielsweise bei Dacharbeiten, Sanierungen oder ähnlichen Bauvorhaben. Auf der Website wird ausdrücklich auf einen Verleih hingewiesen, der sich an unterschiedliche Kundengruppen richtet.\n\nDer geographische Fokus liegt klar auf Wachtberg und den umliegenden Gebieten. Als Ansprechpartner steht Inhaber Tobias Schlug persönlich zur Verfügung. Für eine unverbindliche Beratung können Interessenten telefonisch, mobil, per E-Mail oder über WhatsApp Kontakt aufnehmen. Die Geschäftszeiten sind Montag bis Freitag von 7:00 bis 16:00 Uhr.\n\nKranservice Schlug positioniert sich als regionaler, persönlich geführter Dienstleister mit dem Anspruch, „schwere Arbeit leicht gemacht\" zu ermöglichen. Da es sich um einen kleinen, lokal verankerten Betrieb handelt, profitieren Kunden von kurzen Wegen und direktem Kontakt zum Inhaber. Detaillierte Angaben zur Flotte sowie Preise sind auf Anfrage bzw. über die entsprechenden Unterseiten der Website verfügbar.",
+        "description_short": "Inhabergeführter Mietkran- und Zubehörverleih von Dachdeckermeister Tobias Schlug im Großraum Wachtberg.",
+        "email": "info@kranservice-schlug.de",
+        "extraction_confidence": "low",
+        "founded_year": null,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "Einzelunternehmen",
+        "opening_hours": {
+          "monday": "07:00-16:00",
+          "tuesday": "07:00-16:00",
+          "wednesday": "07:00-16:00",
+          "thursday": "07:00-16:00",
+          "friday": "07:00-16:00",
+          "saturday": null,
+          "sunday": null
+        },
+        "operator_included": null,
+        "phone": "+4922824011302",
+        "price_day_from": null,
+        "service_areas": [
+          "Wachtberg",
+          "Wachtberg und Umgebung"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Mietkran-Verleih",
+          "Zubehör-Verleih"
+        ],
+        "ust_id_nummer": null
+      },
+      "company_update_keys": [
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 3535,
+        "output_tokens": 1687,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "leih-kraft",
+      "id": "fdea1852-de44-41f2-a0c9-d4d189932e53",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Anhängervermietung",
+          "Dachboxvermietung",
+          "Heckboxvermietung",
+          "Fahrradträgervermietung",
+          "Lieferung gegen Aufpreis (0,80 €/km)"
+        ],
+        "associations": [],
+        "brands_models": [
+          "KAMEI Base 400",
+          "Thule Arcos M",
+          "Thule Arcos L",
+          "Thule Arcos XL",
+          "Thule Onto"
+        ],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Leih.Kraft ist ein kleiner regionaler Vermietungsservice mit Sitz in der Nibelungenstraße im Braunschweiger Stadtteil Nordstadt. Inhaber ist Peter Vogt, der das Unternehmen als Kleinunternehmer im Sinne der Umsatzsteuerregelung führt. Der Schwerpunkt liegt auf der Vermietung von Transport- und Stauraumlösungen rund um das Auto: Dachboxen, Heckboxen, Dachträger, Fahrradträger sowie PKW-Anhänger (750 kg, auch gebremst). Klassische Einsatzbereiche sind Urlaubsfahrten, Umzüge sowie der Transport von Möbeln oder Sperrgut. Im Sortiment befinden sich unter anderem Produkte der Marken KAMEI (offizieller Fachhändler für Miete und Kauf) sowie Thule, darunter die Modelle KAMEI Base 400 und Thule Arcos M/L/XL. Die Mietpreise beginnen laut Website ab 20 €/Tag für Anhänger, ab 39 €/Woche für Fahrradträger, ab 70 €/Woche für Dachboxen und ab 89 €/Woche für Heckboxen. Übergabe und Rückgabe erfolgen flexibel nach Abstimmung; die Zahlung ist in bar, per EC-, Kreditkarte oder PayPal möglich. Für jede Buchung wird ein gültiges Ausweisdokument benötigt, zudem ist eine Kaution zwischen 50 und 100 € je nach Produkt zu hinterlegen. In Einzelfällen ist eine Lieferung gegen einen Kilometerpreis von 0,80 € möglich; ansonsten erfolgt die Selbstabholung am Standort in Braunschweig. Hinweis: Leih.Kraft bietet ausdrücklich keine Kranvermietung an. Das Angebot beschränkt sich auf Fahrzeugzubehör und PKW-Anhänger. Für Hebearbeiten, Dachdeckerkrane oder Mobilkrane ist dieser Anbieter nicht zuständig.",
+        "description_short": "Regionale Vermietung von Dachboxen, Heckboxen, Fahrradträgern und PKW-Anhängern in Braunschweig – keine Kranvermietung.",
+        "email": "kontakt@leihkraft-bs.de",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "Einzelunternehmen",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+49151295295555",
+        "price_day_from": 20,
+        "service_areas": [
+          "Braunschweig"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Vermietung von Dachboxen",
+          "Vermietung von Heckboxen",
+          "Vermietung von Fahrradträgern",
+          "Vermietung von PKW-Anhängern",
+          "KAMEI Fachhändler"
+        ],
+        "ust_id_nummer": null
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "service_regions",
+        "price_day_from",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 6216,
+        "output_tokens": 1672,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "lifttechnik-fritsche-gmbh",
+      "id": "55fbb11a-79bc-4ed5-bcce-a7739046d952",
+      "fetch_status": "robots_disallow"
+    },
+    {
+      "slug": "mentner-krane-m-l-gmbh",
+      "id": "74fa3524-7674-4c10-8311-ce19a9fd857b",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Krantransporte",
+          "Maschinenumsetzungen",
+          "Containertransport",
+          "Spezialtransporte",
+          "Baumfällung und Baumbesteigung",
+          "Glasmontagen",
+          "Arbeitsbühnen",
+          "Gabelstapler",
+          "Schwerlastrollsysteme",
+          "Schwerlasthebesysteme",
+          "Personenarbeitskorb"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Jekko SPX 532",
+          "Jekko JF 235",
+          "Jekko JF 545.2",
+          "UNIC URW-094",
+          "UNIC B-345",
+          "UNIC B-350",
+          "UNIC B-506-5.1",
+          "UNIC B-506-5.2",
+          "UNIC B-780.3",
+          "Multiloader JML 25",
+          "Multi-Loader 6.0 Bi-Energy",
+          "Liebherr LTM 1030-2.1",
+          "Liebherr LTM 1050-3.1",
+          "Liebherr LTM 1070-4.2",
+          "KATO CR-130Ri",
+          "KATO CR-200Rf",
+          "Smartlift Outdoor 380",
+          "Smartlift SL 1008 Outdoor",
+          "Sunward SWA 16JE",
+          "STILL R70-35",
+          "Volvo FH 64R",
+          "Volvo FH 460",
+          "Mercedes-Benz 3248",
+          "Mercedes-Benz 25.44"
+        ],
+        "capacity_range": "\"bis 8 t (Minikran)\"",
+        "certifications": [],
+        "crane_types": [
+          "minikran-mieten",
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "raupenkran-mieten",
+          "ladekran-mieten"
+        ],
+        "description_long": "Die Mentner-Krane M&L GmbH mit Sitz in Meißen (Sachsen) ist auf die Vermietung von Mini-, Raupen- und Mobilkranen spezialisiert. Geschäftsführender Gesellschafter ist Armin Mentner. Das Unternehmen versteht sich als Minikran-Spezialist und betreibt eine Flotte unterschiedlicher Klassen: Minikrane der Hersteller Jekko (SPX 532, JF 235, JF 545.2) und UNIC (URW-094, B-345, B-350, B-506-5.1/5.2, B-780.3), Raupenlader vom Typ Multiloader sowie Autokrane bzw. Mobilkrane von Liebherr (LTM 1030-2.1, LTM 1050-3.1, LTM 1070-4.2) und KATO-Citykrane (CR-130Ri, CR-200Rf). Ergänzt wird die Flotte durch Sattelzugmaschinen und Plateau-LKW (Volvo FH, Mercedes-Benz), einen STILL-Gabelstapler sowie eine Sunward-Gelenkteleskopbühne.\n\nDie Minikrane benötigen lediglich 60 bis 160 cm Durchfahrtsbreite und können Lasten von bis zu 8 Tonnen heben. Durch Doppelantriebe (Verbrennungs- und Elektro-/Gasantrieb) sind emissionsfreie Einsätze in Innenräumen ebenso möglich wie Außeneinsätze. Funkfernsteuerung aus bis zu 100 Metern Entfernung erlaubt präzises Arbeiten an Hanglagen, in Hallen und auf verwinkelten Stellplätzen.\n\nZu den Kranleistungen zählen Maschinenumsetzungen, Containertransporte, Spezialtransporte, Krantransporte, Baumfällungen und Baumbesteigungen sowie Glasmontagen, für die ein umfangreiches Zubehörportfolio aus Vakuumtechnik (Smartlift, Glassauger 320–800 kg, Glaswagen), Traversen, Hebebändern und Schwerlastsystemen zur Verfügung steht. Auf Wunsch wird der Kran mit ausgebildetem Kranführer gestellt.\n\nGeografisch ist die Firma deutschlandweit tätig, mit Einsatzschwerpunkten in Sachsen (Dresden, Leipzig, Chemnitz), Brandenburg (Cottbus, Potsdam), Berlin, Sachsen-Anhalt (Halle, Magdeburg) und Thüringen (Erfurt, Jena). Krantransporte werden europaweit angeboten. Typische Einsatzfelder sind Glas- und Balkonmontagen, Pool-Einhebungen, Wintergartenbau, Dach- und Fassadenarbeiten, Kraftwerks- und Stahlbau sowie Restaurationsobjekte.",
+        "description_short": "Minikran-Spezialist aus Meißen mit Jekko- und UNIC-Minikranen sowie Liebherr- und KATO-Autokranen, deutschlandweit im Einsatz.",
+        "email": "info@mentner-krane.de",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "\"HRA 42483 Amtsgericht Dresden\"",
+        "legal_entity_type": "\"GmbH\"",
+        "opening_hours": null,
+        "operator_included": true,
+        "phone": "\"+493521406762\"",
+        "price_day_from": null,
+        "service_areas": [
+          "Meißen",
+          "Dresden",
+          "Leipzig",
+          "Chemnitz",
+          "Sachsen",
+          "Berlin",
+          "Brandenburg",
+          "Cottbus",
+          "Potsdam",
+          "Sachsen-Anhalt",
+          "Halle",
+          "Magdeburg",
+          "Thüringen",
+          "Erfurt",
+          "Jena",
+          "Deutschland",
+          "Europa"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Glasmontagen",
+          "Vakuumtechnik",
+          "Pooleinhebungen",
+          "Baumfällung",
+          "Maschinenumsetzungen",
+          "Containertransport",
+          "Spezialtransporte",
+          "Balkonmontagen",
+          "Arbeiten in Innenräumen (emissionsfrei)",
+          "Einsätze an Hanglagen"
+        ],
+        "ust_id_nummer": "\"DE350169678\""
+      },
+      "company_update_keys": [
+        "description_enriched"
+      ],
+      "company_cranes_count": 5,
+      "usage": {
+        "input_tokens": 17605,
+        "output_tokens": 2440,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "mobil-mietkran-schroemges",
+      "id": "165c8f74-1fe6-4981-8875-0b6c8e182a4b",
+      "fetch_status": "ok",
+      "confidence": "medium",
+      "extracted": {
+        "additional_services": [
+          "Kran mit Kranführer"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [
+          "mobilkran-mieten",
+          "dachdeckerkran-mieten"
+        ],
+        "description_long": "Mobil Mietkran Schrömges ist ein Einzelunternehmen von Helmut Schrömges mit Sitz in Ochtendung (Rheinland-Pfalz). Das Unternehmen vermietet einen mobilen Kran samt Kranführer und richtet sich vor allem an Handwerksbetriebe, die kurzzeitig Hebeleistung benötigen, ohne eigenes Gerät vorhalten zu müssen.\n\nZu den typischen Kunden zählen laut Website Dachdeckerbetriebe, Zimmermannsbetriebe, Schreinerbetriebe und Metallbaubetriebe. Darüber hinaus weist die Firma auf weitere Einsatzgebiete hin. Der Kran kann zudem als Steiger eingesetzt werden, sodass auch Arbeiten in der Höhe abgedeckt werden können.\n\nDas Leistungsangebot umfasst die Vermietung des Mobilkrans inklusive Bedienpersonal. Dadurch entfallen für den Kunden Aufwand und Kosten für eigene Kranführer-Qualifikationen. Die Website nennt eigene Bereiche zu Mietkran, Zubehör, Einsatz als Steiger sowie Preisen, sodass interessierte Betriebe die Eckdaten direkt einsehen können.\n\nGeographisch ist das Unternehmen in Ochtendung im Landkreis Mayen-Koblenz angesiedelt und damit gut erreichbar für Einsätze im nördlichen Rheinland-Pfalz. Konkrete Angaben zu Einsatzradius, Flottengröße, Kran-Modell oder Tragkraft macht die Website nicht.\n\nVerantwortlicher Inhaber ist Helmut Schrömges. Das Unternehmen verfügt über eine Umsatzsteuer-Identifikationsnummer (DE 241609535). Kontaktaufnahme ist per Telefon oder E-Mail möglich. Für Interessenten aus dem Bereich Dachdeckerei, Zimmerei, Schreinerei und Metallbau bietet Mobil Mietkran Schrömges eine flexible Lösung zur kurzfristigen Anmietung eines Mobilkrans mit Fahrer.",
+        "description_short": "Mobilkran-Vermietung mit Kranführer aus Ochtendung – für Dachdecker, Zimmerer, Schreiner und Metallbauer.",
+        "email": "helmut.schroemges@gmail.com",
+        "extraction_confidence": "medium",
+        "founded_year": null,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "Einzelunternehmen",
+        "opening_hours": null,
+        "operator_included": true,
+        "phone": "+4917643422478",
+        "price_day_from": null,
+        "service_areas": [
+          "Ochtendung",
+          "Rheinland-Pfalz"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Kran mit Kranführer",
+          "Einsatz als Steiger",
+          "Hebearbeiten für Handwerksbetriebe"
+        ],
+        "ust_id_nummer": "DE241609535"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 2548,
+        "output_tokens": 1528,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "moeller-manlift",
+      "id": "f4592caa-c3a0-47f1-bdcc-698ce40e6699",
+      "fetch_status": "ok",
+      "confidence": "\"medium\"",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnenvermietung",
+          "Stapler-Vermietung (Frontstapler, Teleskopstapler)",
+          "Verkauf von Arbeitsbühnen und Staplern",
+          "Schulungen (SYSTEM-CARD: Hubarbeitsbühne, Stapler, Kran, Erdbaumaschinen, Anschläger, Einweiser, PSAgA)",
+          "E-Learning",
+          "Service, Wartung und Reparatur",
+          "UVV-Prüfungen",
+          "PSA für Hubarbeitsbühnen"
+        ],
+        "associations": [
+          "SYSTEM LIFT"
+        ],
+        "brands_models": [],
+        "capacity_range": "\"bis 1.500 kg (Kran- & Hebetechnik)\"",
+        "certifications": [
+          "SYSTEM LIFT Qualitätssiegel"
+        ],
+        "crane_types": [
+          "minikran-mieten"
+        ],
+        "description_long": "\"Die Möller manlift GmbH & Co. KG ist ein Spezialist für Höhenzugangstechnik mit Niederlassung in Würzburg (Hertzstraße 4). Der Schwerpunkt des Unternehmens liegt auf der Vermietung und dem Verkauf von Arbeitsbühnen und Staplern. Ergänzend bietet Möller manlift eine eigene Kategorie 'Kran- und Hebetechnik' an, die für anspruchsvolle Projekte konzipiert ist, bei denen schwere Lasten bewegt oder in große Höhen transportiert werden müssen. Die Geräte erreichen Arbeitshöhen von bis zu 30 m, seitliche Reichweiten bis 21 m und Tragkräfte bis 1.500 kg.\\n\\nDarüber hinaus umfasst das Mietprogramm Anhänger-Arbeitsbühnen, LKW-Arbeitsbühnen, Scheren-Arbeitsbühnen, Gelenkteleskop-Arbeitsbühnen, Teleskop-Arbeitsbühnen, Spezial- und Raupen-Arbeitsbühnen, Vertikal-Arbeitsbühnen sowie Frontstapler und Teleskop-Stapler. Mit Arbeitshöhen bis zu 72 m bei LKW-Arbeitsbühnen deckt das Unternehmen ein breites Einsatzspektrum ab – vom Innenausbau über Industrieanlagen bis hin zu Fassaden- und Hochbauarbeiten.\\n\\nNeben Vermietung und Verkauf bietet Möller manlift unter der Marke SYSTEM-CARD ein umfangreiches Schulungsangebot: für Hubarbeitsbühnen, Staplerschein, Kran, Erdbaumaschinen, Anschläger, Einweiser und Anwender PSAgA. Ein eigenes Schulungszentrum wird in Schweinfurt betrieben. Service, Wartung, Reparatur und UVV-Prüfungen werden über das Partnerunternehmen MP Solutions (HY-Engineers) sowohl mobil beim Kunden als auch stationär in der Werkstatt durchgeführt.\\n\\nMöller manlift ist Teil des SYSTEM LIFT-Verbunds und unterhält neben Würzburg weitere Niederlassungen in Fulda (Petersberg) und Heilbronn (Neuenstadt am Kocher) sowie Abholstationen in Lauterbach, Steinau an der Straße, Nüdlingen (Bad Kissingen), Scheinfeld und Tauberbischofsheim. Von Würzburg aus werden Kunden in Unterfranken und angrenzenden Regionen mit Höhenzugangstechnik versorgt.\"",
+        "description_short": "\"Möller manlift vermietet in Würzburg Arbeitsbühnen, Stapler sowie Kran- und Hebetechnik bis 30 m Höhe und 1.500 kg.\"",
+        "email": "\"wuerzburg@moeller-manlift.de\"",
+        "extraction_confidence": "\"medium\"",
+        "founded_year": null,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "\"GmbH & Co. KG\"",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "\"+49931270563900\"",
+        "price_day_from": null,
+        "service_areas": [
+          "Würzburg",
+          "Unterfranken",
+          "Schweinfurt",
+          "Bad Kissingen",
+          "Scheinfeld",
+          "Tauberbischofsheim"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Höhenzugangstechnik",
+          "Arbeitsbühnenvermietung",
+          "Schulungen (SYSTEM-CARD)",
+          "UVV-Prüfungen",
+          "Kran- und Hebetechnik bis 30 m / 1.500 kg"
+        ],
+        "ust_id_nummer": null
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 11858,
+        "output_tokens": 2381,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "nordlift-gmbh-system-lift-partner-mietstation-hannover-langenhagen",
+      "id": "413f6ffa-fc49-4c87-bd34-c1397b073440",
+      "fetch_status": "ok",
+      "confidence": "medium",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnenvermietung (LKW-, Anhänger-, Scheren-, Gelenkteleskop-, Teleskop-, Spezial- und Raupen-Arbeitsbühnen)",
+          "Teleskopstapler",
+          "Frontstapler",
+          "Verkauf gebrauchter Arbeitsbühnen",
+          "Service/Reparatur",
+          "PSA, Rollgerüst, Luftfilter und Spanngurte",
+          "Schulungen (SYSTEM-CARD Hubarbeitsbühne, Kran, Flurförderzeug, Anschläger, Einweiser, PSAgA)",
+          "E-Learning"
+        ],
+        "associations": [
+          "SYSTEM LIFT (AVS SYSTEM LIFT AG)"
+        ],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [
+          "SYSTEM LIFT Qualitätssiegel (qualitätsgeprüfter Partnerbetrieb)"
+        ],
+        "crane_types": [
+          "minikran-mieten"
+        ],
+        "description_long": "Die Nord-Lift GmbH mit Sitz in Langenhagen bei Hannover ist ein Vermietbetrieb für Arbeitsbühnen und Baumaschinen und Partnerbetrieb des bundesweiten Verbunds SYSTEM LIFT (AVS SYSTEM LIFT AG). Der Schwerpunkt liegt auf der Vermietung von Hubarbeitsbühnen in verschiedenen Bauarten: LKW-Arbeitsbühnen, Anhänger-Arbeitsbühnen, Scheren-, Gelenkteleskop-, Teleskop- sowie Spezial- und Raupen-Arbeitsbühnen. Ergänzend bietet das Unternehmen Mini-Krane, Frontstapler und Teleskopstapler zur Miete an. Über den SYSTEM LIFT-Verbund mit nach eigenen Angaben über 23.000 Mietgeräten und mehr als 140 Mietstationen können Geräte deutschland- und europaweit kurzfristig bereitgestellt werden.\n\nKundenseitig richtet sich das Angebot ausschließlich an gewerbliche Kunden (B2B) – typischerweise Bau-, Handwerks-, Industrie- und Wartungsbetriebe in der Region Hannover und darüber hinaus. Neben dem Standort Langenhagen (Rehkamp 1) betreibt Nord-Lift eine weitere Station in Gehrden.\n\nZum Leistungsspektrum gehören neben der Vermietung auch der Verkauf gebrauchter Arbeitsbühnen, ein eigener Service- und Reparaturbereich sowie persönliche Schutzausrüstung, Rollgerüste, Luftfilter und Spanngurte. Ein wichtiger Bestandteil des Angebots sind Schulungen über das SYSTEM-CARD-Programm: Bedienerschulungen für Hubarbeitsbühnen, Flurförderzeuge und Telestapler, Krane, Anschläger und Einweiser sowie PSAgA-Anwenderschulungen. Schulungen werden sowohl am Firmenstandort als auch beim Kunden vor Ort sowie als E-Learning angeboten.\n\nAls SYSTEM LIFT-Partner wird Nord-Lift regelmäßig nach den Qualitätskriterien des Verbunds überprüft. Mietanfragen sind über ein Online-Formular sowie telefonisch möglich. Hinweis für die Einordnung im Kranvergleich: Der Kernbereich von Nord-Lift ist die Arbeitsbühnenvermietung; Krane sind als Mini-Krane Teil des Mietprogramms.",
+        "description_short": "SYSTEM LIFT-Partner in Langenhagen für Arbeitsbühnen, Mini-Krane und Stapler in der Region Hannover.",
+        "email": "info@nord-lift.de",
+        "extraction_confidence": "medium",
+        "founded_year": null,
+        "handelsregister_nummer": "HRB 201522 Amtsgericht Hannover",
+        "legal_entity_type": "GmbH",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+495115455710",
+        "price_day_from": null,
+        "service_areas": [
+          "Hannover",
+          "Langenhagen",
+          "Gehrden",
+          "Region Hannover",
+          "deutschlandweit (über SYSTEM LIFT-Verbund)",
+          "europaweit (über SYSTEM LIFT-Verbund)"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Arbeitsbühnenvermietung",
+          "Mini-Krane",
+          "Teleskopstapler",
+          "Frontstapler",
+          "Bedienerschulungen (SYSTEM-CARD)",
+          "PSAgA-Schulungen",
+          "Verkauf gebrauchter Arbeitsbühnen"
+        ],
+        "ust_id_nummer": "DE252826266"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 55168,
+        "output_tokens": 2154,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "paul-becker-gmbh-arbeitsbuehnen-stapler",
+      "id": "04547b50-4870-4adb-b69e-56ae1e6504f7",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen mieten",
+          "Stapler mieten",
+          "Gerüstbau",
+          "Spezialgerüstbau",
+          "Containerdienst",
+          "Abfallentsorgung",
+          "Sicherheitsschulungen",
+          "Langzeitmiete",
+          "Bedieneinsatz",
+          "PSAgA",
+          "Maschinenverkauf (gebraucht)"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Die Paul Becker GmbH ist ein bundesweit tätiges Familienunternehmen mit Hauptsitz in Denzlingen und einer Niederlassung in Karlsruhe (Hohleichweg 33). Das Unternehmen wurde 1926 gegründet und hat sich ursprünglich aus einem Malerbetrieb entwickelt. Seit 1962 ist der Gerüstbau ein eigenständiges Standbein. Heute umfasst die BECKER-Familie nach eigenen Angaben über 500 Mitarbeitende.\n\nDas Leistungsspektrum gliedert sich in vier Bereiche: Gerüstbau (Fassadengerüste, Hängegerüste, Tribünen und Bühnen, Wetterschutzdächer, Klettermastbühnen, Systembrücken, Spezialgerüstbau), Arbeitsbühnenvermietung (LKW-Arbeitsbühnen, Anhänger-Arbeitsbühnen, Teleskoparbeitsbühnen, Gelenkteleskopbühnen, Scherenbühnen, Mastbühnen, Personenlifte, Raupen-/Kettenarbeitsbühnen sowie Greenline-Arbeitsbühnen), Staplervermietung (starre Teleskopstapler, Roto-Teleskopstapler, Maststapler, Deichselstapler, Eventstapler) und Containerdienst (Absetz-, Abroll-, Press- und Umleerbehälter, Big Bags). Ergänzend bietet die Paul Becker GmbH Sicherheitsschulungen, jährliche Unterweisungen, Langzeitmiete, Bedieneinsatz, PSAgA-Leistungen sowie den Verkauf gebrauchter Arbeitsbühnen an.\n\nKlassische Kranvermietung (Autokran, Mobilkran, Baukran, Dachdeckerkran, Ladekran etc.) gehört nach den Angaben der Website nicht zum Portfolio. Wer „hoch hinaus“ oder schwer schleppen muss, wird auf Arbeitsbühnen und Stapler verwiesen.\n\nDas Standortnetz umfasst Berlin, Denzlingen, Freiburg, Karlsruhe, Leipzig, Leuna, Offenburg/Schutterwald, Singen, Tuningen und Weiterstadt. Einsätze werden bundesweit und europaweit durchgeführt, im Großraum Karlsruhe insbesondere in Baden-Württemberg und der Region Mittlerer Oberrhein. Geschäftsführer sind Harald Becker, Sabrina Binz und Vanessa Binz. Das Unternehmen ist im Handelsregister Freiburg unter HRB 260231 eingetragen.",
+        "description_short": "Bundesweit tätiger Vermieter von Arbeitsbühnen und Staplern mit Gerüstbau und Containerdienst – Niederlassung Karlsruhe.",
+        "email": "denzlingen@becker.eu",
+        "extraction_confidence": "high",
+        "founded_year": 1926,
+        "handelsregister_nummer": "HRB 260231 Amtsgericht Freiburg",
+        "legal_entity_type": "GmbH",
+        "operator_included": true,
+        "phone": "+49766693000",
+        "service_areas": [
+          "Karlsruhe",
+          "Berlin",
+          "Denzlingen",
+          "Freiburg",
+          "Leipzig",
+          "Leuna",
+          "Offenburg",
+          "Schutterwald",
+          "Singen",
+          "Tuningen",
+          "Weiterstadt",
+          "Lörrach",
+          "Titisee-Neustadt",
+          "Waldshut-Tiengen",
+          "Konstanz",
+          "Lahr",
+          "Villingen-Schwenningen",
+          "Potsdam",
+          "Halle an der Saale",
+          "bundesweit",
+          "europaweit"
+        ],
+        "specialties": [
+          "Arbeitsbühnenvermietung",
+          "Staplervermietung",
+          "Gerüstbau",
+          "Spezialgerüstbau",
+          "Containerdienst / Abfallentsorgung",
+          "Sicherheitsschulungen",
+          "PSAgA"
+        ],
+        "ust_id_nummer": "DE811666890"
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 20540,
+        "output_tokens": 2000,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "paul-becker-gmbh-arbeitsbuehnen-stapler-geruestbau",
+      "id": "ee11d89a-d1e6-457d-9f4f-b19f383e7df3",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen mieten",
+          "Stapler mieten",
+          "Gerüstbau",
+          "Spezialgerüstbau",
+          "Containerdienst",
+          "Abfallentsorgung",
+          "Sicherheitsschulungen",
+          "Jährliche Unterweisung",
+          "Langzeitmiete",
+          "Bedieneinsatz",
+          "PSAgA",
+          "Maschinenverkauf / Gebrauchtmaschinen"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Die Paul Becker GmbH ist ein bundesweit tätiges Familienunternehmen mit Hauptsitz in Denzlingen und Niederlassungen in Berlin, Freiburg, Karlsruhe, Leipzig, Leuna, Offenburg/Schutterwald, Singen, Tuningen und Weiterstadt. Am Standort Leipzig in der Kamenzer Str. 15 ist das Unternehmen Ansprechpartner für Kunden aus Sachsen und angrenzenden Regionen, unter anderem auch im Großraum Halle an der Saale.\n\nDas Leistungsspektrum umfasst vier Kernbereiche: Gerüstbau (Fassadengerüste, Hängegerüste, Tribünen & Bühnen, Gerüstbau-Aufzüge, Wetterschutzdächer, Klettermastbühnen, Systembrücken sowie Spezialgerüstbau), die Vermietung von Arbeitsbühnen (Anhänger-Arbeitsbühnen, Gelenkteleskopbühnen, LKW-Arbeitsbühnen, Mastbühnen, Personenlifte, Raupen-/Ketten-Arbeitsbühnen, Scherenbühnen, Teleskoparbeitsbühnen sowie Greenline-Bühnen), die Vermietung von Staplern (starre Teleskopstapler, Roto-Teleskopstapler, Deichselstapler, Maststapler, Eventstapler) und einen Containerdienst mit Absetz-, Abroll-, Press- und Umleerbehältern sowie Big Bags.\n\nErgänzend bietet die Paul Becker GmbH Sicherheitsschulungen, jährliche Unterweisungen, Langzeitmiete, Bedieneinsatz, PSAgA-Leistungen, die Abmeldung/Standmeldung von Arbeitsbühnen sowie den Verkauf gebrauchter Arbeitsbühnen an. Eine Maschinenvermietung ist bundesweit und europaweit möglich.\n\nDas Unternehmen wurde 1926 als Malerbetrieb gegründet und stieg 1962 in den Gerüstbau ein. Heute beschäftigt die BECKER-Gruppe nach eigenen Angaben über 500 Mitarbeiter und blickt auf rund 100 Jahre Firmengeschichte zurück. Geschäftsführer sind Harald Becker, Sabrina Binz und Vanessa Binz.\n\nHinweis: Die Paul Becker GmbH vermietet schwerpunktmäßig Arbeitsbühnen, Stapler und Container sowie Gerüste. Ein klassischer Kranverleih (Auto-, Mobil-, Bau- oder Dachdeckerkrane) wird auf der Website nicht ausgewiesen. Für Hebearbeiten in der Höhe stehen jedoch verschiedene Arbeitsbühnen- und Teleskopstapler-Typen zur Verfügung.",
+        "description_short": "Bundesweiter Vermieter von Arbeitsbühnen, Staplern und Containern mit Gerüstbau-Tradition seit 1926, Niederlassung Leipzig.",
+        "email": "denzlingen@becker.eu",
+        "extraction_confidence": "high",
+        "founded_year": 1926,
+        "handelsregister_nummer": "HRB 260231 Amtsgericht Freiburg",
+        "legal_entity_type": "GmbH",
+        "operator_included": null,
+        "phone": "+497666930000",
+        "service_areas": [
+          "Leipzig",
+          "Halle an der Saale",
+          "Potsdam",
+          "Berlin",
+          "Sachsen",
+          "deutschlandweit",
+          "europaweit"
+        ],
+        "specialties": [
+          "Arbeitsbühnenvermietung",
+          "Gerüstbau",
+          "Spezialgerüstbau",
+          "Staplervermietung",
+          "Containerdienst / Abfallentsorgung",
+          "Höhensicherung / PSAgA",
+          "Sicherheitsschulungen"
+        ],
+        "ust_id_nummer": "DE811666890"
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 20544,
+        "output_tokens": 1995,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "rauscher-mietlifte",
+      "id": "a5f6c867-6161-453b-b0b5-46b5ba8f98df",
+      "fetch_status": "robots_disallow"
+    },
+    {
+      "slug": "reichert-aufzuege-foerdertechnik-gmbh",
+      "id": "14b4aefc-64d7-4f5f-8a49-9cc320a72e5d",
+      "fetch_status": "fetch_failed",
+      "crawl": {
+        "sub_path_statuses": {
+          "/": "fetch_err_SSLError",
+          "/impressum": "fetch_err_SSLError",
+          "/kontakt": "fetch_err_SSLError",
+          "/contact": "fetch_err_SSLError",
+          "/kontakte": "fetch_err_SSLError",
+          "/produkte": "fetch_err_SSLError",
+          "/produkt": "fetch_err_SSLError",
+          "/flotte": "fetch_err_SSLError",
+          "/fahrzeuge": "fetch_err_SSLError",
+          "/maschinen": "fetch_err_SSLError",
+          "/leistungen": "fetch_err_SSLError",
+          "/leistung": "fetch_err_SSLError",
+          "/services": "fetch_err_SSLError",
+          "/service": "fetch_err_SSLError",
+          "/angebot": "fetch_err_SSLError",
+          "/angebote": "fetch_err_SSLError",
+          "/krane": "fetch_err_SSLError",
+          "/kran-vermietung": "fetch_err_SSLError",
+          "/sortiment": "fetch_err_SSLError",
+          "/ueber-uns": "fetch_err_SSLError",
+          "/uber-uns": "fetch_err_SSLError",
+          "/about": "fetch_err_SSLError",
+          "/dachdeckerkran": "fetch_err_SSLError",
+          "/dachdeckeraufzug": "fetch_err_SSLError"
+        },
+        "chars_collected": 0
+      }
+    },
+    {
+      "slug": "salgert-unternehmensgruppe-autokrane-schwertransporte-arbeitsbuehnen-gabelstapler",
+      "id": "1ad1ca2d-b2b9-4e86-9deb-23e6fdfdab86",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen-Vermietung",
+          "Gabelstapler-Vermietung",
+          "Teleskopstapler-Vermietung",
+          "Schwertransporte",
+          "Spezialtransporte",
+          "Transporte",
+          "BF3 Begleitservice & Verkehrstechnik",
+          "Maschinen- und Betriebsumzüge",
+          "Schwergut-Lagerlogistik",
+          "Handel mit Arbeitsmaschinen",
+          "IPAF Arbeitsbühnen-Schulung",
+          "Gabelstapler-Fahrerschulung",
+          "Teleskopstapler-Fahrerschulung",
+          "24-Stunden-Service",
+          "Fahrbahnplatten"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Liebherr LTM 1030-2.1",
+          "Liebherr LTM 1050-3.1",
+          "Liebherr LTM 1055-3.2",
+          "Liebherr LTM 1060-3.1",
+          "Liebherr LTF 1060-4.1",
+          "Liebherr LTM 1070-4.2",
+          "Liebherr LTM 1090-4.1",
+          "Liebherr LTM 1090-4.2",
+          "Liebherr LTM 1095-5.1",
+          "Liebherr LTM 1100-5.2",
+          "Liebherr LTM 1110-5.1",
+          "Liebherr LTM 1130-5.1",
+          "Liebherr LTM 1150-5.3",
+          "Liebherr LTM 1160-5.2",
+          "Liebherr LTM 1230-5.1",
+          "Liebherr LTM 1250-5.1",
+          "Liebherr LTM 1300-6.2",
+          "Liebherr LTM 1400-6.1",
+          "Liebherr LTC 1045-3.1",
+          "Liebherr LTC 1050-3.1",
+          "Liebherr LTC 1050-3.1 Remote Drive",
+          "Liebherr MK 88-4.1",
+          "Liebherr MK 140-5.1",
+          "Palfinger PK 92000",
+          "Merlo P 30.10 L",
+          "Merlo P 30.10",
+          "Merlo P 38.13",
+          "Merlo P 40.13",
+          "Merlo R 40.18",
+          "Merlo R 45.21",
+          "Merlo P 50.18 PLUS",
+          "Merlo R 50.21 S"
+        ],
+        "capacity_range": "bis 400t (Liebherr LTM 1400-6.1)",
+        "certifications": [
+          "SCC**"
+        ],
+        "crane_types": [
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "baukran-mieten",
+          "ladekran-mieten"
+        ],
+        "description_long": "Die SALGERT Unternehmensgruppe mit Hauptsitz in Lohmar bei Köln ist seit über 65 Jahren als Dienstleister rund um das Heben und Transportieren tätig. Das Leistungsspektrum umfasst die Vermietung von Autokranen, Spezial-Kompaktkranen und Mobilbaukranen sowie von Transporteinheiten mit Ladekran. Ergänzend bietet das Unternehmen Schwertransporte, Spezialtransporte, BF3-Begleitservice mit Verkehrstechnik, Maschinen- und Betriebsumzüge sowie Schwergut-Lagerlogistik an.\n\nÜber die Tochtergesellschaft Salgert Arbeitsbühnen und Gabelstapler GmbH werden zudem Scheren-, Teleskop-, Gelenk-, Raupen-, Anhänger- und LKW-Arbeitsbühnen sowie Diesel-, Gas-, Elektro- und Hydraulik-Gabelstapler und Merlo-Teleskopstapler vermietet. Schulungen nach IPAF für Arbeitsbühnen sowie Fahrerschulungen für Gabel- und Teleskopstapler runden das Angebot ab.\n\nDie Autokranflotte besteht überwiegend aus Liebherr-Geräten, darunter Teleskop-Autokrane von der Klasse LTM 1030-2.1 bis hin zum LTM 1400-6.1 sowie Spezial-Kompaktkrane der Baureihe LTC. Für längerfristige Baustelleneinsätze stehen die Mobilbaukrane Liebherr MK 88-4.1 und MK 140-5.1 zur Verfügung. Schwertransporte werden mit Semi-Tiefladern, Tiefbett-Tiefladern und Schwerlast-Plateau-Aufliegern realisiert.\n\nSALGERT betreibt vier Standorte: den Hauptsitz Lohmar sowie Niederlassungen in Euskirchen und Mönchengladbach und einen bundesweiten Logistikstandort in Duisburg. Der regionale Schwerpunkt liegt im Rheinland, in der Eifel und im Bergischen Land; über Partnerunternehmen werden Einsätze bundesweit ausgeführt.\n\nSämtliches Personal ist nach SCC** zertifiziert und fachlich geschult. Für Notfälle steht ein 24-Stunden-Service zur Verfügung. Zur Zielgruppe gehören Bauunternehmen, Industrie- und Gewerbekunden sowie Dienstleister mit Bedarf an Hebe-, Montage- und Transportlösungen aus einer Hand.",
+        "description_short": "Seit über 65 Jahren Komplettlösungen für Autokrane, Mobilbaukrane, Schwertransporte, Arbeitsbühnen und Stapler.",
+        "email": "lohmar@salgert.eu",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "HRB 2816 Amtsgericht Siegburg",
+        "legal_entity_type": "GmbH",
+        "operator_included": null,
+        "phone": "+4922465151",
+        "service_areas": [
+          "Lohmar",
+          "Euskirchen",
+          "Mönchengladbach",
+          "Duisburg",
+          "Rheinland",
+          "Eifel",
+          "Bergisches Land",
+          "bundesweit"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Schwertransporte",
+          "BF3 Begleitservice & Verkehrstechnik",
+          "Maschinen- und Betriebsumzüge",
+          "Schwergut-Lagerlogistik",
+          "Mobilbaukrane",
+          "Spezial-Kompaktkrane",
+          "IPAF-Schulungen",
+          "24-Stunden-Service"
+        ],
+        "ust_id_nummer": "DE811387634"
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 4,
+      "usage": {
+        "input_tokens": 15963,
+        "output_tokens": 2882,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "stange-transport-gmbh",
+      "id": "d3c4cc6d-43f5-44a6-974f-eab8b0a59fb3",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Spezialtransporte",
+          "Schwertransporte",
+          "Lagerhaltung",
+          "Dauergenehmigungen",
+          "Begleitfahrzeuge",
+          "Expressverkehr"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": "20t – 350t",
+        "certifications": [
+          "ISO 9001"
+        ],
+        "crane_types": [
+          "mobilkran-mieten",
+          "autokran-mieten"
+        ],
+        "description_long": "Die Stange Transport GmbH ist ein inhabergeführtes Traditionsunternehmen mit Sitz in Hamburg und einer weiteren Niederlassung in Rostock. Nach eigenen Angaben besteht das Unternehmen seit über 175 Jahren am europäischen Markt und gehört damit zu den etablierten Transportunternehmen in Deutschland.\n\nDas Leistungsspektrum umfasst europaweite Spezial- und Schwertransport-Logistik, Lagerhaltung sowie Kranvermietung. Im Bereich Kranvermietung bietet Stange Krane mit einer Hubkraft von 20 Tonnen bis 350 Tonnen sowie Hakenhöhen bis zu 90 Metern ab dem Standort Hamburg an. Damit deckt das Unternehmen sowohl Standard-Hebearbeiten als auch anspruchsvolle Schwerlast-Einsätze ab.\n\nDer Fuhrpark umfasst über 60 Fahrzeuge unterschiedlicher Transportklassen mit insgesamt 145 Achsen, darunter Tiefbett-Fahrzeuge, Sattelfahrzeuge, Megatrailer, Semi-Tieflader, beplantes Tiefbett, Telesattel, Big Box, Innenlader, Begleitfahrzeuge, Containerchassis und Motorwagen. Für übergroße, überlange oder besonders schwere Ladungen stehen entsprechende Spezialfahrzeuge sowie Dauergenehmigungen zur Verfügung. Auch kurzfristige Express- und Termintransporte können organisiert werden.\n\nSpezialisiert hat sich Stange auf die Branchen Bauwirtschaft, Aerospace, Maschinen- und Anlagenbau. Das Unternehmen arbeitet auf Basis einer ISO-9001-Zertifizierung und verfügt nach eigenen Angaben über rund 12.000 Quadratmeter Lagerflächen verschiedener Größen.\n\nGeschäftsführer ist Maik Stange. Die Stange Transport GmbH ist im Handelsregister beim Amtsgericht Hamburg unter HRB 36 463 eingetragen. Kunden aus Industrie, Bauwirtschaft und Logistik werden europaweit bedient, der geografische Schwerpunkt der Kranvermietung liegt im Großraum Hamburg und Norddeutschland.",
+        "description_short": "Hamburger Traditionsunternehmen für Schwertransporte und Kranvermietung mit Kranen von 20t bis 350t Hubkraft.",
+        "email": null,
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "HRB 36463 Amtsgericht Hamburg",
+        "legal_entity_type": "GmbH",
+        "operator_included": null,
+        "phone": "+4940752790-0",
+        "service_areas": [
+          "Hamburg",
+          "Rostock",
+          "Norddeutschland",
+          "Deutschland",
+          "Europa"
+        ],
+        "specialties": [
+          "Schwertransport-Logistik",
+          "Spezialtransporte",
+          "Übermaßtransporte",
+          "Logistik für Bauwirtschaft, Aerospace, Maschinen- und Anlagenbau"
+        ],
+        "ust_id_nummer": "DE118614492"
+      },
+      "company_update_keys": [
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 3483,
+        "output_tokens": 1735,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "ulferts-wittrock-gmbh-co-kg-ndl-schwerin",
+      "id": "79a50e4d-a65d-4b82-ad9a-b45930103d09",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen",
+          "Teleskopstapler",
+          "Gabelstapler",
+          "Baumaschinen & E-Karren",
+          "Schwertransporte",
+          "Schwermontagen",
+          "Betriebsumzüge",
+          "Schulungen",
+          "Vakuumsauger",
+          "Prüfgewichte",
+          "Baggermatten / Fahrbleche",
+          "Stützmatten & Traversen",
+          "Bergungen",
+          "Lager / Freiflächen"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Terex SL3800"
+        ],
+        "capacity_range": "\"40t – 600t (Firmenverbund bis 750t)\"",
+        "certifications": [
+          "SCC (DEKRA)"
+        ],
+        "crane_types": [
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "raupenkran-mieten",
+          "minikran-mieten",
+          "anhaengerkran-mieten",
+          "ladekran-mieten"
+        ],
+        "description_long": "Die Ulferts & Wittrock GmbH & Co. KG betreibt am Standort Schwerin (Rudolf-Diesel-Straße 15) eine Niederlassung für Kranarbeiten, Schwertransporte und Hebetechnik. Die Niederlassung ist aus der 2006 übernommenen Firma K&T Kran und Transport hervorgegangen und firmiert seitdem unter Ulferts & Wittrock. 2021 wurde am Standort ein Neubau fertiggestellt, seit Mai 2024 werden vor Ort zusätzlich Arbeitsbühnen und Teleskopstapler vermietet.\n\nDas Unternehmen versteht sich als Schwerlastlogistiker und bietet ein breites Leistungsspektrum: Kranarbeiten mit Auto- und Raupenkranen, Arbeitsbühnen, Teleskop- und Gabelstapler, Minikrane und Anhängerkrane, LKW-Ladekrane sowie Baumaschinen und E-Karren. Ergänzend werden Schwertransporte (auch europaweit), Schwermontagen und Betriebsumzüge durchgeführt. Im Firmenverbund stehen Auto- und Raupenkrane von 40 t bis 600 t Tragkraft sowie ein 750-t-Gittermastkran zur Verfügung; Hubhöhen von über 150 m sind möglich.\n\nZum Zubehör gehören Vakuumsauger, Prüfgewichte, Baggermatten und Fahrbleche, Stützmatten und Traversen. Bergungen sowie Lager- und Freiflächen werden ebenfalls angeboten. Seit 2006 ergänzen Schulungen und Unterweisungen das Portfolio, die im eigenen Haus, beim Kunden oder online durchgeführt werden können.\n\nDie Unternehmensgruppe wurde 1989 in Oldenburg gegründet und betreibt heute Standorte in Oldenburg, Brake, Bremerhaven, Hamburg, Hollenstedt, Schwerin, Lübeck, Kiel und Flensburg. Über den Firmenverbund stehen bundesweit über 20 Stützpunkte zur Verfügung. Der Standort Schwerin bedient von Mecklenburg-Vorpommern aus regionale Kunden, ist über den Verbund aber auch bundesweit einsatzfähig. Das Unternehmen ist SCC-zertifiziert (DEKRA). Als Schwerpunkte werden persönliche Ansprechpartner, schnelle und unbürokratische Abwicklung sowie effiziente Lösungen genannt.",
+        "description_short": "Niederlassung Schwerin der Ulferts & Wittrock-Gruppe: Auto-, Raupen- und Minikrane sowie Schwertransporte und Arbeitsbühnen.",
+        "email": "schwerin@ulferts-wittrock.de",
+        "extraction_confidence": "high",
+        "founded_year": 1989,
+        "legal_entity_type": "GmbH & Co. KG",
+        "operator_included": null,
+        "phone": "+49385646650",
+        "service_areas": [
+          "Schwerin",
+          "Mecklenburg-Vorpommern",
+          "Norddeutschland",
+          "Bundesgebiet"
+        ],
+        "specialties": [
+          "Schwertransporte",
+          "Schwermontagen",
+          "Betriebsumzüge",
+          "Bergungen",
+          "Vakuumtechnik",
+          "Schulungen und Unterweisungen"
+        ]
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 6,
+      "usage": {
+        "input_tokens": 7455,
+        "output_tokens": 1862,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "ulferts-wittrock-kiel",
+      "id": "4a4266ed-78f7-4f52-a451-2ef6e44b5dc7",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen",
+          "Teleskopstapler",
+          "Gabelstapler",
+          "Baumaschinen & E-Karren",
+          "Schwertransporte",
+          "Schwermontagen",
+          "Betriebsumzüge",
+          "Schulungen und Unterweisungen",
+          "Vakuumsauger",
+          "Prüfgewichte",
+          "Baggermatten / Fahrbleche",
+          "Stützmatten & Traversen",
+          "Bergungen",
+          "Lager / Freiflächen"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Terex SL3800"
+        ],
+        "capacity_range": "40t – 600t (Gittermastkran bis 750t)",
+        "certifications": [
+          "SCC (DEKRA)"
+        ],
+        "crane_types": [
+          "autokran-mieten",
+          "mobilkran-mieten",
+          "raupenkran-mieten",
+          "minikran-mieten",
+          "anhaengerkran-mieten",
+          "ladekran-mieten"
+        ],
+        "description_long": "Die Ulferts & Wittrock GmbH & Co. KG ist ein norddeutscher Schwerlastlogistiker mit Niederlassung in Kiel in der Ottostraße 12. Das Unternehmen wurde 1989 in Oldenburg gegründet und betreibt heute Standorte in Oldenburg, Brake, Bremerhaven, Hamburg, Hollenstedt, Schwerin, Lübeck, Kiel und Flensburg. Über den Firmenverbund stehen bundesweit über 20 Stützpunkte zur Verfügung.\n\nAm Standort Kiel sowie firmenübergreifend bietet Ulferts & Wittrock Kranarbeiten, Schwertransporte, Schwermontagen und Betriebsumzüge an. Der Fuhrpark umfasst moderne Auto- und Raupenkrane mit Tragkräften von 40 t bis 600 t, ergänzt durch einen 750 t Gittermastkran als größtes Gerät im Firmenverbund. Hubhöhen von über 150 m sind nach Angaben des Unternehmens mit den vorhandenen Geräten realisierbar. Ergänzend stehen Minikrane und Anhängerkrane, LKW-Ladekrane, Arbeitsbühnen (unter anderem eine 65 m LKW-Arbeitsbühne), Teleskopstapler, Gabelstapler sowie Baumaschinen und E-Karren zur Verfügung.\n\nZum weiteren Leistungsportfolio gehören Vakuumsauger, Prüfgewichte, Baggermatten und Fahrbleche, Stützmatten und Traversen, Bergungen sowie Lager- und Freiflächen. Seit 2006 bietet Ulferts & Wittrock zudem Schulungen und Unterweisungen an, die im Schulungszentrum, beim Kunden vor Ort oder zum Teil online durchgeführt werden.\n\nTypische Kunden sind Industrie-, Bau- und Logistikunternehmen aus Norddeutschland, die Hebe-, Transport- und Montageleistungen aus einer Hand benötigen. Der geografische Schwerpunkt liegt auf Schleswig-Holstein, Hamburg, Mecklenburg-Vorpommern und Niedersachsen; Schwertransporte werden auch europaweit durchgeführt. Das Unternehmen ist nach SCC durch die DEKRA zertifiziert (Erstzertifizierung 2010 in Oldenburg). Als Philosophie nennt Ulferts & Wittrock persönliche Ansprechpartner, schnelle und unbürokratische Abwicklung sowie effiziente Auftragsbearbeitung.",
+        "description_short": "Niederlassung Kiel des norddeutschen Schwerlastlogistikers Ulferts & Wittrock mit Auto- und Raupenkranen von 40 t bis 600 t.",
+        "email": "kiel@ulferts-wittrock.de",
+        "extraction_confidence": "high",
+        "founded_year": 1989,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "GmbH & Co. KG",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+49431647080",
+        "price_day_from": null,
+        "service_areas": [
+          "Kiel",
+          "Schleswig-Holstein",
+          "Lübeck",
+          "Flensburg",
+          "Hamburg",
+          "Schwerin",
+          "Norddeutschland",
+          "bundesweit",
+          "europaweit (Schwertransporte)"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Schwerlastlogistik",
+          "Schwertransporte",
+          "Schwermontagen",
+          "Betriebsumzüge",
+          "Vakuumtechnik",
+          "Gittermastkran-Einsätze bis 750 t",
+          "Schulungen und Unterweisungen"
+        ],
+        "ust_id_nummer": null
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 6,
+      "usage": {
+        "input_tokens": 7444,
+        "output_tokens": 2114,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "warnowkran-kranservice-gmbh-rostock",
+      "id": "de26f28a-ce7c-4b31-85c6-38898fb48936",
+      "fetch_status": "robots_disallow"
+    },
+    {
+      "slug": "wille-krane-gmbh",
+      "id": "4e5d8541-14ad-4015-ab46-c682d3ddf827",
+      "fetch_status": "ok",
+      "confidence": "medium",
+      "extracted": {
+        "additional_services": [
+          "Schwertransport",
+          "Montagen",
+          "Betriebsumzüge",
+          "Bergungen",
+          "Projektplanung",
+          "Einsatzleitung"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [
+          "mobilkran-mieten"
+        ],
+        "description_long": "Die Wille Krane GmbH mit Sitz in Kiel ist auf die Vermietung von Mobilkranen sowie auf Schwertransporte in Norddeutschland spezialisiert. Das Unternehmen ist nach eigenen Angaben an sieben Standorten im Norden vertreten und über einen 24/7-Notruf erreichbar. Die Bürozeiten liegen werktags von 07:00 bis 17:00 Uhr.\n\nDie Mobilkrane werden inklusive Anschlagmittel und qualifiziertem Bediener vermietet, sodass Hebearbeiten durch das Fachpersonal des Unternehmens ausgeführt werden. Im Bereich Schwertransporte übernimmt Wille Krane neben der eigentlichen Transportleistung auch die Routenplanung, die Erstellung von Verzurrplänen sowie die Beantragung erforderlicher Ausnahmegenehmigungen.\n\nEin weiterer Leistungsschwerpunkt sind Montagen in Hallen und auf Freiflächen. Hierfür stehen erfahrene Kolonnen mit Spezialwerkzeugen zur Verfügung, die auch die Aufbauplanung übernehmen. Ergänzend bietet das Unternehmen komplette Betriebsumzüge an, bei denen Disposition, Fachpersonal, Fahrzeuge und Spezialwerkzeuge gemeinsam eingesetzt werden, um Inventar fachgerecht umzusetzen.\n\nDer Notdienst ist an 365 Tagen im Jahr rund um die Uhr verfügbar. Bergungseinsätze werden nach einer Besichtigung durch die Einsatzleitung disponiert. Im Bereich Projektplanung versteht sich Wille Krane als Anbieter von Service aus einer Hand: vom Telefonservice und der Besichtigung über die Planung bis hin zur Durchführung von Kran-, Transport- und Montagearbeiten einschließlich Einsatzleitung vor Ort.\n\nMit dieser Bandbreite richtet sich das Unternehmen an industrielle und gewerbliche Auftraggeber in Norddeutschland, die einen Komplettanbieter für Hebe-, Transport- und Montageaufgaben benötigen. Über das Kontaktformular können gezielt Anfragen für Kraneinsätze, Schwertransporte oder sonstige Leistungen gestellt werden.",
+        "description_short": "Wille Krane GmbH in Kiel vermietet Mobilkrane mit Bediener und übernimmt Schwertransporte sowie Montagen in Norddeutschland.",
+        "email": "kiel@wille-krane.de",
+        "extraction_confidence": "medium",
+        "founded_year": null,
+        "handelsregister_nummer": null,
+        "legal_entity_type": "GmbH",
+        "opening_hours": {
+          "monday": "07:00-17:00",
+          "tuesday": "07:00-17:00",
+          "wednesday": "07:00-17:00",
+          "thursday": "07:00-17:00",
+          "friday": "07:00-17:00",
+          "saturday": null,
+          "sunday": null
+        },
+        "operator_included": true,
+        "phone": "+49431649240",
+        "price_day_from": null,
+        "service_areas": [
+          "Kiel",
+          "Norddeutschland"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Mobilkranvermietung mit Bediener",
+          "Schwertransporte",
+          "Montagen",
+          "Betriebsumzüge",
+          "24/7-Notdienst",
+          "Bergungen"
+        ],
+        "ust_id_nummer": null
+      },
+      "company_update_keys": [
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 1,
+      "usage": {
+        "input_tokens": 1532,
+        "output_tokens": 1794,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "wolfgang-wasel-gmbh",
+      "id": "8c103fdb-6c5b-47e9-a538-9e96f0da30fd",
+      "fetch_status": "ok",
+      "confidence": "medium",
+      "extracted": {
+        "additional_services": [
+          "Transporte",
+          "Montagen",
+          "Demontagen",
+          "Abschlepp- und Bergungsdienst",
+          "Handel mit Maschinen, Baufahrzeugen und Baugeräten",
+          "Vermietung von Anhängern",
+          "Vermietung von Fahrbahnplatten"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Palfinger PK 26",
+          "Palfinger PK 54",
+          "Palfinger PK 85",
+          "Palfinger PK 150002",
+          "HK 60",
+          "HMK 105"
+        ],
+        "certifications": [],
+        "crane_types": [
+          "autokran-mieten",
+          "ladekran-mieten"
+        ],
+        "description_long": "Die Wolfgang Wasel GmbH mit Sitz in Bergheim (Gewerbegebiet Sonnenhang) ist auf die Vermietung von Autokranen sowie auf Transporte, Montagen und Demontagen von Industrieanlagen aller Art spezialisiert. Das Unternehmen stellt seinen Kunden eine Flotte aus Lade- und Autokranen zur Verfügung, darunter Modelle der Baureihen PK 26, PK 54, PK 85 und PK 150002 sowie HK 60 und HMK 105. Ergänzend werden Anhänger und Fahrbahnplatten vermietet, sodass auch logistisch anspruchsvolle Hebe- und Transportaufgaben abgedeckt werden können.\n\nNeben dem Kranverleih bietet die Wolfgang Wasel GmbH Dienstleistungen im Bereich Transport, Montage und Demontage von Industrieanlagen an. Hinzu kommen ein Abschlepp- und Bergungsdienst sowie der Handel mit Maschinen, Baufahrzeugen und Baugeräten aller Art. Damit richtet sich das Leistungsspektrum an Industriekunden, das Bauhandwerk sowie an Unternehmen, die kurzfristige Unterstützung bei Hebe-, Transport- oder Bergungsaufgaben benötigen.\n\nDas Unternehmen beschreibt seine Mitarbeiter als zuverlässig und professionell und legt Wert auf umfassende, unverbindliche Beratung. Anfragen für die Autokran-Flotte können telefonisch oder per E-Mail gestellt werden; auf Wunsch wird ein auf die jeweiligen Anforderungen zugeschnittenes Angebot erstellt.\n\nGeografisch ist die Wolfgang Wasel GmbH im Raum Bergheim und im Rheinland verankert. Kunden aus der Region Köln, dem Rhein-Erft-Kreis und dem angrenzenden Umland finden hier einen Ansprechpartner für Kranvermietung kombiniert mit weiteren Service- und Logistikleistungen rund um Hebe- und Montagearbeiten.",
+        "description_short": "Autokranvermietung aus Bergheim mit Lade- und Autokranen sowie Transporten, Montagen, Demontagen und Bergungsdienst.",
+        "email": "w.wasel@t-online.de",
+        "extraction_confidence": "medium",
+        "legal_entity_type": "GmbH",
+        "phone": "+4922718370403",
+        "service_areas": [
+          "Bergheim",
+          "Rhein-Erft-Kreis",
+          "Köln",
+          "Rheinland"
+        ],
+        "specialties": [
+          "Montage und Demontage von Industrieanlagen",
+          "Abschlepp- und Bergungsdienst",
+          "Handel mit Baumaschinen und Baufahrzeugen"
+        ]
+      },
+      "company_update_keys": [
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 1089,
+        "output_tokens": 1734,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "wuerzburger-kranverleih-und-bergungsdienst-gmbh",
+      "id": "8dd75472-b981-44a6-9c4c-7e606072a3f6",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Schwertransport",
+          "Bergungsdienst",
+          "Abschleppdienst",
+          "Pannenhilfe",
+          "Verkehrssicherung (RSA)",
+          "BF3-Begleitfahrzeug"
+        ],
+        "associations": [],
+        "brands_models": [
+          "Autokran TK-40",
+          "Autokran TK-50 City",
+          "Autokran TK-50",
+          "Autokran TK-80",
+          "Autokran TK-100",
+          "Autokran TK-110",
+          "Autokran TK-120",
+          "Autokran TK-150",
+          "Autokran TK-250",
+          "Autokran TK-300",
+          "Autokran MK-88"
+        ],
+        "capacity_range": "40t – 300t",
+        "certifications": [],
+        "crane_types": [
+          "autokran-mieten",
+          "mobilkran-mieten"
+        ],
+        "description_long": "Die Würzburger Kranverleih und Bergungsdienst GmbH ist ein Kran- und Transportunternehmen mit Hauptsitz in Würzburg und weiteren Niederlassungen in Dettelbach, Geiselwind und Schweinfurt. Das Unternehmen ist nach eigenen Angaben seit über 30 Jahren in der Region Mainfranken tätig und betreut Kunden aus Industrie, Bau, Handwerk und öffentlicher Hand.\n\nDer Fuhrpark umfasst eine breite Palette an Autokranen mit Traglasten von 40 t bis 300 t. Zur Flotte gehören unter anderem die Modelle TK-40, TK-50 City, TK-50, TK-80, TK-100, TK-110, TK-120, TK-150, TK-250 und TK-300 sowie ein Mobilbaukran MK-88. Damit deckt das Unternehmen sowohl klassische Hebearbeiten im innerstädtischen Bereich als auch anspruchsvolle Schwerlasteinsätze ab.\n\nErgänzend zum Kranverleih bietet die Würzburger Kranverleih und Bergungsdienst GmbH umfangreiche Transportleistungen an. Hierzu stehen Schwerlastzugmaschinen (2- und 3-Achs), Tiefbett-, Plattform- und Teleskop-Sattelauflieger sowie ein 7-Achs-Semi-Sattelauflieger zur Verfügung. Für Sondertransporte werden BF3-Begleitfahrzeuge und RSA-Fahrzeuge zur Verkehrssicherung eingesetzt.\n\nEin weiterer Schwerpunkt ist der Berge- und Abschleppdienst, der über eine eigene Notrufnummer rund um die Uhr erreichbar ist. Dafür hält das Unternehmen AWU-Spezial-Bergungsfahrzeuge und SKW-Pannenhilfsfahrzeuge bereit, die auch für die Bergung von schweren Nutzfahrzeugen geeignet sind.\n\nDie Geschäftszeiten für Kran- und Transportanfragen sind Montag bis Donnerstag von 08:30 bis 16:30 Uhr und Freitag von 08:30 bis 14:30 Uhr; der Notdienst ist 24 Stunden erreichbar. Geschäftsführer ist Daniel Haido. Das Unternehmen ist im Handelsregister des Amtsgerichts Würzburg unter HRB 4962 eingetragen.",
+        "description_short": "Kranverleih, Schwertransport und 24-h-Bergungsdienst in Mainfranken mit Autokranen von 40 t bis 300 t.",
+        "email": "info@wuerzburger-kranverleih.de",
+        "extraction_confidence": "high",
+        "handelsregister_nummer": "HRB 4962 Amtsgericht Würzburg",
+        "legal_entity_type": "GmbH",
+        "opening_hours": {
+          "monday": "08:30-16:30",
+          "tuesday": "08:30-16:30",
+          "wednesday": "08:30-16:30",
+          "thursday": "08:30-16:30",
+          "friday": "08:30-14:30",
+          "saturday": null,
+          "sunday": null
+        },
+        "operator_included": null,
+        "phone": "+49931278880",
+        "service_areas": [
+          "Würzburg",
+          "Dettelbach",
+          "Geiselwind",
+          "Schweinfurt",
+          "Mainfranken",
+          "Bayern"
+        ],
+        "specialties": [
+          "Schwertransporte",
+          "Bergungsdienst",
+          "Abschleppdienst Nutzfahrzeuge",
+          "Sondertransporte mit BF3-Begleitung",
+          "24-Stunden-Notdienst"
+        ],
+        "ust_id_nummer": "DE164578993"
+      },
+      "company_update_keys": [
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 51656,
+        "output_tokens": 2210,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "wuerzburger-kranverleih-wuerzburg",
+      "id": "2049339b-cfbb-4844-9af5-0f56817e1d75",
+      "fetch_status": "ok",
+      "confidence": "high",
+      "extracted": {
+        "additional_services": [
+          "Schwertransport",
+          "Sondertransport",
+          "Bergungsdienst",
+          "Abschleppdienst",
+          "Pannenhilfe",
+          "Verkehrssicherung",
+          "BF3-Begleitfahrzeug"
+        ],
+        "associations": [],
+        "brands_models": [
+          "TK-40",
+          "TK-50 City",
+          "TK-50",
+          "TK-80",
+          "TK-100",
+          "TK-110",
+          "TK-120",
+          "TK-150",
+          "TK-250",
+          "TK-300",
+          "MK-88"
+        ],
+        "capacity_range": "\"40 t – 300 t\"",
+        "certifications": [],
+        "crane_types": [
+          "autokran-mieten",
+          "mobilkran-mieten"
+        ],
+        "description_long": "Die Würzburger Kranverleih und Bergungsdienst GmbH mit Hauptsitz im Friedrich-Bergius-Ring in Würzburg ist als Kranvermieter, Schwertransport- sowie Berge- und Abschleppdienst in Mainfranken tätig. Das Unternehmen verfügt nach eigenen Angaben über mehr als drei Jahrzehnte Erfahrung und ist an vier Standorten in der Region vertreten: dem Hauptsitz in Würzburg sowie den Niederlassungen in Dettelbach (Mainfrankenpark), Geiselwind und Schweinfurt.\n\nDer Fuhrpark im Kranbereich umfasst Teleskop-Autokrane verschiedener Tragkraftklassen von 40 t bis 300 t (TK-40, TK-50 City, TK-50, TK-80, TK-100, TK-110, TK-120, TK-150, TK-250, TK-300) sowie einen Mobilkran MK-88. Damit deckt die Firma typische Hebeaufgaben im Hoch- und Tiefbau, Anlagen- und Maschinenmontagen sowie innerstädtische Hübe (insbesondere mit dem TK-50 City) ab.\n\nErgänzend zum Kranverleih betreibt das Unternehmen einen umfangreichen Transportbereich mit Schwerlastzugmaschinen, Tiefbett- und Teleskop-Plattform-Sattelaufliegern sowie einem 7-Achs-Semi-Sattelauflieger und einem BF3-Begleitfahrzeug für Schwer- und Sondertransporte. Im Bereich Berge- und Abschleppdienst stehen Spezial-Bergungsfahrzeuge, SKW-Pannenhilfsfahrzeuge sowie RSA-Fahrzeuge zur Verkehrssicherung bereit.\n\nDie Service-Hotline für Autokrane und Transporte ist werktags von 8:30 bis 16:30 Uhr unter 0931-27888-0 erreichbar; der Berge- und Abschleppdienst steht unter 0931-22022 rund um die Uhr zur Verfügung. Geschäftsführer ist Daniel Haido. Das Unternehmen ist im Handelsregister beim Amtsgericht Würzburg unter HRB 4962 eingetragen.\n\nKunden aus Industrie, Bauwirtschaft, öffentlicher Hand sowie Privat- und Geschäftskunden im Raum Würzburg, Schweinfurt, Dettelbach und Geiselwind erhalten Kranleistungen, Schwertransporte und Bergungen aus einer Hand.",
+        "description_short": "Kranverleih, Schwertransport sowie Berge- und Abschleppdienst mit Autokranen von 40 t bis 300 t in Mainfranken.",
+        "email": "info@wuerzburger-kranverleih.de",
+        "extraction_confidence": "high",
+        "founded_year": null,
+        "handelsregister_nummer": "\"HRB 4962 Amtsgericht Würzburg\"",
+        "legal_entity_type": "\"GmbH\"",
+        "opening_hours": {
+          "monday": "08:30-16:30",
+          "tuesday": "08:30-16:30",
+          "wednesday": "08:30-16:30",
+          "thursday": "08:30-16:30",
+          "friday": "08:30-14:30",
+          "saturday": null,
+          "sunday": null
+        },
+        "operator_included": null,
+        "phone": "+49931278880",
+        "price_day_from": null,
+        "service_areas": [
+          "Würzburg",
+          "Dettelbach",
+          "Geiselwind",
+          "Schweinfurt",
+          "Mainfranken",
+          "Bayern"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Schwertransporte",
+          "Sondertransporte",
+          "Bergungsdienst",
+          "Abschleppdienst",
+          "24h-Notdienst",
+          "Verkehrssicherung"
+        ],
+        "ust_id_nummer": "\"DE164578993\""
+      },
+      "company_update_keys": [
+        "email",
+        "opening_hours",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 2,
+      "usage": {
+        "input_tokens": 51659,
+        "output_tokens": 2076,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    },
+    {
+      "slug": "zeppelin-rental-gmbh-hannover",
+      "id": "6887adfb-5a4b-45f3-85e1-ab9971c75b9b",
+      "fetch_status": "ok",
+      "confidence": "medium",
+      "extracted": {
+        "additional_services": [
+          "Arbeitsbühnen",
+          "Teleskopstapler",
+          "Gabelstapler & Lagertechnik",
+          "Container & Bauwagen",
+          "Gerüste & Bautreppen",
+          "Baustromversorgung",
+          "Heizung, Trocknung & Klimatechnik",
+          "Baulogistik",
+          "Baustellen- und Verkehrssicherung",
+          "Modulare Raumlösungen",
+          "Event-Service"
+        ],
+        "associations": [],
+        "brands_models": [],
+        "capacity_range": null,
+        "certifications": [],
+        "crane_types": [],
+        "description_long": "Die Zeppelin Rental GmbH ist ein bundesweit tätiger Vermieter von Bau- und Industriegeräten mit einem umfangreichen Mietpark und Dienstleistungsangebot. Über die Mietstation Hannover-Nord am Alten Flughafen 4 in 30179 Hannover bedient das Unternehmen Kunden aus Bauwirtschaft, Industrie, Handwerk sowie aus dem Veranstaltungsbereich in der Region Hannover und Niedersachsen.\n\nDas Mietsortiment umfasst Baugeräte und Baumaschinen, Baustromversorgung und Baustellenbeleuchtung, Heizung, Trocknung und Klimatechnik, Arbeitsbühnen, Aufzüge, Krane und Lifte, Container und Bauwagen, Gerüste und Bautreppen, Teleskop- und Gabelstapler, Landschaftspflegetechnik sowie Fahrzeuge. Ergänzend werden Lösungen für Baustellen- und Verkehrssicherung, modulare Raumlösungen, Baustelleneinrichtung, Bauwasser, mobile Stromerzeugung, Trafostationen und Event-Service angeboten.\n\nÜber den reinen Geräteverleih hinaus erbringt Zeppelin Rental Leistungen im Bereich Baulogistik, darunter Baulogistikplanung, Versorgungs- und Entsorgungslogistik sowie Baumanagement. Damit positioniert sich das Unternehmen als Komplettanbieter, der Großprojekte mit aufeinander abgestimmten Miet- und Servicepaketen begleitet. Referenzprojekte umfassen unter anderem den ProSiebenSat.1 New Campus in Unterföhring, Baustellenversorgung für BASF in Ludwigshafen sowie die Wechselverkehrsführung auf der A38.\n\nDer Hauptsitz der Zeppelin Rental GmbH befindet sich in Garching bei München. Das Unternehmen ist im Handelsregister des Amtsgerichts München unter HRB 234370 eingetragen und betreibt deutschlandweit ein dichtes Netz an Mietstationen. Der Standort Hannover-Nord ist Anlaufpunkt für Kunden, die Bau- und Mietgeräte kurz- oder langfristig anmieten möchten und dabei Wert auf eine wohnortnahe Abwicklung legen.\n\nSpezifische Angaben zu einzelnen Kranmodellen, Tragfähigkeiten oder zur Verfügbarkeit von Dachdecker-, Auto- oder Mobilkranen am Standort Hannover sind dem öffentlichen Internetauftritt nicht zu entnehmen. Interessenten wenden sich für detaillierte Angebote direkt an die Mietstation oder an die zentralen Kontaktstellen der Zeppelin Rental GmbH.",
+        "description_short": "Bundesweiter Vermieter von Bau- und Industriegeräten mit Mietstation Hannover-Nord und umfassendem Serviceangebot.",
+        "email": "info-rental@zeppelin.com",
+        "extraction_confidence": "medium",
+        "founded_year": null,
+        "handelsregister_nummer": "HRB 234370 Amtsgericht München",
+        "legal_entity_type": "GmbH",
+        "opening_hours": null,
+        "operator_included": null,
+        "phone": "+498932000220",
+        "price_day_from": null,
+        "service_areas": [
+          "Hannover",
+          "Niedersachsen",
+          "Deutschland"
+        ],
+        "service_radius_km": null,
+        "specialties": [
+          "Baulogistik",
+          "Baustellen- und Verkehrssicherung",
+          "Modulare Raumlösungen",
+          "Event-Service",
+          "Baumanagement"
+        ],
+        "ust_id_nummer": "DE815070341"
+      },
+      "company_update_keys": [
+        "is_relevant",
+        "email",
+        "service_regions",
+        "description",
+        "description_enriched"
+      ],
+      "company_cranes_count": 0,
+      "usage": {
+        "input_tokens": 4398,
+        "output_tokens": 2283,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3100,
+        "stop_reason": "tool_use"
+      }
+    }
+  ]
+}

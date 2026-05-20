@@ -1,0 +1,1774 @@
+{
+  "proposals": [
+    {
+      "company_row": {
+        "name": "Leih.Kraft",
+        "slug": "leih-kraft",
+        "country": "DE",
+        "phone": "+49 1512 9529555",
+        "email": null,
+        "website": "http://leihkraft-bs.de/",
+        "address": "Nibelungenstraße 12, 38112 Braunschweig",
+        "city": "Braunschweig",
+        "state": "",
+        "zip": "38112",
+        "lat": 52.2915797,
+        "lng": 10.527967,
+        "google_rating": 5.0,
+        "google_reviews_count": 67,
+        "google_place_id": "ChIJ9yvo6gT3r0cR6ppeiINHzIo",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "e9794abf-24e3-4241-a9b0-5f19130b0aee",
+          "city_slug": "braunschweig"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Leih.Kraft",
+        "reviews": 67.0,
+        "google_maps_url": "https://www.google.com/maps/place/Leih.Kraft/@52.2915797,10.527967,14z/data=!4m8!1m2!2m1!1sLeih.Kraft!3m4!1s0x47aff704eae82bf7:0x8acc4783885e9aea!8m2!3d52.2915797!4d10.527967",
+        "seen_in_queries": [
+          "Braunschweig"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Bau-Dienst-Kiel GmbH",
+        "slug": "bau-dienst-kiel-gmbh",
+        "country": "DE",
+        "phone": "+49 431 682121",
+        "email": null,
+        "website": "https://bau-dienst-kiel.de/",
+        "address": "Speckenbeker Weg 126, 24113 Kiel",
+        "city": "Kiel",
+        "state": "",
+        "zip": "24113",
+        "lat": 54.2945882,
+        "lng": 10.090426299999999,
+        "google_rating": 5.0,
+        "google_reviews_count": 12,
+        "google_place_id": "ChIJoQu9dR9UskcR-_rnsA_Y78w",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "63f45b46-f6c6-409a-9f23-814b4eba7d4c",
+          "city_slug": "kiel"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Bau-Dienst-Kiel GmbH",
+        "reviews": 12,
+        "google_maps_url": "https://www.google.com/maps/place/Bau-Dienst-Kiel+GmbH/@54.2945882,10.090426299999999,14z/data=!4m8!1m2!2m1!1sBau-Dienst-Kiel+GmbH!3m4!1s0x47b2541f75bd0ba1:0xccefd80fb0e7fafb!8m2!3d54.2945882!4d10.090426299999999",
+        "seen_in_queries": [
+          "Kiel",
+          "Kiel"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Wolfgang Wasel GmbH",
+        "slug": "wolfgang-wasel-gmbh",
+        "country": "DE",
+        "phone": "+49 2271 8370403",
+        "email": null,
+        "website": "http://www.w-wasel.de/",
+        "address": "Carl-Spitzweg-Straße 15a, 50127 Bergheim",
+        "city": "Bergheim",
+        "state": "",
+        "zip": "50127",
+        "lat": 50.9360431,
+        "lng": 6.704475599999999,
+        "google_rating": 5.0,
+        "google_reviews_count": 6,
+        "google_place_id": "ChIJ9WF8bH2GcUERnat6Ss7luKE",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Wolfgang Wasel GmbH",
+        "reviews": 6.0,
+        "google_maps_url": "https://www.google.com/maps/place/Wolfgang+Wasel+GmbH/@50.9360431,6.704475599999999,14z/data=!4m8!1m2!2m1!1sWolfgang+Wasel+GmbH!3m4!1s0x4171867d6c7c61f5:0xa1b8e5ce4a7aab9d!8m2!3d50.9360431!4d6.704475599999999",
+        "seen_in_queries": [
+          "Köln",
+          "Köln"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Mobil Mietkran Schrömges",
+        "slug": "mobil-mietkran-schroemges",
+        "country": "DE",
+        "phone": "+49 176 43422478",
+        "email": null,
+        "website": "http://mobil-mietkran.de/",
+        "address": "Dümmelsweg 22, 56299 Ochtendung",
+        "city": "Ochtendung",
+        "state": "",
+        "zip": "56299",
+        "lat": 50.3489382,
+        "lng": 7.397509899999999,
+        "google_rating": 5.0,
+        "google_reviews_count": 5,
+        "google_place_id": "ChIJk5JVszdnvkcRav9w0Ynml7s",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Mobil Mietkran Schrömges",
+        "reviews": 5.0,
+        "google_maps_url": "https://www.google.com/maps/place/Mobil+Mietkran+Schr%C3%B6mges/@50.3489382,7.397509899999999,14z/data=!4m8!1m2!2m1!1sMobil+Mietkran+Schr%C3%B6mges!3m4!1s0x47be6737b3559293:0xbb97e689d170ff6a!8m2!3d50.3489382!4d7.397509899999999",
+        "seen_in_queries": [
+          "Köln",
+          "Köln"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Bernhard Resch GmbH",
+        "slug": "bernhard-resch-gmbh",
+        "country": "DE",
+        "phone": "+49 8809 284",
+        "email": null,
+        "website": "https://www.resch-bau.com/",
+        "address": "Templhof 3, 82405 Wessobrunn",
+        "city": "Wessobrunn",
+        "state": "",
+        "zip": "82405",
+        "lat": 47.8458562,
+        "lng": 11.0322041,
+        "google_rating": 5.0,
+        "google_reviews_count": 4,
+        "google_place_id": "ChIJD1mIxT1KnEcRQi1t4eZQoIc",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "01a7777b-5a68-44c5-a85e-955aefe9650f",
+          "city_slug": "muenchen"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Bernhard Resch GmbH",
+        "reviews": 4,
+        "google_maps_url": "https://www.google.com/maps/place/Bernhard+Resch+GmbH/@47.8458562,11.0322041,14z/data=!4m8!1m2!2m1!1sBernhard+Resch+GmbH!3m4!1s0x479c4a3dc588590f:0x87a050e6e16d2d42!8m2!3d47.8458562!4d11.0322041",
+        "seen_in_queries": [
+          "München"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Eifrig & Keldenich Aufzüge",
+        "slug": "eifrig-keldenich-aufzuege",
+        "country": "DE",
+        "phone": "+49 531 577088",
+        "email": null,
+        "website": "http://www.eifrig-keldenich.com/",
+        "address": "Kreuzstraße 68, 38118 Braunschweig",
+        "city": "Braunschweig",
+        "state": "",
+        "zip": "38118",
+        "lat": 52.2621056,
+        "lng": 10.4923316,
+        "google_rating": 5.0,
+        "google_reviews_count": 3,
+        "google_place_id": "ChIJM12Nm0H2r0cRgbQjopZlsN4",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "e9794abf-24e3-4241-a9b0-5f19130b0aee",
+          "city_slug": "braunschweig"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Eifrig & Keldenich Aufzüge",
+        "reviews": 3.0,
+        "google_maps_url": "https://www.google.com/maps/place/Eifrig+%26+Keldenich+Aufz%C3%BCge/@52.2621056,10.4923316,14z/data=!4m8!1m2!2m1!1sEifrig+%26+Keldenich+Aufz%C3%BCge!3m4!1s0x47aff6419b8d5d33:0xdeb06596a223b481!8m2!3d52.2621056!4d10.4923316",
+        "seen_in_queries": [
+          "Braunschweig"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "H.N. Krane GmbH & Co. KG",
+        "slug": "h-n-krane-gmbh-co-kg",
+        "country": "DE",
+        "phone": "+49 385 61734686",
+        "email": null,
+        "website": "http://www.hn-krane.de/",
+        "address": "Werner-von-Siemens-Straße 1B, 19061 Schwerin",
+        "city": "Schwerin",
+        "state": "",
+        "zip": "19061",
+        "lat": 53.57009,
+        "lng": 11.376149999999999,
+        "google_rating": 5,
+        "google_reviews_count": 1,
+        "google_place_id": "ChIJSYD1TYDZrUcRRAjK9nY5Bws",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [],
+      "_outscraper_meta": {
+        "raw_name": "H.N. Krane GmbH & Co. KG",
+        "reviews": 1,
+        "google_maps_url": "https://www.google.com/maps/place/H.N.+Krane+GmbH+%26+Co.+KG/@53.57009,11.376149999999999,14z/data=!4m8!1m2!2m1!1sH.N.+Krane+GmbH+%26+Co.+KG!3m4!1s0x47add9804df58049:0xb073976f6ca0844!8m2!3d53.57009!4d11.376149999999999",
+        "seen_in_queries": [
+          "Schwerin"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Möller manlift",
+        "slug": "moeller-manlift",
+        "country": "DE",
+        "phone": "+49 931 27056390",
+        "email": null,
+        "website": "https://go.moeller-manlift.de/arbeitsbuehnen-wuerzburg/",
+        "address": "Hertzstraße 4, 97076 Würzburg",
+        "city": "Würzburg",
+        "state": "",
+        "zip": "97076",
+        "lat": 49.7997467,
+        "lng": 9.9725913,
+        "google_rating": 4.9,
+        "google_reviews_count": 97,
+        "google_place_id": "ChIJvcmPxlaOokcRAFkRr9fc87s",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "c114013f-3915-4505-abad-b2024912974b",
+          "city_slug": "wuerzburg"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Möller manlift | Arbeitsbühnen | Würzburg",
+        "reviews": 97,
+        "google_maps_url": "https://www.google.com/maps/place/M%C3%B6ller+manlift+%7C+Arbeitsb%C3%BChnen+%7C+W%C3%BCrzburg/@49.7997467,9.9725913,14z/data=!4m8!1m2!2m1!1sM%C3%B6ller+manlift+%7C+Arbeitsb%C3%BChnen+%7C+W%C3%BCrzburg!3m4!1s0x47a28e56c68fc9bd:0xbbf3dcd7af115900!8m2!3d49.7997467!4d9.9725913",
+        "seen_in_queries": [
+          "Würzburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "SALGERT Unternehmensgruppe - Autokrane - Schwertransporte - Arbeitsbühnen - Gabelstapler",
+        "slug": "salgert-unternehmensgruppe-autokrane-schwertransporte-arbeitsbuehnen-gabelstapler",
+        "country": "DE",
+        "phone": "+49 2246 5151",
+        "email": null,
+        "website": "https://www.salgert.eu/",
+        "address": "Hauptstraße 141, 53797 Lohmar",
+        "city": "Lohmar",
+        "state": "",
+        "zip": "53797",
+        "lat": 50.8335181,
+        "lng": 7.2069198,
+        "google_rating": 4.9,
+        "google_reviews_count": 68,
+        "google_place_id": "ChIJH-x6YzXcvkcR6jBBd2griCE",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "SALGERT Unternehmensgruppe - Autokrane - Schwertransporte - Arbeitsbühnen - Gabelstapler",
+        "reviews": 68.0,
+        "google_maps_url": "https://www.google.com/maps/place/SALGERT+Unternehmensgruppe+-+Autokrane+-+Schwertransporte+-+Arbeitsb%C3%BChnen+-+Gabelstapler/@50.8335181,7.2069198,14z/data=!4m8!1m2!2m1!1sSALGERT+Unternehmensgruppe+-+Autokrane+-+Schwertransporte+-+Arbeitsb%C3%BChnen+-+Gabelstapler!3m4!1s0x47bedc35637aec1f:0x21882b68774130ea!8m2!3d50.8335181!4d7.2069198",
+        "seen_in_queries": [
+          "Köln"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Mentner-Krane M&L GmbH",
+        "slug": "mentner-krane-m-l-gmbh",
+        "country": "DE",
+        "phone": "+49 3521 406762",
+        "email": null,
+        "website": "https://mentner-krane.de/",
+        "address": "Hermann-Grafe-Straße 41, 01662 Meißen",
+        "city": "Meißen",
+        "state": "",
+        "zip": "01662",
+        "lat": 51.160439999999994,
+        "lng": 13.512868,
+        "google_rating": 4.9,
+        "google_reviews_count": 48,
+        "google_place_id": "ChIJXdug8qbVCUcR8kAV2dqlaMU",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "0ab112a0-8bd3-418b-9580-046500d2021d",
+          "city_slug": "dresden"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Mentner-Krane M&L GmbH",
+        "reviews": 48.0,
+        "google_maps_url": "https://www.google.com/maps/place/Mentner-Krane+M%26L+GmbH/@51.160439999999994,13.512868,14z/data=!4m8!1m2!2m1!1sMentner-Krane+M%26L+GmbH!3m4!1s0x4709d5a6f2a0db5d:0xc568a5dad91540f2!8m2!3d51.160439999999994!4d13.512868",
+        "seen_in_queries": [
+          "Dresden"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Ehrlich Aufzug- und Krantechnik GmbH",
+        "slug": "ehrlich-aufzug-und-krantechnik-gmbh",
+        "country": "DE",
+        "phone": "+49 34324 21954",
+        "email": null,
+        "website": "https://ehrlich-krane.com/",
+        "address": "Pulsitzer Hauptstraße 8, 04749 Jahnatal",
+        "city": "Jahnatal",
+        "state": "",
+        "zip": "04749",
+        "lat": 51.2152829,
+        "lng": 13.1651286,
+        "google_rating": 4.9,
+        "google_reviews_count": 35,
+        "google_place_id": "ChIJL6lUVJV2p0cRz32oAFBS3jc",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "0ab112a0-8bd3-418b-9580-046500d2021d",
+          "city_slug": "dresden"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Ehrlich Aufzug- und Krantechnik GmbH",
+        "reviews": 35.0,
+        "google_maps_url": "https://www.google.com/maps/place/Ehrlich+Aufzug-+und+Krantechnik+GmbH/@51.2152829,13.1651286,14z/data=!4m8!1m2!2m1!1sEhrlich+Aufzug-+und+Krantechnik+GmbH!3m4!1s0x47a776955454a92f:0x37de525000a87dcf!8m2!3d51.2152829!4d13.1651286",
+        "seen_in_queries": [
+          "Dresden"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Herkules-Lift-Leipzig GmbH",
+        "slug": "herkules-lift-leipzig-gmbh",
+        "country": "DE",
+        "phone": "+49 341 4790355",
+        "email": null,
+        "website": "http://www.herkules-lift-leipzig.de/",
+        "address": "Plautstraße 16, 04179 Leipzig",
+        "city": "Leipzig",
+        "state": "",
+        "zip": "04179",
+        "lat": 51.3318726,
+        "lng": 12.3084527,
+        "google_rating": 4.9,
+        "google_reviews_count": 32,
+        "google_place_id": "ChIJO-YTjqr3pkcR8sB2-fo8cL0",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "b08a0f53-c881-4682-b9ca-116f7e8fe639",
+          "city_slug": "leipzig"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Herkules-Lift-Leipzig GmbH",
+        "reviews": 32,
+        "google_maps_url": "https://www.google.com/maps/place/Herkules-Lift-Leipzig+GmbH/@51.3318726,12.3084527,14z/data=!4m8!1m2!2m1!1sHerkules-Lift-Leipzig+GmbH!3m4!1s0x47a6f7aa8e13e63b:0xbd703cfaf976c0f2!8m2!3d51.3318726!4d12.3084527",
+        "seen_in_queries": [
+          "Leipzig"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "ESDA Gerätetechnik GmbH",
+        "slug": "esda-geraetetechnik-gmbh",
+        "country": "DE",
+        "phone": "+49 2202 936350",
+        "email": null,
+        "website": "http://www.esda.de/",
+        "address": "Richard-Seiffert-Straße 14, 51469 Bergisch Gladbach",
+        "city": "Bergisch Gladbach",
+        "state": "",
+        "zip": "51469",
+        "lat": 50.9776581,
+        "lng": 7.1349702,
+        "google_rating": 4.9,
+        "google_reviews_count": 20,
+        "google_place_id": "ChIJgfHUgOvXvkcRYAAby9qqbhk",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "ESDA Gerätetechnik GmbH",
+        "reviews": 20.0,
+        "google_maps_url": "https://www.google.com/maps/place/ESDA+Ger%C3%A4tetechnik+GmbH/@50.9776581,7.1349702,14z/data=!4m8!1m2!2m1!1sESDA+Ger%C3%A4tetechnik+GmbH!3m4!1s0x47bed7eb80d4f181:0x196eaadacb1b0060!8m2!3d50.9776581!4d7.1349702",
+        "seen_in_queries": [
+          "Köln"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Brunnhuber Krane GmbH",
+        "slug": "brunnhuber-krane-gmbh",
+        "country": "DE",
+        "phone": "+49 30 20629830",
+        "email": null,
+        "website": "http://www.brunnhuber.de/",
+        "address": "Buchholzer Str. 55, 13156 Berlin",
+        "city": "Berlin",
+        "state": "",
+        "zip": "13156",
+        "lat": 52.591162,
+        "lng": 13.4165341,
+        "google_rating": 4.9,
+        "google_reviews_count": 11,
+        "google_place_id": "ChIJb_Pr1hRMqEcRaAKCOFngHoo",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "b729c0b9-b8d6-4fb7-8ee9-d0725974880e",
+          "city_slug": "berlin"
+        },
+        {
+          "city_id": "eb5db973-9c63-4133-948f-0e22e507c23f",
+          "city_slug": "rostock"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Brunnhuber Krane GmbH",
+        "reviews": 11,
+        "google_maps_url": "https://www.google.com/maps/place/Brunnhuber+Krane+GmbH/@52.591162,13.4165341,14z/data=!4m8!1m2!2m1!1sBrunnhuber+Krane+GmbH!3m4!1s0x47a84c14d6ebf36f:0x8a1ee05938820268!8m2!3d52.591162!4d13.4165341",
+        "seen_in_queries": [
+          "Rostock"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Heinrichs GmbH & Co. KG",
+        "slug": "heinrichs-gmbh-co-kg",
+        "country": "DE",
+        "phone": "+49 5295 9229002",
+        "email": null,
+        "website": "http://www.heinrichs-kran.de/",
+        "address": "Leihbühl 26, 33165 Lichtenau",
+        "city": "Lichtenau",
+        "state": "",
+        "zip": "33165",
+        "lat": 51.621856799999996,
+        "lng": 8.8853048,
+        "google_rating": 4.9,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJmSiP_Tesu0cRJC8FTJIYWG0",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "1376e833-8812-4ed5-884b-8122d45858a8",
+          "city_slug": "bielefeld"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Heinrichs GmbH & Co. KG",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Heinrichs+GmbH+%26+Co.+KG/@51.621856799999996,8.8853048,14z/data=!4m8!1m2!2m1!1sHeinrichs+GmbH+%26+Co.+KG!3m4!1s0x47bbac37fd8f2899:0x6d5818924c052f24!8m2!3d51.621856799999996!4d8.8853048",
+        "seen_in_queries": [
+          "Bielefeld"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "NORDLIFT GmbH (SYSTEM LIFT Partner) Mietstation Hannover-Langenhagen",
+        "slug": "nordlift-gmbh-system-lift-partner-mietstation-hannover-langenhagen",
+        "country": "DE",
+        "phone": "+49 511 54555710",
+        "email": null,
+        "website": "https://www.nord-lift.de/langenhagen.html",
+        "address": "Rehkamp 1, 30853 Langenhagen",
+        "city": "Langenhagen",
+        "state": "",
+        "zip": "30853",
+        "lat": 52.4605162,
+        "lng": 9.726061999999999,
+        "google_rating": 4.8,
+        "google_reviews_count": 101,
+        "google_place_id": "ChIJYVP9ek9ysEcRdX0kfa4F0N0",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "972284c8-9be0-4e3c-ac9f-ae05cbb40ea1",
+          "city_slug": "hannover"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "NORDLIFT GmbH (SYSTEM LIFT Partner) Mietstation Hannover-Langenhagen",
+        "reviews": 101.0,
+        "google_maps_url": "https://www.google.com/maps/place/NORDLIFT+GmbH+%28SYSTEM+LIFT+Partner%29+Mietstation+Hannover-Langenhagen/@52.4605162,9.726061999999999,14z/data=!4m8!1m2!2m1!1sNORDLIFT+GmbH+%28SYSTEM+LIFT+Partner%29+Mietstation+Hannover-Langenhagen!3m4!1s0x47b0724f7afd5361:0xddd005ae7d247d75!8m2!3d52.4605162!4d9.726061999999999",
+        "seen_in_queries": [
+          "Hannover"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Gebr. Markewitsch GmbH",
+        "slug": "gebr-markewitsch-gmbh",
+        "country": "DE",
+        "phone": "+49 931 619770",
+        "email": null,
+        "website": "https://gebr-markewitsch.de/standorte/wuerzburg/",
+        "address": "Sandäcker 9, 97076 Würzburg",
+        "city": "Würzburg",
+        "state": "",
+        "zip": "97076",
+        "lat": 49.79945,
+        "lng": 9.99982,
+        "google_rating": 4.8,
+        "google_reviews_count": 29,
+        "google_place_id": "ChIJDX2Nw1aOokcRlWV7FK3Chwk",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "c114013f-3915-4505-abad-b2024912974b",
+          "city_slug": "wuerzburg"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Gebr. Markewitsch GmbH",
+        "reviews": 29,
+        "google_maps_url": "https://www.google.com/maps/place/Gebr.+Markewitsch+GmbH/@49.79945,9.99982,14z/data=!4m8!1m2!2m1!1sGebr.+Markewitsch+GmbH!3m4!1s0x47a28e56c38d7d0d:0x987c2ad147b6595!8m2!3d49.79945!4d9.99982",
+        "seen_in_queries": [
+          "Würzburg",
+          "Würzburg",
+          "Würzburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Bavarialift GmbH",
+        "slug": "bavarialift-gmbh",
+        "country": "DE",
+        "phone": "+49 9606 9232260",
+        "email": null,
+        "website": "http://www.bavarialift.de/",
+        "address": "Effnerstraße 5, 92536 Pfreimd",
+        "city": "Pfreimd",
+        "state": "",
+        "zip": "92536",
+        "lat": 49.48855,
+        "lng": 12.17207,
+        "google_rating": 4.8,
+        "google_reviews_count": 23,
+        "google_place_id": "ChIJCVJElmwjoEcRMA0qrv-WthQ",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "01a7777b-5a68-44c5-a85e-955aefe9650f",
+          "city_slug": "muenchen"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Bavarialift GmbH",
+        "reviews": 23,
+        "google_maps_url": "https://www.google.com/maps/place/Bavarialift+GmbH/@49.48855,12.17207,14z/data=!4m8!1m2!2m1!1sBavarialift+GmbH!3m4!1s0x47a0236c96445209:0x14b696ffae2a0d30!8m2!3d49.48855!4d12.17207",
+        "seen_in_queries": [
+          "München"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "BKL Baukran Logistik GmbH",
+        "slug": "bkl-baukran-logistik-gmbh",
+        "country": "DE",
+        "phone": "+49 5121 93130",
+        "email": null,
+        "website": "https://www.bkl.de/%3Futm_source%3DmyBusiness%26utm_medium%3Dorganic%26utm_campaign%3DHIL",
+        "address": "Brückenstraße 11, 31180 Giesen",
+        "city": "Giesen",
+        "state": "",
+        "zip": "31180",
+        "lat": 52.201452499999995,
+        "lng": 9.913361,
+        "google_rating": 4.8,
+        "google_reviews_count": 18,
+        "google_place_id": "ChIJ0fGrTQemukcRB9qoIrlGkXA",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "972284c8-9be0-4e3c-ac9f-ae05cbb40ea1",
+          "city_slug": "hannover"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "BKL Baukran Logistik GmbH",
+        "reviews": 18.0,
+        "google_maps_url": "https://www.google.com/maps/place/BKL+Baukran+Logistik+GmbH/@52.201452499999995,9.913361,14z/data=!4m8!1m2!2m1!1sBKL+Baukran+Logistik+GmbH!3m4!1s0x47baa6074dabf1d1:0x709146b922a8da07!8m2!3d52.201452499999995!4d9.913361",
+        "seen_in_queries": [
+          "Hannover",
+          "Hannover"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Ulferts & Wittrock GmbH & Co. KG - Ndl. Kiel",
+        "slug": "ulferts-wittrock-kiel",
+        "country": "DE",
+        "phone": "+49 431 647080",
+        "email": null,
+        "website": "http://www.ulferts-wittrock.de/",
+        "address": "Ottostraße 12, 24145 Kiel",
+        "city": "Kiel",
+        "state": "",
+        "zip": "24145",
+        "lat": 54.2717351,
+        "lng": 10.1565013,
+        "google_rating": 4.8,
+        "google_reviews_count": 17,
+        "google_place_id": "ChIJ32V3aplWskcRs0J-5u7Jh5k",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "63f45b46-f6c6-409a-9f23-814b4eba7d4c",
+          "city_slug": "kiel"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Ulferts & Wittrock GmbH & Co. KG - Ndl. Kiel",
+        "reviews": 17,
+        "google_maps_url": "https://www.google.com/maps/place/Ulferts+%26+Wittrock+GmbH+%26+Co.+KG+-+Ndl.+Kiel/@54.2717351,10.1565013,14z/data=!4m8!1m2!2m1!1sUlferts+%26+Wittrock+GmbH+%26+Co.+KG+-+Ndl.+Kiel!3m4!1s0x47b256996a7765df:0x9987c9eee67e42b3!8m2!3d54.2717351!4d10.1565013",
+        "seen_in_queries": [
+          "Kiel"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Warnowkran Kranservice GmbH Rostock",
+        "slug": "warnowkran-kranservice-gmbh-rostock",
+        "country": "DE",
+        "phone": "+49 381 80699830",
+        "email": null,
+        "website": "http://www.warnowkran.de/",
+        "address": "Schutower Str. 2, 18069 Rostock",
+        "city": "Rostock",
+        "state": "",
+        "zip": "18069",
+        "lat": 54.1066187,
+        "lng": 12.0685851,
+        "google_rating": 4.8,
+        "google_reviews_count": 16,
+        "google_place_id": "ChIJ9_HD3-NWrEcRm1rf0ETIuno",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "eb5db973-9c63-4133-948f-0e22e507c23f",
+          "city_slug": "rostock"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Warnowkran Kranservice GmbH Rostock",
+        "reviews": 16,
+        "google_maps_url": "https://www.google.com/maps/place/Warnowkran+Kranservice+GmbH+Rostock/@54.1066187,12.0685851,14z/data=!4m8!1m2!2m1!1sWarnowkran+Kranservice+GmbH+Rostock!3m4!1s0x47ac56e3dfc3f1f7:0x7abac844d0df5a9b!8m2!3d54.1066187!4d12.0685851",
+        "seen_in_queries": [
+          "Rostock"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Paul Becker GmbH – Arbeitsbühnen & Stapler",
+        "slug": "paul-becker-gmbh-arbeitsbuehnen-stapler",
+        "country": "DE",
+        "phone": "+49 721 933750",
+        "email": null,
+        "website": "https://www.becker.eu/karlsruhe/%3Futm_source%3Dgmb%26utm_medium%3Dorganic",
+        "address": "Hohleichweg 33, 76189 Karlsruhe",
+        "city": "Karlsruhe",
+        "state": "",
+        "zip": "76189",
+        "lat": 49.0102644,
+        "lng": 8.3186035,
+        "google_rating": 4.7,
+        "google_reviews_count": 39,
+        "google_place_id": "ChIJJT8VLjoBl0cRgQXgJiTE2t8",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "099e43ed-9b97-42e9-afa3-f8926bbb5880",
+          "city_slug": "karlsruhe"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Paul Becker GmbH – Arbeitsbühnen & Stapler",
+        "reviews": 39,
+        "google_maps_url": "https://www.google.com/maps/place/Paul+Becker+GmbH+%E2%80%93+Arbeitsb%C3%BChnen+%26+Stapler/@49.0102644,8.3186035,14z/data=!4m8!1m2!2m1!1sPaul+Becker+GmbH+%E2%80%93+Arbeitsb%C3%BChnen+%26+Stapler!3m4!1s0x4797013a2e153f25:0xdfdac42426e00581!8m2!3d49.0102644!4d8.3186035",
+        "seen_in_queries": [
+          "Karlsruhe"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Würzburger Kranverleih und Bergungsdienst GmbH",
+        "slug": "wuerzburger-kranverleih-wuerzburg",
+        "country": "DE",
+        "phone": "+49 931 278880",
+        "email": null,
+        "website": "https://www.wuerzburger-kranverleih.de/",
+        "address": "Friedrich-Bergius-Ring 2-4, 97076 Würzburg",
+        "city": "Würzburg",
+        "state": "",
+        "zip": "97076",
+        "lat": 49.7985008,
+        "lng": 9.9971322,
+        "google_rating": 4.7,
+        "google_reviews_count": 32,
+        "google_place_id": "ChIJ21MQW1GOokcRZILDgRlfu0w",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "c114013f-3915-4505-abad-b2024912974b",
+          "city_slug": "wuerzburg"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Würzburger Kranverleih und Bergungsdienst GmbH",
+        "reviews": 32,
+        "google_maps_url": "https://www.google.com/maps/place/W%C3%BCrzburger+Kranverleih+und+Bergungsdienst+GmbH/@49.7985008,9.9971322,14z/data=!4m8!1m2!2m1!1sW%C3%BCrzburger+Kranverleih+und+Bergungsdienst+GmbH!3m4!1s0x47a28e515b1053db:0x4cbb5f1981c38264!8m2!3d49.7985008!4d9.9971322",
+        "seen_in_queries": [
+          "Würzburg",
+          "Würzburg",
+          "Würzburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Lifttechnik Fritsche GmbH",
+        "slug": "lifttechnik-fritsche-gmbh",
+        "country": "DE",
+        "phone": "+49 341 49626427",
+        "email": null,
+        "website": "https://lifttechnik-fritsche.de/",
+        "address": "Kossaer Str. 2, 04356 Leipzig",
+        "city": "Leipzig",
+        "state": "",
+        "zip": "04356",
+        "lat": 51.4110393,
+        "lng": 12.3869606,
+        "google_rating": 4.7,
+        "google_reviews_count": 3,
+        "google_place_id": "ChIJk674Z9JZpkcRmYugVmx9gpI",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "b08a0f53-c881-4682-b9ca-116f7e8fe639",
+          "city_slug": "leipzig"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Lifttechnik Fritsche GmbH",
+        "reviews": 3,
+        "google_maps_url": "https://www.google.com/maps/place/Lifttechnik+Fritsche+GmbH/@51.4110393,12.3869606,14z/data=!4m8!1m2!2m1!1sLifttechnik+Fritsche+GmbH!3m4!1s0x47a659d267f8ae93:0x92827d6c56a08b99!8m2!3d51.4110393!4d12.3869606",
+        "seen_in_queries": [
+          "Leipzig"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Zeppelin Rental GmbH Hannover",
+        "slug": "zeppelin-rental-gmbh-hannover",
+        "country": "DE",
+        "phone": "+49 511 3529970",
+        "email": null,
+        "website": "https://www.zeppelin-rental.de/ansprechpartner/standorte/mietstation-hannover-nord%3Futm_source%3Dgoogle-mybusiness%26utm_medium%3Dorganic",
+        "address": "Alter Flughafen 4, 30179 Hannover",
+        "city": "Hannover",
+        "state": "",
+        "zip": "30179",
+        "lat": 52.416019,
+        "lng": 9.741,
+        "google_rating": 4.6,
+        "google_reviews_count": 42,
+        "google_place_id": "ChIJO2m7UzxzsEcRqfFf9F2Go_Y",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "972284c8-9be0-4e3c-ac9f-ae05cbb40ea1",
+          "city_slug": "hannover"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Zeppelin Rental GmbH Hannover",
+        "reviews": 42.0,
+        "google_maps_url": "https://www.google.com/maps/place/Zeppelin+Rental+GmbH+Hannover/@52.416019,9.741,14z/data=!4m8!1m2!2m1!1sZeppelin+Rental+GmbH+Hannover!3m4!1s0x47b0733c53bb693b:0xf6a3865df45ff1a9!8m2!3d52.416019!4d9.741",
+        "seen_in_queries": [
+          "Hannover",
+          "Hannover"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Stange Transport GmbH",
+        "slug": "stange-transport-gmbh",
+        "country": "DE",
+        "phone": "+49 40 7527900",
+        "email": null,
+        "website": "http://www.stange-schwertransporte.de/",
+        "address": "Schluisgrove 29, 21107 Hamburg",
+        "city": "Hamburg",
+        "state": "",
+        "zip": "21107",
+        "lat": 53.4965718,
+        "lng": 9.9829492,
+        "google_rating": 4.6,
+        "google_reviews_count": 26,
+        "google_place_id": "ChIJozQ2tdGRsUcRa-jj5ISa0Go",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "e26bb0a8-cdfb-4260-8726-78eeb72fc0ef",
+          "city_slug": "hamburg"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Stange Transport GmbH",
+        "reviews": 26,
+        "google_maps_url": "https://www.google.com/maps/place/Stange+Transport+GmbH/@53.4965718,9.9829492,14z/data=!4m8!1m2!2m1!1sStange+Transport+GmbH!3m4!1s0x47b191d1b53634a3:0x6ad09a84e4e3e86b!8m2!3d53.4965718!4d9.9829492",
+        "seen_in_queries": [
+          "Hamburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Esser & Noppeney GmbH",
+        "slug": "esser-noppeney-gmbh",
+        "country": "DE",
+        "phone": "+49 241 970205",
+        "email": null,
+        "website": "http://www.esser-noppeney.de/",
+        "address": "Gewerbepark Brand 24, 52078 Aachen",
+        "city": "Aachen",
+        "state": "",
+        "zip": "52078",
+        "lat": 50.7582671,
+        "lng": 6.1595828,
+        "google_rating": 4.6,
+        "google_reviews_count": 12,
+        "google_place_id": "ChIJU3docAOcwEcRolVPmBNDVJ0",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "37c74029-364a-4b61-ba2d-57a074898656",
+          "city_slug": "aachen"
+        },
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Esser & Noppeney GmbH",
+        "reviews": 12.0,
+        "google_maps_url": "https://www.google.com/maps/place/Esser+%26+Noppeney+GmbH/@50.7582671,6.1595828,14z/data=!4m8!1m2!2m1!1sEsser+%26+Noppeney+GmbH!3m4!1s0x47c09c0370687753:0x9d544313984f55a2!8m2!3d50.7582671!4d6.1595828",
+        "seen_in_queries": [
+          "Köln"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Rauscher - Mietlifte",
+        "slug": "rauscher-mietlifte",
+        "country": "DE",
+        "phone": "+49 5273 7345",
+        "email": null,
+        "website": "http://www.rauscher-mietlifte.de/",
+        "address": "Meintestraße 22 - 24, 37697 Lauenförde",
+        "city": "Lauenförde",
+        "state": "",
+        "zip": "37697",
+        "lat": 51.6534999,
+        "lng": 9.3886589,
+        "google_rating": 4.5,
+        "google_reviews_count": 59,
+        "google_place_id": "ChIJ6XVt6fjhukcRaSikK2GfbRs",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "1376e833-8812-4ed5-884b-8122d45858a8",
+          "city_slug": "bielefeld"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Rauscher - Mietlifte",
+        "reviews": 59.0,
+        "google_maps_url": "https://www.google.com/maps/place/Rauscher+-+Mietlifte/@51.6534999,9.3886589,14z/data=!4m8!1m2!2m1!1sRauscher+-+Mietlifte!3m4!1s0x47bae1f8e96d75e9:0x1b6d9f612ba42869!8m2!3d51.6534999!4d9.3886589",
+        "seen_in_queries": [
+          "Bielefeld"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Paul Becker GmbH – Arbeitsbühnen, Stapler & Gerüstbau",
+        "slug": "paul-becker-gmbh-arbeitsbuehnen-stapler-geruestbau",
+        "country": "DE",
+        "phone": "+49 341 305550",
+        "email": null,
+        "website": "https://www.becker.eu/leipzig/%3Futm_source%3Dgmb%26utm_medium%3Dorganic",
+        "address": "Kamenzer Str. 15, 04347 Leipzig",
+        "city": "Leipzig",
+        "state": "",
+        "zip": "04347",
+        "lat": 51.359049299999995,
+        "lng": 12.4400944,
+        "google_rating": 4.5,
+        "google_reviews_count": 45,
+        "google_place_id": "ChIJI6QD4IH4pkcRpVZ7HaFc2Bw",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "b08a0f53-c881-4682-b9ca-116f7e8fe639",
+          "city_slug": "leipzig"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Paul Becker GmbH – Arbeitsbühnen, Stapler & Gerüstbau",
+        "reviews": 45.0,
+        "google_maps_url": "https://www.google.com/maps/place/Paul+Becker+GmbH+%E2%80%93+Arbeitsb%C3%BChnen%2C+Stapler+%26+Ger%C3%BCstbau/@51.359049299999995,12.4400944,14z/data=!4m8!1m2!2m1!1sPaul+Becker+GmbH+%E2%80%93+Arbeitsb%C3%BChnen%2C+Stapler+%26+Ger%C3%BCstbau!3m4!1s0x47a6f881e003a423:0x1cd85ca11d7b56a5!8m2!3d51.359049299999995!4d12.4400944",
+        "seen_in_queries": [
+          "Leipzig",
+          "Leipzig"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "AKR Riebienski Autokrane",
+        "slug": "akr-riebienski-autokrane",
+        "country": "DE",
+        "phone": "+49 5084 4369",
+        "email": null,
+        "website": "https://www.autokrane-riebienski.de/",
+        "address": "Wildpfad 3, 29313 Hambühren",
+        "city": "Hambühren",
+        "state": "",
+        "zip": "29313",
+        "lat": 52.627960099999996,
+        "lng": 9.9822907,
+        "google_rating": 4.5,
+        "google_reviews_count": 15,
+        "google_place_id": "ChIJq8OGNPQ9sEcRy3wSLceyjMA",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "972284c8-9be0-4e3c-ac9f-ae05cbb40ea1",
+          "city_slug": "hannover"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "AKR Riebienski Autokrane",
+        "reviews": 15.0,
+        "google_maps_url": "https://www.google.com/maps/place/AKR+Riebienski+Autokrane/@52.627960099999996,9.9822907,14z/data=!4m8!1m2!2m1!1sAKR+Riebienski+Autokrane!3m4!1s0x47b03df43486c3ab:0xc08cb2c72d127ccb!8m2!3d52.627960099999996!4d9.9822907",
+        "seen_in_queries": [
+          "Hannover"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "WILLE KRANE GmbH",
+        "slug": "wille-krane-gmbh",
+        "country": "DE",
+        "phone": "+49 431 649240",
+        "email": null,
+        "website": "http://www.wille-krane.de/",
+        "address": "Edisonstraße 11, 24145 Kiel",
+        "city": "Kiel",
+        "state": "",
+        "zip": "24145",
+        "lat": 54.2761764,
+        "lng": 10.1540622,
+        "google_rating": 4.4,
+        "google_reviews_count": 25,
+        "google_place_id": "ChIJK0IUXSlXskcRCva95tt-868",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "63f45b46-f6c6-409a-9f23-814b4eba7d4c",
+          "city_slug": "kiel"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "WILLE KRANE GmbH",
+        "reviews": 25,
+        "google_maps_url": "https://www.google.com/maps/place/WILLE+KRANE+GmbH/@54.2761764,10.1540622,14z/data=!4m8!1m2!2m1!1sWILLE+KRANE+GmbH!3m4!1s0x47b257295d14422b:0xaff37edbe6bdf60a!8m2!3d54.2761764!4d10.1540622",
+        "seen_in_queries": [
+          "Kiel"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Reichert Aufzüge & Fördertechnik GmbH",
+        "slug": "reichert-aufzuege-foerdertechnik-gmbh",
+        "country": "DE",
+        "phone": "+49 721 2551900",
+        "email": null,
+        "website": "https://reichert-aufzuege-foerdertechnik.de/",
+        "address": "Nebeniusstraße 34, 76137 Karlsruhe",
+        "city": "Karlsruhe",
+        "state": "",
+        "zip": "76137",
+        "lat": 48.9970687,
+        "lng": 8.409739799999999,
+        "google_rating": 4.4,
+        "google_reviews_count": 10,
+        "google_place_id": "ChIJ6RszWoMGl0cRFUZ45gy4xc4",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "099e43ed-9b97-42e9-afa3-f8926bbb5880",
+          "city_slug": "karlsruhe"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Reichert Aufzüge & Fördertechnik GmbH",
+        "reviews": 10,
+        "google_maps_url": "https://www.google.com/maps/place/Reichert+Aufz%C3%BCge+%26+F%C3%B6rdertechnik+GmbH/@48.9970687,8.409739799999999,14z/data=!4m8!1m2!2m1!1sReichert+Aufz%C3%BCge+%26+F%C3%B6rdertechnik+GmbH!3m4!1s0x479706835a331be9:0xcec5b80ce6784615!8m2!3d48.9970687!4d8.409739799999999",
+        "seen_in_queries": [
+          "Karlsruhe"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Autokrane Schares GmbH",
+        "slug": "autokrane-schares-gmbh",
+        "country": "DE",
+        "phone": "+49 2154 8122940",
+        "email": null,
+        "website": "https://www.schares.de/",
+        "address": "Siemensring 40, 47877 Willich",
+        "city": "Willich",
+        "state": "",
+        "zip": "47877",
+        "lat": 51.270219999999995,
+        "lng": 6.51382,
+        "google_rating": 4.3,
+        "google_reviews_count": 16,
+        "google_place_id": "ChIJVz2z4muuuEcRG1y5rX2xWIc",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Autokrane Schares GmbH",
+        "reviews": 16.0,
+        "google_maps_url": "https://www.google.com/maps/place/Autokrane+Schares+GmbH/@51.270219999999995,6.51382,14z/data=!4m8!1m2!2m1!1sAutokrane+Schares+GmbH!3m4!1s0x47b8ae6be2b33d57:0x8758b17dadb95c1b!8m2!3d51.270219999999995!4d6.51382",
+        "seen_in_queries": [
+          "Köln"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Ulferts & Wittrock GmbH & Co. KG - Ndl. Schwerin",
+        "slug": "ulferts-wittrock-gmbh-co-kg-ndl-schwerin",
+        "country": "DE",
+        "phone": "+49 385 646650",
+        "email": null,
+        "website": "http://www.ulferts-wittrock.de/",
+        "address": "Rudolf-Diesel-Straße 15, 19061 Schwerin",
+        "city": "Schwerin",
+        "state": "",
+        "zip": "19061",
+        "lat": 53.5729234,
+        "lng": 11.3978257,
+        "google_rating": 4,
+        "google_reviews_count": 11,
+        "google_place_id": "ChIJDe5n2aHZrUcResV7rYU3FLQ",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [],
+      "_outscraper_meta": {
+        "raw_name": "Ulferts & Wittrock GmbH & Co. KG - Ndl. Schwerin",
+        "reviews": 11,
+        "google_maps_url": "https://www.google.com/maps/place/Ulferts+%26+Wittrock+GmbH+%26+Co.+KG+-+Ndl.+Schwerin/@53.5729234,11.3978257,14z/data=!4m8!1m2!2m1!1sUlferts+%26+Wittrock+GmbH+%26+Co.+KG+-+Ndl.+Schwerin!3m4!1s0x47add9a1d967ee0d:0xb4143785ad7bc57a!8m2!3d53.5729234!4d11.3978257",
+        "seen_in_queries": [
+          "Schwerin",
+          "Schwerin"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "KranProfi",
+        "slug": "kranprofi",
+        "country": "DE",
+        "phone": "+49 451 4989336",
+        "email": null,
+        "website": "http://www.derkranprofi.de/",
+        "address": "Waldenburger Str. 2, 23617 Stockelsdorf",
+        "city": "Stockelsdorf",
+        "state": "",
+        "zip": "23617",
+        "lat": 53.898060699999995,
+        "lng": 10.6594002,
+        "google_rating": 4.0,
+        "google_reviews_count": 4,
+        "google_place_id": "ChIJBchBfGwMskcR-UDUjlRZNhI",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "1d4a382e-de0a-41ae-a52f-cc89f4d6ef70",
+          "city_slug": "luebeck"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "KranProfi",
+        "reviews": 4,
+        "google_maps_url": "https://www.google.com/maps/place/KranProfi/@53.898060699999995,10.6594002,14z/data=!4m8!1m2!2m1!1sKranProfi!3m4!1s0x47b20c6c7c41c805:0x123659548ed440f9!8m2!3d53.898060699999995!4d10.6594002",
+        "seen_in_queries": [
+          "Lübeck"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Edmund Frömling GmbH",
+        "slug": "edmund-froemling-gmbh",
+        "country": "DE",
+        "phone": "+49 7152 9088792",
+        "email": null,
+        "website": "https://kranservice-stuttgart.de/",
+        "address": "Battnerstraße 10, 71701 Schwieberdingen",
+        "city": "Schwieberdingen",
+        "state": "",
+        "zip": "71701",
+        "lat": 48.8758653,
+        "lng": 9.0681598,
+        "google_rating": 4.0,
+        "google_reviews_count": 1,
+        "google_place_id": "ChIJyWDJQw_XmUcR_vpGgdgha9k",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "8d74434a-0e57-4bd2-9b58-e5b50525d1f9",
+          "city_slug": "stuttgart"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Edmund Frömling GmbH",
+        "reviews": 1,
+        "google_maps_url": "https://www.google.com/maps/place/Edmund+Fr%C3%B6mling+GmbH/@48.8758653,9.0681598,14z/data=!4m8!1m2!2m1!1sEdmund+Fr%C3%B6mling+GmbH!3m4!1s0x4799d70f43c960c9:0xd96b21d88146fafe!8m2!3d48.8758653!4d9.0681598",
+        "seen_in_queries": [
+          "Stuttgart"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Boels Rental Germany GmbH Augsburg - Lechhausen",
+        "slug": "boels-augsburg",
+        "country": "DE",
+        "phone": "+49 821 44847080",
+        "email": null,
+        "website": "https://www.boels.com/de-de/%3Futm_source%3Dgoogle%26utm_medium%3Dyext%26utm_content%3D409",
+        "address": "Südtiroler Str. 6, 86165 Augsburg",
+        "city": "Augsburg",
+        "state": "",
+        "zip": "86165",
+        "lat": 48.381589399999996,
+        "lng": 10.9390269,
+        "google_rating": 3.7,
+        "google_reviews_count": 72,
+        "google_place_id": "ChIJs4kgu76XnkcR_7Pf4kQ9NXI",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "c31e92f8-cc09-4177-92da-b01cc0d50a0c",
+          "city_slug": "augsburg"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Boels Rental Germany GmbH Augsburg - Lechhausen",
+        "reviews": 72,
+        "google_maps_url": "https://www.google.com/maps/place/Boels+Rental+Germany+GmbH+Augsburg+-+Lechhausen/@48.381589399999996,10.9390269,14z/data=!4m8!1m2!2m1!1sBoels+Rental+Germany+GmbH+Augsburg+-+Lechhausen!3m4!1s0x479e97bebb2089b3:0x72353d44e2dfb3ff!8m2!3d48.381589399999996!4d10.9390269",
+        "seen_in_queries": [
+          "Augsburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Joachim Appel GbR",
+        "slug": "joachim-appel-gbr",
+        "country": "DE",
+        "phone": "+49 511 635475",
+        "email": null,
+        "website": "https://www.appel-aufzuege.de/",
+        "address": "Malagaweg 7, 30163 Hannover",
+        "city": "Hannover",
+        "state": "",
+        "zip": "30163",
+        "lat": 52.399572299999996,
+        "lng": 9.7436847,
+        "google_rating": 3.7,
+        "google_reviews_count": 3,
+        "google_place_id": "ChIJlUq8DUVzsEcRSR2YwR5gbVc",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "972284c8-9be0-4e3c-ac9f-ae05cbb40ea1",
+          "city_slug": "hannover"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Joachim Appel GbR",
+        "reviews": 3.0,
+        "google_maps_url": "https://www.google.com/maps/place/Joachim+Appel+GbR/@52.399572299999996,9.7436847,14z/data=!4m8!1m2!2m1!1sJoachim+Appel+GbR!3m4!1s0x47b073450dbc4a95:0x576d601ec1981d49!8m2!3d52.399572299999996!4d9.7436847",
+        "seen_in_queries": [
+          "Hannover"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Würzburger Kranverleih und Bergungsdienst GmbH",
+        "slug": "wuerzburger-kranverleih-und-bergungsdienst-gmbh",
+        "country": "DE",
+        "phone": "+49 9302 9868997",
+        "email": null,
+        "website": "https://www.wuerzburger-kranverleih.de/",
+        "address": "Mainfrankenpark 61 a, 97337 Dettelbach",
+        "city": "Dettelbach",
+        "state": "",
+        "zip": "97337",
+        "lat": 49.7804751,
+        "lng": 10.0672622,
+        "google_rating": 3.0,
+        "google_reviews_count": 2,
+        "google_place_id": "ChIJp642AdqIokcR0glyUYOBChs",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "c114013f-3915-4505-abad-b2024912974b",
+          "city_slug": "wuerzburg"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Würzburger Kranverleih und Bergungsdienst GmbH",
+        "reviews": 2,
+        "google_maps_url": "https://www.google.com/maps/place/W%C3%BCrzburger+Kranverleih+und+Bergungsdienst+GmbH/@49.7804751,10.0672622,14z/data=!4m8!1m2!2m1!1sW%C3%BCrzburger+Kranverleih+und+Bergungsdienst+GmbH!3m4!1s0x47a288da0136aea7:0x1b0a8183517209d2!8m2!3d49.7804751!4d10.0672622",
+        "seen_in_queries": [
+          "Würzburg",
+          "Würzburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "KONE",
+        "slug": "kone",
+        "country": "DE",
+        "phone": "+49 800 8801188",
+        "email": null,
+        "website": "https://www.kone.de/unternehmen/kontakt/niederlassungen/aufzug-wartung-reparatur-einbau-kiel.aspx%3Futm_medium%3Dreferral%26utm_source%3Dgoogle%26utm_campaign%3Dde-de-xbl_localsearch-google-mybusiness%26utm_term%3Dgoogle-mybusiness-kiel",
+        "address": "Willy-Brandt-Ufer 10, 24143 Kiel",
+        "city": "Kiel",
+        "state": "",
+        "zip": "24143",
+        "lat": 54.312414499999996,
+        "lng": 10.1355228,
+        "google_rating": 3,
+        "google_reviews_count": 2,
+        "google_place_id": "ChIJa1XQVfRWskcRpaqOexkuXr8",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "63f45b46-f6c6-409a-9f23-814b4eba7d4c",
+          "city_slug": "kiel"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "KONE",
+        "reviews": 2,
+        "google_maps_url": "https://www.google.com/maps/place/KONE/@54.312414499999996,10.1355228,14z/data=!4m8!1m2!2m1!1sKONE!3m4!1s0x47b256f455d0556b:0xbf5e2e197b8eaaa5!8m2!3d54.312414499999996!4d10.1355228",
+        "seen_in_queries": [
+          "Kiel"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Franz Bracht Kran-Vermietung GmbH",
+        "slug": "franz-bracht-kran-vermietung-gmbh",
+        "country": "DE",
+        "phone": "+49 5102 93570",
+        "email": null,
+        "website": "https://www.bracht-autokrane.de/",
+        "address": "Lange Weihe 18, 30880 Laatzen",
+        "city": "Laatzen",
+        "state": "",
+        "zip": "30880",
+        "lat": 52.300066699999995,
+        "lng": 9.823638299999999,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJryaZ9o8LsEcRsT9PNX1ubh0",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "972284c8-9be0-4e3c-ac9f-ae05cbb40ea1",
+          "city_slug": "hannover"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Franz Bracht Kran-Vermietung GmbH",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Franz+Bracht+Kran-Vermietung+GmbH/@52.300066699999995,9.823638299999999,14z/data=!4m8!1m2!2m1!1sFranz+Bracht+Kran-Vermietung+GmbH!3m4!1s0x47b00b8ff69926af:0x1d6e6e7d354f3fb1!8m2!3d52.300066699999995!4d9.823638299999999",
+        "seen_in_queries": [
+          "Hannover"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "gutkran",
+        "slug": "gutkran",
+        "country": "DE",
+        "phone": "+49 511 10582239",
+        "email": null,
+        "website": "http://gutkran.de/",
+        "address": "Lange Weihe 26, 30880 Laatzen",
+        "city": "Laatzen",
+        "state": "",
+        "zip": "30880",
+        "lat": 52.3002392,
+        "lng": 9.8264263,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJAQAw9AUKsEcRRPrOEaEg6b4",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "972284c8-9be0-4e3c-ac9f-ae05cbb40ea1",
+          "city_slug": "hannover"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "gutkran",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/gutkran/@52.3002392,9.8264263,14z/data=!4m8!1m2!2m1!1sgutkran!3m4!1s0x47b00a05f4300001:0xbee920a111cefa44!8m2!3d52.3002392!4d9.8264263",
+        "seen_in_queries": [
+          "Hannover",
+          "Hannover"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Behm Kran",
+        "slug": "behm-kran",
+        "country": "DE",
+        "phone": "+49 228 441963",
+        "email": null,
+        "website": null,
+        "address": "Basaltstraße 41, 53227 Bonn",
+        "city": "Bonn",
+        "state": "",
+        "zip": "53227",
+        "lat": 50.711737199999995,
+        "lng": 7.1719858,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJReiI8hDnvkcRVdlys9qA8Go",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "2ce4f0a5-6f4c-407f-bea9-d5cfb5956027",
+          "city_slug": "bonn"
+        },
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Behm Kran",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Behm+Kran/@50.711737199999995,7.1719858,14z/data=!4m8!1m2!2m1!1sBehm+Kran!3m4!1s0x47bee710f288e845:0x6af080dab372d955!8m2!3d50.711737199999995!4d7.1719858",
+        "seen_in_queries": [
+          "Bonn",
+          "Bonn",
+          "Köln",
+          "Bonn"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Dachdeckeraufzug mieten",
+        "slug": "dachdeckeraufzug-mieten",
+        "country": "DE",
+        "phone": "+49 40 72005360",
+        "email": null,
+        "website": null,
+        "address": "Südring 3C, 21465 Wentorf bei Hamburg",
+        "city": "Wentorf bei Hamburg",
+        "state": "",
+        "zip": "21465",
+        "lat": 53.488299999999995,
+        "lng": 10.26874,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJXY0DHhnysUcRg75BlLlRWHQ",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "e26bb0a8-cdfb-4260-8726-78eeb72fc0ef",
+          "city_slug": "hamburg"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Dachdeckeraufzug mieten",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Dachdeckeraufzug+mieten/@53.488299999999995,10.26874,14z/data=!4m8!1m2!2m1!1sDachdeckeraufzug+mieten!3m4!1s0x47b1f2191e038d5d:0x745851b99441be83!8m2!3d53.488299999999995!4d10.26874",
+        "seen_in_queries": [
+          "Hamburg",
+          "Hamburg"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Dresden Krane + Industrie Service GmbH",
+        "slug": "dresden-krane-industrie-service-gmbh",
+        "country": "DE",
+        "phone": "+49 3501 4701848",
+        "email": null,
+        "website": "http://www.dks-dresden.de/",
+        "address": "Am Weiher, 01468 Moritzburg",
+        "city": "Moritzburg",
+        "state": "",
+        "zip": "01468",
+        "lat": 51.128279299999996,
+        "lng": 13.709824,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJZbZ5IOnPCUcR7gLuq7Q3DfM",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "0ab112a0-8bd3-418b-9580-046500d2021d",
+          "city_slug": "dresden"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Dresden Krane + Industrie Service GmbH",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Dresden+Krane+%2B+Industrie+Service+GmbH/@51.128279299999996,13.709824,14z/data=!4m8!1m2!2m1!1sDresden+Krane+%2B+Industrie+Service+GmbH!3m4!1s0x4709cfe92079b665:0xf30d37b4abee02ee!8m2!3d51.128279299999996!4d13.709824",
+        "seen_in_queries": [
+          "Dresden"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Krandienst Kunze e.K.",
+        "slug": "krandienst-kunze-e-k",
+        "country": "DE",
+        "phone": "+49 3528 445016",
+        "email": null,
+        "website": "https://www.krandienst-kunze.de/",
+        "address": "Dammweg 15, 01454 Radeberg",
+        "city": "Radeberg",
+        "state": "",
+        "zip": "01454",
+        "lat": 51.105763599999996,
+        "lng": 13.9261796,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJj4EHY7C1CUcRKZRMDoausGE",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "0ab112a0-8bd3-418b-9580-046500d2021d",
+          "city_slug": "dresden"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Krandienst Kunze e.K.",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Krandienst+Kunze+e.K./@51.105763599999996,13.9261796,14z/data=!4m8!1m2!2m1!1sKrandienst+Kunze+e.K.!3m4!1s0x4709b5b06307818f:0x61b0ae860e4c9429!8m2!3d51.105763599999996!4d13.9261796",
+        "seen_in_queries": [
+          "Dresden"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Jandt Kranvermietung GmbH",
+        "slug": "jandt-kranvermietung-gmbh",
+        "country": "DE",
+        "phone": "+49 5241 7049430",
+        "email": null,
+        "website": "http://www.jandt.de/",
+        "address": "Pappelweg 21, 33335 Gütersloh",
+        "city": "Gütersloh",
+        "state": "",
+        "zip": "33335",
+        "lat": 51.9191225,
+        "lng": 8.4495085,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJGRIoheQlukcRMcVQ-HGhimk",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "1376e833-8812-4ed5-884b-8122d45858a8",
+          "city_slug": "bielefeld"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Jandt Kranvermietung GmbH",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Jandt+Kranvermietung+GmbH/@51.9191225,8.4495085,14z/data=!4m8!1m2!2m1!1sJandt+Kranvermietung+GmbH!3m4!1s0x47ba25e485281219:0x698aa171f850c531!8m2!3d51.9191225!4d8.4495085",
+        "seen_in_queries": [
+          "Bielefeld"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Krane Küper",
+        "slug": "krane-kueper",
+        "country": "DE",
+        "phone": "+49 4442 71105",
+        "email": null,
+        "website": "https://krane-kueper.de/",
+        "address": "Heckenrosenstraße 5, 49393 Lohne (Oldenburg)",
+        "city": "Lohne (Oldenburg)",
+        "state": "",
+        "zip": "49393",
+        "lat": 52.67093,
+        "lng": 8.239274,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJbbeWd_9Ft0cRUrBajuZQJbY",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "1376e833-8812-4ed5-884b-8122d45858a8",
+          "city_slug": "bielefeld"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Krane Küper",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Krane+K%C3%BCper/@52.67093,8.239274,14z/data=!4m8!1m2!2m1!1sKrane+K%C3%BCper!3m4!1s0x47b745ff7796b76d:0xb62550e68e5ab052!8m2!3d52.67093!4d8.239274",
+        "seen_in_queries": [
+          "Bielefeld"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Dach PRO Kranverleih",
+        "slug": "dach-pro-kranverleih",
+        "country": "DE",
+        "phone": "+49 1577 5056864",
+        "email": null,
+        "website": "https://www.dach-pro.shop/products/kranvermietung-kranky",
+        "address": "Einsteinstraße 5a, 53842 Troisdorf",
+        "city": "Troisdorf",
+        "state": "",
+        "zip": "53842",
+        "lat": 50.8200119,
+        "lng": 7.1264752,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJq7ZWzGzevkcRb2_AIy3gCQY",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Dach PRO Kranverleih",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Dach+PRO+Kranverleih/@50.8200119,7.1264752,14z/data=!4m8!1m2!2m1!1sDach+PRO+Kranverleih!3m4!1s0x47bede6ccc56b6ab:0x609e02d23c06f6f!8m2!3d50.8200119!4d7.1264752",
+        "seen_in_queries": [
+          "Köln"
+        ]
+      }
+    },
+    {
+      "company_row": {
+        "name": "Kranservice Schlug",
+        "slug": "kranservice-schlug",
+        "country": "DE",
+        "phone": "+49 176 20606048",
+        "email": null,
+        "website": "https://kranservice-schlug.de/",
+        "address": "Lindenstraße 3, 53343 Wachtberg",
+        "city": "Wachtberg",
+        "state": "",
+        "zip": "53343",
+        "lat": 50.6365355,
+        "lng": 7.1414121999999995,
+        "google_rating": null,
+        "google_reviews_count": 0,
+        "google_place_id": "ChIJY9r6O-jlvkcRFsG4EL3N3yU",
+        "is_active": true,
+        "is_verified": false
+      },
+      "company_regions": [
+        {
+          "city_id": "29e2d993-fbb4-4faa-8f79-fddb6283feb7",
+          "city_slug": "koeln"
+        }
+      ],
+      "_outscraper_meta": {
+        "raw_name": "Kranservice Schlug",
+        "reviews": null,
+        "google_maps_url": "https://www.google.com/maps/place/Kranservice+Schlug/@50.6365355,7.1414121999999995,14z/data=!4m8!1m2!2m1!1sKranservice+Schlug!3m4!1s0x47bee5e83bfada63:0x25dfcdbd10b8c116!8m2!3d50.6365355!4d7.1414121999999995",
+        "seen_in_queries": [
+          "Köln"
+        ]
+      }
+    }
+  ],
+  "slug_collisions": {}
+}
