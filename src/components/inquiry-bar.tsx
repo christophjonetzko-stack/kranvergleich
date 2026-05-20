@@ -16,6 +16,12 @@ import {
 import type { CompanyWithCranes } from '@/lib/types'
 import { getStoredUtm } from '@/lib/utm'
 import { getSessionEntryPath } from './session-entry-recorder'
+import { trackPageEvent } from '@/lib/track'
+
+// Minimum chars for the Projektbeschreibung textarea — anti-spam quality
+// filter. Short enough that a real "Stahlhalle 12x8m heben, 4t" fits, long
+// enough that bot "asdf" / lazy "test" submissions get rejected at the form.
+const DESCRIPTION_MIN_CHARS = 30
 
 interface InquiryBarProps {
   selectedCompanies: CompanyWithCranes[]
@@ -34,6 +40,16 @@ interface InquiryBarProps {
    *  trailing `-mieten` is stripped on submit to match the convention used by
    *  cost-calculator so downstream reports group consistently. */
   typeContext?: string | null
+  /** When set, the parent owns the dialog open state (used by the 1-click
+   *  "Anfrage an alle Anbieter" flow which opens the modal directly). When
+   *  omitted, falls back to the internal state for the legacy per-firm flow
+   *  where the sticky pill is the entry point. */
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  /** Set to true by the parent when the modal was opened via the 1-click
+   *  all-firms CTA. Causes the form-submit event to fire as
+   *  `listing_inquire_all_submitted` instead of (just) the per-firm signal. */
+  triggeredFromInquireAll?: boolean
 }
 
 export function InquiryBar({
@@ -46,8 +62,17 @@ export function InquiryBar({
   initialProjectDescription,
   cityContext,
   typeContext,
+  open: controlledOpen,
+  onOpenChange,
+  triggeredFromInquireAll,
 }: InquiryBarProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled = controlledOpen !== undefined
+  const isOpen = isControlled ? controlledOpen : internalOpen
+  const setIsOpen = (next: boolean) => {
+    if (isControlled) onOpenChange?.(next)
+    else setInternalOpen(next)
+  }
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -75,6 +100,12 @@ export function InquiryBar({
 
     if (!dsgvoConsent) {
       setError('Bitte stimmen Sie der Datenschutzerklärung zu.')
+      return
+    }
+
+    const trimmedDescription = description.trim()
+    if (trimmedDescription.length < DESCRIPTION_MIN_CHARS) {
+      setError(`Bitte beschreiben Sie Ihr Projekt kurz (mind. ${DESCRIPTION_MIN_CHARS} Zeichen) — sonst können die Anbieter Ihnen kein passendes Angebot machen.`)
       return
     }
 
@@ -109,6 +140,9 @@ export function InquiryBar({
       })
 
       if (!response.ok) throw new Error('Fehler beim Senden')
+      if (triggeredFromInquireAll) {
+        trackPageEvent('listing_inquire_all_submitted', { matched_count: selectedCompanies.length })
+      }
       setIsSubmitted(true)
     } catch {
       setError('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
@@ -259,15 +293,22 @@ export function InquiryBar({
                 </div>
 
                 <div>
-                  <Label htmlFor="ib-description">Projektbeschreibung</Label>
+                  <Label htmlFor="ib-description">Projektbeschreibung *</Label>
                   <Textarea
                     id="ib-description"
                     name="description"
                     rows={3}
+                    required
+                    minLength={DESCRIPTION_MIN_CHARS}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Was soll gehoben werden? Gewicht, Hohe, Zufahrt..."
+                    placeholder="Was soll gehoben werden? Gewicht, Höhe, Zufahrt — kurze Beschreibung hilft den Anbietern, ein passendes Angebot zu machen."
                   />
+                  <p className="mt-1 text-[11px] text-gray-400">
+                    {description.trim().length < DESCRIPTION_MIN_CHARS
+                      ? `Noch ${DESCRIPTION_MIN_CHARS - description.trim().length} Zeichen, damit der Anbieter ein passendes Angebot machen kann.`
+                      : `${description.trim().length} Zeichen — passt.`}
+                  </p>
                   <DescriptionCoach description={description} craneTypeName={craneTypeName} />
                 </div>
 

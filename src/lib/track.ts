@@ -33,6 +33,8 @@ export type PageEventType =
   | 'chatbot_prompt_shown'
   | 'chatbot_prompt_dismissed'
   | 'listing_cta_to_preise_clicked'
+  | 'listing_inquire_all_clicked'
+  | 'listing_inquire_all_submitted'
 
 export function trackPageEvent(
   eventType: PageEventType,

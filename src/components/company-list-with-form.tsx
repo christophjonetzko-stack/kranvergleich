@@ -18,6 +18,7 @@ import { CompanyCard } from './company-card'
 import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getCraneTypeNameById } from '@/data/crane-types'
+import { trackPageEvent } from '@/lib/track'
 
 const PAGE_SIZE = 20
 
@@ -85,6 +86,12 @@ export function CompanyListWithForm({
   const [plzInput, setPlzInput] = useState('')
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null)
   const [plzLabel, setPlzLabel] = useState('')
+  // Controlled inquiry-bar dialog state — owned here so the 1-click
+  // "Anfrage an alle Anbieter" CTA can pre-select all filtered firms AND
+  // open the form modal in a single user gesture (without requiring an
+  // intermediate sticky-pill click).
+  const [inquiryOpen, setInquiryOpen] = useState(false)
+  const [inquiryFromAllCta, setInquiryFromAllCta] = useState(false)
 
   // Lookup PLZ → coordinates via /api/cities
   const lookupPlz = useCallback(async (plz: string) => {
@@ -203,6 +210,25 @@ export function CompanyListWithForm({
 
   const selectedCompanies = companies.filter((c) => selectedIds.includes(c.id))
 
+  // Reset the "from inquire-all CTA" flag when the dialog closes — so a later
+  // reopen via the sticky pill is correctly classified as the legacy per-firm
+  // flow, not as an inquire-all submission.
+  const handleInquiryOpenChange = (next: boolean) => {
+    setInquiryOpen(next)
+    if (!next) setInquiryFromAllCta(false)
+  }
+
+  // 1-click anfrage to every firm currently visible after filters. Pre-selects
+  // all `filtered` companies, opens the form modal directly, and tags the
+  // submission so analytics can distinguish it from per-firm sammelanfrage.
+  const handleInquireAll = () => {
+    const ids = filtered.map((c) => c.id)
+    setSelectedIds(ids)
+    setInquiryFromAllCta(true)
+    setInquiryOpen(true)
+    trackPageEvent('listing_inquire_all_clicked', { matched_count: ids.length })
+  }
+
   // Reset pagination when filters change
   const handleFilterChange = (setter: (v: string) => void, value: string) => {
     setter(value)
@@ -214,6 +240,31 @@ export function CompanyListWithForm({
       <Suspense fallback={null}>
         <PlzFromUrl onPlz={handlePlzFromUrl} />
       </Suspense>
+      {/* Primary CTA — 1-click sammelanfrage to all currently-visible firms.
+          City-listings only (`cityName` set) — type pages have too many firms
+          country-wide for a single broadcast to make sense. The modal that
+          opens lists every firm explicitly and lets the user deselect any
+          before submit, so the flow stays DSGVO-explicit-consent. */}
+      {cityName && filtered.length >= 2 && (
+        <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-blue-200 bg-blue-50/60 px-5 py-4">
+          <div className="min-w-0">
+            <p className="text-[15px] font-semibold text-gray-900 mb-0.5">
+              Anfrage an alle {filtered.length} Anbieter in {cityName} senden
+            </p>
+            <p className="text-[13px] text-gray-600">
+              Ein Formular, eine Anfrage — Sie erhalten individuelle Angebote von allen{' '}
+              {filtered.length} Anbietern. Kostenlos &amp; unverbindlich.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleInquireAll}
+            className="shrink-0 inline-flex items-center justify-center text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md px-4 py-2.5 transition-colors w-full sm:w-auto"
+          >
+            Jetzt anfragen →
+          </button>
+        </div>
+      )}
       {/* Filter & sort bar */}
       {companies.length > 1 && (
         <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -339,6 +390,9 @@ export function CompanyListWithForm({
         initialProjectDescription={initialProjectDescription}
         cityContext={cityContext}
         typeContext={typeContext}
+        open={inquiryOpen}
+        onOpenChange={handleInquiryOpenChange}
+        triggeredFromInquireAll={inquiryFromAllCta}
       />
     </div>
   )
