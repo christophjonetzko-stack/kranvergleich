@@ -18,6 +18,7 @@ import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 import { PageEventTracker } from '@/components/page-event-tracker'
+import { ListingFastAnfrageCTA } from '@/components/listing-fast-anfrage-cta'
 import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
@@ -209,6 +210,11 @@ export default async function CraneCityPage({
 
       <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
 
+      <ListingFastAnfrageCTA
+        craneTypeSlug={craneType.slug.replace(/-mieten$/, '')}
+        citySlug={city.slug}
+      />
+
       {/* Company Listings + Map (synced via filters) */}
       {companies.length > 0 ? (
         <section id="anbieter" className="mb-10 scroll-mt-20">
@@ -282,6 +288,8 @@ export default async function CraneCityPage({
               <Link
                 key={ct.slug}
                 href={`/${ct.slug}/${city.slug}`}
+                data-track-type={ct.slug.replace(/-mieten$/, '')}
+                data-track-city={city.slug}
                 className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors"
               >
                 {ct.name}
@@ -302,6 +310,8 @@ export default async function CraneCityPage({
                 <Link
                   key={c.slug}
                   href={`/${craneType.slug}/${c.slug}`}
+                  data-track-type={craneType.slug.replace(/-mieten$/, '')}
+                  data-track-city={c.slug}
                   className="inline-flex items-center gap-1 text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors"
                 >
                   {c.name}

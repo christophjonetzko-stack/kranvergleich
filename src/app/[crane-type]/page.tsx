@@ -10,6 +10,7 @@ import { PriceTable } from '@/components/price-table'
 import { FAQSection } from '@/components/faq-section'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 import { PageEventTracker } from '@/components/page-event-tracker'
+import { ListingFastAnfrageCTA } from '@/components/listing-fast-anfrage-cta'
 import { getFAQsForCraneType } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
@@ -202,6 +203,8 @@ export default async function CraneTypePage({
         </Link>
         {' '}· Stand: {lastUpdatedLabel}
       </p>
+
+      <ListingFastAnfrageCTA craneTypeSlug={craneType.slug.replace(/-mieten$/, '')} />
 
       {/* Table of Contents — horizontal pills */}
       <nav className="mb-8 border border-gray-200 rounded-lg px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -622,6 +625,8 @@ export default async function CraneTypePage({
                 <Link
                   key={city.slug}
                   href={`/${craneType.slug}/${city.slug}`}
+                  data-track-type={craneType.slug.replace(/-mieten$/, '')}
+                  data-track-city={city.slug}
                   className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
                 >
                   {city.name}

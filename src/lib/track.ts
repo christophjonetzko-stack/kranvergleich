@@ -32,6 +32,7 @@ export type PageEventType =
   | 'chatbot_view_providers_clicked'
   | 'chatbot_prompt_shown'
   | 'chatbot_prompt_dismissed'
+  | 'listing_cta_to_preise_clicked'
 
 export function trackPageEvent(
   eventType: PageEventType,

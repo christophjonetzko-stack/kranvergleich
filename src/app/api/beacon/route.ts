@@ -29,6 +29,7 @@ const EVENT_TYPES = new Set([
   'chatbot_view_providers_clicked',
   'chatbot_prompt_shown',
   'chatbot_prompt_dismissed',
+  'listing_cta_to_preise_clicked',
 ])
 
 // Matches /api/track for consistency. The base is not a secret — the daily
