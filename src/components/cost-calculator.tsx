@@ -33,14 +33,14 @@ interface Option {
 
 const STEPS = [
   {
-    id: 'task',
-    question: 'Was möchten Sie heben oder transportieren?',
+    id: 'project_type',
+    question: 'Was steht bei Ihrem nächsten Projekt an?',
     options: [
-      { label: 'Dachziegel / Baumaterial', value: 'dach' },
-      { label: 'Stahlträger / Maschinen', value: 'stahl' },
-      { label: 'Glas / Fenster / Fassaden', value: 'glas' },
-      { label: 'Beton / Fertigteile', value: 'beton' },
-      { label: 'Allgemeine Hebearbeiten', value: 'allgemein' },
+      { label: 'Neubau / Rohbau', value: 'neubau' },
+      { label: 'Sanierung / Umbau', value: 'sanierung' },
+      { label: 'Dachdeckerarbeiten', value: 'dachdecker' },
+      { label: 'Industriemontage / Maschinen', value: 'industrie' },
+      { label: 'Einzeltransport / Einmaliger Hub', value: 'einzeltransport' },
     ] as Option[],
   },
   {
@@ -118,23 +118,23 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
   const weight = Number(answers.weight)
   const height = Number(answers.height)
   const duration = Number(answers.duration)
-  const task = answers.task
+  const projectType = answers.project_type
 
-  // Decision tree based on weight, height, task
+  // Decision tree based on weight, height, duration. project_type is captured
+  // for segmentation (DB + future CRM nurture) but does not drive crane choice
+  // — engineering signals (weight + height + duration) decide that. The one
+  // exception is the Dachdeckerkran shortcut, where the project type is a
+  // strong enough signal to override the generic "Anhängerkran for light low
+  // loads" branch (a roofer needs the basket + tile-pulley flow, not a
+  // car-trailer crane that maxes at the eaves).
   let slug = 'minikran-mieten'
   let name = 'Minikran'
   let reason = ''
 
-  if (task === 'dach' && weight <= 1 && height <= 20) {
+  if (projectType === 'dachdecker' && weight <= 1 && height <= 20) {
     slug = 'dachdeckerkran-mieten'
     name = 'Dachdeckerkran'
     reason = 'Optimal für Dacharbeiten — schneller Aufbau, kein Kranführerschein nötig.'
-  } else if (task === 'glas' && weight <= 5 && height <= 20) {
-    // Minikran (with glass-sucker attachment) only for glass work up to ~18m;
-    // taller façade work falls through to Autokran/Mobilkran below.
-    slug = 'minikran-mieten'
-    name = 'Minikran'
-    reason = 'Minikrane mit Glassauger sind ideal für Glasmontage und Fassadenarbeiten bis 18 m Höhe.'
   } else if (weight <= 1 && height <= 10) {
     slug = 'anhaengerkran-mieten'
     name = 'Anhängerkran'
@@ -162,7 +162,7 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     slug = 'raupenkran-mieten'
     name = 'Raupenkran'
     reason = 'Raupenkran für Schwerlast-Projekte — bis 3.000t Tragkraft möglich.'
-  } else if (height > 40 || (duration >= 30 && task === 'beton')) {
+  } else if (height > 40) {
     slug = 'baukran-mieten'
     name = 'Baukran'
     reason = 'Turmdrehkran für Großbaustellen — lohnt sich ab mehreren Wochen Einsatz.'
@@ -378,6 +378,10 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           // firm_events form_submit rows show "this lead came from the
           // recommendation pipeline" instead of NULL.
           type_context: result.slug.replace(/-mieten$/, ''),
+          // Segmentation tag from calculator Q1 (mig 029). Drives CRM nurture
+          // — orthogonal to the recommended crane_type which is engineering-
+          // derived. NULL when the answer was never collected.
+          project_type: answers.project_type || null,
           utm_source: utm.utm_source,
           utm_medium: utm.utm_medium,
           utm_campaign: utm.utm_campaign,

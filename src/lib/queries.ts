@@ -765,6 +765,9 @@ export async function submitLead(formData: {
   // browser has sessionStorage disabled or when the lead was placed before
   // SessionEntryRecorder was deployed.
   entry_path?: string | null
+  // Segmentation tag from calculator Q1 (mig 029). NULL when lead arrived
+  // from a path that doesn't ask Q1 (listing direct, profile page, chatbot).
+  project_type?: string | null
   // First-touch UTM (mig 027). NULL when the visitor entered without UTM
   // params or before the capture component was deployed.
   utm_source?: string | null
