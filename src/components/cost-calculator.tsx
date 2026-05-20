@@ -130,6 +130,56 @@ function firmAvatarColor(name: string): string {
   return AVATAR_PALETTE[Math.abs(hash) % AVATAR_PALETTE.length]
 }
 
+// --- BLOK H — price-range tightening ---
+
+// Round a euro amount to a clean display value. Sub-1.000 → nearest 50,
+// 1k–10k → nearest 100, ≥10k → nearest 500. Keeps the "1.250€" look while
+// avoiding ugly numbers like "7.279€".
+function roundEuro(n: number): number {
+  if (n < 1000) return Math.round(n / 50) * 50
+  if (n < 10000) return Math.round(n / 100) * 100
+  return Math.round(n / 500) * 500
+}
+
+// Convert a raw engineering-extremes range (e.g. 10.800–63.750€, 5.9×
+// spread) into a Credibility-grade displayable range with a midpoint
+// estimate. Returns { point, low, high } rounded to clean values.
+// Target spread ≤ 2.5× so the high/low ratio matches what users see
+// in real quotes — wider than that and the trust breaks the moment a
+// firm quotes inside the gap.
+function tightenedRange(rawLow: number, rawHigh: number): { point: number; low: number; high: number } {
+  if (rawLow <= 0 || rawHigh <= 0 || rawHigh < rawLow) {
+    return { point: 0, low: 0, high: 0 }
+  }
+  // Geometric midpoint preserves multiplicative symmetry — better than
+  // arithmetic for log-scaled prices (a 500€/day and a 5.000€/day average
+  // ~1.580€, not 2.750€).
+  const point = Math.sqrt(rawLow * rawHigh)
+  const factor = Math.sqrt(2.5)
+  return {
+    point: roundEuro(point),
+    low: roundEuro(point / factor),
+    high: roundEuro(point * factor),
+  }
+}
+
+// Generic duration-based range for the isUncertain path — used when we have
+// no recommended crane_type to look up. Returns euro bounds covering the
+// typical realistic span for that duration across all crane types.
+function uncertainRange(durationDays: number | undefined): { low: number; high: number; unit: string } {
+  if (!durationDays || !Number.isFinite(durationDays) || durationDays <= 1) {
+    return { low: 200, high: 2500, unit: 'Tag' }
+  }
+  if (durationDays <= 7) {
+    return { low: 1200, high: 12000, unit: 'Woche' }
+  }
+  if (durationDays <= 30) {
+    return { low: 3500, high: 30000, unit: 'Monat' }
+  }
+  // Multi-month — bias high because long projects skew toward Baukran rentals.
+  return { low: 8000, high: 50000, unit: 'Monat' }
+}
+
 // --- Display helpers (BLOK G — personalized recommendation reasoning) ---
 
 // Map raw duration value (the option value string) to its human label.
@@ -202,7 +252,16 @@ interface Recommendation {
   slug: string
   name: string
   reason: string
+  // BLOK H — three-part price breakdown. priceEstimate is the legacy single-
+  // line string kept for callers that haven't been migrated yet. The new
+  // numeric fields drive the dual-display ("~12.500€ netto" + "Richtwert-
+  // Bandbreite: 8.000–20.000€"). pointEstimate is null when isUncertain or
+  // when no price data exists for the recommended slug.
   priceEstimate: string
+  pointEstimate: number | null
+  priceLow: number
+  priceHigh: number
+  priceUnit: string
   includesOperator: boolean
   // TRUE when the user answered "Ich bin mir nicht sicher" to weight or
   // height. Surfaced so the result UI can swap the confident point estimate
@@ -219,13 +278,19 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
   // anbieter" message and let BLOK H swap the point estimate for a
   // wider range.
   if (answers.weight === 'unsure' || answers.height === 'unsure') {
+    const durationNum = Number(answers.duration)
+    const range = uncertainRange(Number.isFinite(durationNum) ? durationNum : undefined)
     return {
       // No specific crane_type — submitting this lead leaves crane_type_id
       // NULL, auto_select_nearest can't match, owner reroutes manually.
       slug: '',
       name: 'Mehrere Krantypen kommen in Frage',
       reason: 'Mehrere Krantypen kommen für Ihr Projekt in Frage — unsere Anbieter beraten Sie kostenlos zur passenden Wahl.',
-      priceEstimate: '',
+      priceEstimate: `${range.low.toLocaleString('de-DE')}–${range.high.toLocaleString('de-DE')}€`,
+      pointEstimate: null,
+      priceLow: range.low,
+      priceHigh: range.high,
+      priceUnit: range.unit,
       includesOperator: false,
       isUncertain: true,
     }
@@ -295,26 +360,38 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     reason = 'Bei langer Mietdauer und großer Höhe ist ein Turmdrehkran wirtschaftlicher.'
   }
 
-  // Calculate price estimate
+  // Compute raw engineering-extremes range from cranePrices data, then
+  // tighten to a Credibility-grade displayable range with a midpoint
+  // estimate (BLOK H). Raw output goes into priceEstimate (legacy string)
+  // and the tightened triple drives the dual-display.
   const price = cranePrices.find((p) => p.craneTypeSlug === slug)
   let priceEstimate = ''
+  let rawLow = 0
+  let rawHigh = 0
+  let priceUnit = 'Tag'
   if (price) {
     if (duration <= 1) {
-      priceEstimate = `${price.dayFrom.toLocaleString('de-DE')}–${price.dayTo.toLocaleString('de-DE')}€`
+      rawLow = price.dayFrom
+      rawHigh = price.dayTo
+      priceUnit = 'Tag'
     } else if (duration <= 7) {
       const factor = Math.min(duration, 5)
-      const low = Math.round(price.dayFrom * factor * 0.85)
-      const high = Math.round(price.dayTo * factor * 0.9)
-      priceEstimate = `${low.toLocaleString('de-DE')}–${high.toLocaleString('de-DE')}€`
+      rawLow = Math.round(price.dayFrom * factor * 0.85)
+      rawHigh = Math.round(price.dayTo * factor * 0.9)
+      priceUnit = 'Einsatz'
     } else if (duration <= 30) {
-      priceEstimate = `${price.monthFrom.toLocaleString('de-DE')}–${price.monthTo.toLocaleString('de-DE')}€`
+      rawLow = price.monthFrom
+      rawHigh = price.monthTo
+      priceUnit = 'Monat'
     } else {
       const months = Math.ceil(duration / 30)
-      const low = Math.round(price.monthFrom * months * 0.9)
-      const high = Math.round(price.monthTo * months * 0.85)
-      priceEstimate = `${low.toLocaleString('de-DE')}–${high.toLocaleString('de-DE')}€`
+      rawLow = Math.round(price.monthFrom * months * 0.9)
+      rawHigh = Math.round(price.monthTo * months * 0.85)
+      priceUnit = 'Gesamt'
     }
+    priceEstimate = `${rawLow.toLocaleString('de-DE')}–${rawHigh.toLocaleString('de-DE')}€`
   }
+  const tightened = tightenedRange(rawLow, rawHigh)
 
   // BLOK G — overlay a personalized reasoning sentence that references the
   // user's actual duration + height choices and includes a concrete numeric
@@ -329,6 +406,10 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     name: displayName(slug, name),
     reason: finalReason,
     priceEstimate,
+    pointEstimate: tightened.point > 0 ? tightened.point : null,
+    priceLow: tightened.low,
+    priceHigh: tightened.high,
+    priceUnit,
     includesOperator: price?.includesOperator ?? false,
     isUncertain: false,
   }
@@ -838,13 +919,36 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             {result.isUncertain ? result.name : `Für Ihr Projekt empfehlen wir: ${result.name}`}
           </p>
           <p className="text-[14px] text-gray-500 mb-3">{result.reason}</p>
-          {!result.isUncertain && (
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-gray-50 rounded-lg p-3">
-                <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
-                <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
-                <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. {TAX_LABEL}</p>
-              </div>
+          {/* BLOK H — dual-display cost: confident point estimate + tightened
+              Bandbreite next to operator info. When isUncertain, only the
+              wider range is shown (no point estimate); the operator panel
+              also hides because we don't know which crane type. */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-[12px] text-gray-400">
+                {result.isUncertain ? 'Kostenbereich' : 'Geschätzte Kosten für Ihr Projekt'}
+              </p>
+              {result.pointEstimate !== null && !result.isUncertain ? (
+                <p className="text-lg font-semibold text-gray-900">
+                  ~{result.pointEstimate.toLocaleString('de-DE')}€ netto
+                </p>
+              ) : (
+                <p className="text-lg font-semibold text-gray-900">
+                  {result.priceLow.toLocaleString('de-DE')}–{result.priceHigh.toLocaleString('de-DE')}€
+                </p>
+              )}
+              {!result.isUncertain && result.priceLow > 0 && result.priceHigh > 0 && (
+                <p className="text-[11px] text-gray-500">
+                  Richtwert-Bandbreite: {result.priceLow.toLocaleString('de-DE')}–{result.priceHigh.toLocaleString('de-DE')}€ ({result.priceUnit})
+                </p>
+              )}
+              <p className="text-[11px] text-gray-400">
+                {result.isUncertain
+                  ? `Pro ${result.priceUnit} — abhängig vom Krantyp.`
+                  : `Abhängig von Region, Verfügbarkeit und Zusatzleistungen. Netto, zzgl. ${TAX_LABEL}`}
+              </p>
+            </div>
+            {!result.isUncertain && (
               <div className="bg-gray-50 rounded-lg p-3">
                 <p className="text-[12px] text-gray-400">Kranführer</p>
                 <p className="text-lg font-semibold text-gray-900">
@@ -854,8 +958,8 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
                   {result.includesOperator ? 'Im Preis enthalten' : 'Separat buchbar'}
                 </p>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Inline Sammelanfrage — POSTs to /api/leads with auto_select_nearest.
