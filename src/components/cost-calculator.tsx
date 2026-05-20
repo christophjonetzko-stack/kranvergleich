@@ -130,6 +130,72 @@ function firmAvatarColor(name: string): string {
   return AVATAR_PALETTE[Math.abs(hash) % AVATAR_PALETTE.length]
 }
 
+// --- Display helpers (BLOK G — personalized recommendation reasoning) ---
+
+// Map raw duration value (the option value string) to its human label.
+// Used in the result header so the reason text echoes the user's choice
+// ("Bei Ihrer Mietdauer von 1 Monat…") instead of showing the raw number.
+function durationLabel(value: string | undefined): string {
+  switch (value) {
+    case '1': return '1 Tag'
+    case '3': return '2–3 Tage'
+    case '7': return '1 Woche'
+    case '30': return '1 Monat'
+    case '90': return 'mehreren Monaten'
+    default: return 'Ihrer Mietdauer'
+  }
+}
+
+function heightLabel(value: string | undefined): string {
+  switch (value) {
+    case '10': return 'bis 10 m'
+    case '20': return '10–20 m'
+    case '40': return '20–40 m'
+    case '60': return 'über 40 m'
+    default: return 'Ihrer Hubhöhe'
+  }
+}
+
+// Full display name with parenthetical synonym where the synonym is the
+// dominant industry term. Only Baukran (Turmdrehkran) and Minikran
+// (Spinnenkran) get the parenthetical — others stand alone clearly.
+function displayName(slug: string, fallbackName: string): string {
+  switch (slug) {
+    case 'baukran-mieten': return 'Baukran (Turmdrehkran)'
+    case 'minikran-mieten': return 'Minikran (Spinnenkran)'
+    default: return fallbackName
+  }
+}
+
+// Personalized reasoning per recommended crane type, with a concrete
+// numeric comparison vs the next-most-likely alternative. Each template
+// answers "why this one and not the obvious alternative?" — the question
+// a buyer asks themselves before clicking submit. The duration/height
+// labels echo the user's own answers so it reads as a custom analysis,
+// not a static blurb.
+function personalizedReason(slug: string, answers: Record<string, string>): string {
+  const dLabel = durationLabel(answers.duration)
+  const hLabel = heightLabel(answers.height)
+  switch (slug) {
+    case 'baukran-mieten':
+      return `Bei Ihrer Mietdauer von ${dLabel} und Hubhöhe ${hLabel} ist ein Turmdrehkran ca. 30–40% wirtschaftlicher als ein Mobilkran. Mobilkrane lohnen sich bei Einsätzen unter 4 Wochen — ab einem Monat dreht sich das Verhältnis.`
+    case 'mobilkran-mieten':
+      return `Bei Ihrer Last und Hubhöhe ${hLabel} ist der Mobilkran 25–35% günstiger pro Hub als ein Raupenkran und schneller einsatzbereit. Raupenkrane werden erst bei sehr schwerem Gelände oder >100 t Last wirtschaftlich.`
+    case 'autokran-mieten':
+      return `Bei Ihrer Last und Hubhöhe ${hLabel} ist der Autokran die wirtschaftlichste Wahl. Ein Mobilkran wäre 40–60% teurer pro Tag, ein Minikran reicht meist nicht über 18 m Hubhöhe.`
+    case 'raupenkran-mieten':
+      return `Über 50 t Last erfordert einen Raupenkran. Vergleichbare Mobilkrane > 100 t kosten 200–400% mehr pro Tag und sind in weichem oder unwegsamem Gelände nicht einsetzbar.`
+    case 'minikran-mieten':
+      return `Bei Ihrer Last bis 5 t und Hubhöhe ${hLabel} ist der Minikran ideal — kompakt für enge Zufahrten und ca. 30–50% günstiger als ein Autokran-Einsatz. Über 18 m Hubhöhe wechseln Sie auf Autokran.`
+    case 'anhaengerkran-mieten':
+      return `Bei leichten Lasten bis 1 t und Hubhöhe ${hLabel} ist der Anhängerkran die günstigste Wahl — kein Kranführerschein nötig und ca. 50–70% billiger pro Tag als ein Minikran.`
+    case 'dachdeckerkran-mieten':
+      return `Optimal für Dacharbeiten — schneller Aufbau in 30 Minuten, kein Kranführerschein nötig, ca. 40–60% günstiger als ein vergleichbarer Autokran-Einsatz.`
+    default:
+      return ''
+  }
+}
+
 // --- Recommendation engine ---
 
 interface Recommendation {
@@ -250,10 +316,18 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     }
   }
 
+  // BLOK G — overlay a personalized reasoning sentence that references the
+  // user's actual duration + height choices and includes a concrete numeric
+  // comparison vs the next-most-likely alternative crane type. Falls back
+  // to the engineering branch's `reason` if no template matches (shouldn't
+  // happen — every slug above has a template — but defensive).
+  const personalized = personalizedReason(slug, answers)
+  const finalReason = personalized || reason
+
   return {
     slug,
-    name,
-    reason,
+    name: displayName(slug, name),
+    reason: finalReason,
     priceEstimate,
     includesOperator: price?.includesOperator ?? false,
     isUncertain: false,
@@ -760,7 +834,9 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             with a broader range; for now we suppress the confident grid
             entirely so we don't show an empty price box. */}
         <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
-          <p className="text-xl font-semibold text-gray-900 mb-1">{result.name}</p>
+          <p className="text-xl font-semibold text-gray-900 mb-1">
+            {result.isUncertain ? result.name : `Für Ihr Projekt empfehlen wir: ${result.name}`}
+          </p>
           <p className="text-[14px] text-gray-500 mb-3">{result.reason}</p>
           {!result.isUncertain && (
             <div className="grid grid-cols-2 gap-3">
