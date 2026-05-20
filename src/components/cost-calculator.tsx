@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getCraneTypeIdBySlug } from '@/data/crane-types'
 import { trackPageEvent } from '@/lib/track'
-import { TAX_LABEL } from '@/lib/country'
+import { TAX_LABEL, COUNTRY_LABEL } from '@/lib/country'
 import { SubtypeCheck } from './subtype-check'
 import { getSessionEntryPath } from './session-entry-recorder'
 import { getStoredUtm } from '@/lib/utm'
@@ -803,6 +803,17 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           ← Zurück
         </button>
       )}
+
+      {/* Persistent trust footer (BLOK F) — reassures users at every question
+          that the catalog is GDPR-compliant + that submissions don't leak.
+          Firm count anchors authority; falls back gracefully when the parent
+          didn't pass firmCount (e.g. legacy embed without the prop). Hidden
+          on the future lead-capture step (BLOK D) where its own copy will
+          do the trust work — for now it shows on every question, which is
+          all the steps that exist. */}
+      <p className="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-400 leading-relaxed">
+        🔒 DSGVO-konform · Daten gehen nur an Anbieter Ihrer Wahl{firmCount ? ` · ${firmCount}+ Kranverleiher in ${COUNTRY_LABEL}` : ''}
+      </p>
     </div>
   )
 }
