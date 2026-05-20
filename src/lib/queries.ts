@@ -498,6 +498,27 @@ export async function getCompaniesForCraneType(
   return data ?? []
 }
 
+/**
+ * Get all active+relevant companies that offer the given crane brand
+ * (matches against companies.brands_offered TEXT[] via array containment).
+ * Used by /marke/<brand> brand listing pages. Brand name must match the
+ * canonical spelling stored in the array — see src/data/brands.ts.
+ */
+export async function getCompaniesByBrand(brand: string): Promise<CompanyWithCranes[]> {
+  const { data, error } = await supabase
+    .from('companies')
+    .select(`*, company_cranes (*)`)
+    .contains('brands_offered', [brand])
+    .eq('is_active', true)
+    .eq('is_relevant', true)
+    .order('is_premium', { ascending: false })
+    .order('google_rating', { ascending: false })
+    .limit(100)
+
+  if (error) throw error
+  return data ?? []
+}
+
 /** Nearest-firm match record — company plus its distance from the reference PLZ. */
 export type FirmMatch = {
   company: CompanyWithCranes

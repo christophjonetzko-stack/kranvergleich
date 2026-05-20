@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import { getCraneTypes, getCitiesWithMinCompanies } from '@/lib/queries'
 import type { City } from '@/lib/types'
 import { COUNTRY } from '@/lib/country'
+import { BRANDS } from '@/data/brands'
 
 // Regenerate at most daily — prevents per-request rebuilds from churning
 // lastmod on the dynamic URLs below.
@@ -114,5 +115,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   })
 
-  return [...staticPages, ...ratgeberPages, ...craneTypePages, ...cityPages]
+  // Brand pages — /marke/<brand>. Only DE catalog has the brand data
+  // populated (LLM extraction ran on DE description_enriched), so don't
+  // emit AT brand URLs that would be empty.
+  const DATE_BRAND_PAGES = '2026-05-20'  // first ship
+  const brandPages: MetadataRoute.Sitemap = COUNTRY === 'DE'
+    ? [
+        {
+          url: `${baseUrl}/marke`,
+          lastModified: toDate(DATE_BRAND_PAGES),
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        },
+        ...BRANDS.map((b) => ({
+          url: `${baseUrl}/marke/${b.slug}`,
+          lastModified: toDate(DATE_BRAND_PAGES),
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        })),
+      ]
+    : []
+
+  return [...staticPages, ...ratgeberPages, ...craneTypePages, ...cityPages, ...brandPages]
 }

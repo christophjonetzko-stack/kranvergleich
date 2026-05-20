@@ -141,6 +141,40 @@ export default async function KranverleihPage() {
         </div>
       </section>
 
+      <section className="mb-10">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Kranmarken im Vergleich</h2>
+        <p className="text-[13px] text-gray-500 mb-4 max-w-3xl">
+          Bevorzugen Sie eine bestimmte Marke? Vermieter nach Hersteller filtern —
+          Liebherr (Mobilkrane), Potain (Turmdrehkrane), Terex (Mobilkrane).
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/marke/liebherr"
+            className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
+          >
+            Liebherr-Krane
+          </Link>
+          <Link
+            href="/marke/potain"
+            className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
+          >
+            Potain-Turmdrehkrane
+          </Link>
+          <Link
+            href="/marke/terex"
+            className="inline-flex items-center gap-1.5 text-[13px] bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full px-3.5 py-1.5 transition-colors"
+          >
+            Terex-Krane
+          </Link>
+          <Link
+            href="/marke"
+            className="inline-flex items-center gap-1.5 text-[13px] bg-neutral-900 hover:bg-neutral-700 text-white rounded-full px-3.5 py-1.5 transition-colors"
+          >
+            Alle Marken →
+          </Link>
+        </div>
+      </section>
+
       <section className="text-[14px] text-gray-500 leading-relaxed">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Kranverleih — so funktioniert die Kranmiete</h2>
         <p className="mb-3">

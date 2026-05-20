@@ -67,6 +67,7 @@ export interface Company {
   service_regions: string[] | null
   opening_hours: string | null
   description_enriched: string | null
+  brands_offered: string[] | null
 }
 
 export interface CompanyCrane {

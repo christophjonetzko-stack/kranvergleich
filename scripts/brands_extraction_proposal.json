@@ -1,0 +1,848 @@
+[
+  {
+    "slug": "baukrane-weidenhiller-gmbh",
+    "name": "Baukrane Weidenhiller GmbH",
+    "rental_brands": [
+      "Liebherr",
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "andreas-sauler",
+    "name": "Andreas Sauler",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "autokranverleih-weber",
+    "name": "Autokranverleih Weber",
+    "rental_brands": [
+      "Faun",
+      "Tadano"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "greussing-kran-und-anlagentechnik-gmbh",
+    "name": "Greussing Kran- und Anlagentechnik Gmbh",
+    "rental_brands": [],
+    "service_only_brands": [
+      "Liebherr"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "baukranvermietung-juergen-pennekamp",
+    "name": "Baukranvermietung Jürgen Pennekamp",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "rhein-ruhr-krane-gmbh-und-co-kg",
+    "name": "Rhein-Ruhr-Krane GmbH & Co. KG",
+    "rental_brands": [
+      "Spierings"
+    ],
+    "service_only_brands": [],
+    "confidence": "medium"
+  },
+  {
+    "slug": "hanselmann-gmbh",
+    "name": "Hanselmann GmbH",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "schaefer-kran-und-transportlogistik-gmbh-und-co-kg-2",
+    "name": "Schäfer Kran- und Transportlogistik GmbH & Co.KG",
+    "rental_brands": [],
+    "service_only_brands": [
+      "Böcker"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "wilhelm-banzhaf-krananlagen-gmbh-und-co-logistik-und-service-kg",
+    "name": "Wilhelm Banzhaf Krananlagen GmbH & Co. Logistik und Service KG",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "boecker-maschinenwerke-gmbh-niederlassung-schkeuditz-leipzig",
+    "name": "Böcker Maschinenwerke GmbH Niederlassung Schkeuditz / Leipzig",
+    "rental_brands": [
+      "Böcker"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "stirnimann-gmbh-kran-krane-turmdrehkran-schnellmontagekran",
+    "name": "Stirnimann GmbH, Kran, Krane, Turmdrehkran, Schnellmontagekran",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "jandt-kranvermietung-gmbh",
+    "name": "Jandt Kranvermietung GmbH",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "mentner-krane-m-l-gmbh",
+    "name": "Mentner-Krane M&L GmbH",
+    "rental_brands": [
+      "Jekko",
+      "UNIC",
+      "Liebherr",
+      "KATO"
+    ],
+    "service_only_brands": [
+      "Smartlift",
+      "Sunward",
+      "STILL",
+      "Volvo",
+      "Mercedes-Benz"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "uperio-krane-hannover",
+    "name": "UPERIO Krane Hannover",
+    "rental_brands": [
+      "Potain",
+      "Terex",
+      "Zoomlion",
+      "Arcomet"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "ulferts-wittrock-gmbh-co-kg-ndl-schwerin",
+    "name": "Ulferts & Wittrock GmbH & Co. KG - Ndl. Schwerin",
+    "rental_brands": [
+      "Terex"
+    ],
+    "service_only_brands": [],
+    "confidence": "medium"
+  },
+  {
+    "slug": "4k-vierke-bau",
+    "name": "4K-Vierke Bau",
+    "rental_brands": [
+      "Hoeflon",
+      "Böcker",
+      "Jekko",
+      "BG-Lift",
+      "Effer"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "wasel-gmbh",
+    "name": "Wasel GmbH",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "boecker-maschinenwerke-gmbh-niederlassung-berlin",
+    "name": "Böcker Maschinenwerke GmbH Niederlassung Berlin",
+    "rental_brands": [
+      "Böcker"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "ulferts-wittrock-kiel",
+    "name": "Ulferts & Wittrock GmbH & Co. KG - Ndl. Kiel",
+    "rental_brands": [
+      "Terex"
+    ],
+    "service_only_brands": [],
+    "confidence": "medium"
+  },
+  {
+    "slug": "craneexit-hebetechnik",
+    "name": "CRANEEXIT Hebetechnik",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kranservice-oliver-krusche",
+    "name": "Kranservice Oliver Krusche",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "klaas-service-und-vermietung-ascheberg",
+    "name": "Klaas Service und Vermietung Ascheberg",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kranservice-kammann",
+    "name": "Kranservice Kammann",
+    "rental_brands": [
+      "Klaas"
+    ],
+    "service_only_brands": [],
+    "confidence": "medium"
+  },
+  {
+    "slug": "kranservice-steinberger",
+    "name": "Kranservice Steinberger",
+    "rental_brands": [
+      "FASSI"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "mas-kranverleih-gbr",
+    "name": "MAS-Kranverleih GbR",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "schweighofer-kran-transport-bergheim-bei-salzburg",
+    "name": "Schweighofer Kran & Transport Bergheim bei Salzburg",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "englhard-gmbh-autokran",
+    "name": "Englhard GmbH Autokran",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "prangl-wien",
+    "name": "Prangl GmbH Zentrale",
+    "rental_brands": [
+      "Liebherr",
+      "Spierings",
+      "Demag"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "haider-kran-und-transporte",
+    "name": "HAIDER KRAN und Transporte",
+    "rental_brands": [],
+    "service_only_brands": [
+      "Palfinger"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "prangl-sankt-poelten",
+    "name": "Prangl",
+    "rental_brands": [
+      "Liebherr",
+      "Demag",
+      "Spierings",
+      "Genie",
+      "Haulotte",
+      "JLG",
+      "Jungheinrich",
+      "Still"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "spiegl-transport-gmbh-co-kg",
+    "name": "Spiegl Transport GmbH & Co KG",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kranverleih-franz-henkel",
+    "name": "Kranverleih Franz Henkel",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "mkvfranken-gmbh-minikranverleih",
+    "name": "MKVFranken GmbH Minikranverleih",
+    "rental_brands": [
+      "Hoeflon"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kogler-krantechnik-gmbh",
+    "name": "Kogler Krantechnik GmbH",
+    "rental_brands": [],
+    "service_only_brands": [
+      "Fassi",
+      "Cranab",
+      "Jekko",
+      "Marrel"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "prangl-gmbh",
+    "name": "Prangl GmbH",
+    "rental_brands": [
+      "Liebherr",
+      "Spierings",
+      "Demag"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "bavarialift-gmbh",
+    "name": "Bavarialift GmbH",
+    "rental_brands": [
+      "Maeda",
+      "Jekko",
+      "Giraf"
+    ],
+    "service_only_brands": [
+      "VIAVAC",
+      "Sumner",
+      "Carrymate",
+      "MobyLift",
+      "PowerTower"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "hft-kran-bagger-transporte-und-lkw-und-fahrzeugbergungen-in-kaernten",
+    "name": "HFT - Kran, Bagger, Transporte und LKW- und Fahrzeugbergungen in Kärnten",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [
+      "Fassi",
+      "Palfinger"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "ub-kran-gmbh-und-co-kg",
+    "name": "UB Kran GmbH & Co. KG",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "wieshofer-transporte",
+    "name": "Wieshofer Transporte",
+    "rental_brands": [],
+    "service_only_brands": [
+      "Effer",
+      "Kunze"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "edmund-froemling-gmbh",
+    "name": "Edmund Frömling GmbH",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "ruhrpottkran",
+    "name": "RUHRPOTTKRAN",
+    "rental_brands": [
+      "MAN"
+    ],
+    "service_only_brands": [
+      "Klaas"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "ehrlich-aufzug-und-krantechnik-gmbh",
+    "name": "Ehrlich Aufzug- und Krantechnik GmbH",
+    "rental_brands": [
+      "AMAK"
+    ],
+    "service_only_brands": [
+      "GEDA",
+      "Honda",
+      "Hatz",
+      "Yanmar",
+      "Kubota"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "smk-vermietungs-gmbh",
+    "name": "SMK Vermietungs GmbH",
+    "rental_brands": [],
+    "service_only_brands": [
+      "Liebherr",
+      "Terex Demag",
+      "Tadano",
+      "Faun",
+      "Sennebogen"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "haegele-kran-service-gmbh",
+    "name": "Hägele Kran-Service GmbH",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "ho-kran-gmbh",
+    "name": "Ho Kran-Gmbh",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [
+      "Manitowoc"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "harlander-kranverleih",
+    "name": "Harlander Kranverleih",
+    "rental_brands": [
+      "Liebherr",
+      "Potain",
+      "Eurogru",
+      "Cattaneo"
+    ],
+    "service_only_brands": [
+      "Komatsu",
+      "Atlas"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "horn-autokrane",
+    "name": "Horn Autokrane",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "maltech-arbeitsbuehnen-gmbh",
+    "name": "maltech Arbeitsbühnen GmbH",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kaindl-krane-gmbh",
+    "name": "Kaindl Krane GmbH",
+    "rental_brands": [
+      "Liebherr",
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "klaas-service-und-vertriebs-gmbh-2",
+    "name": "Klaas Service- und Vertriebs GmbH",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "klaas-service-und-vertriebs-gmbh-niederlassung-hannover",
+    "name": "Klaas Service- und Vertriebs GmbH Niederlassung Hannover",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "beyer-mietservice-kg-baumaschinen-arbeitsbuehnen-stapler-kran-minikran",
+    "name": "BEYER-Mietservice KG (Baumaschinen, Arbeitsbühnen, Stapler, Kran / Minikran)",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "krandienst-schulz-gmbh-und-co-kg",
+    "name": "Krandienst Schulz GmbH & Co. KG",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kranservice-dilger-gmbh",
+    "name": "Kranservice Dilger GmbH",
+    "rental_brands": [
+      "Liebherr",
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "mietlift",
+    "name": "Mietlift",
+    "rental_brands": [
+      "Maeda",
+      "Almac",
+      "Bluelift",
+      "CTE",
+      "Easylift",
+      "Leguan",
+      "Paus",
+      "Ruthmann",
+      "Haulotte",
+      "JLG",
+      "Genie",
+      "Manitou",
+      "Magni",
+      "Nifty Lift",
+      "Sky Jack",
+      "Snorkel",
+      "Hyster",
+      "Doosan",
+      "Linde",
+      "MOOG"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kranverleih-oberlander",
+    "name": "Kranverleih Oberlander",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "esda-geraetetechnik-gmbh",
+    "name": "ESDA Gerätetechnik GmbH",
+    "rental_brands": [
+      "AMAK"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "kranvermietung-ulm-kranservice-schaedle",
+    "name": "Kranvermietung Ulm | Kranservice Schädle",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "gutkran",
+    "name": "gutkran",
+    "rental_brands": [
+      "Klaas"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "h-n-krane-gmbh-co-kg",
+    "name": "H.N. Krane GmbH & Co. KG",
+    "rental_brands": [
+      "Palfinger",
+      "Effer",
+      "Roto"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "jtk-oekran-gmbh",
+    "name": "JTK ÖKran GmbH",
+    "rental_brands": [
+      "Örkran",
+      "Terex"
+    ],
+    "service_only_brands": [
+      "FmGru"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "rundl-kranservice-mietkrane-terex",
+    "name": "R&L Kranservice | Mietkrane - Terex",
+    "rental_brands": [
+      "Terex",
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "schaefer-kran-und-transportlogistik-gmbh-und-co-kg",
+    "name": "Schäfer Kran- und Transportlogistik GmbH & Co. KG",
+    "rental_brands": [],
+    "service_only_brands": [
+      "Böcker"
+    ],
+    "confidence": "high"
+  },
+  {
+    "slug": "stach-baukran-gmbh",
+    "name": "Stach Baukran Gmbh",
+    "rental_brands": [
+      "Potain"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "schuster-gmbh",
+    "name": "Schuster GmbH",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "wolffkran-gmbh-niederlassung-berlin",
+    "name": "WOLFFKRAN GmbH Niederlassung Berlin",
+    "rental_brands": [
+      "Wolffkran"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "thomas-mende-kranservice",
+    "name": "Thomas Mende Kranservice",
+    "rental_brands": [
+      "Liebherr",
+      "Potain",
+      "Pekazett"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "tj-kranvermietung-und-containerdienst",
+    "name": "TJ Kranvermietung & Containerdienst",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "domes-schwarz-gbr",
+    "name": "Domes-Schwarz GbR",
+    "rental_brands": [
+      "Klaas",
+      "AMAK",
+      "Böcker"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "wolffkran-gmbh",
+    "name": "WOLFFKRAN GmbH",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "reichert-gmbh-kranverleih-2",
+    "name": "Reichert GmbH - Kranverleih",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "zink-kranvermietung",
+    "name": "Zink Kranvermietung",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "uperio-zuelpich",
+    "name": "UPERIO Deutschland GmbH & Co. KG – Hauptsitz Zülpich",
+    "rental_brands": [
+      "Potain",
+      "Terex",
+      "Zoomlion",
+      "Arcomet"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "hoefels-kranservice-gmbh",
+    "name": "Höfels Kranservice GmbH",
+    "rental_brands": [
+      "Potain",
+      "Cadillon"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "wasel-gmbh-berlin",
+    "name": "WASEL GMBH Berlin",
+    "rental_brands": [
+      "Liebherr"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "moosmann-krane-und-service-gmbh-und-co-kg",
+    "name": "Moosmann Krane & Service GmbH & Co. KG",
+    "rental_brands": [
+      "Liebherr",
+      "Terex"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "cosmolift",
+    "name": "COSMOLIFT (Dimitrios Varsamidis)",
+    "rental_brands": [
+      "Klaas"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "wolffkran-gmbh-niederlassung-dortmund",
+    "name": "WOLFFKRAN GmbH Niederlassung Dortmund",
+    "rental_brands": [
+      "Wolffkran"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "unic-minikran",
+    "name": "UNIC Minikran",
+    "rental_brands": [
+      "UNIC"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "fa-uebel-baukran-und-geruestverleih",
+    "name": "Fa. Uebel Baukran und Gerüstverleih",
+    "rental_brands": [
+      "Potain",
+      "Tecnolift"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "salgert-unternehmensgruppe-autokrane-schwertransporte-arbeitsbuehnen-gabelstapler",
+    "name": "SALGERT Unternehmensgruppe - Autokrane - Schwertransporte - Arbeitsbühnen - Gabelstapler",
+    "rental_brands": [
+      "Liebherr",
+      "Palfinger",
+      "Merlo"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "klaas-service-und-vertriebs-gmbh",
+    "name": "Klaas Service und Vertriebs GmbH",
+    "rental_brands": [],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "riegler-transporte",
+    "name": "Riegler Transporte",
+    "rental_brands": [
+      "Hiab"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "baukranverleih-tirol-martin-gstader",
+    "name": "Baukranverleih Tirol - Martin Gstader",
+    "rental_brands": [
+      "Liebherr",
+      "Potain",
+      "Köll"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  },
+  {
+    "slug": "wolfgang-wasel-gmbh",
+    "name": "Wolfgang Wasel GmbH",
+    "rental_brands": [
+      "Palfinger"
+    ],
+    "service_only_brands": [],
+    "confidence": "high"
+  }
+]
