@@ -88,16 +88,15 @@ export default async function KostenrechnerPage() {
 
       {/* H1 */}
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
-        Kran-Kostenrechner
+        In 60 Sekunden zum richtigen Kran für Ihr Projekt
       </h1>
       <p className="text-[15px] text-gray-500 mb-6">
-        Wie viel kostet ein Kran für Ihr Projekt? Beantworten Sie 4 kurze Fragen und erhalten
-        Sie eine Empfehlung mit Preisschätzung — kostenlos und unverbindlich.
+        4 Fragen — basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
       </p>
 
       {/* Calculator */}
       <div className="mb-10">
-        <CostCalculator />
+        <CostCalculator firmCount={anbieterCount} />
       </div>
 
       {/* SEO text */}

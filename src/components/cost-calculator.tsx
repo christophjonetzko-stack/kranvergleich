@@ -215,9 +215,14 @@ interface CostCalculatorProps {
   // Page path where the calculator is embedded; forwarded into the lead's
   // project_description so we can attribute which landing page drove the conversion.
   page?: string
+  // Real firm count from getSiteStats(), already rounded down to nearest 10 by
+  // queries.ts. Surfaces in the trust footer under each question (BLOK F) and
+  // the result-page authority strip (BLOK K) so trust anchors stay accurate as
+  // the catalog grows. Undefined → trust elements skip the count line gracefully.
+  firmCount?: number
 }
 
-export function CostCalculator({ page = '/kostenrechner' }: CostCalculatorProps = {}) {
+export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalculatorProps = {}) {
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [result, setResult] = useState<Recommendation | null>(null)

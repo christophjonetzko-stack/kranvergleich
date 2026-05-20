@@ -160,7 +160,7 @@ export default async function KranMietenPreisePage() {
           fold above the wizard CTA. */}
       <CollapsibleToc>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
-          <li><a href="#kostenrechner" className="text-[13px] text-blue-600 hover:underline">Kostenrechner in 4 Schritten</a></li>
+          <li><a href="#kostenrechner" className="text-[13px] text-blue-600 hover:underline">Kostenrechner in 60 Sekunden</a></li>
           <li><a href="#preistabelle" className="text-[13px] text-blue-600 hover:underline">Preistabelle alle Krantypen</a></li>
           <li><a href="#autokran-kosten" className="text-[13px] text-blue-600 hover:underline">Autokran Kosten pro Tag &amp; Stunde</a></li>
           <li><a href="#dachdeckerkran-kosten" className="text-[13px] text-blue-600 hover:underline">Dachdeckerkran mieten Kosten</a></li>
@@ -214,13 +214,12 @@ export default async function KranMietenPreisePage() {
           calculator_lead_submit_success). Confirm if engagement ≥50%. */}
       <section id="kostenrechner" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
-          Was kostet Ihr Projekt? Kostenrechner in 4 Schritten
+          In 60 Sekunden zum richtigen Kran für Ihr Projekt
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
-          Beantworten Sie vier kurze Fragen zu Ihrem Vorhaben und erhalten Sie
-          eine unverbindliche Kostenschätzung plus Empfehlung für den passenden Krantyp.
+          4 Fragen — basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
         </p>
-        <CostCalculator page="/kran-mieten-preise" />
+        <CostCalculator page="/kran-mieten-preise" firmCount={anbieterCount} />
       </section>
 
       {/* Full price table */}
