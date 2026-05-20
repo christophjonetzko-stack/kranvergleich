@@ -69,6 +69,11 @@ const articles = [
     description: 'Welche Krane darf man selbst bedienen, wo ist ein Kranführer Pflicht? Übersichtstabelle aller 8 Krantypen.',
   },
   {
+    slug: 'kran-mieten-oder-kaufen',
+    title: 'Kran mieten oder kaufen? Wann sich was lohnt — Vergleich 2026',
+    description: 'Faustregel: unter 100 Einsatztagen ist Mieten günstiger. Anschaffungskosten ab 50.000€ (Minikran) bis 1.000.000€ (Autokran). Hybrid-Strategie für mittlere Betriebe.',
+  },
+  {
     slug: 'kran-mieten-tipps',
     title: 'Kran mieten: 7 Tipps für Bauunternehmer',
     description: 'So sparen Sie bei der Kranmiete Geld und Zeit. Praktische Tipps aus der Baupraxis.',
