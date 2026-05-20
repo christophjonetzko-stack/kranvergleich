@@ -31,7 +31,18 @@ interface Option {
   value: string
 }
 
-const STEPS = [
+interface Step {
+  id: string
+  question: string
+  options: Option[]
+  // BLOK D — mid-flow lead capture step. Rendered with a name+email mini-
+  // form instead of the option-button grid. Inserted between Q2 (weight)
+  // and Q3 (height) so the user is committed (= row in DB) before they
+  // see the engineering questions that filter out tire-kickers.
+  isLeadCapture?: true
+}
+
+const STEPS: Step[] = [
   {
     id: 'project_type',
     question: 'Was steht bei Ihrem nächsten Projekt an?',
@@ -41,7 +52,7 @@ const STEPS = [
       { label: 'Dachdeckerarbeiten', value: 'dachdecker' },
       { label: 'Industriemontage / Maschinen', value: 'industrie' },
       { label: 'Einzeltransport / Einmaliger Hub', value: 'einzeltransport' },
-    ] as Option[],
+    ],
   },
   {
     id: 'weight',
@@ -53,7 +64,13 @@ const STEPS = [
       { label: '20–50 Tonnen', value: '50' },
       { label: 'Über 50 Tonnen', value: '100' },
       { label: 'Ich bin mir nicht sicher', value: 'unsure' },
-    ] as Option[],
+    ],
+  },
+  {
+    id: 'lead_capture',
+    question: 'Letzte 2 Fragen — wohin schicken wir Ihre Empfehlung?',
+    options: [],
+    isLeadCapture: true,
   },
   {
     id: 'height',
@@ -64,7 +81,7 @@ const STEPS = [
       { label: '20–40 Meter', value: '40' },
       { label: 'Über 40 Meter', value: '60' },
       { label: 'Ich bin mir nicht sicher', value: 'unsure' },
-    ] as Option[],
+    ],
   },
   {
     id: 'duration',
@@ -75,9 +92,16 @@ const STEPS = [
       { label: '1 Woche', value: '7' },
       { label: '1 Monat', value: '30' },
       { label: 'Länger als 1 Monat', value: '90' },
-    ] as Option[],
+    ],
   },
 ]
+
+// Sessionstorage keys for the partial-capture lifecycle. Cleared on
+// successful final submission so a repeat user doesn't keep updating
+// the same DB row across separate calculator runs.
+const PARTIAL_LEAD_ID_KEY = 'kran-calc-partial-lead-id'
+const PARTIAL_CAPTURE_NAME_KEY = 'kran-calc-capture-name'
+const PARTIAL_CAPTURE_EMAIL_KEY = 'kran-calc-capture-email'
 
 // --- Presentation helpers for the success-state firm cards ---
 
@@ -290,6 +314,33 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
   // mobile (form scrolls below fold). Compact form (4 required only) closes
   // visual gap to submit button. Optional fields stay reachable via toggle.
   const [showOptionalFields, setShowOptionalFields] = useState(false)
+  // BLOK D — mid-flow capture state. Pre-populated from sessionStorage if
+  // the user already filled the mini-form earlier in this browser session
+  // (so a refresh / accidental back-button doesn't make them re-type).
+  const [captureName, setCaptureName] = useState('')
+  const [captureEmail, setCaptureEmail] = useState('')
+  const [captureDsgvo, setCaptureDsgvo] = useState(false)
+  const [captureSubmitting, setCaptureSubmitting] = useState(false)
+  const [captureError, setCaptureError] = useState<string | null>(null)
+  const [partialLeadId, setPartialLeadId] = useState<string | null>(null)
+
+  // Hydrate capture state from sessionStorage on mount so a mid-flow
+  // refresh doesn't wipe progress. sessionStorage scope = current tab only,
+  // which matches "this user, this calculator run" without leaking to other
+  // tabs that might use a different email.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const id = window.sessionStorage.getItem(PARTIAL_LEAD_ID_KEY)
+      const name = window.sessionStorage.getItem(PARTIAL_CAPTURE_NAME_KEY)
+      const email = window.sessionStorage.getItem(PARTIAL_CAPTURE_EMAIL_KEY)
+      if (id) setPartialLeadId(id)
+      if (name) setCaptureName(name)
+      if (email) setCaptureEmail(email)
+    } catch {
+      // sessionStorage disabled — silently skip; the user just re-types if needed.
+    }
+  }, [])
 
   // Pick up `?dryrun=1` after mount so we don't diverge between SSR and the
   // client during hydration; a prerendered page can't read the URL, and the
@@ -328,6 +379,112 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
     setDsgvoConsent(false)
     setProjectDetailsLive('')
     setLocationLive('')
+    // Wipe the partial-capture trail too — "Neu berechnen" means a clean
+    // run, not a continuation of the previous abandoned lead. The DB row
+    // stays (it's a real partial lead worth recovering) but the client
+    // no longer carries the id, so the next final submit creates a fresh
+    // row rather than UPDATE'ing the abandoned one.
+    setCaptureName('')
+    setCaptureEmail('')
+    setCaptureDsgvo(false)
+    setCaptureError(null)
+    setPartialLeadId(null)
+    if (typeof window !== 'undefined') {
+      try {
+        window.sessionStorage.removeItem(PARTIAL_LEAD_ID_KEY)
+        window.sessionStorage.removeItem(PARTIAL_CAPTURE_NAME_KEY)
+        window.sessionStorage.removeItem(PARTIAL_CAPTURE_EMAIL_KEY)
+      } catch {
+        // Ignore — storage unavailable, nothing to clear.
+      }
+    }
+  }
+
+  // BLOK D — submit the mid-flow capture step. Inserts (or upserts) a leads
+  // row with is_partial=TRUE so the abandon-recovery cohort exists in DB
+  // even if the user never finishes Q4+Q5+PLZ. On any non-network failure
+  // we still let the user advance (data save is best-effort here; blocking
+  // the wizard on a backend hiccup would erase the very conversion we're
+  // trying to recover).
+  async function handleCaptureSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (captureSubmitting) return
+    setCaptureError(null)
+
+    const name = captureName.trim()
+    const email = captureEmail.trim()
+
+    if (name.length < 2) {
+      setCaptureError('Bitte geben Sie Ihren Namen ein.')
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setCaptureError('Bitte geben Sie eine gültige E-Mail-Adresse ein.')
+      return
+    }
+    if (!captureDsgvo) {
+      setCaptureError('Bitte stimmen Sie der Datenschutzerklärung zu.')
+      return
+    }
+
+    // Persist immediately so the user has the data back if they refresh
+    // mid-network-call. Lead id arrives below.
+    if (typeof window !== 'undefined') {
+      try {
+        window.sessionStorage.setItem(PARTIAL_CAPTURE_NAME_KEY, name)
+        window.sessionStorage.setItem(PARTIAL_CAPTURE_EMAIL_KEY, email)
+      } catch {
+        // ignore
+      }
+    }
+
+    setCaptureSubmitting(true)
+    // Find the weight option's label text so it can ride along as a
+    // segmentation hint in the partial row. Falls back to the raw value
+    // if the option got out of sync.
+    const weightStep = STEPS.find((s) => s.id === 'weight')
+    const weightVal = answers.weight ?? ''
+    const weightBand = weightStep?.options.find((o) => o.value === weightVal)?.label ?? weightVal
+
+    try {
+      const res = await fetch('/api/calculator/partial-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_name: name,
+          customer_email: email,
+          project_type: answers.project_type ?? null,
+          weight_band: weightBand,
+          dsgvo_consent: true,
+          dry_run: isDryRunMode,
+          website_url: '',
+        }),
+      })
+      const data = await res.json().catch(() => null)
+      if (res.ok && data && typeof data.id === 'string' && data.id !== 'honeypot') {
+        setPartialLeadId(data.id)
+        if (typeof window !== 'undefined') {
+          try {
+            window.sessionStorage.setItem(PARTIAL_LEAD_ID_KEY, data.id)
+          } catch {
+            // ignore
+          }
+        }
+        trackPageEvent('calculator_partial_lead_captured')
+      }
+    } catch {
+      // Network failure — don't block forward progress. The user finishes
+      // the calculator and the final /api/leads submit still works (just
+      // without the abandon-recovery row attached).
+    } finally {
+      setCaptureSubmitting(false)
+    }
+
+    // Advance regardless of partial-save outcome. The lead-capture step's
+    // value isn't a wizard answer; it just persists contact info early.
+    if (currentStep < STEPS.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
   }
 
   // Submit Sammelanfrage — /api/leads auto-selects up to 10 nearest firms
@@ -409,6 +566,10 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           // — orthogonal to the recommended crane_type which is engineering-
           // derived. NULL when the answer was never collected.
           project_type: answers.project_type || null,
+          // BLOK D — when present, /api/leads UPDATEs the existing partial
+          // row instead of inserting a new lead. Keeps the abandon-recovery
+          // trail under one identity.
+          partial_lead_id: partialLeadId,
           utm_source: utm.utm_source,
           utm_medium: utm.utm_medium,
           utm_campaign: utm.utm_campaign,
@@ -435,6 +596,20 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
         locationLabel: typeof json.resolved_label === 'string' && json.resolved_label ? json.resolved_label : location,
         customerConfirmationSent: json.email_delivery?.customer_confirmation !== false,
       })
+      // Clear sessionStorage for the partial-capture handshake so a later
+      // calculator run on the same tab starts fresh instead of UPDATE'ing
+      // the now-completed lead. The DB row stays (status=new, is_partial=
+      // false) and continues through the normal dispatch lifecycle.
+      if (typeof window !== 'undefined') {
+        try {
+          window.sessionStorage.removeItem(PARTIAL_LEAD_ID_KEY)
+          window.sessionStorage.removeItem(PARTIAL_CAPTURE_NAME_KEY)
+          window.sessionStorage.removeItem(PARTIAL_CAPTURE_EMAIL_KEY)
+        } catch {
+          // ignore
+        }
+      }
+      setPartialLeadId(null)
       // Scroll the success panel into view so the visitor actually sees the
       // confirmation (earlier flow silently left them looking at the old form
       // on mobile). Use requestAnimationFrame so React has re-rendered first.
@@ -628,11 +803,11 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <label htmlFor="calc-name" className="block text-[12px] text-gray-600 mb-1">Name *</label>
-                <input id="calc-name" name="name" required placeholder="Max Mustermann" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+                <input id="calc-name" name="name" required defaultValue={captureName} placeholder="Max Mustermann" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
               </div>
               <div>
                 <label htmlFor="calc-email" className="block text-[12px] text-gray-600 mb-1">E-Mail *</label>
-                <input id="calc-email" name="email" type="email" required placeholder="max@beispiel.de" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+                <input id="calc-email" name="email" type="email" required defaultValue={captureEmail} placeholder="max@beispiel.de" className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
               </div>
               <div>
                 <label htmlFor="calc-location" className="block text-[12px] text-gray-600 mb-1">PLZ oder Stadt Einsatzort *</label>
@@ -783,17 +958,81 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
       </p>
       <h3 className="text-[16px] font-semibold text-gray-900 mb-4">{step.question}</h3>
 
-      <div className="grid gap-2">
-        {step.options.map((opt) => (
+      {step.isLeadCapture ? (
+        // BLOK D — mid-flow capture mini-form. Owns its own submit handler so
+        // it can POST to /api/calculator/partial-lead and store the returned
+        // id in sessionStorage before advancing the wizard.
+        <form onSubmit={handleCaptureSubmit} className="space-y-3">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div>
+              <label htmlFor="cap-name" className="block text-[12px] text-gray-600 mb-1">Name *</label>
+              <input
+                id="cap-name"
+                type="text"
+                value={captureName}
+                onChange={(e) => setCaptureName(e.target.value)}
+                required
+                placeholder="Max Mustermann"
+                className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div>
+              <label htmlFor="cap-email" className="block text-[12px] text-gray-600 mb-1">E-Mail *</label>
+              <input
+                id="cap-email"
+                type="email"
+                value={captureEmail}
+                onChange={(e) => setCaptureEmail(e.target.value)}
+                required
+                placeholder="max@beispiel.de"
+                className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+          </div>
+
+          <label className="flex gap-2 items-start cursor-pointer">
+            <input
+              type="checkbox"
+              checked={captureDsgvo}
+              onChange={(e) => setCaptureDsgvo(e.target.checked)}
+              className="mt-0.5 shrink-0"
+            />
+            <span className="text-[11px] text-gray-500 leading-relaxed">
+              Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
+              <Link href="/datenschutz" className="underline hover:text-gray-700" target="_blank">Datenschutzerklärung</Link>{' '}
+              zu. *
+            </span>
+          </label>
+
+          {captureError && (
+            <p className="text-[12px] text-red-600">{captureError}</p>
+          )}
+
           <button
-            key={opt.value}
-            onClick={() => handleSelect(opt.value)}
-            className="text-left text-[14px] text-gray-700 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 hover:border-blue-300 rounded-lg px-4 py-3 transition-colors"
+            type="submit"
+            disabled={captureSubmitting}
+            className="w-full text-[14px] font-semibold bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
           >
-            {opt.label}
+            {captureSubmitting ? 'Wird gespeichert…' : 'Weiter zur Höhen-Frage →'}
           </button>
-        ))}
-      </div>
+
+          <p className="text-[11px] text-gray-400 text-center leading-relaxed">
+            🔒 Nur 1 E-Mail mit Ihrem Ergebnis. Keine Weitergabe ohne Ihre ausdrückliche Anfrage.
+          </p>
+        </form>
+      ) : (
+        <div className="grid gap-2">
+          {step.options.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => handleSelect(opt.value)}
+              className="text-left text-[14px] text-gray-700 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 hover:border-blue-300 rounded-lg px-4 py-3 transition-colors"
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {currentStep > 0 && (
         <button
@@ -807,13 +1046,13 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
       {/* Persistent trust footer (BLOK F) — reassures users at every question
           that the catalog is GDPR-compliant + that submissions don't leak.
           Firm count anchors authority; falls back gracefully when the parent
-          didn't pass firmCount (e.g. legacy embed without the prop). Hidden
-          on the future lead-capture step (BLOK D) where its own copy will
-          do the trust work — for now it shows on every question, which is
-          all the steps that exist. */}
-      <p className="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-400 leading-relaxed">
-        🔒 DSGVO-konform · Daten gehen nur an Anbieter Ihrer Wahl{firmCount ? ` · ${firmCount}+ Kranverleiher in ${COUNTRY_LABEL}` : ''}
-      </p>
+          didn't pass firmCount. Hidden on the lead-capture step (BLOK D)
+          which carries its own narrower trust copy specific to email capture. */}
+      {!step.isLeadCapture && (
+        <p className="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-400 leading-relaxed">
+          🔒 DSGVO-konform · Daten gehen nur an Anbieter Ihrer Wahl{firmCount ? ` · ${firmCount}+ Kranverleiher in ${COUNTRY_LABEL}` : ''}
+        </p>
+      )}
     </div>
   )
 }

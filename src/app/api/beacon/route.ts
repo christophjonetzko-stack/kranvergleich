@@ -15,6 +15,7 @@ const EVENT_TYPES = new Set([
   'calculator_lead_submit_attempt',
   'calculator_lead_submit_success',
   'calculator_form_validation_failed',
+  'calculator_partial_lead_captured',
   'inline_sammelanfrage_submit',
   'scroll_depth_25',
   'scroll_depth_50',
