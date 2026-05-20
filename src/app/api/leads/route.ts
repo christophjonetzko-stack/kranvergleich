@@ -304,33 +304,6 @@ export async function POST(request: Request) {
     const cityContext = sanitizeSlug(body.city_context)
     const typeContext = sanitizeSlug(body.type_context)
 
-    // project_type segmentation (mig 029). Whitelist must match the CHECK
-    // constraint exactly — any other value is dropped to NULL so the INSERT
-    // doesn't fail. The slug regex above would also pass these values, but
-    // an explicit whitelist guards against future drift where Q1 options
-    // change in the UI but the DB constraint doesn't.
-    const PROJECT_TYPE_WHITELIST = new Set([
-      'neubau',
-      'sanierung',
-      'dachdecker',
-      'industrie',
-      'einzeltransport',
-    ])
-    const projectType = typeof body.project_type === 'string' && PROJECT_TYPE_WHITELIST.has(body.project_type)
-      ? body.project_type
-      : null
-
-    // partial_lead_id — when the calculator stored a partial-capture UUID in
-    // sessionStorage during the BLOK D mini-step, it forwards it here so we
-    // UPDATE that row to is_partial=FALSE instead of inserting a new lead.
-    // Defensive validation: must look like a v4 UUID, otherwise dropped to
-    // null and the lead inserts as a fresh row. submitLead's own .eq guard
-    // prevents the UPDATE from flipping an already-completed lead.
-    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-    const partialLeadId = typeof body.partial_lead_id === 'string' && UUID_RE.test(body.partial_lead_id)
-      ? body.partial_lead_id
-      : null
-
     // Defensive filter: drop firms BEFORE persisting the lead when they fail
     // any of four gates — irrelevant/inactive (is_relevant=false or is_active=
     // false, hidden from frontend lists and the catalog), email-less (no
@@ -396,8 +369,6 @@ export async function POST(request: Request) {
       dsgvo_consent: body.dsgvo_consent,
       company_ids: companyIds,
       entry_path: entryPath,
-      project_type: projectType,
-      partial_lead_id: partialLeadId,
       utm_source: utmSource,
       utm_medium: utmMedium,
       utm_campaign: utmCampaign,

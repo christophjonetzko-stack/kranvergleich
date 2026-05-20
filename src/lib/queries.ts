@@ -765,55 +765,26 @@ export async function submitLead(formData: {
   // browser has sessionStorage disabled or when the lead was placed before
   // SessionEntryRecorder was deployed.
   entry_path?: string | null
-  // Segmentation tag from calculator Q1 (mig 029). NULL when lead arrived
-  // from a path that doesn't ask Q1 (listing direct, profile page, chatbot).
-  project_type?: string | null
   // First-touch UTM (mig 027). NULL when the visitor entered without UTM
   // params or before the capture component was deployed.
   utm_source?: string | null
   utm_medium?: string | null
   utm_campaign?: string | null
   utm_content?: string | null
-  // When set, this is the UUID of a row previously created by
-  // /api/calculator/partial-lead (BLOK D). We UPDATE that row to
-  // is_partial=FALSE and overwrite the placeholder fields instead of
-  // inserting a new lead. Keeps the abandon-recovery trail and the
-  // completed lead under one identity.
-  partial_lead_id?: string | null
 }) {
-  const { company_ids, partial_lead_id, ...leadData } = formData
+  const { company_ids, ...leadData } = formData
   const sb = getServiceSupabase()
 
-  let lead: { id: string } | null = null
+  // Insert lead — stamp country from build-time env so the same DB serves both
+  // kranvergleich.de (country='DE') and kranvergleich.at (country='AT'); admin
+  // dashboards and AT-routing logic split the pipeline by this column.
+  const { data: lead, error: leadError } = await sb
+    .from('leads')
+    .insert({ ...leadData, country: COUNTRY })
+    .select('id')
+    .single()
 
-  if (partial_lead_id) {
-    // Complete an earlier partial capture. Set is_partial=FALSE and overwrite
-    // the placeholder fields (customer_phone, project_description, city, etc).
-    // Country and is_partial come from this UPDATE; project_type already set
-    // on the partial row stays unless the new payload overrides it.
-    const { data, error } = await sb
-      .from('leads')
-      .update({ ...leadData, country: COUNTRY, is_partial: false })
-      .eq('id', partial_lead_id)
-      // Defensive: only flip rows that are actually partial. Prevents a
-      // forged partial_lead_id from rewriting an already-completed lead.
-      .eq('is_partial', true)
-      .select('id')
-      .single()
-    if (error) throw error
-    lead = data
-  } else {
-    // Insert lead — stamp country from build-time env so the same DB serves both
-    // kranvergleich.de (country='DE') and kranvergleich.at (country='AT'); admin
-    // dashboards and AT-routing logic split the pipeline by this column.
-    const { data, error } = await sb
-      .from('leads')
-      .insert({ ...leadData, country: COUNTRY })
-      .select('id')
-      .single()
-    if (error) throw error
-    lead = data
-  }
+  if (leadError) throw leadError
 
   // Insert lead_companies
   if (company_ids.length > 0 && lead) {

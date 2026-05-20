@@ -1,0 +1,34 @@
+-- Drops leads.is_partial added in migration 029 — the mid-flow capture
+-- infrastructure it backed was reverted (commit history: BLOK D added
+-- 2026-05-20, reverted same day after Priestley audit).
+--
+-- Reason for revert: leads.is_partial only earns its keep if an abandon-
+-- recovery sequence exists to re-engage partial-capture cohort. In the
+-- current KranVergleich model (single Sammelanfrage conversion, one-shot
+-- transactional, no nurture content, no second vertical) there is no
+-- downstream system that converts partial leads into paying outcomes,
+-- so the column became data exhaust — DSGVO retention overhead with
+-- zero business value (24 Assets principle: data without monetization
+-- system is cost, not asset).
+--
+-- Migration 029's project_type column STAYS — it's a real client-side
+-- helper for the Dachdeckerkran recommendation shortcut. The calculator
+-- still asks Q1 (project type) but no longer writes the answer to DB
+-- since there's no segmentation pipeline that would consume it. Column
+-- is dormant for new rows but the few rows persisted during the brief
+-- BLOK C/D window keep their values.
+--
+-- Classification: NON-BREAKING. Drops a column that was added 5 hours
+-- earlier in the same migration set; no app code references it anymore
+-- (the same commit removes the partial-capture flow). Rows that were
+-- written with is_partial=TRUE during the BLOK D live window (a handful
+-- at most given the deploy gap) lose that flag but stay otherwise intact.
+--
+-- Rollback:
+--   ALTER TABLE leads ADD COLUMN is_partial BOOLEAN NOT NULL DEFAULT FALSE;
+--   CREATE INDEX idx_leads_is_partial
+--     ON leads(created_at DESC)
+--     WHERE is_partial = TRUE;
+
+DROP INDEX IF EXISTS idx_leads_is_partial;
+ALTER TABLE leads DROP COLUMN IF EXISTS is_partial;
