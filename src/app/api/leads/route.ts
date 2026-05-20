@@ -209,6 +209,57 @@ export async function POST(request: Request) {
     // signal-back loop) sees the same shape.
     if (phoneCheck.ok && phoneCheck.e164) body.customer_phone = phoneCheck.e164
 
+    // AI auto-categorize when crane_type_id is missing but the description
+    // has substance (mig A of the 2026-05-20 A+B+C+D sprint). Defense-in-
+    // depth after the form-layer C fix (LeadForm requires crane type when
+    // craneTypeId prop is missing): catches future forms that forget to set
+    // the prop, direct API calls bypassing the UI, and any path where the
+    // customer typed enough specs in the description to be classified.
+    //
+    // Confidence threshold 0.8 — below that we leave crane_type_id NULL and
+    // fall through to the manual 🚨 LEAD OHNE ANBIETER alert. Better that
+    // owner reviews a vague lead than auto-route based on a guess.
+    //
+    // DSGVO: within original consent. The Datenschutzerklärung promises
+    // forwarding to "passende Anbieter"; AI categorization is the system
+    // determining which firms are "passend" — same logical step as the
+    // existing auto_select_nearest based on a user-picked type.
+    let aiInferredCraneType = false
+    let aiCategorizeReasoning: string | null = null
+    if (
+      !body.crane_type_id
+      && typeof body.project_description === 'string'
+      && body.project_description.trim().length >= 20
+    ) {
+      try {
+        const { runCategorize } = await import('@/lib/ai-helper')
+        const cat = await runCategorize(body.project_description.trim())
+        if (cat.type_slug && cat.confidence >= 0.8) {
+          const sb = getServiceSupabase()
+          const { data: ct } = await sb
+            .from('crane_types')
+            .select('id')
+            .eq('slug', `${cat.type_slug}-mieten`)
+            .maybeSingle()
+          if (ct?.id) {
+            body.crane_type_id = ct.id
+            aiInferredCraneType = true
+            aiCategorizeReasoning = cat.reasoning
+            console.log(
+              `[api/leads] AI inferred crane_type=${cat.type_slug} confidence=${cat.confidence.toFixed(2)} reasoning="${cat.reasoning}"`,
+            )
+          }
+        } else {
+          console.log(
+            `[api/leads] AI categorize: low confidence (${cat.confidence.toFixed(2)}) for type="${cat.type_slug}" — leaving crane_type_id NULL`,
+          )
+        }
+      } catch (err) {
+        console.warn('[api/leads] AI categorize failed (non-fatal):', err)
+        // Fall through — normal NULL crane_type behavior, owner reviews manually.
+      }
+    }
+
     // Auto-select nearest firms when client requests it (cost calculator flow
     // — user doesn't see a firm list, we pick for them based on craneType +
     // location). Skipped when client already supplied `company_ids` explicitly.
@@ -709,12 +760,28 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
+      // AI-inferred crane type banner — fires when /api/leads received
+      // crane_type_id=NULL and runCategorize (Haiku 4.5) classified the
+      // project_description with confidence ≥ 0.8. Surfaces the AI's
+      // reasoning so owner can sanity-check before any firm dispatch
+      // happens. Independent banner alongside spec/validation/noFirms.
+      const aiInferredBanner = aiInferredCraneType
+        ? `<div style="background:#eff6ff;border:2px solid #2563eb;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">🤖 Krantyp via AI klassifiziert</div>
+            <div style="font-size:13px;color:#1e3a8a;line-height:1.5;">
+              Der Kunde hat keinen Krantyp gewählt, aber die Projektbeschreibung war konkret genug. Claude Haiku hat klassifiziert:<br>
+              <strong>Begründung:</strong> ${escapeHtml(aiCategorizeReasoning ?? '')}<br><br>
+              Anbieter wurden auf dieser Basis automatisch ausgewählt. Falls die Klassifizierung falsch aussieht — Lead manuell zurückrouten via opt-in-Mail (Greb-Pattern).
+            </div>
+          </div>`
+        : ''
       const subjectPrefix = (validationFailed
         ? '⏸ LEAD GEHALTEN (Validation) — '
         : noFirmsAttached
         ? '🚨 LEAD OHNE ANBIETER — '
         : '')
         + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}) — ` : '')
+        + (aiInferredCraneType ? '🤖 AI-Krantyp — ' : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
@@ -722,6 +789,7 @@ export async function POST(request: Request) {
         html: `
           ${alertBanner}
           ${specBanner}
+          ${aiInferredBanner}
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
             ${safeCraneType ? `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}

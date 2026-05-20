@@ -454,6 +454,96 @@ export async function runSubtypeCheck(input: {
   return block.input as SubtypeCheckResult
 }
 
+// === CATEGORIZE MODE ===
+//
+// Server-side classifier called from /api/leads when crane_type_id is missing
+// but the customer provided a substantive project_description. Defense-in-
+// depth after the form-layer C fix (LeadForm requires crane type when prop
+// is missing): catches future forms that forget to pass craneTypeId, direct
+// API calls, and edge cases where the customer typed enough specs in the
+// description for an obvious classification ("1.5 t auf 10 m für 60 Tage" →
+// baukran).
+//
+// Pricing: ~$0.001-0.005 per call (Haiku 4.5 with cached system prompt).
+// Latency: ~600-1500 ms. Called inline in /api/leads before auto_select.
+
+const CATEGORIZE_SYSTEM = `Sie sind ein Klassifikator für Kran-Anfragen auf KranVergleich.de. Gegeben ist eine Projektbeschreibung. Wählen Sie genau EINEN Krantyp aus der Liste und geben Sie Ihre Konfidenz an.
+
+Verfügbare Krantypen:
+- anhaengerkran: Bis 1,5 t, mit PKW transportierbar (Anhängerkupplung), günstigste Option. Bis ca. 10 m Höhe.
+- minikran: Bis 3 t, sehr kompakt, für enge Zufahrten / Innenräume / Glasmontage / Spinnenkran. Bis ca. 18 m Höhe.
+- dachdeckerkran: Bis 2 t, schneller Aufbau speziell für Dacharbeiten / Ziegelmontage. Bis ca. 25 m Höhe.
+- ladekran: LKW-montiert mit Knickarm, für Be- und Entladearbeiten, 1-30 t.
+- autokran: 30-80 t mobile crane, flexibel, inkl. Kranführer. Bis ca. 40 m Höhe.
+- mobilkran: 80-500 t mobile crane, schwere Lasten, hohe Auslagen. Über 40 m Höhe möglich.
+- baukran: Turmdrehkran für langfristige Bauprojekte (Wochen/Monate). Wirtschaftlich ab ~4 Wochen Mietdauer.
+- raupenkran: Über 100 t, Schwerlast, schweres oder weiches Gelände.
+
+Konfidenz-Skala:
+- 0.95+: eindeutige Spezifika passen perfekt (z.B. "Stahlträger 25 t auf 30 m" → autokran 0.97)
+- 0.80-0.94: starke Indikatoren ohne Widersprüche (z.B. "60 Tage Bauprojekt, 1,5 t auf 10 m" → baukran 0.88)
+- 0.50-0.79: vage Beschreibung, beste Spekulation
+- <0.50: zu unbestimmt für eine Empfehlung — type_slug="" und confidence=0
+
+Heuristiken:
+- Mietdauer >= 30 Tage UND moderate Höhe (≥ 10 m) → baukran (Monatsmiete viel günstiger als Autokran).
+- Sehr leichte Lasten (≤ 1 t) + niedrige Höhe (≤ 10 m) → anhaengerkran.
+- Dacharbeiten ausdrücklich genannt + Last ≤ 2 t → dachdeckerkran.
+- Glasmontage / Spinnenkran / enge Zufahrt → minikran.
+- Schwere Lasten > 50 t → mobilkran oder raupenkran.
+
+Antworten Sie IMMER über das Tool record_categorization. Kein freier Text.`
+
+const CATEGORIZE_TOOL = {
+  name: 'record_categorization',
+  description: 'Records the inferred crane type and confidence for a project description.',
+  input_schema: {
+    type: 'object' as const,
+    properties: {
+      type_slug: {
+        type: 'string' as const,
+        description: 'Slug WITHOUT -mieten suffix. Empty string when the description is too vague for a confident pick.',
+        enum: ['', 'anhaengerkran', 'minikran', 'dachdeckerkran', 'ladekran', 'autokran', 'mobilkran', 'baukran', 'raupenkran'],
+      },
+      confidence: {
+        type: 'number' as const,
+        description: '0.0-1.0 confidence in the inferred type. <0.5 means "do not trust this categorization".',
+        minimum: 0,
+        maximum: 1,
+      },
+      reasoning: {
+        type: 'string' as const,
+        description: 'One short German sentence (max 20 words) explaining the pick — for ops logs only, not shown to user.',
+      },
+    },
+    required: ['type_slug', 'confidence', 'reasoning'],
+  },
+}
+
+export type CategorizeResult = {
+  type_slug: string
+  confidence: number
+  reasoning: string
+}
+
+export async function runCategorize(description: string): Promise<CategorizeResult> {
+  const payload = {
+    model: MODEL,
+    max_tokens: 300,
+    system: [
+      { type: 'text', text: CATEGORIZE_SYSTEM, cache_control: { type: 'ephemeral' } },
+    ],
+    tools: [CATEGORIZE_TOOL],
+    tool_choice: { type: 'tool', name: 'record_categorization' },
+    messages: [{ role: 'user', content: `Projektbeschreibung:\n"""\n${description}\n"""` }],
+  }
+
+  const res = await callAnthropic(payload)
+  const block = res.content?.find((b: { type: string }) => b.type === 'tool_use')
+  if (!block) throw new Error('categorize: no tool_use in response')
+  return block.input as CategorizeResult
+}
+
 // === Anthropic API call ===
 
 interface AnthropicResponse {
