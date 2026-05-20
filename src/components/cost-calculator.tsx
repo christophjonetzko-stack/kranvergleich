@@ -52,6 +52,7 @@ const STEPS = [
       { label: '5–20 Tonnen', value: '20' },
       { label: '20–50 Tonnen', value: '50' },
       { label: 'Über 50 Tonnen', value: '100' },
+      { label: 'Ich bin mir nicht sicher', value: 'unsure' },
     ] as Option[],
   },
   {
@@ -62,6 +63,7 @@ const STEPS = [
       { label: '10–20 Meter', value: '20' },
       { label: '20–40 Meter', value: '40' },
       { label: 'Über 40 Meter', value: '60' },
+      { label: 'Ich bin mir nicht sicher', value: 'unsure' },
     ] as Option[],
   },
   {
@@ -112,9 +114,33 @@ interface Recommendation {
   reason: string
   priceEstimate: string
   includesOperator: boolean
+  // TRUE when the user answered "Ich bin mir nicht sicher" to weight or
+  // height. Surfaced so the result UI can swap the confident point estimate
+  // for a wider range and use generic "multiple crane types possible"
+  // copy instead of a specific reason.
+  isUncertain: boolean
 }
 
 function getRecommendation(answers: Record<string, string>): Recommendation {
+  // "Ich bin mir nicht sicher" in weight OR height short-circuits the
+  // engineering decision tree: the user explicitly told us they don't
+  // know the key inputs, so we shouldn't pretend to recommend one crane
+  // type with a confident price tag. Surface a generic "talk to an
+  // anbieter" message and let BLOK H swap the point estimate for a
+  // wider range.
+  if (answers.weight === 'unsure' || answers.height === 'unsure') {
+    return {
+      // No specific crane_type — submitting this lead leaves crane_type_id
+      // NULL, auto_select_nearest can't match, owner reroutes manually.
+      slug: '',
+      name: 'Mehrere Krantypen kommen in Frage',
+      reason: 'Mehrere Krantypen kommen für Ihr Projekt in Frage — unsere Anbieter beraten Sie kostenlos zur passenden Wahl.',
+      priceEstimate: '',
+      includesOperator: false,
+      isUncertain: true,
+    }
+  }
+
   const weight = Number(answers.weight)
   const height = Number(answers.height)
   const duration = Number(answers.duration)
@@ -206,6 +232,7 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     reason,
     priceEstimate,
     includesOperator: price?.includesOperator ?? false,
+    isUncertain: false,
   }
 }
 
@@ -517,10 +544,10 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           )}
           <div className="flex flex-col sm:flex-row gap-2">
             <Link
-              href={`/${result.slug}`}
+              href={result.isUncertain ? '/kran-mieten-preise' : `/${result.slug}`}
               className="flex-1 text-center bg-blue-600 text-white text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Alle {result.name}-Anbieter ansehen
+              {result.isUncertain ? 'Alle Krantypen vergleichen' : `Alle ${result.name}-Anbieter ansehen`}
             </Link>
             <button
               onClick={handleReset}
@@ -552,26 +579,32 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           <h3 className="text-lg font-semibold text-gray-900">Unsere Empfehlung</h3>
         </div>
 
-        {/* Recommendation card — price + operator visible up-front, no gating. */}
+        {/* Recommendation card — price + operator visible up-front when we
+            have a confident recommendation. When the user picked "nicht
+            sicher" in weight or height (isUncertain), BLOK H replaces this
+            with a broader range; for now we suppress the confident grid
+            entirely so we don't show an empty price box. */}
         <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
           <p className="text-xl font-semibold text-gray-900 mb-1">{result.name}</p>
           <p className="text-[14px] text-gray-500 mb-3">{result.reason}</p>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
-              <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
-              <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. {TAX_LABEL}</p>
+          {!result.isUncertain && (
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-[12px] text-gray-400">Geschätzte Kosten</p>
+                <p className="text-lg font-semibold text-gray-900">{result.priceEstimate}</p>
+                <p className="text-[11px] text-gray-400">Richtwert, netto zzgl. {TAX_LABEL}</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-[12px] text-gray-400">Kranführer</p>
+                <p className="text-lg font-semibold text-gray-900">
+                  {result.includesOperator ? 'Inklusive' : 'Optional'}
+                </p>
+                <p className="text-[11px] text-gray-400">
+                  {result.includesOperator ? 'Im Preis enthalten' : 'Separat buchbar'}
+                </p>
+              </div>
             </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-[12px] text-gray-400">Kranführer</p>
-              <p className="text-lg font-semibold text-gray-900">
-                {result.includesOperator ? 'Inklusive' : 'Optional'}
-              </p>
-              <p className="text-[11px] text-gray-400">
-                {result.includesOperator ? 'Im Preis enthalten' : 'Separat buchbar'}
-              </p>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Inline Sammelanfrage — POSTs to /api/leads with auto_select_nearest.
@@ -579,11 +612,14 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             50/100 km of the PLZ and emails them directly. */}
         <div className="border border-gray-200 bg-white rounded-lg p-4">
           <p className="text-[14px] font-semibold text-gray-900 mb-1">
-            Konkrete Angebote für {result.name} — kostenlos &amp; unverbindlich
+            {result.isUncertain
+              ? 'Kostenlose Beratung anfordern — wir finden den passenden Krantyp'
+              : `Konkrete Angebote für ${result.name} — kostenlos & unverbindlich`}
           </p>
           <p className="text-[12px] text-gray-500 mb-3">
-            Wir leiten Ihre Anfrage automatisch an die nächstgelegenen Anbieter weiter,
-            die den {result.name} im Angebot haben.
+            {result.isUncertain
+              ? 'Beschreiben Sie kurz Ihr Projekt — unsere Anbieter melden sich mit individuellen Empfehlungen und Angeboten.'
+              : `Wir leiten Ihre Anfrage automatisch an die nächstgelegenen Anbieter weiter, die den ${result.name} im Angebot haben.`}
           </p>
 
           <form onSubmit={handleSubmitLead} className="space-y-3">
@@ -626,14 +662,16 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
                       maxLength={2000}
                       className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 resize-y min-h-[72px]"
                     />
-                    <SubtypeCheck
-                      chosenTypeName={result.name}
-                      chosenTypeSlug={result.slug.replace(/-mieten$/, '')}
-                      weightTons={parseTonsFromAnswer(answers['weight'])}
-                      heightMeters={parseMetersFromAnswer(answers['height'])}
-                      projectDetails={projectDetailsLive}
-                      cityForRedirect={locationLive}
-                    />
+                    {!result.isUncertain && (
+                      <SubtypeCheck
+                        chosenTypeName={result.name}
+                        chosenTypeSlug={result.slug.replace(/-mieten$/, '')}
+                        weightTons={parseTonsFromAnswer(answers['weight'])}
+                        heightMeters={parseMetersFromAnswer(answers['height'])}
+                        projectDetails={projectDetailsLive}
+                        cityForRedirect={locationLive}
+                      />
+                    )}
                   </div>
                 </>
               )}
@@ -681,7 +719,11 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               disabled={leadSending}
               className="w-full text-[15px] font-semibold bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
-              {leadSending ? 'Wird gesendet…' : `${result.name}-Angebote jetzt erhalten →`}
+              {leadSending
+                ? 'Wird gesendet…'
+                : result.isUncertain
+                  ? 'Kostenlose Beratung anfragen →'
+                  : `${result.name}-Angebote jetzt erhalten →`}
             </button>
 
             <p className="text-[11px] text-center text-gray-500">
@@ -703,10 +745,10 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
                 submit. Linking to the listing keeps them in the funnel
                 instead of bouncing. */}
             <Link
-              href={`/${result.slug}`}
+              href={result.isUncertain ? '/kran-mieten-preise' : `/${result.slug}`}
               className="text-[12px] text-gray-500 hover:text-gray-900 hover:underline transition-colors"
             >
-              Alle {result.name}-Anbieter ohne Anfrage ansehen →
+              {result.isUncertain ? 'Alle Krantypen vergleichen ohne Anfrage →' : `Alle ${result.name}-Anbieter ohne Anfrage ansehen →`}
             </Link>
           </div>
         </div>
