@@ -969,12 +969,12 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           <p className="text-[14px] font-semibold text-gray-900 mb-1">
             {result.isUncertain
               ? 'Kostenlose Beratung anfordern — wir finden den passenden Krantyp'
-              : `Konkrete Angebote für ${result.name} — kostenlos & unverbindlich`}
+              : 'Erhalten Sie 3 vergleichbare Angebote von geprüften Anbietern in Ihrer Region'}
           </p>
           <p className="text-[12px] text-gray-500 mb-3">
             {result.isUncertain
               ? 'Beschreiben Sie kurz Ihr Projekt — unsere Anbieter melden sich mit individuellen Empfehlungen und Angeboten.'
-              : `Wir leiten Ihre Anfrage automatisch an die nächstgelegenen Anbieter weiter, die den ${result.name} im Angebot haben.`}
+              : `Ihre Anfrage geht an bis zu 3 passende Anbieter mit ${result.name}-Flotte in einem Umkreis von 50 km. Sie entscheiden, mit wem Sie sprechen.`}
           </p>
 
           <form onSubmit={handleSubmitLead} className="space-y-3">
@@ -1082,9 +1082,18 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             </button>
 
             <p className="text-[11px] text-center text-gray-500">
-              Kostenlos · unverbindlich · Antwort meist innerhalb 24 h
+              Kostenlos · unverbindlich · Erste Angebote innerhalb von 24 h
             </p>
           </form>
+
+          {/* BLOK K — Authority strip pinned below the form CTA. Three signals
+              in one row: real catalog size, DSGVO posture, no-resale promise.
+              Separator border-t above sets it visually apart from the form
+              and the escape-hatch row below. */}
+          <p className="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-400 text-center leading-relaxed">
+            {firmCount ? `${firmCount}+ geprüfte Kranverleiher in ${COUNTRY_LABEL}` : `Geprüfte Kranverleiher in ${COUNTRY_LABEL}`}
+            {' · '}DSGVO-konform{' · '}Keine Weitergabe an Dritte außerhalb Ihrer Anfrage
+          </p>
 
           <div className="flex items-center justify-between mt-3 gap-3">
             <button
@@ -1094,14 +1103,14 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               ← Neu berechnen
             </button>
             {/* Escape route — users who don't want to submit a form yet should
-                still be able to browse providers. Without this, the only path
-                forward from the recommendation was the gated form, and the
-                2026-04-29 audit showed 87% of step-4 completions never clicked
-                submit. Linking to the listing keeps them in the funnel
-                instead of bouncing. */}
+                still be able to browse providers (BLOK L: visually subordinate
+                to the main CTA above — same font size + muted gray, no
+                primary-color treatment). The 2026-04-29 audit showed 87% of
+                step-4 completions never clicked submit; this lets them
+                continue in the funnel instead of bouncing. */}
             <Link
               href={result.isUncertain ? '/kran-mieten-preise' : `/${result.slug}`}
-              className="text-[12px] text-gray-500 hover:text-gray-900 hover:underline transition-colors"
+              className="text-[12px] text-gray-400 hover:text-gray-600 hover:underline transition-colors"
             >
               {result.isUncertain ? 'Alle Krantypen vergleichen ohne Anfrage →' : `Alle ${result.name}-Anbieter ohne Anfrage ansehen →`}
             </Link>
