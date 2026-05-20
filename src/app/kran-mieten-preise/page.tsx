@@ -34,7 +34,7 @@ const costFAQs = [
   {
     question: 'Was kostet ein Kran pro Tag?',
     answer:
-      `Die Tagesmiete variiert je nach Krantyp: Anhängerkran ab 150€, Minikran ab 250€, Dachdeckerkran ab 200€, Baukran ab 300€, Autokran ab 500€, Mobilkran ab 600€, Raupenkran ab 800€. Alle Preise netto zzgl. ${TAX_LABEL} Transport und Auf-/Abbau kommen je nach Anbieter hinzu.`,
+      `Die Tagesmiete variiert je nach Krantyp: Anhängerkran ab 150€, Minikran ab 250€, Dachdeckerkran ab 200€, Autokran ab 500€, Mobilkran ab 600€, Raupenkran ab 800€. Baukran (Turmdrehkran) wird typischerweise im Monatstarif ab 8.000€/Monat inkl. Montage gemietet — nicht im Tagestarif. Alle Preise netto zzgl. ${TAX_LABEL} Transport und Auf-/Abbau kommen je nach Anbieter hinzu.`,
   },
   {
     question: 'Was kostet ein Autokran pro Stunde?',
@@ -99,7 +99,7 @@ const costFAQs = [
   },
   {
     question: 'Was kostet ein Kran am Tag?',
-    answer: `Ein Kran kostet am Tag zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane zum Ausleihen: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Baukran ab 300€/Tag. Alle Tagespreise sind Richtwerte ohne ${TAX_LABEL}`,
+    answer: `Ein Kran kostet am Tag zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane zum Ausleihen: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Mobilkran ab 600€/Tag. Baukran (Turmdrehkran) wird üblicherweise im Monatstarif gemietet — ab 8.000€/Monat inkl. Montage. Alle Tagespreise sind Richtwerte ohne ${TAX_LABEL}`,
   },
   {
     question: 'Wie viel kostet ein Kran?',
@@ -197,9 +197,9 @@ export default async function KranMietenPreisePage() {
             <p className="text-[11px] text-gray-400">ohne Bediener</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-lg font-semibold text-gray-900">ab 300€</p>
-            <p className="text-[12px] text-gray-500">Baukran/Tag</p>
-            <p className="text-[11px] text-gray-400">+ Montagekosten</p>
+            <p className="text-lg font-semibold text-gray-900">ab 8.000€</p>
+            <p className="text-[12px] text-gray-500">Baukran/Monat</p>
+            <p className="text-[11px] text-gray-400">inkl. Montage</p>
           </div>
         </div>
       </section>
