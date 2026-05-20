@@ -103,6 +103,26 @@ const nextConfig: NextConfig = {
         destination: '/kran-mieten-preise',
         permanent: true,
       },
+      // Synonym redirects added 2026-05-20 from Sistrix audit — Boels owns
+      // pos 1 for "kran leihen" (920/mo), my catalog had no pages for these
+      // URL stems. /kran-leihen, /kran-ausleihen, /kran-vermietung route to
+      // /kranverleih (hub page now reinforced with these synonyms in the H1
+      // + intro, so the destination ranks for the query family).
+      {
+        source: '/kran-leihen',
+        destination: '/kranverleih',
+        permanent: true,
+      },
+      {
+        source: '/kran-ausleihen',
+        destination: '/kranverleih',
+        permanent: true,
+      },
+      {
+        source: '/kran-vermietung',
+        destination: '/kranverleih',
+        permanent: true,
+      },
       // /anhaengerkran-mieten-preise cannibalized /anhaengerkran-mieten
       // (0 imp vs 35 imp pos 22 in GSC) — consolidate into the ranking page
       {
