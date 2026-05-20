@@ -369,6 +369,7 @@ export async function POST(request: Request) {
       dsgvo_consent: body.dsgvo_consent,
       company_ids: companyIds,
       entry_path: entryPath,
+      radius_used_km: autoSelectedRadiusKm,
       utm_source: utmSource,
       utm_medium: utmMedium,
       utm_campaign: utmCampaign,

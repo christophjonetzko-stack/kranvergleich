@@ -556,7 +556,12 @@ function normalizeCityName(s: string): { withAe: string; diacriticStripped: stri
 }
 
 /** Core: given reference coordinates, rank active firms offering craneTypeId
- *  by distance and expand radius (50 → 100 → unlimited) until ≥3 matches. */
+ *  by distance and expand radius (50 → 100 → 150 km hard cap) until ≥3 matches.
+ *  Beyond 150 km we return 0 matches so /api/leads fires the 🚨 LEAD OHNE
+ *  ANBIETER owner alert — better than silent-forwarding a Berlin lead to a
+ *  firm in Aachen. The pre-2026-05-20 logic fell through to unlimited and
+ *  could route to firms 300-600 km away (a Schwerlast-Raupenkran on the far
+ *  end of the country); the cap forces manual review for those rare cases. */
 async function _computeFirmMatchesFromCoords(
   craneTypeId: string,
   refLat: number,
@@ -565,7 +570,7 @@ async function _computeFirmMatchesFromCoords(
   limit: number,
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number }> {
   const minMatches = 3
-  const tryRadii: number[] = [50, 100, Number.POSITIVE_INFINITY]
+  const tryRadii: number[] = [50, 100, 150]
 
   const { data: craneData } = await supabase
     .from('company_cranes')
@@ -625,11 +630,7 @@ async function _computeFirmMatchesFromCoords(
     const isLastRadius = r === tryRadii[tryRadii.length - 1]
     if (filtered.length >= minMatches || isLastRadius) {
       const capped = filtered.slice(0, limit)
-      // Honest radius: when we fell through to unlimited, report the farthest
-      // matched firm's distance (rounded up) instead of "∞".
-      const farthest = capped[capped.length - 1]?.distance_km ?? 0
-      const radius_used_km = r === Number.POSITIVE_INFINITY ? Math.ceil(farthest) : r
-      return { matches: capped, radius_used_km }
+      return { matches: capped, radius_used_km: r }
     }
   }
   return { matches: [], radius_used_km: 0 }
@@ -771,6 +772,10 @@ export async function submitLead(formData: {
   utm_medium?: string | null
   utm_campaign?: string | null
   utm_content?: string | null
+  // Auto-select radius (km) used to find the matched firms (mig 031). NULL
+  // when auto-select did not run (per-firm InquiryBar flow, NULL crane_type
+  // pre-fix, or non-DE country). Expected post-2026-05-20: one of {50,100,150}.
+  radius_used_km?: number | null
 }) {
   const { company_ids, ...leadData } = formData
   const sb = getServiceSupabase()
