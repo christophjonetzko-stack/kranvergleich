@@ -1,0 +1,98 @@
+[
+  {
+    "id": "e2db4207-d0b5-412c-a804-aca4bd26dd08",
+    "name": "RIGA MAINZ",
+    "city": "Mainz",
+    "zip": "55120",
+    "dist_km": 54.1,
+    "phone": "+49 6131 962960",
+    "email": "info@riga-mainz.de",
+    "website": "http://www.riga-mainz.de/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  },
+  {
+    "id": "4ad591df-ffa5-49c7-aa38-1d445f21352a",
+    "name": "Kran-Burgard GmbH (Kranvermietung, Bergung & Abschleppdienst)",
+    "city": "Butzbach",
+    "zip": "35510",
+    "dist_km": 59.4,
+    "phone": "+49 6033 96930",
+    "email": "info@kran-burgard.de",
+    "website": "http://www.kran-burgard.de/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  },
+  {
+    "id": "364c6f5e-fb14-4ded-95be-def25f2a3a65",
+    "name": "Kran-Profi Goldschmidt",
+    "city": "Pohlheim",
+    "zip": "35415",
+    "dist_km": 60.7,
+    "phone": "+49 152 02807876",
+    "email": "info@kran-profi.de",
+    "website": "https://www.kran-profi.de/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  },
+  {
+    "id": "716776bc-7103-437a-8d8c-b43c0b6152ae",
+    "name": "BKL Baukran Logistik GmbH – Niederlassung Frankfurt",
+    "city": "Frankfurt am Main",
+    "zip": "65929",
+    "dist_km": 61.6,
+    "phone": "+49 69 15347840",
+    "email": null,
+    "website": "https://www.bkl.de/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  },
+  {
+    "id": "cf378ff4-c774-4150-b27b-bbdd55de9083",
+    "name": "Reichert GmbH - Kranverleih",
+    "city": "Frankfurt am Main",
+    "zip": "65926",
+    "dist_km": 61.9,
+    "phone": "+49 69 30545150",
+    "email": "info@reichert-kran.de",
+    "website": "https://www.reichert-kran.de/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  },
+  {
+    "id": "79304e0a-de0d-4529-90c5-58d1c306b0c3",
+    "name": "Krandienst Schuch GmbH",
+    "city": "Frankfurt am Main",
+    "zip": "60529",
+    "dist_km": 62.8,
+    "phone": "+49 69 395011",
+    "email": "info@schuch-kran.de",
+    "website": "http://www.schuch-kran.de/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  },
+  {
+    "id": "f647a02a-8df3-45b2-947b-dbf3a3b2bdcf",
+    "name": "Ley Krane GmbH & Co. KG",
+    "city": "Gummersbach",
+    "zip": "51645",
+    "dist_km": 65.2,
+    "phone": "+49 2261 53005",
+    "email": "info@ley-krane.com",
+    "website": "http://www.ley-krane.com/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  },
+  {
+    "id": "75299459-7e50-49b7-ad23-dec708782bc2",
+    "name": "Thomas Mende Kranservice",
+    "city": "Overath",
+    "zip": "51491",
+    "dist_km": 68.4,
+    "phone": "+49 2206 8654336",
+    "email": "Mende@mende-kran.de",
+    "website": "http://mende-kran.de/",
+    "max_capacity_kg": null,
+    "n_baukrane": 1
+  }
+]
