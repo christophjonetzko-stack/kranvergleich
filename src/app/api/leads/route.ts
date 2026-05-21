@@ -10,7 +10,7 @@ import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById } from '@/data/crane-types'
 
-// Validation helpers — added 2026-05-12 (Commit 2). Trust stamps in the
+// Validation helpers, added 2026-05-12 (Commit 2). Trust stamps in the
 // firm-notification mail are always-on and hardcoded; the dispatch logic
 // here guarantees they only ever fire for a lead that actually passed the
 // stamped check. Anything else is held + alerted, not dispatched with a
@@ -49,7 +49,7 @@ function validatePhoneE164(raw: string | undefined | null): { ok: boolean; e164?
 const FIRM_EVENTS_SALT_BASE = 'kranvergleich-firm-events-v1'
 
 // Resend SDK resolves with `{ data, error }` for API failures instead of
-// throwing — a bare `.catch()` swallows invalid-key, unverified-domain, and
+// throwing, a bare `.catch()` swallows invalid-key, unverified-domain, and
 // rate-limit errors. Always inspect `error` and log it; also wrap the call
 // in try/catch for SDK-level throws (network, SDK bugs). Without this,
 // Resend failures look identical to success in Vercel logs.
@@ -70,7 +70,7 @@ async function sendResendEmail(
   }
 }
 
-// Lazy init — avoid instantiating at module load so builds work without env.
+// Lazy init, avoid instantiating at module load so builds work without env.
 let resendInstance: Resend | null = null
 function getResend(): Resend {
   if (!resendInstance) {
@@ -87,13 +87,13 @@ function getNotificationEmail(): string {
   return email
 }
 
-// Non-throwing variant — use inside the request flow so a missing env var
+// Non-throwing variant, use inside the request flow so a missing env var
 // doesn't short-circuit the whole lead pipeline (firms + customer confirmation
 // must still go through). Logs once per missing call for ops visibility.
 function getNotificationEmailOrNull(): string | null {
   const email = process.env.NOTIFICATION_EMAIL
   if (!email || !email.trim()) {
-    console.error('NOTIFICATION_EMAIL env var missing or empty — owner notification skipped')
+    console.error('NOTIFICATION_EMAIL env var missing or empty, owner notification skipped')
     return null
   }
   return email.trim()
@@ -116,7 +116,7 @@ function truncate(str: string, max = MAX_TEXT_LENGTH): string {
   return typeof str === 'string' ? str.slice(0, max) : ''
 }
 
-// Both countries send from send.kranvergleich.de — Resend Free plan caps at 1 verified
+// Both countries send from send.kranvergleich.de. Resend Free plan caps at 1 verified
 // domain. Display name puts the founder first (per Priestley/personal-brand framing,
 // 2026-05-12), then the per-country brand pulled from BRAND_NAME so AT recipients
 // still see a localized "KranVergleich.at" attribution. The sender mailbox stays on
@@ -146,7 +146,7 @@ function isRateLimited(ip: string): boolean {
 
 export async function POST(request: Request) {
   try {
-    // Rate limit by IP — prefer CF-Connecting-IP (Cloudflare sets authoritatively, can't be spoofed)
+    // Rate limit by IP, prefer CF-Connecting-IP (Cloudflare sets authoritatively, can't be spoofed)
     const ip =
       request.headers.get('cf-connecting-ip') ||
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
@@ -162,7 +162,7 @@ export async function POST(request: Request) {
 
     // Honeypot: if the hidden field is filled, it's a bot
     if (body.website_url) {
-      // Silently accept but do nothing — bots think it worked
+      // Silently accept but do nothing, bots think it worked
       return NextResponse.json({ success: true, id: 'ok' })
     }
 
@@ -182,7 +182,7 @@ export async function POST(request: Request) {
     }
 
     // Email format check via zod (replaces the prior bespoke regex). Hard
-    // 400 here — a malformed address has no MX path forward and the customer
+    // 400 here, a malformed address has no MX path forward and the customer
     // typo is the most likely cause; let them retry on the form.
     if (!emailSchema.safeParse(body.customer_email).success) {
       return NextResponse.json(
@@ -191,7 +191,7 @@ export async function POST(request: Request) {
       )
     }
 
-    // MX + phone gates — added 2026-05-12 (Commit 2). Format check above can
+    // MX + phone gates, added 2026-05-12 (Commit 2). Format check above can
     // pass a typo like gmial.com; MX check verifies the domain actually
     // accepts mail. Phone is optional, but if present must parse to a valid
     // E.164. A FAIL on either does NOT 400 the client (the customer already
@@ -216,13 +216,13 @@ export async function POST(request: Request) {
     // the prop, direct API calls bypassing the UI, and any path where the
     // customer typed enough specs in the description to be classified.
     //
-    // Confidence threshold 0.8 — below that we leave crane_type_id NULL and
+    // Confidence threshold 0.8, below that we leave crane_type_id NULL and
     // fall through to the manual 🚨 LEAD OHNE ANBIETER alert. Better that
     // owner reviews a vague lead than auto-route based on a guess.
     //
     // DSGVO: within original consent. The Datenschutzerklärung promises
     // forwarding to "passende Anbieter"; AI categorization is the system
-    // determining which firms are "passend" — same logical step as the
+    // determining which firms are "passend", same logical step as the
     // existing auto_select_nearest based on a user-picked type.
     let aiInferredCraneType = false
     let aiCategorizeReasoning: string | null = null
@@ -251,21 +251,21 @@ export async function POST(request: Request) {
           }
         } else {
           console.log(
-            `[api/leads] AI categorize: low confidence (${cat.confidence.toFixed(2)}) for type="${cat.type_slug}" — leaving crane_type_id NULL`,
+            `[api/leads] AI categorize: low confidence (${cat.confidence.toFixed(2)}) for type="${cat.type_slug}", leaving crane_type_id NULL`,
           )
         }
       } catch (err) {
         console.warn('[api/leads] AI categorize failed (non-fatal):', err)
-        // Fall through — normal NULL crane_type behavior, owner reviews manually.
+        // Fall through, normal NULL crane_type behavior, owner reviews manually.
       }
     }
 
     // Auto-select nearest firms when client requests it (cost calculator flow
-    // — user doesn't see a firm list, we pick for them based on craneType +
+    //, user doesn't see a firm list, we pick for them based on craneType +
     // location). Skipped when client already supplied `company_ids` explicitly.
     // `location` accepts either a 5-digit PLZ or a city name; `plz` is kept
     // as a backwards-compat alias for older clients still sending that field.
-    // On validation fail we hold dispatch entirely — even an explicit
+    // On validation fail we hold dispatch entirely, even an explicit
     // client-supplied company_ids list is dropped so no firm receives a
     // mail tied to an unverified contact.
     let companyIds: string[] = validationFailed
@@ -297,7 +297,7 @@ export async function POST(request: Request) {
         }
       } catch (err) {
         console.error('auto_select_nearest lookup failed:', err)
-        // Fall through — lead still gets saved without company_ids, owner handles manually.
+        // Fall through, lead still gets saved without company_ids, owner handles manually.
       }
     }
 
@@ -310,13 +310,13 @@ export async function POST(request: Request) {
     const preferredDate = truncate(body.preferred_date || '', 20)
     const durationDays = typeof body.duration_days === 'number' ? Math.min(Math.max(0, Math.round(body.duration_days)), 3650) : null
 
-    // Capacity hint extraction — scans the customer's project description for
+    // Capacity hint extraction, scans the customer's project description for
     // "X t" / "X Tonnen" / "X kg" mentions and raises an owner-side spec-check
     // alert when ≥3t is detected. The 3t threshold covers the boundary between
     // Schnellmontage class (max ~2-2.5t, dominates the catalog for small/medium
     // Bavarian/Franconian firms) and real Turmdrehkran/Obendreher territory
     // needed for Mehrfamilienhaus Neubau projects. Surfaced after lead
-    // 54403ab6 (Greb, 4t @ 11m for Mehrfamilienhaus → matched on Baukran tag
+    // 54403ab6 (Greb, 4t @ 11m for Mehrfamilienhaus  matched on Baukran tag
     // to Uebel whose Potain HD 21A maxes at 2t @ 12m). Soft alert, not a hard
     // block: company_cranes.max_capacity_kg is only 1.1% populated catalog-wide,
     // so an auto-filter would false-positive constantly. Owner reviews the
@@ -342,11 +342,11 @@ export async function POST(request: Request) {
     // Fit-check (D of the A+B+C+D auto-recovery sprint). Compare the extracted
     // capacity_hint_kg against each auto-matched firm's company_cranes.max_
     // capacity_kg for the matched crane_type_id. A firm is "undersized" when
-    // its declared max is below capacity_hint_kg × 1.2 (20% safety margin —
+    // its declared max is below capacity_hint_kg × 1.2 (20% safety margin 
     // covers minor rounding / mid-class equipment a firm might pull in from
     // partners). Firms whose company_crane row has NULL max_capacity_kg are
     // "unverified" and remain in dispatch (the 1.1% coverage caveat from the
-    // Greb 2026-05-19 audit — we can't filter on data we don't have).
+    // Greb 2026-05-19 audit, we can't filter on data we don't have).
     //
     // Conservative: we DO NOT auto-filter undersized firms here (data too
     // sparse to be reliable). Instead the result feeds the owner-notification
@@ -393,7 +393,7 @@ export async function POST(request: Request) {
     const typeContext = sanitizeSlug(body.type_context)
 
     // Defensive filter: drop firms BEFORE persisting the lead when they fail
-    // any of four gates — irrelevant/inactive (is_relevant=false or is_active=
+    // any of four gates, irrelevant/inactive (is_relevant=false or is_active=
     // false, hidden from frontend lists and the catalog), email-less (no
     // Resend target), or test-flagged ("(TEST)" suffix in name). Frontend
     // already hides each of these cases (queries.ts adds .eq('is_active',
@@ -432,7 +432,7 @@ export async function POST(request: Request) {
     }
 
     // UTM attribution (mig 027). Clip every value to 120 chars so a forged
-    // URL can't bloat the column. NULL on absence — that's the expected
+    // URL can't bloat the column. NULL on absence, that's the expected
     // case for organic / direct entry.
     const clipUtm = (v: unknown): string | null => {
       if (typeof v !== 'string') return null
@@ -474,7 +474,7 @@ export async function POST(request: Request) {
     const companyCount = companyIds.length
 
     // Look up crane type name so firm emails can show "Krantyp: Autokran"
-    // — the single most important piece of info for a firm to triage a lead.
+    //, the single most important piece of info for a firm to triage a lead.
     let craneTypeName: string | null = null
     if (body.crane_type_id) {
       const sb = getServiceSupabase()
@@ -490,8 +490,8 @@ export async function POST(request: Request) {
     // Crane-type mismatch hint: if the customer's project_description mentions a
     // crane type different from the one they picked in the form, surface it to
     // the receiving firm so they don't read the table-vs-body contradiction
-    // as a marketing pitch (Kara's 2026-04-23 lead — DB shows Ladekran, project
-    // text says "Autokran" — was misread by 4K-Vierke Bau as a portal pitch,
+    // as a marketing pitch (Kara's 2026-04-23 lead. DB shows Ladekran, project
+    // text says "Autokran", was misread by 4K-Vierke Bau as a portal pitch,
     // 2026-05-12 reply). Many of these pairs are colloquial synonyms in the
     // 4-6t Mobilkran segment, but flagging them lets the firm make the call.
     const CRANE_KEYWORDS: Array<[string, RegExp]> = [
@@ -540,13 +540,13 @@ export async function POST(request: Request) {
 
     // Catalog size for the "Über KranVergleich.de" mini-pitch. Pulled live so
     // the copy stays honest as the firm count grows (or shrinks after cleanup
-    // — mig 017-021 dropped 79 firms on 2026-05-06). Memory
+    //, mig 017-021 dropped 79 firms on 2026-05-06). Memory
     // feedback_dach_geographic_precision: claim only what the catalog covers
     // (currently DE + AT, zero CH; "DACH" overshoot is a credibility-killer).
     const siteStats = await getSiteStats().catch(() => ({ anbieterCount: 0 }))
     const anbieterCount = siteStats.anbieterCount
 
-    // Founder signature — env-driven so the name can be rotated without a
+    // Founder signature, env-driven so the name can be rotated without a
     // code change once the team grows. Fallbacks keep the mail well-formed
     // even when the Vercel env vars haven't been wired yet (Person schema
     // on /ueber-uns already names Christoph Jonetzko as Gründer, so the
@@ -557,7 +557,7 @@ export async function POST(request: Request) {
     const safeFounderEmail = escapeHtml(founderEmail)
 
     // Fetch selected companies (same shape as before; companyIds is now
-    // pre-filtered, so all rows have email — `companiesWithoutEmail` stays
+    // pre-filtered, so all rows have email, `companiesWithoutEmail` stays
     // for backwards compat with downstream branches but is always empty).
     let selectedCompanies: { id: string; name: string; email: string | null }[] = []
     if (companyIds.length > 0) {
@@ -573,7 +573,7 @@ export async function POST(request: Request) {
 
     // Log a firm_events row per selected company. Server-side (not a client
     // beacon) because this is the most important conversion signal and must
-    // not be lost to navigation/beacon failure. Fire-and-forget — never block
+    // not be lost to navigation/beacon failure. Fire-and-forget, never block
     // the lead response on tracking. See migration 007.
     if (companyIds.length > 0 && !dryRun) {
       const eventDate = new Date().toISOString().slice(0, 10)
@@ -607,7 +607,7 @@ export async function POST(request: Request) {
     // eine Anfrage an Sie gesendet". 4K-Vierke Bau read that as a portal
     // outbound pitch and ignored Kara's real lead from 2026-04-23. New framing
     // leads with the customer's intent (crane type + city + date in the h2),
-    // puts the firm's action — "Sie wurden ausgewählt" — first, and demotes
+    // puts the firm's action, "Sie wurden ausgewählt", first, and demotes
     // the portal name to attribution.
     const headlineCity = safeCity !== '–' ? safeCity : null
     const headlineDate = safeDate !== '–' ? safeDate : null
@@ -636,7 +636,7 @@ export async function POST(request: Request) {
                 ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} ${durationDays === 1 ? 'Tag' : 'Tage'}</td></tr>` : ''}
               </table>
               <!--
-                Trust stamp row — always rendered, never prop-gated. Dispatch
+                Trust stamp row, always rendered, never prop-gated. Dispatch
                 logic (the MX + phone gates in /api/leads, plus the documented
                 DSGVO consent column on leads) guarantees every dispatched
                 lead has all three checks passed. Stamp wording is concrete
@@ -649,7 +649,7 @@ export async function POST(request: Request) {
                 &nbsp;&middot;&nbsp;
                 <span style="color:#059669;">&#10003;</span> DSGVO-konforme Einwilligung dokumentiert
               </p>
-              ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo; — bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
+              ${safeMismatchHint && safeCraneType ? `<p style="margin:8px 0;padding:8px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:13px;color:#78350f;">Hinweis: Im Projekttext nennt der Kunde &bdquo;${safeMismatchHint}&ldquo;, bei der Krantyp-Auswahl wurde &bdquo;${safeCraneType}&ldquo; gewählt. In vielen Fällen sind beide Begriffe austauschbar; bei abweichender Tragklasse bitte vor Angebotserstellung nachfragen.</p>` : ''}
               <p style="font-size:14px;color:#4b5563;">Bitte antworten Sie direkt auf diese E-Mail oder kontaktieren Sie den Kunden über die oben genannten Kontaktdaten.</p>
               <!--
                 Signal-back loop CTAs (mig 026, 2026-05-12). HMAC-signed
@@ -685,7 +685,7 @@ export async function POST(request: Request) {
     // Send per-company emails FIRST so the owner notification can report the
     // REAL delivery status per firm (not optimistic labels). Sends are
     // SEQUENTIAL with a 200ms throttle to stay below Resend's 5 req/sec
-    // rate limit — the previous Promise.all (verified 2026-04-25, lead
+    // rate limit, the previous Promise.all (verified 2026-04-25, lead
     // 057b86f3) fired 4 firm + owner + customer = 6 calls within ~250ms,
     // and Resend 429'd the customer confirmation (last in the chain) so
     // the user never got the confirmation while firms + owner did. Sequential
@@ -715,7 +715,7 @@ export async function POST(request: Request) {
         await new Promise((r) => setTimeout(r, 200))
       }
     }
-    if (dryRun) console.log('[leads] dry_run=true — skipped firm emails for', companyIds.length, 'companies')
+    if (dryRun) console.log('[leads] dry_run=true, skipped firm emails for', companyIds.length, 'companies')
 
     // Mark lead_companies.sent_at for successful deliveries. Service role
     // bypasses RLS. One UPDATE with .in() filter handles all successes at once.
@@ -738,29 +738,29 @@ export async function POST(request: Request) {
             .map((c) => {
               let status: string
               if (!c.email) {
-                status = '<span style="color:#dc2626;">⚠️ keine E-Mail — manuell weiterleiten</span>'
+                status = '<span style="color:#dc2626;">keine E-Mail, manuell weiterleiten</span>'
               } else if (dryRun) {
-                status = '<span style="color:#d97706;">🧪 Dry-Run — nicht gesendet (nur Test)</span>'
+                status = '<span style="color:#d97706;">🧪 Dry-Run, nicht gesendet (nur Test)</span>'
               } else {
                 const r = firmResults.find((fr) => fr.company_id === c.id)
                 status = r?.ok
-                  ? '<span style="color:#16a34a;">✉️ E-Mail gesendet</span>'
-                  : '<span style="color:#dc2626;">❌ E-Mail fehlgeschlagen — manuell weiterleiten</span>'
+                  ? '<span style="color:#16a34a;">E-Mail gesendet</span>'
+                  : '<span style="color:#dc2626;">E-Mail fehlgeschlagen, manuell weiterleiten</span>'
               }
-              return `<li style="margin-bottom:2px;"><strong>${escapeHtml(c.name)}</strong> — ${status}</li>`
+              return `<li style="margin-bottom:2px;"><strong>${escapeHtml(c.name)}</strong>, ${status}</li>`
             })
             .join('')}
         </ul>`
       : '<span style="color:#9ca3af;">keine</span>'
 
-    // Send notification email to owner — wrapped in a null check so a missing
+    // Send notification email to owner, wrapped in a null check so a missing
     // NOTIFICATION_EMAIL env var doesn't kill the rest of the flow. Customer
     // confirmation + 200 response must still fire even if the owner side is
     // misconfigured. Track delivery so the response can surface it.
     //
     // When the lead landed without any firm attached (auto_select returned
     // nothing OR the customer skipped the firm picker), promote the subject
-    // to a 🚨 alert and prepend a red banner — otherwise this critical case
+    // to a 🚨 alert and prepend a red banner, otherwise this critical case
     // looks identical to a normal lead and gets missed in the inbox. This
     // bug was discovered when Mario Wagner's Stahlhalle lead (2026-04-26)
     // sat for hours with zero firms notified.
@@ -770,7 +770,7 @@ export async function POST(request: Request) {
     if (ownerEmail) {
       const alertBanner = validationFailed
         ? `<div style="background:#fef3c7;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
-            <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">⏸ Lead gehalten — Validation fehlgeschlagen</div>
+            <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">⏸ Lead gehalten. Validation fehlgeschlagen</div>
             <div style="font-size:13px;color:#78350f;line-height:1.5;">
               Dispatch an Anbieter wurde gestoppt. Gründe: <strong>${escapeHtml(validationReasons.join(', '))}</strong>.<br>
               Kunde hat eine Hold-Bestätigung erhalten („wir prüfen und melden uns innerhalb 24h"). Manuell entscheiden: retry, contact, oder skip.
@@ -778,26 +778,26 @@ export async function POST(request: Request) {
           </div>`
         : noFirmsAttached
         ? `<div style="background:#fee2e2;border:2px solid #dc2626;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
-            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">⚠️ Achtung — keine Anbieter zugeordnet</div>
+            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">Achtung, keine Anbieter zugeordnet</div>
             <div style="font-size:13px;color:#7f1d1d;line-height:1.5;">
               Dieser Lead konnte keinem Anbieter automatisch zugewiesen werden. Mögliche Ursachen: ungewöhnliche Standort-Eingabe, fehlende Firmen in der Region, oder Kunde hat die Firmenliste übersprungen.<br>
-              <strong>Manuelle Weiterleitung erforderlich</strong> — sonst geht der Lead verloren.
+              <strong>Manuelle Weiterleitung erforderlich</strong>, sonst geht der Lead verloren.
             </div>
           </div>`
         : ''
-      // Additive to the validationFailed / noFirmsAttached prefixes above —
+      // Additive to the validationFailed / noFirmsAttached prefixes above 
       // a high-spec lead can land on top of either. Independent banner so the
       // owner sees both signals at once without one overriding the other.
       const specBanner = highSpecAlert
         ? `<div style="background:#fef3c7;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
             <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">🟡 SPEC CHECK: Tragkraft ${escapeHtml(capacityHintFormatted)} erwähnt</div>
             <div style="font-size:13px;color:#78350f;line-height:1.5;">
-              Im Projekttext nennt der Kunde eine Tragkraft von <strong>${escapeHtml(capacityHintFormatted)}</strong>. Viele Baukran-Firmen im Katalog führen ausschließlich Schnellmontagekrane (max ~2 t) — bitte prüfen, ob die zugewiesenen Anbieter diese Spezifikation tatsächlich erfüllen können.<br><br>
+              Im Projekttext nennt der Kunde eine Tragkraft von <strong>${escapeHtml(capacityHintFormatted)}</strong>. Viele Baukran-Firmen im Katalog führen ausschließlich Schnellmontagekrane (max ~2 t), bitte prüfen, ob die zugewiesenen Anbieter diese Spezifikation tatsächlich erfüllen können.<br><br>
               Bei Spec-Mismatch: Opt-in-Mail an den Kunden mit Alternativvorschlägen schicken (Greb-Pattern, <code>scripts/send_optin_greb.py</code> als Template).
             </div>
           </div>`
         : ''
-      // AI-inferred crane type banner — fires when /api/leads received
+      // AI-inferred crane type banner, fires when /api/leads received
       // crane_type_id=NULL and runCategorize (Haiku 4.5) classified the
       // project_description with confidence ≥ 0.8. Surfaces the AI's
       // reasoning so owner can sanity-check before any firm dispatch
@@ -808,46 +808,46 @@ export async function POST(request: Request) {
             <div style="font-size:13px;color:#1e3a8a;line-height:1.5;">
               Der Kunde hat keinen Krantyp gewählt, aber die Projektbeschreibung war konkret genug. Claude Haiku hat klassifiziert:<br>
               <strong>Begründung:</strong> ${escapeHtml(aiCategorizeReasoning ?? '')}<br><br>
-              Anbieter wurden auf dieser Basis automatisch ausgewählt. Falls die Klassifizierung falsch aussieht — Lead manuell zurückrouten via opt-in-Mail (Greb-Pattern).
+              Anbieter wurden auf dieser Basis automatisch ausgewählt. Falls die Klassifizierung falsch aussieht. Lead manuell zurückrouten via opt-in-Mail (Greb-Pattern).
             </div>
           </div>`
         : ''
-      // Fit-check banner (D of the auto-recovery sprint) — fires when at
+      // Fit-check banner (D of the auto-recovery sprint), fires when at
       // least one auto-matched firm has declared company_cranes.max_capacity_kg
       // < customer requirement × 1.2. Lists the undersized firms by name + max
       // capacity so owner can choose: dispatch anyway, manually reroute via
       // opt-in to bigger firms, or call customer to clarify. Coverage caveat
-      // — most firms in catalog have NULL max_capacity_kg (~1.1% populated),
+      //, most firms in catalog have NULL max_capacity_kg (~1.1% populated),
       // so a clean fit-check is the exception, not the rule. When fit-check
       // ran and ALL firms were unverified (no data), we say so explicitly
       // instead of pretending the routing was confirmed safe.
       const fitCheckBanner = fitCheckRan && hasUndersizedMatches
         ? `<div style="background:#fef2f2;border:2px solid #dc2626;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
-            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">⚠️ Fit-Check: ${undersizedFirms.length} Anbieter unter Bedarf (${escapeHtml(capacityHintFormatted)})</div>
+            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">Fit-Check: ${undersizedFirms.length} Anbieter unter Bedarf (${escapeHtml(capacityHintFormatted)})</div>
             <div style="font-size:13px;color:#7f1d1d;line-height:1.5;">
               Folgende Anbieter wurden automatisch zugewiesen, melden aber maximale Tragkraft unter der Kundenanforderung × 1,2 Sicherheitsmarge:
               <ul style="margin:6px 0 0 0;padding-left:18px;">
                 ${undersizedFirms
-                  .map((f) => `<li><strong>${escapeHtml(f.name)}</strong> — max ${(f.max_capacity_kg / 1000).toFixed(1).replace(/\.0$/, '')} t</li>`)
+                  .map((f) => `<li><strong>${escapeHtml(f.name)}</strong>, max ${(f.max_capacity_kg / 1000).toFixed(1).replace(/\.0$/, '')} t</li>`)
                   .join('')}
               </ul>
-              ${unverifiedFirmCount > 0 ? `<br>Weitere <strong>${unverifiedFirmCount}</strong> Anbieter ohne Capacity-Daten im Katalog (1,1% Coverage) — nicht prüfbar, ggf. auch zu klein.<br>` : ''}
-              <br>Empfehlung: Lead manuell prüfen vor Versand — bei Spec-Mismatch Opt-in-Mail an den Kunden mit Alternativvorschlägen (Greb/Kohlhaas-Pattern).
+              ${unverifiedFirmCount > 0 ? `<br>Weitere <strong>${unverifiedFirmCount}</strong> Anbieter ohne Capacity-Daten im Katalog (1,1% Coverage), nicht prüfbar, ggf. auch zu klein.<br>` : ''}
+              <br>Empfehlung: Lead manuell prüfen vor Versand, bei Spec-Mismatch Opt-in-Mail an den Kunden mit Alternativvorschlägen (Greb/Kohlhaas-Pattern).
             </div>
           </div>`
         : ''
       const subjectPrefix = (validationFailed
-        ? '⏸ LEAD GEHALTEN (Validation) — '
+        ? '⏸ LEAD GEHALTEN (Validation), '
         : noFirmsAttached
-        ? '🚨 LEAD OHNE ANBIETER — '
+        ? '🚨 LEAD OHNE ANBIETER, '
         : '')
-        + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}) — ` : '')
-        + (hasUndersizedMatches ? `⚠️ FIT-MISMATCH (${undersizedFirms.length}) — ` : '')
-        + (aiInferredCraneType ? '🤖 AI-Krantyp — ' : '')
+        + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}), ` : '')
+        + (hasUndersizedMatches ? `FIT-MISMATCH (${undersizedFirms.length}), ` : '')
+        + (aiInferredCraneType ? '🤖 AI-Krantyp, ' : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${subjectPrefix}Neue Anfrage: ${safeName} — ${safeCity}`,
+        subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${subjectPrefix}Neue Anfrage: ${safeName}, ${safeCity}`,
         html: `
           ${alertBanner}
           ${specBanner}
@@ -875,7 +875,7 @@ export async function POST(request: Request) {
     const confirmRes = await sendResendEmail('confirmation', {
       from: FROM_EMAIL,
       to: customerEmail,
-      subject: `Ihre Anfrage bei ${BRAND_NAME} — ${validationFailed ? 'Prüfung läuft' : companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
+      subject: `Ihre Anfrage bei ${BRAND_NAME}, ${validationFailed ? 'Prüfung läuft' : companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
       html: `
         <div style="font-family:system-ui;max-width:520px;">
           <h2 style="font-size:18px;">Vielen Dank für Ihre Anfrage!</h2>
@@ -893,7 +893,7 @@ export async function POST(request: Request) {
             ${durationDays ? `<tr><td style="padding:3px 10px 3px 0;color:#6b7280;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
           </table>
           <p style="font-size:13px;color:#9ca3af;margin-top:24px;">
-            ${BRAND_NAME} — Kranvermietung in ${COUNTRY_LABEL} vergleichen<br>
+            ${BRAND_NAME}. Kranvermietung in ${COUNTRY_LABEL} vergleichen<br>
             <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a>
           </p>
         </div>
@@ -904,7 +904,7 @@ export async function POST(request: Request) {
     // email-less firms despite the frontend gates and the auto-select filter.
     // Should be rare (stale client cache, forged body, or a regression in one
     // of the gates). Logged as an alert so we notice and trace the source.
-    // No manual forwarding needed — those firms are intentionally inert and
+    // No manual forwarding needed, those firms are intentionally inert and
     // get re-activated only by adding an email (Faza 2 cold-letter QR flow).
     if (droppedNoEmail.length > 0 && ownerEmail) {
       const droppedNames = droppedNoEmail.map((c) => escapeHtml(c.name)).join(', ')
@@ -914,7 +914,7 @@ export async function POST(request: Request) {
         subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedNoEmail.length} E-Mail-lose Firma(en) entfernt`,
         html: `
             <h3>Anomalie: Lead enthielt Firmen ohne E-Mail</h3>
-            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen (kein Resend-Ziel). Sie bleiben im Katalog/SEO sichtbar, der Endkunde sieht sie nicht in der Auswahl. Kein manuelles Weiterleiten nötig — Aktivierung läuft über die Faza-2-Briefkampagne.</p>
+            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen (kein Resend-Ziel). Sie bleiben im Katalog/SEO sichtbar, der Endkunde sieht sie nicht in der Auswahl. Kein manuelles Weiterleiten nötig. Aktivierung läuft über die Faza-2-Briefkampagne.</p>
             <ul>${droppedNoEmail.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
             <p>Hinweis: Frontend-Gates (CompanyCard CTA + Profil-Form) sollten diese IDs gar nicht erst weiterreichen. Wenn diese Mail häufiger kommt, prüfen ob Cache/Stale-State oder ein Regress in der Filter-Logik vorliegt.</p>
             <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
@@ -936,7 +936,7 @@ export async function POST(request: Request) {
         subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedIrrelevant.length} inaktive/irrelevante Firma(en) entfernt`,
         html: `
             <h3>Anomalie: Lead enthielt deaktivierte oder versteckte Firmen</h3>
-            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen, weil sie <code>is_active=false</code> oder <code>is_relevant=false</code> tragen. Beide Flags blenden Firmen aus dem Frontend-Katalog und den Auswahllisten aus — eine Lead-Submission mit diesen IDs deutet auf veralteten UI-Zustand oder eine geforgte Anfrage hin.</p>
+            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen, weil sie <code>is_active=false</code> oder <code>is_relevant=false</code> tragen. Beide Flags blenden Firmen aus dem Frontend-Katalog und den Auswahllisten aus, eine Lead-Submission mit diesen IDs deutet auf veralteten UI-Zustand oder eine geforgte Anfrage hin.</p>
             <ul>${droppedIrrelevant.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id}, is_active=${c.is_active}, is_relevant=${c.is_relevant})</li>`).join('')}</ul>
             <p>Hinweis: Wenn diese Mail häufiger kommt, prüfen ob die Form ihre Firmenliste cached oder ob ein Code-Pfad die Filter umgeht.</p>
             <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
@@ -969,7 +969,7 @@ export async function POST(request: Request) {
 
     // Anomaly alert: the email's domain has no MX records OR the phone
     // number couldn't be parsed to a valid E.164 form. Either way the lead
-    // is held — dispatch was skipped, the customer got the hold-message
+    // is held, dispatch was skipped, the customer got the hold-message
     // confirmation, and the owner needs to decide retry / contact / skip
     // by hand. Trust stamps in the firm mail are predicated on these
     // gates passing, so sending without them would be a false signal.
@@ -978,7 +978,7 @@ export async function POST(request: Request) {
       await sendResendEmail('validation hold', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `${BRAND_NAME} - ⏸ Lead gehalten — Validation: ${validationReasons.join(', ')}`,
+        subject: `${BRAND_NAME} - ⏸ Lead gehalten. Validation: ${validationReasons.join(', ')}`,
         html: `
             <h3>Anomalie: Lead-Validation fehlgeschlagen</h3>
             <p>Dispatch an Anbieter wurde gestoppt. Der Kunde erhielt eine Hold-Bestätigung („wir prüfen und melden uns innerhalb 24h"). Bitte manuell entscheiden: nachfassen, alternative Kontaktdaten erfragen oder Lead schließen.</p>

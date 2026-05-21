@@ -14,12 +14,12 @@ export const revalidate = 86400
 export async function generateMetadata(): Promise<Metadata> {
   const { anbieterCount } = await getSiteStats()
   return {
-    title: `Kranverleih — Krane mieten, leihen oder ausleihen in ${COUNTRY_LABEL}`,
-    description: `Kranverleih in ${COUNTRY_LABEL}: ${anbieterCount}+ Anbieter zum Krane mieten, leihen oder ausleihen. Minikran, Autokran, Baukran — Preise vergleichen und kostenlos Angebote anfragen.`,
+    title: `Kranverleih. Krane mieten, leihen oder ausleihen in ${COUNTRY_LABEL}`,
+    description: `Kranverleih in ${COUNTRY_LABEL}: ${anbieterCount}+ Anbieter zum Krane mieten, leihen oder ausleihen. Minikran, Autokran, Baukran. Preise vergleichen und kostenlos Angebote anfragen.`,
     alternates: alternatesFor('/kranverleih'),
     openGraph: {
-      title: `Kranverleih — Krane mieten, leihen oder ausleihen in ${COUNTRY_LABEL}`,
-      description: `Kranverleih in ${COUNTRY_LABEL}: ${anbieterCount}+ Anbieter zum Krane mieten, leihen oder ausleihen. Minikran, Autokran, Baukran — Preise vergleichen und kostenlos Angebote anfragen.`,
+      title: `Kranverleih. Krane mieten, leihen oder ausleihen in ${COUNTRY_LABEL}`,
+      description: `Kranverleih in ${COUNTRY_LABEL}: ${anbieterCount}+ Anbieter zum Krane mieten, leihen oder ausleihen. Minikran, Autokran, Baukran. Preise vergleichen und kostenlos Angebote anfragen.`,
       type: 'website',
       url: '/kranverleih',
           images: [OG_IMAGE],
@@ -44,24 +44,24 @@ export default async function KranverleihPage() {
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Kranverleih — Krane mieten, leihen oder ausleihen in ganz {COUNTRY_LABEL}
+        Kranverleih. Krane mieten, leihen oder ausleihen in ganz {COUNTRY_LABEL}
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Sie suchen einen Kranverleih in Ihrer Nähe? Möchten Sie einen Kran mieten, leihen oder ausleihen?
         Auf {BRAND_NAME} finden Sie über {anbieterCount}{' '}Kranverleiher und Kranvermietungen in ganz {COUNTRY_LABEL}.
-        Ob Minikran, Autokran oder Baukran — vergleichen Sie Preise, lesen Sie Bewertungen und fragen Sie
+        Ob Minikran, Autokran oder Baukran, vergleichen Sie Preise, lesen Sie Bewertungen und fragen Sie
         kostenlos Angebote an.
       </p>
       <p className="text-[13px] text-gray-500 mb-8 max-w-3xl">
         <strong className="text-gray-900">Begriffshinweis:</strong> „Kran mieten", „Kran leihen", „Kran ausleihen",
-        „Kran vermieten" und „Kranverleih" werden im deutschen Sprachgebrauch synonym verwendet — alle bezeichnen
+        „Kran vermieten" und „Kranverleih" werden im deutschen Sprachgebrauch synonym verwendet, alle bezeichnen
         die kurzzeitige Anmietung eines Krans inklusive eventuell benötigtem Kranführer. Im weiteren Verlauf nutzen
         wir „Kran mieten" als Standard.
       </p>
 
       <section className="mb-10">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Alle Krantypen im Überblick</h2>
-        {/* Equipment-catalog cards — portrait thumbnail anchors each card,
+        {/* Equipment-catalog cards, portrait thumbnail anchors each card,
             mono labels + tabular numerics + yellow hover edge match the
             industrial spec-sheet language used on the homepage table. */}
         <div className="grid gap-3 sm:grid-cols-2">
@@ -79,7 +79,7 @@ export default async function KranverleihPage() {
                   className="absolute inset-y-0 left-0 w-0 group-hover:w-1 bg-[#FFD100] transition-all z-10"
                 />
 
-                {/* Portrait thumbnail — 4:5, fills card height */}
+                {/* Portrait thumbnail, 4:5, fills card height */}
                 <div className="relative shrink-0 w-28 sm:w-32 self-stretch bg-neutral-50 border-r border-neutral-200">
                   <Image
                     src={ct.image}
@@ -114,7 +114,7 @@ export default async function KranverleihPage() {
                       aria-hidden
                       className="text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-base"
                     >
-                      →
+                      
                     </span>
                   </div>
                 </div>
@@ -144,7 +144,7 @@ export default async function KranverleihPage() {
       <section className="mb-10">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Kranmarken im Vergleich</h2>
         <p className="text-[13px] text-gray-500 mb-4 max-w-3xl">
-          Bevorzugen Sie eine bestimmte Marke? Vermieter nach Hersteller filtern —
+          Bevorzugen Sie eine bestimmte Marke? Vermieter nach Hersteller filtern 
           Liebherr (Mobilkrane), Potain (Turmdrehkrane), Terex (Mobilkrane).
         </p>
         <div className="flex flex-wrap gap-2">
@@ -170,20 +170,20 @@ export default async function KranverleihPage() {
             href="/marke"
             className="inline-flex items-center gap-1.5 text-[13px] bg-neutral-900 hover:bg-neutral-700 text-white rounded-full px-3.5 py-1.5 transition-colors"
           >
-            Alle Marken →
+            Alle Marken 
           </Link>
         </div>
       </section>
 
       <section className="text-[14px] text-gray-500 leading-relaxed">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Kranverleih — so funktioniert die Kranmiete</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Kranverleih, so funktioniert die Kranmiete</h2>
         <p className="mb-3">
-          Ein Kranverleih bietet verschiedene Krantypen zur Miete an — vom kompakten Minikran für
+          Ein Kranverleih bietet verschiedene Krantypen zur Miete an, vom kompakten Minikran für
           enge Baustellen bis zum schweren Raupenkran für Großprojekte. Die Kranvermietung
           erfolgt in der Regel tageweise, wochenweise oder monatsweise.
         </p>
         <p>
-          Auf {BRAND_NAME} können Sie Kranverleiher in ganz {COUNTRY_LABEL} vergleichen — mit
+          Auf {BRAND_NAME} können Sie Kranverleiher in ganz {COUNTRY_LABEL} vergleichen, mit
           transparenten Preisen, echten Google-Bewertungen und der Möglichkeit, kostenlos Angebote
           bei mehreren Anbietern gleichzeitig anzufragen.
         </p>

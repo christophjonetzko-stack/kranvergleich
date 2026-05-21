@@ -3,13 +3,13 @@ import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY } from '@/lib/country'
 import { classifyUserAgent } from '@/lib/device'
 
-// Page-level engagement tracking — see supabase/migrations/011_page_events.sql
+// Page-level engagement tracking, see supabase/migrations/011_page_events.sql
 // for the DSGVO rationale. Same cookie-free, daily-salt, hashed-IP design as
 // /api/track (which is firm-specific). This endpoint handles page-scope events
 // that do NOT belong to a single firm (calculator funnel, scroll depth, etc.).
 //
 // Runs on Edge runtime: this endpoint fires on every scroll, click, hero
-// submit, calculator step etc. — by far the highest-frequency function in
+// submit, calculator step etc., by far the highest-frequency function in
 // the app. Edge cold start ~5-20ms vs Node ~200-400ms, and Edge CPU billing
 // is per-request not per-runtime-second. Uses Web Crypto for hashing instead
 // of node:crypto so it can run there.
@@ -40,14 +40,14 @@ const EVENT_TYPES = new Set([
   'listing_inquire_all_submitted',
 ])
 
-// Matches /api/track for consistency. The base is not a secret — the daily
+// Matches /api/track for consistency. The base is not a secret, the daily
 // rotation of the full salt (base + event_date) is what prevents cross-day
 // linkability (Plausible architecture pattern).
 const SALT_BASE = 'kranvergleich-firm-events-v1'
 
 const BOT_UA_RE = /(bot|crawl|spider|headless|fetch|monitor|scan|wget|curl|python-requests|preview|scraper)/i
 
-// Rate limit: 30 tracks/min per IP. Same as /api/track — a visitor scrolling
+// Rate limit: 30 tracks/min per IP. Same as /api/track, a visitor scrolling
 // + completing 4 calculator steps + submitting can easily hit 8+ events in
 // a couple of minutes without being abusive.
 const RATE_LIMIT_WINDOW_MS = 60_000
@@ -80,7 +80,7 @@ async function hashIp(ip: string, eventDate: string): Promise<string> {
 const PAGE_PATH_RE = /^\/[a-z0-9/_.-]{0,120}$/i
 
 // Context is a shallow object with whitelisted keys + primitive values.
-// Everything else is stripped — we never store raw user input verbatim.
+// Everything else is stripped, we never store raw user input verbatim.
 const CONTEXT_KEY_WHITELIST = new Set([
   'step',                     // number, 1-4 (calculator)
   'value',                    // string, slug-like (calculator answer)
@@ -90,17 +90,17 @@ const CONTEXT_KEY_WHITELIST = new Set([
   'radius_km',                // number
   'project_details_filled',   // boolean
   'project_details_length',   // number
-  // Hero search (added 2026-05-01 — pre-decision instrumentation)
-  'has_crane_type',           // boolean — was the type select non-empty
-  'has_city',                 // boolean — was the city/PLZ field non-empty
-  'has_project',              // boolean — was the optional textarea expanded + filled
-  'project_length',           // number  — char count of the optional textarea
+  // Hero search (added 2026-05-01, pre-decision instrumentation)
+  'has_crane_type',           // boolean, was the type select non-empty
+  'has_city',                 // boolean, was the city/PLZ field non-empty
+  'has_project',              // boolean, was the optional textarea expanded + filled
+  'project_length',           // number , char count of the optional textarea
   // Chatbot
-  'message_index',            // number  — 1-based index of the user message in the session
-  'type_slug',                // string  — slug-like, recommended crane type
+  'message_index',            // number , 1-based index of the user message in the session
+  'type_slug',                // string , slug-like, recommended crane type
   // Calculator validation failure
-  'reason',                   // string  — slug-like (dsgvo / location_too_short / server_error)
-  'field',                    // string  — slug-like (which form field failed)
+  'reason',                   // string , slug-like (dsgvo / location_too_short / server_error)
+  'field',                    // string , slug-like (which form field failed)
 ])
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/
 
@@ -184,7 +184,7 @@ export async function POST(request: Request) {
 
     return new NextResponse(null, { status: 204 })
   } catch {
-    // Fire-and-forget — sendBeacon can't inspect bodies.
+    // Fire-and-forget, sendBeacon can't inspect bodies.
     return new NextResponse(null, { status: 500 })
   }
 }

@@ -28,7 +28,7 @@ export async function generateMetadata({
 
   const companies = await getCompaniesByBrand(brand.name)
   const title = companies.length > 0
-    ? `${brand.displayName} mieten ${COUNTRY_LABEL} — ${companies.length} Anbieter`
+    ? `${brand.displayName} mieten ${COUNTRY_LABEL}, ${companies.length} Anbieter`
     : `${brand.displayName} mieten in ${COUNTRY_LABEL}`
   const description = companies.length > 0
     ? `${brand.displayName}-Krane mieten: ${companies.length} Vermieter in ${COUNTRY_LABEL} vergleichen. ${brand.introShort.slice(0, 110)}`
@@ -100,7 +100,7 @@ export default async function BrandPage({
             )}
           </h1>
           <p className="text-[15px] text-neutral-600 mb-3">
-            Vermieter von {brand.displayName}-Kranen vergleichen — Preise, Bewertungen und kostenlose Angebote
+            Vermieter von {brand.displayName}-Kranen vergleichen. Preise, Bewertungen und kostenlose Angebote
           </p>
 
           {/* Trust bar */}
@@ -157,7 +157,7 @@ export default async function BrandPage({
           </nav>
         </div>
 
-        {/* Companies — actual catalog data, takes top spot above the fold */}
+        {/* Companies, actual catalog data, takes top spot above the fold */}
         {companies.length > 0 ? (
           <section id="anbieter" className="mb-10 scroll-mt-20">
             <CompanySection
@@ -184,7 +184,7 @@ export default async function BrandPage({
         {/* Brand info */}
         <section id="info" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            Über {brand.displayName} — {brand.origin}, gegründet {brand.founded}
+            Über {brand.displayName}, {brand.origin}, gegründet {brand.founded}
           </h2>
           <p className="text-[14px] text-gray-600 leading-relaxed">{brand.introLong}</p>
         </section>
@@ -196,7 +196,7 @@ export default async function BrandPage({
               {brand.displayName}-Krantypen im Katalog
             </h2>
             <p className="text-[13px] text-gray-500 mb-4">
-              {brand.displayName} ist in {COUNTRY_LABEL} vor allem bei diesen Krantypen verbreitet —
+              {brand.displayName} ist in {COUNTRY_LABEL} vor allem bei diesen Krantypen verbreitet 
               hier finden Sie Vermieter mit passender Fahrzeugklasse:
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -216,7 +216,7 @@ export default async function BrandPage({
                     aria-hidden
                     className="text-neutral-300 group-hover:text-neutral-900 transition-all text-base"
                   >
-                    →
+                    
                   </span>
                 </Link>
               ))}

@@ -10,7 +10,7 @@ import { BASE_URL, BRAND_NAME } from '@/lib/country'
  * CTAs in their notification mail; this route logs the event, rolls it up
  * into lead_companies, alerts the owner, and forwards to the thanks page.
  *
- * Sig verify first — a forged URL gets a 403 + owner alert and never
+ * Sig verify first, a forged URL gets a 403 + owner alert and never
  * touches the DB. After verify the (lead, supplier) pair is validated
  * against lead_companies so a click for a firm that wasn't on the lead
  * can't write a row even if the sig somehow checks out (defence in depth).
@@ -98,7 +98,7 @@ export async function GET(
          <li>supplierId=<code>${supplierId}</code></li>
          <li>action=<code>${action}</code></li>
        </ul>
-       <p>Sig was valid, so the link came from a mail we sent — but the row is gone (lead deleted, supplier deactivated, FK cascade). Audit only.</p>`,
+       <p>Sig was valid, so the link came from a mail we sent, but the row is gone (lead deleted, supplier deactivated, FK cascade). Audit only.</p>`,
     )
     return NextResponse.json({ error: 'pair_not_found' }, { status: 403 })
   }
@@ -125,7 +125,7 @@ export async function GET(
   }
 
   // Roll up to the lead_companies aggregate. accept stays feedback_outcome=null
-  // (engaged, no final outcome yet — the deal is still open). decline gets a
+  // (engaged, no final outcome yet, the deal is still open). decline gets a
   // provisional 'lost'; the thanks-page reason form refines that to wrong_fit
   // or other where the reason indicates.
   const now = new Date().toISOString()
@@ -161,10 +161,10 @@ export async function GET(
   const customerName: string = customer.customer_name || '?'
   const customerCity: string = customer.city || '?'
   const craneType: string = customer.crane_types?.name || '?'
-  const actionLabel = action === 'accept' ? '✅ ANGENOMMEN' : '❌ ABGELEHNT'
+  const actionLabel = action === 'accept' ? 'ANGENOMMEN' : 'ABGELEHNT'
 
   await sendOwnerAlert(
-    `${BRAND_NAME} - ${actionLabel} - ${companyName} → ${customerName} (${customerCity}, ${craneType})`,
+    `${BRAND_NAME} - ${actionLabel} - ${companyName}  ${customerName} (${customerCity}, ${craneType})`,
     `<h3>${actionLabel}: ${companyName}</h3>
      <p>Klick auf den Signal-Back-Loop für Lead-ID <code>${leadId}</code>:</p>
      <ul>
@@ -177,7 +177,7 @@ export async function GET(
      </ul>
      ${action === 'decline'
        ? '<p><em>Reason wird in der Folge-Seite erfragt (4 Optionen + Sonstiges). lead_companies.feedback_outcome ist vorläufig auf "lost" gesetzt; die Form refined das ggf. zu wrong_fit oder other.</em></p>'
-       : '<p><em>Die Firma sollte den Kunden innerhalb 24h direkt kontaktieren. Wenn 48h ohne Folge — manuell nachhaken (Kunden anrufen, Status erfragen).</em></p>'}
+       : '<p><em>Die Firma sollte den Kunden innerhalb 24h direkt kontaktieren. Wenn 48h ohne Folge, manuell nachhaken (Kunden anrufen, Status erfragen).</em></p>'}
      <p style="font-size:12px;color:#9ca3af;">Response-ID: ${inserted.id}</p>`,
   )
 

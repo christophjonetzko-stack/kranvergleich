@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { runCoach, runBerater, runSubtypeCheck, type BeraterMessage } from '@/lib/ai-helper'
 
-// Rate limit per IP — same shape as /api/leads (5/min). Coach gets called on
+// Rate limit per IP, same shape as /api/leads (5/min). Coach gets called on
 // every typing pause so we want a slightly higher ceiling than the lead form.
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX = 12
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
     const body = await request.json()
 
-    // Honeypot — same hidden field as /api/leads
+    // Honeypot, same hidden field as /api/leads
     if (body.website_url) {
       return NextResponse.json({ ok: true, mode: body.mode, silent: true })
     }
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       const projectDetails = String(body.projectDetails ?? '').slice(0, MAX_DESCRIPTION_LEN)
       const chosenTypeSlug = String(body.chosenTypeSlug ?? '').slice(0, 40)
       const chosenTypeName = String(body.chosenTypeName ?? '').slice(0, 40)
-      // Skip the AI call entirely when there's nothing useful to check —
+      // Skip the AI call entirely when there's nothing useful to check 
       // saves tokens and avoids "kein Hinweis" responses when the user
       // didn't write any free-text description.
       if (!projectDetails.trim() || !chosenTypeSlug || projectDetails.trim().length < 20) {
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       if (!Array.isArray(body.messages)) {
         return NextResponse.json({ error: 'messages array required' }, { status: 400 })
       }
-      // Sanitize message array — only allowed roles, capped length, trimmed.
+      // Sanitize message array, only allowed roles, capped length, trimmed.
       const rawMessages = body.messages.slice(-MAX_MESSAGES) as unknown[]
       const messages: BeraterMessage[] = []
       for (const m of rawMessages) {

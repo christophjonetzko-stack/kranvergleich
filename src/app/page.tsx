@@ -15,23 +15,23 @@ import { OG_IMAGE } from '@/lib/og-image'
 
 const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
 
-// Slug → image lookup. Supabase crane_types has no image_url column, so the
+// Slug  image lookup. Supabase crane_types has no image_url column, so the
 // thumbnails live in the static catalog (synced with /public/images/crane-types/).
 const craneImageBySlug = new Map(craneTypeStatic.map((ct) => [ct.slug, ct.image]))
 
-// 24h ISR — revalidated 2026-05-06 after pagination fix to refresh Anbieter counts.
+// 24h ISR, revalidated 2026-05-06 after pagination fix to refresh Anbieter counts.
 export const revalidate = 86400
 
-// Dynamic metadata — pulls live anbieterCount into the title/description so
+// Dynamic metadata, pulls live anbieterCount into the title/description so
 // the SERP snippet carries a concrete trust number. Home was sitting at pos 32
 // with CTR 0.09% (vs. ~0.5% expected at that position) because the default
-// title "KranVergleich.de — …" led with the unknown brand instead of the
+// title "KranVergleich.de, …" led with the unknown brand instead of the
 // keyword phrase "Kran mieten".
 export async function generateMetadata(): Promise<Metadata> {
   const { anbieterCount } = await getSiteStats()
   const count = anbieterCount.toLocaleString('de-DE')
   // Use absolute title to bypass the layout's "%s | KranVergleich.de" template
-  // — Google only shows ~60 chars of the title, so we bake the brand into the
+  //. Google only shows ~60 chars of the title, so we bake the brand into the
   // string ourselves and keep the keyword phrase up front.
   const title = `Kran mieten 2026: ${count} Anbieter ab 150€/Tag | ${BRAND_NAME}`
   const description = `Kranvermietung in ${COUNTRY_LABEL} vergleichen: ${count} geprüfte Anbieter, 8 Krantypen ab 150€/Tag. Kostenlos 3 Angebote in 2 Minuten.`
@@ -60,18 +60,18 @@ export default async function HomePage() {
     getCompanyCountsPerCraneType(),
   ])
   const { anbieterCount, staedteCount, avgRating, totalReviews } = siteStats
-  // Currency signal for the trust-bar — refreshes monthly (ISR 24h
+  // Currency signal for the trust-bar, refreshes monthly (ISR 24h
   // rebuild, but the rendered text only changes when the month flips).
   // Per seo-content-de skill / AEO rules: include year or "Stand" timestamp.
   const lastUpdated = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
   const topCities = seoCities.slice(0, 12)
-  // Sort table rows by Anbieter count descending — descending coverage reads
+  // Sort table rows by Anbieter count descending, descending coverage reads
   // as "expanding catalog" rather than making the niche types (Dachdeckerkran,
   // Ladekran) look like gaps next to Autokran/Minikran at the top.
   const tableCraneTypes = [...craneTypes].sort(
     (a, b) => (companyCounts.get(b.id) ?? 0) - (companyCounts.get(a.id) ?? 0)
   )
-  // Slug-keyed counts for the SearchBox dropdown — companyCounts is keyed by
+  // Slug-keyed counts for the SearchBox dropdown, companyCounts is keyed by
   // crane_type_id (DB primary key), but the dropdown options come from the
   // static `craneTypes` catalog which uses slugs everywhere.
   const countsBySlug: Record<string, number> = {}
@@ -82,27 +82,27 @@ export default async function HomePage() {
   return (
     <div>
       <PageEventTracker />
-      {/* Hero — Industrial · Search-first */}
+      {/* Hero. Industrial · Search-first */}
       <section className="relative bg-white">
-        {/* Engineering-grid background — desktop only, very subtle */}
+        {/* Engineering-grid background, desktop only, very subtle */}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none hidden lg:block opacity-[0.04] [background-image:linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] [background-size:56px_56px]"
         />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-16 pb-10 sm:pb-14">
-          {/* Eyebrow — spec-sheet label */}
+          {/* Eyebrow, spec-sheet label */}
           <div className="flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.15em] uppercase text-neutral-600 mb-5 sm:mb-6 font-[var(--font-mono)]">
             <span className="w-6 h-px bg-neutral-900" aria-hidden />
             <span>Kranvermietung · {COUNTRY_LABEL} · {anbieterCount.toLocaleString('de-DE')} Anbieter</span>
           </div>
 
-          {/* H1 — Archivo Narrow 800, compressed, left-aligned */}
+          {/* H1. Archivo Narrow 800, compressed, left-aligned */}
           <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[0.95] tracking-[-0.02em] text-[40px] sm:text-[56px] lg:text-[64px] max-w-4xl">
             Kran mieten in 2 Minuten {COUNTRY_WIDE} vergleichen.
           </h1>
 
-          {/* Subline — entity-rich for SEO, benefit-focused for humans */}
+          {/* Subline, entity-rich for SEO, benefit-focused for humans */}
           <p className="mt-5 sm:mt-6 text-[16px] sm:text-[18px] leading-[1.55] text-neutral-600 max-w-3xl">
             <strong className="font-semibold text-neutral-900">
               {anbieterCount.toLocaleString('de-DE')}+ geprüfte Kranvermieter
@@ -111,19 +111,19 @@ export default async function HomePage() {
             mit transparenten Tagespreisen und kostenlosen, unverbindlichen Angeboten.
           </p>
 
-          {/* SearchBox — LCP, above the fold on all viewports */}
+          {/* SearchBox. LCP, above the fold on all viewports */}
           <div className="mt-7 sm:mt-9">
             <SearchBox craneTypeCounts={countsBySlug} />
           </div>
 
-          {/* Procedural hint — addresses "what happens after Suchen" (gap left
+          {/* Procedural hint, addresses "what happens after Suchen" (gap left
               by H1/subline/trust-bar). Mono typeface + hairline dots match the
               spec-sheet eyebrow above the H1. */}
           <p className="mt-3 sm:mt-4 text-[12px] text-neutral-500 font-[var(--font-mono)] tracking-[0.02em]">
             Anbieter vergleichen · Preise sehen · anfragen in 1 Klick
           </p>
 
-          {/* Trust bar — inline list with hairline separators.
+          {/* Trust bar, inline list with hairline separators.
               The Google rating row only renders when getSiteStats returns a
               non-null avgRating (i.e. a real review count is behind it).
               With 0 reviews the row read as a placeholder ("★ 4,2 (0)") and
@@ -155,7 +155,7 @@ export default async function HomePage() {
             <li>Kostenlos &amp; unverbindlich</li>
           </ul>
 
-          {/* Ruler-tick divider — surveyor detail */}
+          {/* Ruler-tick divider, surveyor detail */}
           <div className="relative mt-11 sm:mt-14 mb-6 sm:mb-8" aria-hidden>
             <div className="h-px bg-neutral-900" />
             <div className="absolute top-0 inset-x-0 flex justify-between">
@@ -181,7 +181,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Crane-type tiles — equipment catalog grid, 2x4 on desktop, 4x2
+          {/* Crane-type tiles, equipment catalog grid, 2x4 on desktop, 4x2
               on mobile. Portrait photos lead each tile; mono index plaques
               (01-08, sorted by Anbieter count) preserve the spec-sheet rigor;
               yellow #FFD100 underline slides up on hover to match the hero's
@@ -198,7 +198,7 @@ export default async function HomePage() {
                   href={`/${ct.slug}`}
                   className="group relative block bg-white border border-neutral-200 hover:border-neutral-900 transition-colors overflow-hidden"
                 >
-                  {/* Image — portrait 4:5. Idle saturate-[0.85] unifies
+                  {/* Image, portrait 4:5. Idle saturate-[0.85] unifies
                       divergent AI-photo styles; subtle scale + full color on
                       hover for tactile feedback. */}
                   <div className="relative aspect-[4/5] bg-neutral-50 overflow-hidden">
@@ -211,7 +211,7 @@ export default async function HomePage() {
                         className="object-cover saturate-[0.85] group-hover:saturate-100 group-hover:scale-[1.02] transition-all duration-500"
                       />
                     )}
-                    {/* Index plaque — popularity rank (Anbieter count desc) */}
+                    {/* Index plaque, popularity rank (Anbieter count desc) */}
                     <span
                       aria-hidden
                       className="absolute top-2 left-2 text-[10px] font-[var(--font-mono)] tracking-[0.2em] font-semibold text-white bg-neutral-950/70 backdrop-blur-sm px-1.5 py-0.5"
@@ -222,7 +222,7 @@ export default async function HomePage() {
 
                   {/* Placard */}
                   <div className="relative p-3 sm:p-4 border-t border-neutral-200">
-                    {/* Yellow underline — slides up on hover */}
+                    {/* Yellow underline, slides up on hover */}
                     <span
                       aria-hidden
                       className="absolute bottom-0 inset-x-0 h-0 group-hover:h-1 bg-[#FFD100] transition-all"
@@ -248,7 +248,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Top Städte — pills. Rotate crane-type slug across cities so internal links distribute across type pages */}
+      {/* Top Städte, pills. Rotate crane-type slug across cities so internal links distribute across type pages */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Kran mieten in Ihrer Stadt</h2>
         <div className="flex flex-wrap gap-2">
@@ -440,7 +440,7 @@ export default async function HomePage() {
           }),
         }}
       />
-      {/* Service schema — defines what kranvergleich IS for AI agents:
+      {/* Service schema, defines what kranvergleich IS for AI agents:
           a vendor-neutral comparison service, not a marketplace. hasOfferCatalog
           enumerates the 8 crane-type sub-services so an agent crawling this
           single page learns the full catalog scope without fanning out. */}

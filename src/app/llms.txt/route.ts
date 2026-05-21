@@ -1,6 +1,6 @@
 import { BASE_URL, BRAND_NAME, COUNTRY, COUNTRY_LABEL, SISTER_BASE_URL } from '@/lib/country'
 
-// Static content — recompile daily so a content change ships with the next deploy
+// Static content, recompile daily so a content change ships with the next deploy
 // without manual cache busting. Spec: https://llmstxt.org
 export const revalidate = 86400
 
@@ -8,7 +8,7 @@ const isAT = COUNTRY === 'AT'
 const sisterDomain = isAT ? 'kranvergleich.de' : 'kranvergleich.at'
 const sisterLabel = isAT ? 'Deutschland' : 'Österreich'
 
-const HEADER = `# ${BRAND_NAME} — Kranvermietung in ${COUNTRY_LABEL}
+const HEADER = `# ${BRAND_NAME}. Kranvermietung in ${COUNTRY_LABEL}
 
 > Vendor-neutral comparison portal for crane rental in ${COUNTRY_LABEL}. Operator-neutral directory of regional crane rental companies indexed across 8 crane types and dozens of cities. Not a marketplace, no booking layer, no hidden commission.
 
@@ -35,10 +35,10 @@ For AI agents: every crane-type and city × crane-type page carries Product + Ag
 
 - [Krantypen-Vergleich](${BASE_URL}/ratgeber/krantypen): all 8 types side-by-side
 - [Welchen Kran brauche ich?](${BASE_URL}/ratgeber/welchen-kran-brauche-ich): decision flow by weight, height, access
-- [Kran mieten — Hausbau](${BASE_URL}/ratgeber/kran-mieten-hausbau): residential construction use cases
-- [Kran mieten — Privatperson](${BASE_URL}/ratgeber/kran-mieten-privatperson): private (non-business) renters
+- [Kran mieten. Hausbau](${BASE_URL}/ratgeber/kran-mieten-hausbau): residential construction use cases
+- [Kran mieten. Privatperson](${BASE_URL}/ratgeber/kran-mieten-privatperson): private (non-business) renters
 - [Solaranlagen-Kran](${BASE_URL}/ratgeber/solaranlage-kran-mieten): PV installation lifting
-- [Kran aufstellen — Genehmigung](${BASE_URL}/ratgeber/kran-aufstellen-genehmigung): permit / Sondernutzung guidance
+- [Kran aufstellen. Genehmigung](${BASE_URL}/ratgeber/kran-aufstellen-genehmigung): permit / Sondernutzung guidance
 - [Tipps zum Kranmieten](${BASE_URL}/ratgeber/kran-mieten-tipps): operator vs. self-operate, contracts, insurance
 - [Kran mieten ohne Führerschein](${BASE_URL}/ratgeber/kran-mieten-ohne-fuehrerschein): licensing reality
 
@@ -54,20 +54,20 @@ const MCP_SECTION = `
 URL: https://mcp-kranvergleich.onrender.com/sse (transport: SSE)
 
 Tools:
-- \`find_crane_rental_companies(city, crane_type?, limit)\` — query the catalog by city and optional crane type
-- \`get_crane_rental_prices(crane_type?)\` — return price ranges for one or all 8 crane types
-- \`recommend_crane_type(weight_tons, height_meters, task?)\` — match project requirements to crane type
-- \`check_availability_by_plz(plz)\` — list suppliers within 50 / 100 km radius per type using Haversine distance
+- \`find_crane_rental_companies(city, crane_type?, limit)\`, query the catalog by city and optional crane type
+- \`get_crane_rental_prices(crane_type?)\`, return price ranges for one or all 8 crane types
+- \`recommend_crane_type(weight_tons, height_meters, task?)\`, match project requirements to crane type
+- \`check_availability_by_plz(plz)\`, list suppliers within 50 / 100 km radius per type using Haversine distance
 `
 
 const FOOTER = `
 ## Sister site
 
-[${sisterDomain}](${SISTER_BASE_URL}) — separate catalog for ${sisterLabel} (only firms that operate in ${sisterLabel}).
+[${sisterDomain}](${SISTER_BASE_URL}), separate catalog for ${sisterLabel} (only firms that operate in ${sisterLabel}).
 
 ## Operator
 
-${BRAND_NAME} — see [Impressum](${BASE_URL}/impressum) and [Datenschutz](${BASE_URL}/datenschutz). Operator-neutral: rankings are alphabetical within tiers, ratings come from Google. No paid placement, no hidden commission.
+${BRAND_NAME}, see [Impressum](${BASE_URL}/impressum) and [Datenschutz](${BASE_URL}/datenschutz). Operator-neutral: rankings are alphabetical within tiers, ratings come from Google. No paid placement, no hidden commission.
 `
 
 // MCP server currently exposes DE catalog only; omit the section on the AT site

@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server'
 import { getServiceSupabase } from '@/lib/supabase'
 import { classifyUserAgent } from '@/lib/device'
 
-// Firm engagement tracking — see supabase/migrations/005_firm_events.sql for
+// Firm engagement tracking, see supabase/migrations/005_firm_events.sql for
 // the DSGVO rationale (no cookies, no fingerprint, IP pseudonymized with
 // daily salt, Art. 6(1)(f) legitimate interest).
 //
-// Runs on Edge runtime alongside /api/beacon — same high-frequency pattern,
+// Runs on Edge runtime alongside /api/beacon, same high-frequency pattern,
 // same Web Crypto hashing.
 export const runtime = 'edge'
 
@@ -26,7 +26,7 @@ const EVENT_TYPES = new Set([
 // be secret in the adversarial sense (see Plausible architecture docs).
 const SALT_BASE = 'kranvergleich-firm-events-v1'
 
-// Rough UUID shape check before hitting Supabase — avoids DB trips on garbage.
+// Rough UUID shape check before hitting Supabase, avoids DB trips on garbage.
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 const BOT_UA_RE = /(bot|crawl|spider|headless|fetch|monitor|scan|wget|curl|python-requests|preview|scraper)/i
@@ -62,7 +62,7 @@ async function hashIp(ip: string, eventDate: string): Promise<string> {
 function sanitizeContext(val: unknown): string | null {
   if (typeof val !== 'string') return null
   const trimmed = val.trim().slice(0, 64)
-  // Only allow lowercase slugs — prevents injecting JS/markup into the
+  // Only allow lowercase slugs, prevents injecting JS/markup into the
   // firm-report HTML that renders this back.
   return /^[a-z0-9-]+$/.test(trimmed) ? trimmed : null
 }
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
 
     return new NextResponse(null, { status: 204 })
   } catch {
-    // Fire-and-forget contract — the client uses sendBeacon, cannot inspect
+    // Fire-and-forget contract, the client uses sendBeacon, cannot inspect
     // error bodies. Return 500 without detail.
     return new NextResponse(null, { status: 500 })
   }

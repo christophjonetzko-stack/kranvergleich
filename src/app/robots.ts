@@ -7,8 +7,8 @@ import { BASE_URL } from '@/lib/country'
 // next decade. Blocking GPTBot/ClaudeBot/Google-Extended would close that
 // channel before it opens.
 // Note: Cloudflare's "Block AI Scrapers and Crawlers" managed feature can
-// still override this at the edge — it must also be disabled in the CF
-// dashboard (Security → Bots → AI Scrapers and Crawlers).
+// still override this at the edge, it must also be disabled in the CF
+// dashboard (Security  Bots  AI Scrapers and Crawlers).
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [

@@ -9,7 +9,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: `Kranmarken im Vergleich — Liebherr, Potain, Terex`,
+  title: `Kranmarken im Vergleich. Liebherr, Potain, Terex`,
   description: `Anbieter nach Kranmarke filtern: Liebherr-Mobilkrane, Potain-Turmdrehkrane, Terex-Mobilkrane. Vermieter in ${COUNTRY_LABEL} vergleichen.`,
   alternates: alternatesFor('/marke'),
   openGraph: {
@@ -48,7 +48,7 @@ export default async function BrandIndexPage() {
       <p className="text-[15px] text-gray-500 mb-8 max-w-3xl leading-relaxed">
         Bevorzugen Sie eine bestimmte Marke? Auf {BRAND_NAME} können Sie Vermieter
         nach Kranhersteller filtern. Die Marke wird automatisch aus den
-        Selbstbeschreibungen der Vermieter extrahiert — eine Firma mit „Liebherr und
+        Selbstbeschreibungen der Vermieter extrahiert, eine Firma mit „Liebherr und
         Potain im Mietpark" wird beiden Marken zugeordnet.
       </p>
 
@@ -65,7 +65,7 @@ export default async function BrandIndexPage() {
                 className="absolute inset-y-0 left-0 w-0 group-hover:w-1 bg-[#FFD100] transition-all z-10"
               />
               <p className="text-[10px] uppercase tracking-[0.18em] font-semibold text-neutral-400 font-[var(--font-mono)] mb-1">
-                Kranmarke — {brand.origin}, seit {brand.founded}
+                Kranmarke, {brand.origin}, seit {brand.founded}
               </p>
               <h2 className="font-semibold text-[18px] text-neutral-950 mb-2">
                 {brand.displayName}
@@ -79,7 +79,7 @@ export default async function BrandIndexPage() {
                   aria-hidden
                   className="text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all text-base"
                 >
-                  →
+                  
                 </span>
               </div>
             </Link>
@@ -93,7 +93,7 @@ export default async function BrandIndexPage() {
         </h2>
         <p className="mb-3">
           Bei einer kurzen Mietzeit (Stunden bis Tage) spielt die Kranmarke meist keine
-          Rolle — die Verfügbarkeit beim regionalen Vermieter ist wichtiger. Bei
+          Rolle, die Verfügbarkeit beim regionalen Vermieter ist wichtiger. Bei
           Langzeit-Einsätzen (Mehrfamilienhaus mit 6+ Monaten Mietdauer) lohnt sich der
           Markenvergleich: Liebherr bietet das dichteste deutsche Service-Netz, Potain
           die größte Turmdrehkran-Auswahl, Terex die wirtschaftliche Mittelklasse.
@@ -101,7 +101,7 @@ export default async function BrandIndexPage() {
         <p>
           Bei Wartung, Ersatzteilen und Versicherung gibt es markenbedingte Unterschiede,
           die der Vermieter Ihnen bei der Anfrage transparent darstellt. Auch der
-          Wiederverkaufswert eines gebrauchten Krans hängt stark von der Marke ab —
+          Wiederverkaufswert eines gebrauchten Krans hängt stark von der Marke ab 
           siehe unser Ratgeber{' '}
           <Link
             href="/ratgeber/kran-mieten-oder-kaufen"

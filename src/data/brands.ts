@@ -1,6 +1,6 @@
 // Crane brand metadata for /marke/<slug> pages. Each entry maps a URL slug to
 // the canonical brand name as stored in companies.brands_offered[] (must match
-// exactly — LLM extraction uses these spellings). Only brands with ≥5 firms
+// exactly. LLM extraction uses these spellings). Only brands with ≥5 firms
 // in the catalog as of 2026-05-20 are listed here. Adding a 4th brand below
 // the 5-firm threshold creates thin-content / Helpful Content Update risk.
 
@@ -8,7 +8,7 @@ export interface BrandData {
   slug: string                  // URL slug, e.g. "liebherr"
   name: string                  // Canonical name in companies.brands_offered[]
   displayName: string           // What renders in H1
-  origin: string                // "Deutschland", "Frankreich", etc — for intro paragraph
+  origin: string                // "Deutschland", "Frankreich", etc, for intro paragraph
   founded: number               // Year founded, for intro
   introShort: string            // ≤155 chars meta description
   introLong: string             // ~250-400 word intro paragraph for the page body
@@ -24,7 +24,7 @@ export const BRANDS: BrandData[] = [
     origin: 'Deutschland',
     founded: 1949,
     introShort: 'Liebherr-Krane mieten in Deutschland: Mobilkrane (LTM), Raupenkrane (LR) und Turmdrehkrane (MK). Anbieter vergleichen, Preise & Angebote.',
-    introLong: 'Liebherr ist mit Sitz in Ehingen (Donau) der weltweit größte Hersteller von Mobil- und Raupenkranen — die Marke prägt seit 1949 den Kran-Markt in Deutschland, Österreich und der Schweiz. Das Programm reicht vom kompakten Mobilkran LTM 1030-2.1 (30 t Tragkraft) über die mittlere Klasse LTM 1100-4.2 und LTM 1200-5.1 bis zum Schwerlast-Mobilkran LTM 1750-9.1 (750 t) und der Raupenkran-Reihe LR 1300 SX bis LR 11000 (1.000 t Tragkraft). Für den klassischen Hochbau bietet Liebherr unter der Bezeichnung MK (Mobilbaukran) eine Reihe selbstaufrichtender Krane an — die MK 88-4.1 und MK 140 sind in vielen deutschen Innenstädten bei Wohnungsbau- und Sanierungsprojekten im Einsatz. Die Marke gilt als Premium-Hersteller mit entsprechendem Wiederverkaufswert; ein gebrauchter Liebherr-Kran kostet typischerweise 30-50% weniger als ein Neugerät und behält gegenüber konkurrierenden Marken einen höheren Restwert.',
+    introLong: 'Liebherr ist mit Sitz in Ehingen (Donau) der weltweit größte Hersteller von Mobil- und Raupenkranen, die Marke prägt seit 1949 den Kran-Markt in Deutschland, Österreich und der Schweiz. Das Programm reicht vom kompakten Mobilkran LTM 1030-2.1 (30 t Tragkraft) über die mittlere Klasse LTM 1100-4.2 und LTM 1200-5.1 bis zum Schwerlast-Mobilkran LTM 1750-9.1 (750 t) und der Raupenkran-Reihe LR 1300 SX bis LR 11000 (1.000 t Tragkraft). Für den klassischen Hochbau bietet Liebherr unter der Bezeichnung MK (Mobilbaukran) eine Reihe selbstaufrichtender Krane an, die MK 88-4.1 und MK 140 sind in vielen deutschen Innenstädten bei Wohnungsbau- und Sanierungsprojekten im Einsatz. Die Marke gilt als Premium-Hersteller mit entsprechendem Wiederverkaufswert; ein gebrauchter Liebherr-Kran kostet typischerweise 30-50% weniger als ein Neugerät und behält gegenüber konkurrierenden Marken einen höheren Restwert.',
     relatedCraneTypes: ['mobilkran-mieten', 'autokran-mieten', 'raupenkran-mieten', 'baukran-mieten'],
     faqs: [
       {
@@ -41,15 +41,15 @@ export const BRANDS: BrandData[] = [
       },
       {
         question: 'Wie unterscheidet sich Liebherr von Tadano, Grove oder Demag?',
-        answer: 'Liebherr ist Premium-Hersteller mit dem dichtesten deutschen Service-Netz und führend in der Schwerlast-Mobilkran-Klasse (>200 t). Tadano (japanisch, seit 2019 Eigentümer von Demag) ist im mittleren Segment 50-300 t stark vertreten. Grove (US-amerikanisch, Manitowoc-Konzern) hat seine Stärken bei Rough-Terrain-Kranen für Industrie. Bei den Mobilbaukranen ist Liebherr in Deutschland praktisch konkurrenzlos — die nächste vergleichbare Marke wäre Spierings (Niederlande). Für die Vermietung in Deutschland ist Liebherr durch die regionale Werksanbindung und Ersatzteil-Verfügbarkeit oft erste Wahl.',
+        answer: 'Liebherr ist Premium-Hersteller mit dem dichtesten deutschen Service-Netz und führend in der Schwerlast-Mobilkran-Klasse (>200 t). Tadano (japanisch, seit 2019 Eigentümer von Demag) ist im mittleren Segment 50-300 t stark vertreten. Grove (US-amerikanisch, Manitowoc-Konzern) hat seine Stärken bei Rough-Terrain-Kranen für Industrie. Bei den Mobilbaukranen ist Liebherr in Deutschland praktisch konkurrenzlos, die nächste vergleichbare Marke wäre Spierings (Niederlande). Für die Vermietung in Deutschland ist Liebherr durch die regionale Werksanbindung und Ersatzteil-Verfügbarkeit oft erste Wahl.',
       },
       {
         question: 'Welche Vermieter führen Liebherr-Krane in ihrer Flotte?',
-        answer: 'Liebherr-Krane werden in Deutschland von einer großen Bandbreite an Vermietern angeboten — von regionalen Mittelständlern (zwischen 5 und 30 Krane in der Flotte) bis zu überregionalen Anbietern wie Felbermayr, Maxikraft, Wasel, BKL oder Salgert mit dreistelligen Flottengrößen. Diese Seite listet alle Anbieter, die mindestens einen Liebherr-Kran in ihrer Flotte führen.',
+        answer: 'Liebherr-Krane werden in Deutschland von einer großen Bandbreite an Vermietern angeboten, von regionalen Mittelständlern (zwischen 5 und 30 Krane in der Flotte) bis zu überregionalen Anbietern wie Felbermayr, Maxikraft, Wasel, BKL oder Salgert mit dreistelligen Flottengrößen. Diese Seite listet alle Anbieter, die mindestens einen Liebherr-Kran in ihrer Flotte führen.',
       },
       {
         question: 'Kann ich gebrauchte Liebherr-Krane kaufen?',
-        answer: 'Ja — Liebherr selbst betreibt unter der Marke "Liebherr Used Equipment" einen offiziellen Gebrauchtmarkt. Gebrauchte LTM-Mobilkrane mit 5-10 Jahren und 8.000-15.000 Betriebsstunden kosten typischerweise 40-60% des Neupreises. Wichtig: Liebherr-Krane haben einen vergleichsweise hohen Restwert — ein 15 Jahre alter LTM 1100 mit gepflegter Wartungshistorie liegt oft noch bei 100.000-200.000 €. Mehr dazu in unserem Ratgeber Kran mieten oder kaufen.',
+        answer: 'Ja. Liebherr selbst betreibt unter der Marke "Liebherr Used Equipment" einen offiziellen Gebrauchtmarkt. Gebrauchte LTM-Mobilkrane mit 5-10 Jahren und 8.000-15.000 Betriebsstunden kosten typischerweise 40-60% des Neupreises. Wichtig: Liebherr-Krane haben einen vergleichsweise hohen Restwert, ein 15 Jahre alter LTM 1100 mit gepflegter Wartungshistorie liegt oft noch bei 100.000-200.000 €. Mehr dazu in unserem Ratgeber Kran mieten oder kaufen.',
       },
     ],
   },
@@ -60,16 +60,16 @@ export const BRANDS: BrandData[] = [
     origin: 'Frankreich',
     founded: 1928,
     introShort: 'Potain-Turmdrehkrane mieten in Deutschland: MD-Serie, MDT-Serie und Untendreher. Anbieter im Vergleich, Preise & kostenlose Angebote.',
-    introLong: 'Potain ist seit 1928 die führende europäische Marke für Turmdrehkrane (Baukrane) und gehört seit 2001 zum US-amerikanischen Manitowoc-Konzern. In Deutschland ist Potain der mit Abstand verbreitetste Turmdrehkran-Hersteller — die Modellreihen MD (Topless), MDT (Topless) und MR (Mit Spitze, Rauten-Ausleger) prägen praktisch jede Großbaustelle. Typische Mietmodelle sind die kompakten Untendreher Igo M 50/60/85 (Self-Erecting für Einfamilienhaus- und kleine Mehrfamilienhaus-Baustellen), die mittleren Topless-Krane MDT 178/189/219 (für Wohnungsbau bis 6-7 Geschosse) sowie die Großkrane MDT 268/389 mit bis zu 80 m Ausladung. Potain-Krane werden in Deutschland oft auf Monatsbasis vermietet — typische Mietdauer für ein Mehrfamilienhaus-Projekt liegt bei 6-12 Monaten. Die Wartungs- und Ersatzteil-Versorgung läuft über das Manitowoc-Servicenetz (in DE: Werk Wilhelmshaven plus Vertragspartner).',
+    introLong: 'Potain ist seit 1928 die führende europäische Marke für Turmdrehkrane (Baukrane) und gehört seit 2001 zum US-amerikanischen Manitowoc-Konzern. In Deutschland ist Potain der mit Abstand verbreitetste Turmdrehkran-Hersteller, die Modellreihen MD (Topless), MDT (Topless) und MR (Mit Spitze, Rauten-Ausleger) prägen praktisch jede Großbaustelle. Typische Mietmodelle sind die kompakten Untendreher Igo M 50/60/85 (Self-Erecting für Einfamilienhaus- und kleine Mehrfamilienhaus-Baustellen), die mittleren Topless-Krane MDT 178/189/219 (für Wohnungsbau bis 6-7 Geschosse) sowie die Großkrane MDT 268/389 mit bis zu 80 m Ausladung. Potain-Krane werden in Deutschland oft auf Monatsbasis vermietet, typische Mietdauer für ein Mehrfamilienhaus-Projekt liegt bei 6-12 Monaten. Die Wartungs- und Ersatzteil-Versorgung läuft über das Manitowoc-Servicenetz (in DE: Werk Wilhelmshaven plus Vertragspartner).',
     relatedCraneTypes: ['baukran-mieten'],
     faqs: [
       {
         question: 'Welche Potain-Modelle werden in Deutschland am häufigsten vermietet?',
-        answer: 'Drei Modell-Familien dominieren: (1) Self-Erecting Untendreher Igo M 50, Igo M 60, Igo M 85 — für kleinere Einfamilienhaus- und Reihenhausprojekte, Aufbau in unter 24 Stunden. (2) Topless-Krane MDT 178, MDT 189, MDT 219, MDT 268 — Standard für Mehrfamilienhaus- und Bürobauten, 6-12 Monate Mietdauer typisch. (3) Großkrane MDT 389, MD 365 B, MR 295 — für Hochbau bis 25 Geschosse, Großprojekte mit 1-3 Jahren Standzeit.',
+        answer: 'Drei Modell-Familien dominieren: (1) Self-Erecting Untendreher Igo M 50, Igo M 60, Igo M 85, für kleinere Einfamilienhaus- und Reihenhausprojekte, Aufbau in unter 24 Stunden. (2) Topless-Krane MDT 178, MDT 189, MDT 219, MDT 268. Standard für Mehrfamilienhaus- und Bürobauten, 6-12 Monate Mietdauer typisch. (3) Großkrane MDT 389, MD 365 B, MR 295, für Hochbau bis 25 Geschosse, Großprojekte mit 1-3 Jahren Standzeit.',
       },
       {
         question: 'Was kostet ein Potain-Turmdrehkran zur Miete?',
-        answer: 'Untendreher Igo M 60 / M 85: ca. 2.500-4.000 €/Monat (inkl. Transport + Auf/Abbau ein einmaliger Pauschalbetrag von 3.000-6.000 €). Topless MDT 178 / 189: ca. 3.500-5.500 €/Monat. Großkrane MDT 268 / 389: ca. 6.000-10.000 €/Monat. Großprojekt-Sonderkonditionen bei Mietdauer >12 Monate. Wichtig: Potain-Krane werden in Deutschland fast immer auf Monatsbasis vermietet, nicht tageweise — Auf- und Abbau machen bei kurzen Mietzeiten den Gesamtpreis unwirtschaftlich.',
+        answer: 'Untendreher Igo M 60 / M 85: ca. 2.500-4.000 €/Monat (inkl. Transport + Auf/Abbau ein einmaliger Pauschalbetrag von 3.000-6.000 €). Topless MDT 178 / 189: ca. 3.500-5.500 €/Monat. Großkrane MDT 268 / 389: ca. 6.000-10.000 €/Monat. Großprojekt-Sonderkonditionen bei Mietdauer >12 Monate. Wichtig: Potain-Krane werden in Deutschland fast immer auf Monatsbasis vermietet, nicht tageweise. Auf- und Abbau machen bei kurzen Mietzeiten den Gesamtpreis unwirtschaftlich.',
       },
       {
         question: 'Wie lange dauert der Aufbau eines Potain-Krans?',
@@ -77,11 +77,11 @@ export const BRANDS: BrandData[] = [
       },
       {
         question: 'Welche Vermieter führen Potain-Krane in ihrer Flotte?',
-        answer: 'Potain-Krane sind bei den großen deutschen Baukran-Spezialisten Standard — Baukrane Weidenhiller, Riedel Baukrane, Stach Baukran, Fa Uebel, Baukranvermietung Pennekamp und viele weitere mittelständische Vermieter führen Potain in ihrer Flotte. Diese Seite listet alle Anbieter, die mindestens einen Potain-Kran zur Vermietung anbieten.',
+        answer: 'Potain-Krane sind bei den großen deutschen Baukran-Spezialisten Standard. Baukrane Weidenhiller, Riedel Baukrane, Stach Baukran, Fa Uebel, Baukranvermietung Pennekamp und viele weitere mittelständische Vermieter führen Potain in ihrer Flotte. Diese Seite listet alle Anbieter, die mindestens einen Potain-Kran zur Vermietung anbieten.',
       },
       {
         question: 'Wie unterscheidet sich Potain von Liebherr-Turmdrehkranen?',
-        answer: 'Liebherr (mit Werk in Biberach) dominiert in Deutschland den Mobilbaukran-Markt (MK-Serie) — selbstaufrichtende mobile Turmdrehkrane für innerstädtische Sanierung. Potain dominiert den stationären Turmdrehkran-Markt (klassische Untendreher und Topless-Krane). Beide Hersteller bauen exzellente Krane; die Wahl hängt vom Einsatzzweck ab: kurzer Einsatz mit Mobilanlieferung → Liebherr MK; mehrmonatige Großbaustelle → Potain MDT/MD. Bei den Self-Erecting Kranen (Igo-Serie bei Potain vs. Kid-Serie bei Liebherr) sind beide vergleichbar leistungsfähig.',
+        answer: 'Liebherr (mit Werk in Biberach) dominiert in Deutschland den Mobilbaukran-Markt (MK-Serie), selbstaufrichtende mobile Turmdrehkrane für innerstädtische Sanierung. Potain dominiert den stationären Turmdrehkran-Markt (klassische Untendreher und Topless-Krane). Beide Hersteller bauen exzellente Krane; die Wahl hängt vom Einsatzzweck ab: kurzer Einsatz mit Mobilanlieferung  Liebherr MK; mehrmonatige Großbaustelle  Potain MDT/MD. Bei den Self-Erecting Kranen (Igo-Serie bei Potain vs. Kid-Serie bei Liebherr) sind beide vergleichbar leistungsfähig.',
       },
       {
         question: 'Brauche ich für einen Potain-Kran einen Kranführerschein?',
@@ -96,7 +96,7 @@ export const BRANDS: BrandData[] = [
     origin: 'USA',
     founded: 1933,
     introShort: 'Terex-Krane mieten in Deutschland: Mobilkrane Challenger und AC-Serie, Raupenkrane CC. Anbieter im Vergleich.',
-    introLong: 'Terex Corporation ist ein US-amerikanischer Maschinenbau-Konzern mit Hauptsitz in Norwalk (Connecticut) und Wurzeln bis 1933. Im deutschen Kranmarkt war Terex jahrzehntelang über die Tochter Terex-Demag (Werk Zweibrücken) präsent — eine Reihe von Mobilkran-Modellen wie der AC 40/2L, AC 100/4L oder AC 350/6 prägte die mittlere und schwere Klasse. 2019 verkaufte Terex die Mobil- und Raupenkran-Sparte (samt Werk Zweibrücken) an Tadano; seitdem werden die ehemaligen Terex-Demag-Modelle unter dem Namen "Tadano Demag" weitergeführt, während Terex selbst nur noch Pick-and-Carry-Krane (Franna), Tower Cranes (Terex Tower Cranes, ehemals Comedil/Peiner) und Cranes for Niche Markets im Programm hat. Viele in deutschen Vermieter-Flotten verbliebene Terex-Krane stammen aus der Vor-Tadano-Zeit (2019 und früher) — sie sind technisch identisch mit aktuellen Tadano-Demag-Modellen, da die gleichen Werke das gleiche Produkt bauen. Gebrauchte Terex-Mobilkrane sind oft eine wirtschaftliche Alternative zum Neukauf, da Marken-Restwert leicht unter Liebherr / Tadano-Niveau liegt.',
+    introLong: 'Terex Corporation ist ein US-amerikanischer Maschinenbau-Konzern mit Hauptsitz in Norwalk (Connecticut) und Wurzeln bis 1933. Im deutschen Kranmarkt war Terex jahrzehntelang über die Tochter Terex-Demag (Werk Zweibrücken) präsent, eine Reihe von Mobilkran-Modellen wie der AC 40/2L, AC 100/4L oder AC 350/6 prägte die mittlere und schwere Klasse. 2019 verkaufte Terex die Mobil- und Raupenkran-Sparte (samt Werk Zweibrücken) an Tadano; seitdem werden die ehemaligen Terex-Demag-Modelle unter dem Namen "Tadano Demag" weitergeführt, während Terex selbst nur noch Pick-and-Carry-Krane (Franna), Tower Cranes (Terex Tower Cranes, ehemals Comedil/Peiner) und Cranes for Niche Markets im Programm hat. Viele in deutschen Vermieter-Flotten verbliebene Terex-Krane stammen aus der Vor-Tadano-Zeit (2019 und früher), sie sind technisch identisch mit aktuellen Tadano-Demag-Modellen, da die gleichen Werke das gleiche Produkt bauen. Gebrauchte Terex-Mobilkrane sind oft eine wirtschaftliche Alternative zum Neukauf, da Marken-Restwert leicht unter Liebherr / Tadano-Niveau liegt.',
     relatedCraneTypes: ['mobilkran-mieten', 'autokran-mieten', 'baukran-mieten'],
     faqs: [
       {
@@ -109,15 +109,15 @@ export const BRANDS: BrandData[] = [
       },
       {
         question: 'Was ist mit Terex-Demag passiert?',
-        answer: 'Terex hat 2019 die Mobil- und Raupenkran-Sparte mit dem Werk Zweibrücken (Pfalz) an den japanischen Hersteller Tadano verkauft. Seitdem werden die Modelle als "Tadano Demag" weitergeführt — gleiche Werke, gleiche Konstrukteure, gleiche Modellnummern (AC-Serie für All Terrain, CC-Serie für Crawler/Raupenkrane). Bestehende Terex-Demag-Krane in Vermieter-Flotten bleiben technisch unverändert; nur Ersatzteile und Service laufen seit 2019 über Tadano. Terex selbst konzentriert sich weltweit auf Pick-and-Carry-Krane, Tower Cranes und Specialty Equipment.',
+        answer: 'Terex hat 2019 die Mobil- und Raupenkran-Sparte mit dem Werk Zweibrücken (Pfalz) an den japanischen Hersteller Tadano verkauft. Seitdem werden die Modelle als "Tadano Demag" weitergeführt, gleiche Werke, gleiche Konstrukteure, gleiche Modellnummern (AC-Serie für All Terrain, CC-Serie für Crawler/Raupenkrane). Bestehende Terex-Demag-Krane in Vermieter-Flotten bleiben technisch unverändert; nur Ersatzteile und Service laufen seit 2019 über Tadano. Terex selbst konzentriert sich weltweit auf Pick-and-Carry-Krane, Tower Cranes und Specialty Equipment.',
       },
       {
         question: 'Welche Vermieter führen Terex-Krane in ihrer Flotte?',
-        answer: 'Terex ist in Deutschland weiter verbreitet als die geringe Anzahl an gelisteten Anbietern suggeriert — viele Vermieter haben ältere Terex-Modelle parallel zu Liebherr und Tadano in der Flotte. Diese Seite listet die Vermieter, die Terex explizit in ihrer Flottenbeschreibung nennen. Bei der Sammelanfrage erhalten Sie oft auch Terex-Angebote von Anbietern, die mit anderen Marken im Hauptfokus arbeiten.',
+        answer: 'Terex ist in Deutschland weiter verbreitet als die geringe Anzahl an gelisteten Anbietern suggeriert, viele Vermieter haben ältere Terex-Modelle parallel zu Liebherr und Tadano in der Flotte. Diese Seite listet die Vermieter, die Terex explizit in ihrer Flottenbeschreibung nennen. Bei der Sammelanfrage erhalten Sie oft auch Terex-Angebote von Anbietern, die mit anderen Marken im Hauptfokus arbeiten.',
       },
       {
         question: 'Wie unterscheidet sich Terex von Liebherr und Tadano?',
-        answer: 'Liebherr (Ehingen) ist Premium-Hersteller mit höchstem Restwert und dichtestem deutschen Service-Netz. Tadano hat seit der Demag-Übernahme 2019 das Werk Zweibrücken übernommen und ist im mittleren Segment 50-300 t direkt mit Liebherr vergleichbar. Terex-Modelle aus Vor-2019-Produktion sind technisch eng verwandt mit aktuellen Tadano-Demag-Modellen — sie waren immer als preisbewusste Alternative zu Liebherr positioniert. Für Bauunternehmer ist die Wahl heute meist eine Frage der Verfügbarkeit beim Vermieter und nicht der Markenpräferenz.',
+        answer: 'Liebherr (Ehingen) ist Premium-Hersteller mit höchstem Restwert und dichtestem deutschen Service-Netz. Tadano hat seit der Demag-Übernahme 2019 das Werk Zweibrücken übernommen und ist im mittleren Segment 50-300 t direkt mit Liebherr vergleichbar. Terex-Modelle aus Vor-2019-Produktion sind technisch eng verwandt mit aktuellen Tadano-Demag-Modellen, sie waren immer als preisbewusste Alternative zu Liebherr positioniert. Für Bauunternehmer ist die Wahl heute meist eine Frage der Verfügbarkeit beim Vermieter und nicht der Markenpräferenz.',
       },
     ],
   },

@@ -1,17 +1,17 @@
 /**
  * Server-side helper for /api/ai-helper. Two modes:
  *
- *   coach    — analyses a Projektbeschreibung textarea on the inquiry form
+ *   coach   , analyses a Projektbeschreibung textarea on the inquiry form
  *              and returns missing-field hints (e.g. "Höhe", "Gewicht").
  *              Inputs: { description, craneTypeName? }. Output: structured
  *              JSON via tool_use so the UI can render checklist hints.
  *
- *   berater  — multi-turn chat from the floating bubble. Takes an array of
+ *   berater , multi-turn chat from the floating bubble. Takes an array of
  *              user/assistant messages and returns a recommendation +
  *              optional redirect target (`/<type>-mieten[/<city>]?project=…`)
  *              once enough context is captured.
  *
- * Both modes call Claude Haiku 4.5 via plain fetch (no SDK — keeps deps
+ * Both modes call Claude Haiku 4.5 via plain fetch (no SDK, keeps deps
  * minimal). Both put the long stable system prompt + tool definition into
  * a single `cache_control: ephemeral` block so subsequent calls within the
  * 5-minute window read from cache (~10× cheaper input).
@@ -23,8 +23,8 @@ import { getServiceSupabase } from '@/lib/supabase'
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
 const MODEL = 'claude-haiku-4-5-20251001'
 
-// crane_type_id (Supabase UUID) → slug. Mirror of CRANE_TYPE_ID_TO_SLUG in
-// mcp-kranvergleich/server_sse.py — both files implement the same
+// crane_type_id (Supabase UUID)  slug. Mirror of CRANE_TYPE_ID_TO_SLUG in
+// mcp-kranvergleich/server_sse.py, both files implement the same
 // availability check; keep them in sync when adding crane types.
 const CRANE_TYPE_ID_TO_SLUG: Record<string, string> = {
   '9b9c0aa2-3f8c-4cfb-94e2-93a3f4f24d9a': 'minikran',
@@ -59,9 +59,9 @@ function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): nu
 }
 
 /** For a German PLZ, returns supplier availability per crane type:
- *  { slug → { in_50km, in_100km, nearest_km } }. Same logic as the
+ *  { slug  { in_50km, in_100km, nearest_km } }. Same logic as the
  *  check_availability_by_plz tool on the MCP server (both query Supabase,
- *  both Haversine, both fall back companies.lat/lng → firm zip). */
+ *  both Haversine, both fall back companies.lat/lng  firm zip). */
 export async function getAvailabilityByPlz(plz: string): Promise<{
   city: string
   perType: Record<string, { in_50km: number; in_100km: number; nearest_km: number | null }>
@@ -76,7 +76,7 @@ export async function getAvailabilityByPlz(plz: string): Promise<{
     .from('company_cranes')
     .select('crane_type_id, company:companies(id,is_active,is_relevant,lat,lng,zip)')
   // Supabase typegen narrows the embedded join to an array even though it's
-  // a one-to-one relationship (FK from company_cranes → companies). Treat
+  // a one-to-one relationship (FK from company_cranes  companies). Treat
   // it as `unknown` and pluck the first element ourselves; runtime always
   // sees a single object or null.
   type RawCrane = {
@@ -128,7 +128,7 @@ export async function getAvailabilityByPlz(plz: string): Promise<{
 function formatAvailabilityForPrompt(plz: string, av: NonNullable<Awaited<ReturnType<typeof getAvailabilityByPlz>>>): string {
   const lines = [
     ``,
-    `[VERFÜGBARKEITSDATEN für PLZ ${plz} (${av.city}) — vom System bereitgestellt]:`,
+    `[VERFÜGBARKEITSDATEN für PLZ ${plz} (${av.city}), vom System bereitgestellt]:`,
   ]
   for (const [slug, d] of Object.entries(av.perType)) {
     const nearest = d.nearest_km == null ? 'kein Anbieter im System' : `${d.nearest_km} km`
@@ -143,7 +143,7 @@ const CRANE_TYPE_DICTIONARY = craneTypesList
 
 // === COACH MODE ===
 
-const COACH_SYSTEM = `Du bist ein erfahrener Kranvermietungs-Berater. Ein Kunde füllt gerade eine Anfrage aus und hat eine Projektbeschreibung in ein Formular getippt. Deine Aufgabe: prüfe, ob die Beschreibung genug Information enthält, damit ein Kranvermieter ein präzises Angebot machen kann — und nenne fehlende Punkte als kurze Checkliste.
+const COACH_SYSTEM = `Du bist ein erfahrener Kranvermietungs-Berater. Ein Kunde füllt gerade eine Anfrage aus und hat eine Projektbeschreibung in ein Formular getippt. Deine Aufgabe: prüfe, ob die Beschreibung genug Information enthält, damit ein Kranvermieter ein präzises Angebot machen kann, und nenne fehlende Punkte als kurze Checkliste.
 
 Krantypen die wir vermitteln:
 ${CRANE_TYPE_DICTIONARY}
@@ -158,7 +158,7 @@ Für ein präzises Angebot braucht der Vermieter idealerweise:
 
 Regeln:
 - Wenn die Beschreibung sehr kurz oder leer ist (<20 Zeichen), gib alle Standardpunkte als hint zurück.
-- Wenn ein Punkt eindeutig erwähnt ist (z.B. "1.5 t pro Element" → weight ✓; "auf 22 m Höhe" → height ✓), nicht in missing aufnehmen.
+- Wenn ein Punkt eindeutig erwähnt ist (z.B. "1.5 t pro Element" = weight erkannt; "auf 22 m Höhe" = height erkannt), nicht in missing aufnehmen.
 - Hints sind kurze deutsche Sätze (max 10 Wörter), z.B. "Wie schwer ist die schwerste Last?".
 - Wenn der Krantyp aus der Beschreibung etwas ganz anderes nahelegt (z.B. Beschreibung "Glasmontage Terrasse" + craneTypeName "Mobilkran"), füge einen subtype_suggestion-Hint hinzu, kurz und freundlich.
 - Antworte IMMER über das Tool record_coach_result. Kein freier Text.`
@@ -180,7 +180,7 @@ const COACH_TOOL = {
       hints: {
         type: 'array' as const,
         items: { type: 'string' as const },
-        description: 'Short German prompts the user should add — one per missing field, max 10 words each.',
+        description: 'Short German prompts the user should add, one per missing field, max 10 words each.',
       },
       subtype_suggestion: {
         type: 'string' as const,
@@ -224,7 +224,7 @@ export async function runCoach(input: {
 
 // === BERATER MODE ===
 
-const BERATER_SYSTEM = `Du bist „Kran-Berater" — ein freundlicher Assistent auf KranVergleich.de, der Bauunternehmer und Privatkunden hilft, den richtigen Krantyp zu finden und passende Anbieter zu sehen. Maximal 2-3 Sätze pro Antwort. Sprache: Deutsch, Sie-Form.
+const BERATER_SYSTEM = `Du bist „Kran-Berater", ein freundlicher Assistent auf KranVergleich.de, der Bauunternehmer und Privatkunden hilft, den richtigen Krantyp zu finden und passende Anbieter zu sehen. Maximal 2-3 Sätze pro Antwort. Sprache: Deutsch, Sie-Form.
 
 Verfügbare Krantypen auf KranVergleich.de:
 ${CRANE_TYPE_DICTIONARY}
@@ -234,38 +234,38 @@ Workflow:
 2. Wenn alle 3 Kerninformationen klar sind (Typ, Standort, ungefährer Anwendungsfall), antworte über das Tool record_recommendation. Setze ready=true und fülle type_slug + project_summary + (optional) plz_or_city.
 3. Wenn etwas fehlt, antworte über das Tool record_recommendation mit ready=false und stelle EINE konkrete Rückfrage in follow_up_question (z.B. "Wie hoch ist das Gebäude ungefähr?"). Nicht mehrere Fragen auf einmal.
 4. Bei sehr unklaren Beschreibungen (z.B. nur "Kran"), frage zuerst nach dem Projekt, nicht nach Details.
-5. Erfinde KEINE Preise oder Verfügbarkeiten — verweise auf die Anbieter-Liste.
+5. Erfinde KEINE Preise oder Verfügbarkeiten, verweise auf die Anbieter-Liste.
 
 VERFÜGBARKEITSREGEL (sehr wichtig):
 Wenn das System dir Verfügbarkeitsdaten für eine PLZ liefert (Block "[VERFÜGBARKEITSDATEN für PLZ …]" am Ende dieses Prompts), beachte sie zwingend bei der Empfehlung:
 
-a) Wenn der funktional ideale Krantyp ≥3 Anbieter ≤50 km hat: empfehle ihn — Standardfall.
+a) Wenn der funktional ideale Krantyp ≥3 Anbieter ≤50 km hat: empfehle ihn. Standardfall.
 
 b) Wenn der ideale Typ KEINEN Anbieter ≤50 km hat (oder nächster >100 km), prüfe ob ein anderer Krantyp den konkreten Anwendungsfall (Tragkraft + Höhe + Zufahrt) ebenfalls abdeckt UND lokal verfügbar ist:
-   - JA → empfehle den lokal verfügbaren Typ statt des idealen, mit kurzer Begründung. Beispiel: "Ein Dachdeckerkran wäre für Ihre Fensterpaletten spezialisiert, der nächste Anbieter ist aber 200 km entfernt. Bei 1,5 t auf 22 m übernimmt das ein Mobilkran genauso gut — und wir haben 4 Anbieter ab 21 km."
-   - NEIN, weil Spezialausrüstung wirklich nötig ist (Spinnenkran für enge Glasmontage; Raupenkran für weiches Gelände; Dachdeckerkran-Klemmen für spezielle Ziegelmontage; …) → empfehle den idealen Typ im größeren Radius mit Hinweis auf Transportkosten. Beispiel: "Spinnenkran ist für enge Glasmontage wirklich die richtige Wahl. Der nächste Anbieter ist 80 km entfernt, planen Sie ca. 600-1000 € Transport ein."
+   - JA  empfehle den lokal verfügbaren Typ statt des idealen, mit kurzer Begründung. Beispiel: "Ein Dachdeckerkran wäre für Ihre Fensterpaletten spezialisiert, der nächste Anbieter ist aber 200 km entfernt. Bei 1,5 t auf 22 m übernimmt das ein Mobilkran genauso gut, und wir haben 4 Anbieter ab 21 km."
+   - NEIN, weil Spezialausrüstung wirklich nötig ist (Spinnenkran für enge Glasmontage; Raupenkran für weiches Gelände; Dachdeckerkran-Klemmen für spezielle Ziegelmontage; …)  empfehle den idealen Typ im größeren Radius mit Hinweis auf Transportkosten. Beispiel: "Spinnenkran ist für enge Glasmontage wirklich die richtige Wahl. Der nächste Anbieter ist 80 km entfernt, planen Sie ca. 600-1000 € Transport ein."
 
 c) Funktional substituierbar (für b/JA-Fall):
    - Autokran ↔ Mobilkran (beide telescopic mobile crane, ~80% Überlapp)
    - Mobilkran kann Dachdeckerkran ersetzen, wenn Last < 2 t und Höhe < 25 m und keine speziellen Dachklemmen nötig
    - Mobilkran/Autokran KÖNNEN keinen Spinnenkran/Minikran ersetzen, wenn enge Zufahrt das Problem ist (Footprint zählt)
 
-ZAHLENREGEL (kritisch — keine Halluzinationen):
+ZAHLENREGEL (kritisch, keine Halluzinationen):
 Wenn du in deiner Antwort eine Anbieterzahl, eine Distanz oder einen Radius nennst, MUSST du die exakten Werte aus dem VERFÜGBARKEITSDATEN-Block für genau jenen Krantyp übernehmen, den du erwähnst. Nicht runden, nicht schätzen, nicht zwischen Typen mischen.
 
 Konkret:
-- "X Anbieter ≤50 km" für Typ Y → schreibe genau diese Zahl X.
-- "nächster N km" für Typ Y → schreibe "nächster Anbieter N km entfernt" oder "ab N km", aber NIE eine andere Zahl.
+- "X Anbieter ≤50 km" für Typ Y  schreibe genau diese Zahl X.
+- "nächster N km" für Typ Y  schreibe "nächster Anbieter N km entfernt" oder "ab N km", aber NIE eine andere Zahl.
 - Wenn du sagst "der nächste Dachdeckerkran ist weit weg", füge die exakte Distanz aus den Daten hinzu (z.B. "200 km entfernt").
 - Wenn die Daten "0 Anbieter ≤50 km, nächster 200 km" zeigen, schreibe das so. Nicht "in der Nähe", nicht "verfügbar".
 
-Wenn keine VERFÜGBARKEITSDATEN vorliegen (PLZ noch nicht genannt), nenne KEINE Zahlen über Anbieter oder Distanzen — frage einfach nach der PLZ.
+Wenn keine VERFÜGBARKEITSDATEN vorliegen (PLZ noch nicht genannt), nenne KEINE Zahlen über Anbieter oder Distanzen, frage einfach nach der PLZ.
 
 Antworte IMMER über das Tool record_recommendation. Kein freier Text.`
 
 const BERATER_TOOL = {
   name: 'record_recommendation',
-  description: 'Records the chat assistant reply — either a recommendation when ready, or a follow-up question to ask the user.',
+  description: 'Records the chat assistant reply, either a recommendation when ready, or a follow-up question to ask the user.',
   input_schema: {
     type: 'object' as const,
     properties: {
@@ -312,7 +312,7 @@ export type BeraterResult = {
 
 export async function runBerater(messages: BeraterMessage[]): Promise<BeraterResult> {
   // Scan user messages for a 5-digit PLZ. Take the LAST one (in case the
-  // user changed their mind mid-conversation — earlier "10115 Berlin" then
+  // user changed their mind mid-conversation, earlier "10115 Berlin" then
   // "actually we moved to 89584", we want availability data for 89584, not
   // Berlin). Falls back gracefully when no PLZ has been mentioned yet.
   let foundPlz: string | null = null
@@ -330,7 +330,7 @@ export async function runBerater(messages: BeraterMessage[]): Promise<BeraterRes
       const av = await getAvailabilityByPlz(foundPlz)
       if (av) availabilityBlock = formatAvailabilityForPrompt(foundPlz, av)
     } catch (err) {
-      // Non-fatal — bot still works without availability context, just less
+      // Non-fatal, bot still works without availability context, just less
       // smart about local-vs-distant trade-off. Log for ops visibility.
       console.error('berater: getAvailabilityByPlz failed:', err)
     }
@@ -369,21 +369,21 @@ Verfügbare Krantypen auf KranVergleich.de:
 ${CRANE_TYPE_DICTIONARY}
 
 Spezialfälle die du erkennen solltest:
-- Glasmontage / Glasscheiben / Fenster aufs Dach + enge Zufahrt → Spinnenkran (im Minikran-Filter findbar) statt Mobilkran/Autokran
-- Indoor-Arbeit / Bodenbelag schonen / Rasen + niedriges Gewicht → Spinnenkran/Minikran
-- Dacharbeiten / Ziegelmontage / kurzfristig 1 Tag → Dachdeckerkran (kompakter, kein Bedienerschein)
-- Hochhaus / mehrwöchige Baustelle → Baukran (Turmdrehkran) statt Mobilkran
-- Schwerlast > 80 t / weiches Gelände → Raupenkran statt Mobilkran
-- LKW be-/entladen / Hof-Logistik → Ladekran statt Autokran
-- DIY / kleines Privatprojekt / unter 0,5 t → Anhängerkran statt Mobilkran
+- Glasmontage / Glasscheiben / Fenster aufs Dach + enge Zufahrt  Spinnenkran (im Minikran-Filter findbar) statt Mobilkran/Autokran
+- Indoor-Arbeit / Bodenbelag schonen / Rasen + niedriges Gewicht  Spinnenkran/Minikran
+- Dacharbeiten / Ziegelmontage / kurzfristig 1 Tag  Dachdeckerkran (kompakter, kein Bedienerschein)
+- Hochhaus / mehrwöchige Baustelle  Baukran (Turmdrehkran) statt Mobilkran
+- Schwerlast > 80 t / weiches Gelände  Raupenkran statt Mobilkran
+- LKW be-/entladen / Hof-Logistik  Ladekran statt Autokran
+- DIY / kleines Privatprojekt / unter 0,5 t  Anhängerkran statt Mobilkran
 
-Regel — nur dann Hinweis geben, wenn:
+Regel, nur dann Hinweis geben, wenn:
 1. Die Beschreibung einen klaren Indikator für einen anderen Typ enthält (z.B. "Glasmontage", "enge Zufahrt 3m", "indoor", "Dach", "Hochhaus", "schwerlast 100 t").
 2. UND der gewählte Typ wirklich suboptimal ist für diesen Anwendungsfall (nicht nur "auch ok").
 
-Wenn der Nutzer bereits den passenden Typ gewählt hat oder die Beschreibung zu vage ist um sicher zu sein → kein Hinweis (should_suggest=false).
+Wenn der Nutzer bereits den passenden Typ gewählt hat oder die Beschreibung zu vage ist um sicher zu sein  kein Hinweis (should_suggest=false).
 
-Wenn der gewählte Typ richtig ist aber eine spezialisierte Variante existiert (z.B. Minikran → Spinnenkran für Glasmontage), gib einen subtype_note: gewählter Typ bleibt richtig, aber bei den Anbietern nach der Spezial-Variante filtern.
+Wenn der gewählte Typ richtig ist aber eine spezialisierte Variante existiert (z.B. Minikran  Spinnenkran für Glasmontage), gib einen subtype_note: gewählter Typ bleibt richtig, aber bei den Anbietern nach der Spezial-Variante filtern.
 
 Antworte IMMER über das Tool record_subtype_check. Kein freier Text.`
 
@@ -461,7 +461,7 @@ export async function runSubtypeCheck(input: {
 // depth after the form-layer C fix (LeadForm requires crane type when prop
 // is missing): catches future forms that forget to pass craneTypeId, direct
 // API calls, and edge cases where the customer typed enough specs in the
-// description for an obvious classification ("1.5 t auf 10 m für 60 Tage" →
+// description for an obvious classification ("1.5 t auf 10 m für 60 Tage" 
 // baukran).
 //
 // Pricing: ~$0.001-0.005 per call (Haiku 4.5 with cached system prompt).
@@ -480,17 +480,17 @@ Verfügbare Krantypen:
 - raupenkran: Über 100 t, Schwerlast, schweres oder weiches Gelände.
 
 Konfidenz-Skala:
-- 0.95+: eindeutige Spezifika passen perfekt (z.B. "Stahlträger 25 t auf 30 m" → autokran 0.97)
-- 0.80-0.94: starke Indikatoren ohne Widersprüche (z.B. "60 Tage Bauprojekt, 1,5 t auf 10 m" → baukran 0.88)
+- 0.95+: eindeutige Spezifika passen perfekt (z.B. "Stahlträger 25 t auf 30 m"  autokran 0.97)
+- 0.80-0.94: starke Indikatoren ohne Widersprüche (z.B. "60 Tage Bauprojekt, 1,5 t auf 10 m"  baukran 0.88)
 - 0.50-0.79: vage Beschreibung, beste Spekulation
-- <0.50: zu unbestimmt für eine Empfehlung — type_slug="" und confidence=0
+- <0.50: zu unbestimmt für eine Empfehlung, type_slug="" und confidence=0
 
 Heuristiken:
-- Mietdauer >= 30 Tage UND moderate Höhe (≥ 10 m) → baukran (Monatsmiete viel günstiger als Autokran).
-- Sehr leichte Lasten (≤ 1 t) + niedrige Höhe (≤ 10 m) → anhaengerkran.
-- Dacharbeiten ausdrücklich genannt + Last ≤ 2 t → dachdeckerkran.
-- Glasmontage / Spinnenkran / enge Zufahrt → minikran.
-- Schwere Lasten > 50 t → mobilkran oder raupenkran.
+- Mietdauer >= 30 Tage UND moderate Höhe (≥ 10 m)  baukran (Monatsmiete viel günstiger als Autokran).
+- Sehr leichte Lasten (≤ 1 t) + niedrige Höhe (≤ 10 m)  anhaengerkran.
+- Dacharbeiten ausdrücklich genannt + Last ≤ 2 t  dachdeckerkran.
+- Glasmontage / Spinnenkran / enge Zufahrt  minikran.
+- Schwere Lasten > 50 t  mobilkran oder raupenkran.
 
 Antworten Sie IMMER über das Tool record_categorization. Kein freier Text.`
 
@@ -513,7 +513,7 @@ const CATEGORIZE_TOOL = {
       },
       reasoning: {
         type: 'string' as const,
-        description: 'One short German sentence (max 20 words) explaining the pick — for ops logs only, not shown to user.',
+        description: 'One short German sentence (max 20 words) explaining the pick, for ops logs only, not shown to user.',
       },
     },
     required: ['type_slug', 'confidence', 'reasoning'],

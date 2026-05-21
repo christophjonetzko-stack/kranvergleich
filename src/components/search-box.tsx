@@ -16,8 +16,8 @@ interface CityResult {
 }
 
 interface SearchBoxProps {
-  /** crane-type-slug → Anbieter count map. Passed from server page so the
-   *  dropdown can sort by popularity and show "Autokran — 403 Anbieter"
+  /** crane-type-slug  Anbieter count map. Passed from server page so the
+   *  dropdown can sort by popularity and show "Autokran, 403 Anbieter"
    *  instead of a bare label. Empty map = fall back to the static catalog
    *  order with no counts. */
   craneTypeCounts?: Record<string, number>
@@ -45,7 +45,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
   }, [craneTypeCounts])
 
   const selectedType = sortedTypes.find((t) => t.slug === craneType)
-  const craneTypeLabel = selectedType ? selectedType.name : 'Egal — alle Typen'
+  const craneTypeLabel = selectedType ? selectedType.name : 'Egal, alle Typen'
   const [cityQuery, setCityQuery] = useState('')
   const [results, setResults] = useState<CityResult[]>([])
   const [isOpen, setIsOpen] = useState(false)
@@ -54,7 +54,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
   const [selectedCity, setSelectedCity] = useState<CityResult | null>(null)
   const [hint, setHint] = useState('')
   const [plzLabel, setPlzLabel] = useState('')
-  // Optional free-text project description — forwarded to the listing page
+  // Optional free-text project description, forwarded to the listing page
   // as ?project=… so the lead form prefills it. Lets project-intent users
   // (Mario, Mathias) capture context at the search step instead of typing
   // it again two clicks later in the inquiry form.
@@ -63,7 +63,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  // Close dropdowns on outside click — both the city autocomplete and the
+  // Close dropdowns on outside click, both the city autocomplete and the
   // custom crane-type dropdown share this handler. Each ref-guards its own
   // surface so a click inside one closes only the other.
   useEffect(() => {
@@ -82,7 +82,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
   }, [])
 
   function handleCraneTypeKeyDown(e: React.KeyboardEvent) {
-    // sortedTypes + 1 (the "Egal — alle Typen" leading row) is the navigable list.
+    // sortedTypes + 1 (the "Egal, alle Typen" leading row) is the navigable list.
     const total = sortedTypes.length + 1
     if (e.key === 'ArrowDown') {
       e.preventDefault()
@@ -158,7 +158,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
   function handleSearch() {
     const target = resolveSearchTarget({ craneType, cityQuery, selectedCity, projectDescription })
     // Fire BEFORE navigation. Even when resolveSearchTarget returns null
-    // (no field filled), the click is meaningful — it shows the user reached
+    // (no field filled), the click is meaningful, it shows the user reached
     // for the search and bounced off our matching rules. Without this fire,
     // empty-search abandons would be invisible.
     const projectText = projectDescription.trim()
@@ -196,7 +196,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Outer container — single rounded card. Pill aesthetic on desktop
+      {/* Outer container, single rounded card. Pill aesthetic on desktop
           when collapsed, but switches to rounded-3xl when project field
           expands so the textarea attaches cleanly inside the same surface
           (no floating overlay, layout stays stable).
@@ -213,7 +213,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
         }`}
       >
         <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-stretch p-3 sm:p-1.5">
-          {/* Krantyp field — custom dropdown. Replaces the native <select>
+          {/* Krantyp field, custom dropdown. Replaces the native <select>
               (system blue highlight, system font in option list, no per-type
               counts) with a brand-styled disclosure: button + popover ul,
               same uppercase micro-label pattern as before. Sorted by Anbieter
@@ -281,7 +281,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
                         : 'text-neutral-700 hover:bg-neutral-50'
                     }`}
                   >
-                    <span className="font-medium">Egal — alle Typen</span>
+                    <span className="font-medium">Egal, alle Typen</span>
                     <span className="text-[11px] text-neutral-400">alle anzeigen</span>
                   </button>
                 </li>
@@ -328,7 +328,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
           <div ref={wrapperRef} className="relative w-full sm:flex-1 text-left">
             <label htmlFor="sb-city" className="sm:hidden block text-[12px] font-medium text-gray-700 mb-1 ml-1">
               Stadt oder PLZ
-              {plzLabel && <span className="ml-2 text-blue-600 font-normal">→ {plzLabel}</span>}
+              {plzLabel && <span className="ml-2 text-blue-600 font-normal"> {plzLabel}</span>}
             </label>
             <div className="relative flex items-center sm:h-full">
               <span className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" aria-hidden>
@@ -394,7 +394,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
             )}
           </div>
 
-          {/* Search button — editorial/navigation CTA (black). Transaction CTAs
+          {/* Search button, editorial/navigation CTA (black). Transaction CTAs
               across the site ("Angebot anfragen", form submit) stay blue as a
               deliberate two-tier signal: black = discovery, blue = commitment. */}
           <button
@@ -408,7 +408,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
           </button>
         </div>
 
-        {/* Optional project-description field — accordion INSIDE the same
+        {/* Optional project-description field, accordion INSIDE the same
             surface, separated by border-top so the visual gravity stays
             stable when expanded. No more floating overlay drift. */}
         {showProjectField && (
@@ -442,7 +442,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
         )}
       </div>
 
-      {/* Toggle row outside the box — keeps the search bar surface clean
+      {/* Toggle row outside the box, keeps the search bar surface clean
           when collapsed. Inline with hint text on the same line. */}
       <div className="flex flex-wrap items-center justify-between gap-2 mt-3 px-1">
         {!showProjectField ? (
@@ -456,7 +456,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
           >
             <span aria-hidden className="text-neutral-400">＋</span>
             Projekt beschreiben
-            <span className="text-neutral-400">— hilft beim Matching</span>
+            <span className="text-neutral-400"> hilft beim Matching</span>
           </button>
         ) : (
           <span aria-hidden />

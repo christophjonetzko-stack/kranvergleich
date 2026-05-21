@@ -7,7 +7,7 @@
 // test sessions don't pollute the analytics table.
 //
 // Every event also carries the first-touch UTM payload from sessionStorage
-// (mig 027). Stamps null fields when no attribution is stored — that's the
+// (mig 027). Stamps null fields when no attribution is stored, that's the
 // expected case for organic / direct entry.
 
 import { getStoredUtm } from './utm'
@@ -56,7 +56,7 @@ export function trackPageEvent(
   })
 
   try {
-    // Try sendBeacon first — it's designed to survive page navigation. If the
+    // Try sendBeacon first, it's designed to survive page navigation. If the
     // browser rejects it (returns false: queue full, payload too large,
     // disabled-by-settings), fall through to fetch with keepalive so we still
     // land the event before the page unloads.

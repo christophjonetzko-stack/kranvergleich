@@ -9,10 +9,10 @@ import { BRAND_NAME } from '@/lib/country'
  * abused to scrape customer contact data; failed sig = generic message.
  *
  * Three variants:
- *   action=accept    → confirmation + customer contact for the firm to use
- *   action=decline   → reason form (4 preset + Sonstiges) that POSTs to
+ *   action=accept     confirmation + customer contact for the firm to use
+ *   action=decline    reason form (4 preset + Sonstiges) that POSTs to
  *                      /api/lead-response/decline-reason
- *   done=1           → final thanks after reason submitted
+ *   done=1            final thanks after reason submitted
  *
  * dynamic='force-dynamic' because the page renders per-request based on
  * URL params; ISR would cache the first visitor's content for everyone.
@@ -96,7 +96,7 @@ export default async function ThanksPage({
   if (action === 'accept') {
     return (
       <div style={{ maxWidth: 560, margin: '60px auto', padding: 24, fontFamily: 'system-ui' }}>
-        <h1 style={{ fontSize: 22, color: '#111', marginBottom: 16 }}>✅ Vielen Dank!</h1>
+        <h1 style={{ fontSize: 22, color: '#111', marginBottom: 16 }}>Vielen Dank!</h1>
         <p style={{ color: '#4b5563', lineHeight: 1.6 }}>
           Wir haben Ihre Annahme registriert. Bitte melden Sie sich bei{' '}
           <strong>{customer.customer_name || 'dem Kunden'}</strong>{' '}
@@ -141,7 +141,7 @@ export default async function ThanksPage({
     <div style={{ maxWidth: 560, margin: '60px auto', padding: 24, fontFamily: 'system-ui' }}>
       <h1 style={{ fontSize: 22, color: '#111', marginBottom: 16 }}>Schade, dass es nicht passt</h1>
       <p style={{ color: '#4b5563', lineHeight: 1.6 }}>
-        Eine kurze Rückmeldung warum hilft uns, das Lead-Routing zu verbessern. Optional — Sie können das Fenster auch einfach schließen.
+        Eine kurze Rückmeldung warum hilft uns, das Lead-Routing zu verbessern. Optional. Sie können das Fenster auch einfach schließen.
       </p>
       <form method="POST" action="/api/lead-response/decline-reason" style={{ marginTop: 24 }}>
         <input type="hidden" name="lead" value={leadId} />

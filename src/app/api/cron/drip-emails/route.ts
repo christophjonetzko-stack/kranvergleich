@@ -8,7 +8,7 @@ const FROM_EMAIL = 'KranVergleich <noreply@send.kranvergleich.de>'
 // Drip email content for each step
 const DRIP_EMAILS = [
   {
-    // Step 0 → 1: sent after 1 day
+    // Step 0  1: sent after 1 day
     delayDays: 1,
     subject: '5 Tipps: So sparen Sie beim Kran mieten',
     html: `
@@ -16,31 +16,31 @@ const DRIP_EMAILS = [
         <h2 style="font-size:18px;color:#1a1a1a;">5 Tipps: So sparen Sie beim Kran mieten</h2>
 
         <p style="color:#4b5563;font-size:14px;line-height:1.7;">
-          Sie haben kürzlich unseren Kostenrechner genutzt — hier sind 5 Tipps,
+          Sie haben kürzlich unseren Kostenrechner genutzt, hier sind 5 Tipps,
           mit denen Sie bei der Kranmiete bares Geld sparen:
         </p>
 
         <ol style="color:#4b5563;font-size:14px;line-height:2;padding-left:20px;">
-          <li><strong>Mehrere Angebote einholen</strong> — Preise variieren bis zu 40% zwischen Anbietern</li>
-          <li><strong>Wochentarif nutzen</strong> — Ab 3 Tagen lohnt sich oft der Wochenpreis</li>
-          <li><strong>Kranführer einplanen</strong> — Eigenregie ist günstiger, aber ein Profi spart Zeit und vermeidet Schäden</li>
-          <li><strong>Zufahrt prüfen</strong> — Schwierige Aufstellung = Aufpreis. Klären Sie das vorher</li>
-          <li><strong>Frühzeitig buchen</strong> — Kurzfristige Buchungen kosten oft 20-30% mehr</li>
+          <li><strong>Mehrere Angebote einholen</strong>. Preise variieren bis zu 40% zwischen Anbietern</li>
+          <li><strong>Wochentarif nutzen</strong>. Ab 3 Tagen lohnt sich oft der Wochenpreis</li>
+          <li><strong>Kranführer einplanen</strong>. Eigenregie ist günstiger, aber ein Profi spart Zeit und vermeidet Schäden</li>
+          <li><strong>Zufahrt prüfen</strong>. Schwierige Aufstellung = Aufpreis. Klären Sie das vorher</li>
+          <li><strong>Frühzeitig buchen</strong>. Kurzfristige Buchungen kosten oft 20-30% mehr</li>
         </ol>
 
         <a href="${BASE_URL}/ratgeber/kran-mieten-tipps" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:16px 0;">
-          Alle Tipps lesen →
+          Alle Tipps lesen 
         </a>
 
         <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
-          ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
+          ${BRAND_NAME}, <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
           <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
         </p>
       </div>
     `,
   },
   {
-    // Step 1 → 2: sent after 3 days
+    // Step 1  2: sent after 3 days
     delayDays: 3,
     subject: 'Welcher Kran passt zu Ihrem Projekt?',
     html: `
@@ -55,35 +55,35 @@ const DRIP_EMAILS = [
         <table style="border-collapse:collapse;font-size:14px;width:100%;margin:16px 0;">
           <tr style="background:#f0f7ff;">
             <td style="padding:8px 12px;font-weight:600;border:1px solid #bfdbfe;">Minikran</td>
-            <td style="padding:8px 12px;border:1px solid #bfdbfe;">Enge Baustellen, Innenräume — ab 250€/Tag</td>
+            <td style="padding:8px 12px;border:1px solid #bfdbfe;">Enge Baustellen, Innenräume, ab 250€/Tag</td>
           </tr>
           <tr>
             <td style="padding:8px 12px;font-weight:600;border:1px solid #e5e7eb;">Autokran</td>
-            <td style="padding:8px 12px;border:1px solid #e5e7eb;">Flexibel, schneller Aufbau — ab 800€/Tag</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">Flexibel, schneller Aufbau, ab 800€/Tag</td>
           </tr>
           <tr style="background:#f0f7ff;">
             <td style="padding:8px 12px;font-weight:600;border:1px solid #bfdbfe;">Mobilkran</td>
-            <td style="padding:8px 12px;border:1px solid #bfdbfe;">Schwere Lasten, große Höhen — ab 1.200€/Tag</td>
+            <td style="padding:8px 12px;border:1px solid #bfdbfe;">Schwere Lasten, große Höhen, ab 1.200€/Tag</td>
           </tr>
           <tr>
             <td style="padding:8px 12px;font-weight:600;border:1px solid #e5e7eb;">Baukran</td>
-            <td style="padding:8px 12px;border:1px solid #e5e7eb;">Langzeit-Einsatz auf Baustellen — ab 3.000€/Monat</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">Langzeit-Einsatz auf Baustellen, ab 3.000€/Monat</td>
           </tr>
         </table>
 
         <a href="${BASE_URL}/ratgeber/welchen-kran-brauche-ich" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
-          Ausführlichen Ratgeber lesen →
+          Ausführlichen Ratgeber lesen 
         </a>
 
         <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
-          ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
+          ${BRAND_NAME}, <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
           <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
         </p>
       </div>
     `,
   },
   {
-    // Step 2 → 3: sent after 7 days
+    // Step 2  3: sent after 7 days
     delayDays: 7,
     subject: 'Kostenlose Angebote von Kranverleih-Firmen in Ihrer Nähe',
     html: `
@@ -92,7 +92,7 @@ const DRIP_EMAILS = [
 
         <p style="color:#4b5563;font-size:14px;line-height:1.7;">
           Vor einer Woche haben Sie unseren Kostenrechner genutzt. Falls Sie noch keinen
-          Kran gebucht haben — jetzt ist der beste Zeitpunkt, Angebote einzuholen:
+          Kran gebucht haben, jetzt ist der beste Zeitpunkt, Angebote einzuholen:
         </p>
 
         <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:16px 0;">
@@ -105,12 +105,12 @@ const DRIP_EMAILS = [
         </div>
 
         <a href="${BASE_URL}" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
-          Jetzt Anbieter vergleichen →
+          Jetzt Anbieter vergleichen 
         </a>
 
         <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
           Dies ist die letzte E-Mail unserer Tipps-Serie. Sie erhalten keine weiteren automatischen E-Mails.<br>
-          ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
+          ${BRAND_NAME}, <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a><br>
           <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
         </p>
       </div>
@@ -129,7 +129,7 @@ export async function GET(request: Request) {
   // so this cron fires on both projects. The DRIP_EMAILS templates are written
   // for DE (links, copy, tone) and the newsletter_subscribers table is not yet
   // country-scoped. Skip on AT until AT-localised drip content + a country
-  // column on newsletter_subscribers exist (deferred — no AT subscribers yet).
+  // column on newsletter_subscribers exist (deferred, no AT subscribers yet).
   if (COUNTRY === 'AT') {
     return NextResponse.json({ skipped: true, reason: 'drip-emails are DE-only until AT content + country scoping land' })
   }

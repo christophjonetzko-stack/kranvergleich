@@ -4,7 +4,7 @@ import { useEffect, useState, useSyncExternalStore, type AnchorHTMLAttributes, t
 import { craneTypes } from '@/data/crane-types'
 
 // Firm engagement tracker. Client-only because /anbieter/[slug] is cached
-// with revalidate=86400 — SSR hits would only fire on cache revalidation,
+// with revalidate=86400. SSR hits would only fire on cache revalidation,
 // missing 99% of real views. Uses navigator.sendBeacon so the request
 // survives immediate navigation (tel:, mailto:, external website).
 
@@ -35,7 +35,7 @@ function fire(eventType: EventType, ctx: TrackingContext) {
       navigator.sendBeacon('/api/track', new Blob([payload], { type: 'application/json' }))
       return
     }
-    // sendBeacon missing (old browsers) — fall back to keepalive fetch so the
+    // sendBeacon missing (old browsers), fall back to keepalive fetch so the
     // request still finishes during navigation.
     fetch('/api/track', {
       method: 'POST',
@@ -44,7 +44,7 @@ function fire(eventType: EventType, ctx: TrackingContext) {
       headers: { 'Content-Type': 'application/json' },
     }).catch(() => {})
   } catch {
-    // Tracking must never break UX — swallow everything.
+    // Tracking must never break UX, swallow everything.
   }
 }
 
@@ -149,7 +149,7 @@ export function RevealablePhone({
 const CRANE_TYPE_URL_SEGMENTS = new Set(craneTypes.map((t) => t.slug))
 
 // Sniff city/type context from same-origin referrer URL. Used on profile pages
-// /anbieter/[slug] where the page URL itself carries no listing context — we
+// /anbieter/[slug] where the page URL itself carries no listing context, we
 // want to know which listing brought the visitor here so website_click events
 // can be attributed back to a city × type combo.
 function parseReferrerContext(): { cityContext: string | null; typeContext: string | null } {
@@ -189,14 +189,14 @@ function getClientReferrerCtx() {
 
 function useReferrerContext(): { cityContext: string | null; typeContext: string | null } {
   return useSyncExternalStore(
-    () => () => {}, // nothing to subscribe to — referrer is immutable
+    () => () => {}, // nothing to subscribe to, referrer is immutable
     getClientReferrerCtx,
     () => EMPTY_REFERRER_CTX,
   )
 }
 
 interface TrackedWebsiteLinkProps extends Omit<TrackedLinkProps, 'eventType' | 'cityContext' | 'typeContext'> {
-  // Optional explicit overrides (rare — usually omit and let referrer sniff fill in).
+  // Optional explicit overrides (rare, usually omit and let referrer sniff fill in).
   cityContextOverride?: string | null
   typeContextOverride?: string | null
 }

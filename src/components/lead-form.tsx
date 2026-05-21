@@ -59,7 +59,7 @@ export function LeadForm({
     e.preventDefault()
     setError(null)
 
-    // Resolve the effective crane type — from prop (page context) or from
+    // Resolve the effective crane type, from prop (page context) or from
     // the in-form select. One side MUST have a value, otherwise the lead
     // lands as crane_type_id=NULL and triggers 🚨 LEAD OHNE ANBIETER on
     // the owner side. Validates here even though the <select> below carries
@@ -138,7 +138,7 @@ export function LeadForm({
       <CardHeader>
         <CardTitle>
           Kostenlos Angebot anfragen
-          {craneTypeName && ` — ${craneTypeName}`}
+          {craneTypeName && `, ${craneTypeName}`}
           {cityName && ` in ${cityName}`}
         </CardTitle>
       </CardHeader>
@@ -146,7 +146,7 @@ export function LeadForm({
         {companies.length > 0 && (
           <div className="mb-6">
             <Label className="text-sm font-medium mb-2 block">
-              Anbieter auswählen (optional — Anfrage an mehrere Firmen):
+              Anbieter auswählen (optional. Anfrage an mehrere Firmen):
             </Label>
             <div className="grid gap-2 sm:grid-cols-2">
               {companies.map((company) => (
@@ -177,14 +177,14 @@ export function LeadForm({
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Honeypot — hidden from real users, filled by bots */}
+          {/* Honeypot, hidden from real users, filled by bots */}
           <input type="text" name="website_url" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute opacity-0 h-0 w-0 overflow-hidden pointer-events-none" />
-          {/* Crane-type selector — only rendered when the page didn't pre-fill
+          {/* Crane-type selector, only rendered when the page didn't pre-fill
               the prop. Listing pages and /anbieter/[slug] pass craneTypeId; the
               /kran-mieten-preise backup "ohne Kalkulator" path doesn't, and
               without this field its submissions land as crane_type_id=NULL
               (the Kohlhaas pattern from 2026-05-20). Native <select> is enough
-              for 8 options — no custom dropdown needed. */}
+              for 8 options, no custom dropdown needed. */}
           {!craneTypeId && (
             <div>
               <Label htmlFor="lf-crane-type">Welcher Krantyp? *</Label>
@@ -201,7 +201,7 @@ export function LeadForm({
                 ))}
               </select>
               <p className="mt-1 text-[11px] text-gray-500">
-                Nicht sicher? Fragen Sie unseren Kran-Berater (Chat unten rechts) — wir finden in 60 Sek. den passenden Krantyp.
+                Nicht sicher? Fragen Sie unseren Kran-Berater (Chat unten rechts), wir finden in 60 Sek. den passenden Krantyp.
               </p>
             </div>
           )}

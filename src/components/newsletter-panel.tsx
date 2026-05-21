@@ -8,7 +8,7 @@ export function NewsletterPanel() {
           Aktuelle Kran-Preise &amp; Tipps per E-Mail
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Erhalten Sie monatlich aktuelle Marktpreise, Spar-Tipps und neue Anbieter in Ihrer Region — kostenlos und jederzeit abbestellbar.
+          Erhalten Sie monatlich aktuelle Marktpreise, Spar-Tipps und neue Anbieter in Ihrer Region, kostenlos und jederzeit abbestellbar.
         </p>
         <NewsletterSignup />
         <p className="text-[11px] text-gray-400 mt-3">

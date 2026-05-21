@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server'
 export function proxy(request: NextRequest) {
   const response = NextResponse.next()
 
-  // Prevent clickjacking — no iframe embedding
+  // Prevent clickjacking, no iframe embedding
   response.headers.set('X-Frame-Options', 'DENY')
 
   // Enforce HTTPS for 1 year, include subdomains

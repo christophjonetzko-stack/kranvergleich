@@ -6,11 +6,11 @@ import { RevealablePhone } from '@/components/track'
 interface CompanyCardProps {
   company: CompanyWithCranes
   onRequestQuote?: (companyId: string) => void
-  /** Fallback reference price label when company has no own price, e.g. "ab 250€/Tag — Richtwert" */
+  /** Fallback reference price label when company has no own price, e.g. "ab 250€/Tag. Richtwert" */
   referencePrice?: string | null
   /** Distance in km from user's PLZ (if provided) */
   distanceKm?: number
-  /** City slug for firm_events context — attached to phone_click on this card. */
+  /** City slug for firm_events context, attached to phone_click on this card. */
   cityContext?: string | null
   /** Crane-type slug for firm_events context. */
   typeContext?: string | null
@@ -51,9 +51,9 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
     .map((c) => getCraneTypeNameById(c.crane_type_id))
     .filter((name, i, arr) => arr.indexOf(name) === i)
 
-  // Firms without an email cannot receive Resend deliveries — fall back to phone CTA
+  // Firms without an email cannot receive Resend deliveries, fall back to phone CTA
   // so the user doesn't submit a form that goes nowhere. `???` is a manual-enrichment
-  // placeholder meaning "skipped, no email found" — treat it as if NULL.
+  // placeholder meaning "skipped, no email found", treat it as if NULL.
   const canInquire = !!company.email && company.email.trim() !== '???'
 
   return (

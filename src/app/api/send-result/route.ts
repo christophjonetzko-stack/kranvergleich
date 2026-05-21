@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
 import { TAX_LABEL, BRAND_NAME, BASE_URL, DOMAIN } from '@/lib/country'
 
-// Lazy init — avoid instantiating at module load so builds work without env.
+// Lazy init, avoid instantiating at module load so builds work without env.
 let resendInstance: Resend | null = null
 function getResend(): Resend {
   if (!resendInstance) {
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     await getResend().emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: `Ihr Kran-Kostenvergleich: ${craneName} — ${priceEstimate}`,
+      subject: `Ihr Kran-Kostenvergleich: ${craneName}, ${priceEstimate}`,
       html: `
         <div style="font-family:system-ui;max-width:520px;">
           <h2 style="font-size:18px;color:#1a1a1a;">Ihr Kran-Kostenvergleich</h2>
@@ -76,12 +76,12 @@ export async function POST(request: Request) {
           </p>
 
           <a href="${BASE_URL}/${slug}" style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:500;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0;">
-            ${craneName}-Anbieter vergleichen →
+            ${craneName}-Anbieter vergleichen 
           </a>
 
           <p style="font-size:11px;color:#9ca3af;margin-top:24px;">
             Preise sind unverbindliche Richtwerte (netto zzgl. ${TAX_LABEL}), basierend auf Marktanalyse 2026.<br>
-            ${BRAND_NAME} — <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a>
+            ${BRAND_NAME}, <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a>
           </p>
 
           <p style="font-size:11px;color:#9ca3af;margin-top:12px;">

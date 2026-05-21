@@ -4,12 +4,12 @@ import type { City } from '@/lib/types'
 import { COUNTRY } from '@/lib/country'
 import { BRANDS } from '@/data/brands'
 
-// Regenerate at most daily — prevents per-request rebuilds from churning
+// Regenerate at most daily, prevents per-request rebuilds from churning
 // lastmod on the dynamic URLs below.
 export const revalidate = 86400
 
 // Real content-change dates per path. Bump these when page content changes
-// meaningfully — NOT automatically on every deploy. A fresh `new Date()` for
+// meaningfully. NOT automatically on every deploy. A fresh `new Date()` for
 // every URL on every build is a fake signal that Google learns to ignore,
 // which deprioritises the whole sitemap.
 const TYPE_CONTENT_DATES: Record<string, string> = {
@@ -27,7 +27,7 @@ const DATE_HOME = '2026-04-19'          // tile layout + icon redesign
 const DATE_KRANVERLEIH = '2026-04-18'   // seoCities expansion
 const DATE_KOSTENRECHNER = '2026-03-12'
 const DATE_PRICES = '2026-05-15' // +hero CTA above fold + TOC collapsible on mobile
-const DATE_NAEHE = '2026-05-21' // initial publish — geo-intent landing for "kran mieten in der nähe"
+const DATE_NAEHE = '2026-05-21' // initial publish, geo-intent landing for "kran mieten in der nähe"
 const DATE_RATGEBER = '2026-03-01'
 const DATE_LEGAL = '2026-01-01'
 
@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = COUNTRY === 'AT' ? 'https://kranvergleich.at' : 'https://kranvergleich.de'
 
   // NOTE: /anbieter/* (674 firm profiles) intentionally excluded from the sitemap.
-  // Sampled pages were ~250 words each — thin by Google's quality standards.
+  // Sampled pages were ~250 words each, thin by Google's quality standards.
   // On a new domain those 674 URLs dragged the site-wide quality signal and
   // blocked crawl of the 400 healthy pages, showing up as "Gefunden – zurzeit
   // nicht indexiert" in GSC. Re-add after each profile has 500+ words of
@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const craneTypes = await getCraneTypes()
 
   // Per-type indexable cities. Was a single any-type call with min=3, which
-  // listed every (type × city) URL whenever the city had ≥3 firms total —
+  // listed every (type × city) URL whenever the city had ≥3 firms total 
   // even when zero of those firms offered the requested crane type. The
   // page itself then served `noindex` (page.tsx checks companies.length<3),
   // so Google logged the URL as "Excluded by 'noindex' tag" and lost trust
@@ -94,7 +94,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: a.priority,
   }))
 
-  // Crane-type landing pages — each gets its own content-change date.
+  // Crane-type landing pages, each gets its own content-change date.
   const craneTypePages: MetadataRoute.Sitemap = craneTypes.map((ct) => ({
     url: `${baseUrl}/${ct.slug}`,
     lastModified: toDate(TYPE_CONTENT_DATES[ct.slug] ?? DATE_CITY_REFRESH),
@@ -103,7 +103,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Programmatic city×type pages. Per-type content date wins over the shared
-  // city-data refresh — this spreads the 376 URLs across ~8 distinct dates
+  // city-data refresh, this spreads the 376 URLs across ~8 distinct dates
   // instead of one mass-refresh signal.
   const cityPages: MetadataRoute.Sitemap = craneTypes.flatMap((ct) => {
     const typeDate = TYPE_CONTENT_DATES[ct.slug] ?? DATE_CITY_REFRESH
@@ -117,7 +117,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   })
 
-  // Brand pages — /marke/<brand>. Only DE catalog has the brand data
+  // Brand pages, /marke/<brand>. Only DE catalog has the brand data
   // populated (LLM extraction ran on DE description_enriched), so don't
   // emit AT brand URLs that would be empty.
   const DATE_BRAND_PAGES = '2026-05-20'  // first ship

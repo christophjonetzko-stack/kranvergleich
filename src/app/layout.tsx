@@ -30,14 +30,14 @@ const jbMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: `${BRAND_NAME} — Kranvermietung in ${COUNTRY_LABEL} vergleichen`,
+    default: `${BRAND_NAME}. Kranvermietung in ${COUNTRY_LABEL} vergleichen`,
     template: `%s | ${BRAND_NAME}`,
   },
   description:
-    `Kran mieten oder leihen in ganz ${COUNTRY_LABEL}. Kranmiete Preise vergleichen: Minikrane, Autokrane, Dachdeckerkrane, Mobilkrane — Bewertungen und kostenlose Angebote. Mietkran Preisvergleich.`,
+    `Kran mieten oder leihen in ganz ${COUNTRY_LABEL}. Kranmiete Preise vergleichen: Minikrane, Autokrane, Dachdeckerkrane, Mobilkrane. Bewertungen und kostenlose Angebote. Mietkran Preisvergleich.`,
   metadataBase: new URL(BASE_URL),
   // Default hreflang for the home page; static pages override with their own path
-  // via `alternatesFor('/path')`. Dynamic city pages do not set languages — they
+  // via `alternatesFor('/path')`. Dynamic city pages do not set languages, they
   // have no cross-country equivalent.
   alternates: alternatesFor('/'),
   openGraph: {

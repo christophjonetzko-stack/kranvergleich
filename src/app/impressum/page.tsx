@@ -27,11 +27,11 @@ const STATUTE = COUNTRY === 'AT'
 
 export const metadata: Metadata = {
   title: 'Impressum',
-  description: `Impressum von ${BRAND_NAME} — Angaben gemäß ${STATUTE.base}.`,
+  description: `Impressum von ${BRAND_NAME}. Angaben gemäß ${STATUTE.base}.`,
   alternates: alternatesFor('/impressum'),
   openGraph: {
     title: 'Impressum',
-    description: `Impressum von ${BRAND_NAME} — Angaben gemäß ${STATUTE.base}.`,
+    description: `Impressum von ${BRAND_NAME}. Angaben gemäß ${STATUTE.base}.`,
     type: 'website',
     url: '/impressum',
       images: [OG_IMAGE],

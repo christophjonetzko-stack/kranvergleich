@@ -10,10 +10,10 @@ import { trackPageEvent } from '@/lib/track'
  *     once per page-load; finer-grained funnel than a single 75% flag).
  *   - `click_city_link` / `click_type_link` on anchors marked with
  *     `data-track-city` / `data-track-type` attributes (via `pointerdown`
- *     capture — see the listener body for the navigation-timing rationale).
+ *     capture, see the listener body for the navigation-timing rationale).
  *
  * Uses document-level delegation so a single listener covers all links on the
- * page — server-rendered anchors get tracked without needing to be refactored
+ * page, server-rendered anchors get tracked without needing to be refactored
  * into client components. Safe to mount once per page.
  */
 export function PageEventTracker() {
@@ -52,18 +52,18 @@ export function PageEventTracker() {
     // --- Pointerdown delegation for city / type links ---
     // We listen on `pointerdown` (capture), not `click`. Reason: with `click`,
     // the browser fires our handler in the same task that React runs Link's
-    // onClick → router.push() → starts unmounting the page. Even though
+    // onClick  router.push()  starts unmounting the page. Even though
     // sendBeacon is supposed to survive navigation, in practice Chrome was
-    // dropping the beacon on production (verified 2026-04-24 — capture-phase
+    // dropping the beacon on production (verified 2026-04-24, capture-phase
     // click was already in place but only server-side curl tests landed,
     // zero rows from real users). `pointerdown` fires earlier in the input
-    // pipeline (pointerdown → pointerup → click), giving the beacon a clean
+    // pipeline (pointerdown  pointerup  click), giving the beacon a clean
     // tick to enqueue before any navigation starts. Trade-off: we count
     // intent (press) instead of completed clicks, which slightly over-counts
     // but is fine for relative city-popularity ranking.
     const onPointerDown = (e: PointerEvent) => {
       // Primary (left) and auxiliary (middle = open-in-new-tab) only.
-      // Skip right-click and other buttons — those are noise, not navigation.
+      // Skip right-click and other buttons, those are noise, not navigation.
       if (e.button !== 0 && e.button !== 1) return
 
       const target = e.target

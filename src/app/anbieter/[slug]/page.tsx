@@ -47,7 +47,7 @@ export async function generateMetadata({
   const company = await getCompanyBySlug(slug)
   if (!company) return {}
 
-  const title = `${company.name} — Kranvermietung ${company.city}`
+  const title = `${company.name}. Kranvermietung ${company.city}`
   const description = `${company.name} in ${company.city}: Kranvermietung mit ${company.google_rating ? `${company.google_rating} Sternen` : 'Top-Bewertungen'}. Angebot anfragen auf ${BRAND_NAME}.`
   const canonical = `/anbieter/${slug}`
 
@@ -100,7 +100,7 @@ export default async function CompanyPage({
     : null
 
   // Form is usable only when the company has a real email (delivery target for Resend).
-  // `???` is a legacy placeholder used during manual enrichment to mark "skipped" —
+  // `???` is a legacy placeholder used during manual enrichment to mark "skipped" 
   // treat it the same as NULL so we never submit a form that can't be delivered.
   const canInquire = !!company.email && company.email.trim() !== '???'
 
@@ -231,7 +231,7 @@ export default async function CompanyPage({
               </div>
             )}
 
-            {/* CTA buttons — primary: Angebot anfragen (revenue) OR Anrufen (no-email firms),
+            {/* CTA buttons, primary: Angebot anfragen (revenue) OR Anrufen (no-email firms),
                 secondary: Website, tertiary: Anrufen (when form is primary) */}
             <div className="flex flex-wrap gap-2 mt-4">
               {canInquire ? (
@@ -314,7 +314,7 @@ export default async function CompanyPage({
           </section>
         )}
 
-        {/* Pricing — own prices or reference prices from crane types */}
+        {/* Pricing, own prices or reference prices from crane types */}
         {company.price_day_from ? (
           <section className="border border-gray-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Preise</h2>
@@ -362,7 +362,7 @@ export default async function CompanyPage({
           <section className="border border-gray-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Orientierungspreise</h2>
             <p className="text-[13px] text-gray-500 mb-3">
-              Geschätzte Tagespreise für die Krantypen dieser Firma — basierend auf dem Marktdurchschnitt 2026:
+              Geschätzte Tagespreise für die Krantypen dieser Firma, basierend auf dem Marktdurchschnitt 2026:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {fleetCraneTypes.map((ct) => (
@@ -375,7 +375,7 @@ export default async function CompanyPage({
               ))}
             </div>
             <p className="text-[11px] text-amber-600 mt-2">
-              ⓘ Richtwerte (netto) — keine Preise des Anbieters. Verbindliche Preise direkt beim Anbieter anfragen.
+              ⓘ Richtwerte (netto), keine Preise des Anbieters. Verbindliche Preise direkt beim Anbieter anfragen.
             </p>
           </section>
         )}
@@ -547,12 +547,12 @@ export default async function CompanyPage({
               rel="noopener noreferrer"
               className="inline-flex items-center mt-3 text-[13px] text-blue-600 hover:underline"
             >
-              Route planen &rarr;
+              Route planen 
             </TrackedLink>
           </section>
         )}
 
-        {/* Inquiry form — only rendered when the firm has an email (Resend delivery target).
+        {/* Inquiry form, only rendered when the firm has an email (Resend delivery target).
             Firms without email: the header CTA already points to tel: instead, so no fallback here. */}
         {canInquire && (
           <section id="anfrage" className="scroll-mt-20">
@@ -564,7 +564,7 @@ export default async function CompanyPage({
           </section>
         )}
 
-        {/* Opt-out / data correction — DSGVO Art. 17 */}
+        {/* Opt-out / data correction. DSGVO Art. 17 */}
         <div className="border border-gray-100 rounded-lg p-4 mt-4">
           <p className="text-[13px] text-gray-500">
             Sind Ihre Daten nicht korrekt oder möchten Sie Ihren Eintrag ändern oder entfernen?

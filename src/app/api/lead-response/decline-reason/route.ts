@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
     .eq('company_id', supplierId)
   if (updateError) console.error('lead_companies refine update failed:', updateError)
 
-  // 303 See Other — correct POST→GET redirect that prevents re-submission
+  // 303 See Other, correct POSTGET redirect that prevents re-submission
   // on browser back-button.
   const thanksUrl = new URL('/lead-response/thanks', BASE_URL)
   thanksUrl.searchParams.set('done', '1')

@@ -35,14 +35,14 @@ async function selectAllPaginated<T>(
 /**
  * Weighted-average AggregateRating from a set of companies' Google ratings.
  *
- * Used by the Product JSON-LD on /[crane-type] and /[crane-type]/[city] —
+ * Used by the Product JSON-LD on /[crane-type] and /[crane-type]/[city] 
  * Google Search Console flagged "missing aggregateRating" on those pages.
  * We aggregate from real Google Maps ratings of the firms offering this
  * crane type (data is authentic, BGH allows aggregated reviews when source
- * is genuine — though we don't surface attribution in the UI, the schema
+ * is genuine, though we don't surface attribution in the UI, the schema
  * is a machine-readable hint for SERP star snippets, not a user claim).
  *
- * Returns null when fewer than 3 firms have a rating — too small a sample
+ * Returns null when fewer than 3 firms have a rating, too small a sample
  * lets a single 5★ review swing the weighted average and Google may flag
  * the schema as unreliable. Caller must omit AggregateRating from the
  * JSON-LD when this returns null.
@@ -70,21 +70,21 @@ export async function getSiteStats(): Promise<{
   anbieterCount: number
   staedteCount: number
   // null when the rated-firm sample is empty or rounds to 0 reviews after the
-  // floor-to-100 — callers must not render a star rating without a real count
+  // floor-to-100, callers must not render a star rating without a real count
   // behind it. Previously this defaulted to a hard-coded 4.2 which leaked as a
   // placeholder ("★ 4,2 (0)") whenever data hadn't been enriched yet.
   avgRating: number | null
   totalReviews: number
 }> {
   // Country scoping: companies are filtered through company_regions -> cities.country
-  // (handles cross-country firms like Boels — Sitz DE, branches in AT). Cities count
+  // (handles cross-country firms like Boels. Sitz DE, branches in AT). Cities count
   // uses cities.country directly. Empty country (no AT data yet) short-circuits the
   // company queries to avoid generating an invalid empty `IN ()` against PostgREST.
   const inCountryIds = await getCompanyIdsInCountry()
   const noCompanies = inCountryIds.size === 0
 
   // After the 2026-05-06 upstream pagination fix, inCountryIds grew from
-  // a truncated 536 to the real ~800 — large enough that .in('id', list)
+  // a truncated 536 to the real ~800, large enough that .in('id', list)
   // pushed the request URL past PostgREST's length limit and the count
   // query started returning null, falling back to the hard-coded 700.
   // Fetch the full active+relevant company set without an IN-list (small,
@@ -121,16 +121,16 @@ export async function getSiteStats(): Promise<{
     totalReviews = ratingData.reduce((acc, r) => acc + (r.google_reviews_count ?? 0), 0)
   }
 
-  // Floor reviews to the nearest 100 — round numbers read as curated, not
+  // Floor reviews to the nearest 100, round numbers read as curated, not
   // precise-but-stale. Pair the rating to the floored count: if the floor
   // wipes the count to 0, drop the rating too so the trust bar can't show
-  // "★ 4,2 (0)" — the two fields are surfaced together or not at all.
+  // "★ 4,2 (0)", the two fields are surfaced together or not at all.
   const flooredReviews = Math.floor(totalReviews / 100) * 100
 
   return {
     // firmCount is now a JS-side intersection (always a number, never null),
     // so the old `?? 700` fallback only matters when the entire country has
-    // zero firms — which would be a launch-state condition, not normal ops.
+    // zero firms, which would be a launch-state condition, not normal ops.
     // The 2026-05-06 pagination saga left this number stuck at the fallback
     // because .in('id', 800-uuid-list) pushed the request URL past PostgREST's
     // limit and silently nulled out the count.
@@ -183,7 +183,7 @@ export async function getCities(): Promise<City[]> {
 }
 
 export async function getCityBySlug(slug: string): Promise<City | null> {
-  // country filter is defensive — slugs are globally unique, but a DE-side admin
+  // country filter is defensive, slugs are globally unique, but a DE-side admin
   // accidentally adding an AT-named city without country='AT' would otherwise
   // leak across deployments.
   const { data, error } = await supabase
@@ -292,21 +292,21 @@ export async function getCompaniesForCraneAndCity(
 
 /**
  * Get cities that have >= minCompanies for a given crane type.
- * Used for generateStaticParams — only generate pages for cities with enough data.
+ * Used for generateStaticParams, only generate pages for cities with enough data.
  */
 export async function getCitiesWithMinCompanies(
   craneTypeId: string,
   minCompanies: number = 3
 ): Promise<City[]> {
-  // Count only active+relevant companies — matches page-level noindex threshold,
+  // Count only active+relevant companies, matches page-level noindex threshold,
   // so sitemap (which uses this) does not advertise URLs that will be noindexed.
   // When craneTypeId is non-empty, only firms that actually offer that crane
   // type are counted toward the threshold. Without this filter the sitemap
   // listed e.g. /minikran-mieten/wien (0 AT Minikran firms) which then served
-  // a noindex tag — Google sees that as "Excluded by noindex" and erodes
+  // a noindex tag. Google sees that as "Excluded by noindex" and erodes
   // trust in the sitemap. The arg used to be `_craneTypeId` (TODO leftover).
   const [allRegions, activeRes] = await Promise.all([
-    // company_regions has 2554 rows as of 2026-05-06 — must paginate.
+    // company_regions has 2554 rows as of 2026-05-06, must paginate.
     selectAllPaginated<{ company_id: string; city_id: string }>(() =>
       supabase.from('company_regions').select('company_id, city_id'),
     ),
@@ -356,11 +356,11 @@ export async function getCitiesWithMinCompanies(
  *
  * When `nearPlz` is provided, sort by geodistance from that PLZ first, then
  * take the 50 nearest (instead of top-rated). Used when user lands here via
- * the homepage SearchBox with a PLZ — nearest firms are the relevant ones.
+ * the homepage SearchBox with a PLZ, nearest firms are the relevant ones.
  */
 /** Distinct active-company count per crane_type, keyed by crane_type_id.
  * Used to fill the "Anbieter" column in the home-page crane-type table.
- * One batch query — cheaper than N calls to getCompaniesForCraneType just
+ * One batch query, cheaper than N calls to getCompaniesForCraneType just
  * to read .length. */
 export async function getCompanyCountsPerCraneType(): Promise<Map<string, number>> {
   const inCountryIds = await getCompanyIdsInCountry()
@@ -387,7 +387,7 @@ export async function getCompanyCountsPerCraneType(): Promise<Map<string, number
   console.log(`[getCompanyCountsPerCraneType] paginated ${data.length} rows of company_cranes`)
 
   // inCountryIds covers DE/AT region membership but NOT companies.is_active /
-  // is_relevant — those flags live on the companies row, not company_regions.
+  // is_relevant, those flags live on the companies row, not company_regions.
   // Intersect now so the home-page Anbieter count excludes deactivated firms
   // (614e560 dropped the SQL-level filter to dodge the JOIN range bug, so
   // active+relevant filtering must happen here in JS instead).
@@ -453,7 +453,7 @@ export async function getCompaniesForCraneType(
           .eq('is_relevant', true)
         if (data) all.push(...data)
       }
-      // Build PLZ→coords map for fallback when company has no lat/lng (~39 firms).
+      // Build PLZcoords map for fallback when company has no lat/lng (~39 firms).
       // First match on 5-digit zip; if that fails use the leading 2 digits.
       const plzMap = new Map<string, { la: number; ln: number }>()
       const plz2Map = new Map<string, { la: number; ln: number }>()
@@ -502,7 +502,7 @@ export async function getCompaniesForCraneType(
  * Get all active+relevant companies that offer the given crane brand
  * (matches against companies.brands_offered TEXT[] via array containment).
  * Used by /marke/<brand> brand listing pages. Brand name must match the
- * canonical spelling stored in the array — see src/data/brands.ts.
+ * canonical spelling stored in the array, see src/data/brands.ts.
  */
 export async function getCompaniesByBrand(brand: string): Promise<CompanyWithCranes[]> {
   const { data, error } = await supabase
@@ -519,7 +519,7 @@ export async function getCompaniesByBrand(brand: string): Promise<CompanyWithCra
   return data ?? []
 }
 
-/** Nearest-firm match record — company plus its distance from the reference PLZ. */
+/** Nearest-firm match record, company plus its distance from the reference PLZ. */
 export type FirmMatch = {
   company: CompanyWithCranes
   distance_km: number
@@ -528,22 +528,22 @@ export type FirmMatch = {
 /**
  * Auto-select up to `limit` nearest active companies offering `craneTypeId`,
  * measured from a 5-digit PLZ. Expands the search radius when the initial 50 km
- * circle has fewer than 3 matches (50 → 100 → unlimited). Used by the cost
+ * circle has fewer than 3 matches (50  100  unlimited). Used by the cost
  * calculator Sammelanfrage to pre-populate `company_ids` without forcing the
- * user to pick firms from a list — the visitor just wants offers fast.
+ * user to pick firms from a list, the visitor just wants offers fast.
  *
  * Returns null when the PLZ is not a valid 5-digit code or cannot be geocoded
  * from `german-cities.json`.
  */
 type CityRow = { p: string; n: string; s: string; la: number; ln: number }
 
-/** Cache the cities JSON module — it's ~1 MB and loaded once per process.
+/** Cache the cities JSON module, it's ~1 MB and loaded once per process.
  *  Named `getCitiesJson` to avoid clashing with the exported `getCities()`
  *  above which returns the Supabase `cities` table rows.
  *
  *  The array is pre-sorted so cities with more PLZ entries come first. That
  *  approximates "bigger city" and stops ambiguous city-name lookups from
- *  resolving to the wrong place — e.g. "Frankfurt" resolves to Frankfurt am
+ *  resolving to the wrong place, e.g. "Frankfurt" resolves to Frankfurt am
  *  Main (many PLZ) instead of Frankfurt (Oder) (few PLZ). */
 let _citiesJsonCache: CityRow[] | null = null
 async function getCitiesJson(): Promise<CityRow[]> {
@@ -559,7 +559,7 @@ async function getCitiesJson(): Promise<CityRow[]> {
 
 /**
  * Normalise a German place name so "München", "Muenchen" and "Munchen" all
- * collide. Returns two variants so we can try both (ä→ae transliteration
+ * collide. Returns two variants so we can try both (äae transliteration
  * covers correct spelling, pure diacritic strip covers sloppy spelling).
  */
 function normalizeCityName(s: string): { withAe: string; diacriticStripped: string } {
@@ -577,9 +577,9 @@ function normalizeCityName(s: string): { withAe: string; diacriticStripped: stri
 }
 
 /** Core: given reference coordinates, rank active firms offering craneTypeId
- *  by distance and expand radius (50 → 100 → 150 km hard cap) until ≥3 matches.
+ *  by distance and expand radius (50  100  150 km hard cap) until ≥3 matches.
  *  Beyond 150 km we return 0 matches so /api/leads fires the 🚨 LEAD OHNE
- *  ANBIETER owner alert — better than silent-forwarding a Berlin lead to a
+ *  ANBIETER owner alert, better than silent-forwarding a Berlin lead to a
  *  firm in Aachen. The pre-2026-05-20 logic fell through to unlimited and
  *  could route to firms 300-600 km away (a Schwerlast-Raupenkran on the far
  *  end of the country); the cap forces manual review for those rare cases. */
@@ -607,7 +607,7 @@ async function _computeFirmMatchesFromCoords(
     // Lead-routing query: drop email-less firms so Kostenrechner auto-select
     // never picks one (Resend has no delivery target, owner-alert noise, no
     // customer value). Catalog/SEO queries (city listings, sitemap, schema
-    // offerCount) keep showing them — frontend CTA on CompanyCard already
+    // offerCount) keep showing them, frontend CTA on CompanyCard already
     // swaps "Angebot anfragen" for the phone CTA. Faza 2 cold-letter pipeline
     // re-activates a firm by populating `email`, no flag needed.
     const { data } = await supabase
@@ -621,7 +621,7 @@ async function _computeFirmMatchesFromCoords(
     if (data) all.push(...data)
   }
 
-  // PLZ→coords fallback for the ~39 firms without lat/lng.
+  // PLZcoords fallback for the ~39 firms without lat/lng.
   const plzMap = new Map<string, { la: number; ln: number }>()
   const plz2Map = new Map<string, { la: number; ln: number }>()
   for (const c of cities) {
@@ -664,7 +664,7 @@ export async function getCompaniesForCraneTypeNearPlz(
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number } | null> {
   // PLZ-based search uses german-cities.json (5-digit DE codes only). Until the
   // AT counterpart (austrian-cities.json with 4-digit codes) ships, the function
-  // is DE-only — AT users hitting it get null and the UI falls back to the city-list path.
+  // is DE-only. AT users hitting it get null and the UI falls back to the city-list path.
   if (COUNTRY !== 'DE') return null
   if (!/^\d{5}$/.test(plz)) return null
   const cities = await getCitiesJson()
@@ -680,7 +680,7 @@ export async function getCompaniesForCraneTypeNearPlz(
  * often know the city but not the exact zip code.
  *
  * Returns `resolved_label` so the UI can confirm what we actually matched
- * (e.g. "10115 Berlin" or "Berlin") — avoids showing the raw user input
+ * (e.g. "10115 Berlin" or "Berlin"), avoids showing the raw user input
  * unchanged, which would be misleading when we did fuzzy matching.
  */
 export async function getCompaniesForCraneTypeNearLocation(
@@ -688,7 +688,7 @@ export async function getCompaniesForCraneTypeNearLocation(
   location: string,
   opts?: { limit?: number },
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number; resolved_label: string } | null> {
-  // Same DE-only gate as getCompaniesForCraneTypeNearPlz — uses german-cities.json
+  // Same DE-only gate as getCompaniesForCraneTypeNearPlz, uses german-cities.json
   // for PLZ + city-name lookup. AT counterpart pending.
   if (COUNTRY !== 'DE') return null
   const trimmed = location.trim()
@@ -701,7 +701,7 @@ export async function getCompaniesForCraneTypeNearLocation(
   // pure "31275" and the very common "31275 Lehrte" / "31275 Lehrte/Ahlten"
   // form (a German address habit; the placeholder "z.B. 10115 oder Berlin"
   // doesn't forbid it). When a PLZ prefix matches, the remainder is
-  // informational — we trust the PLZ for geocoding.
+  // informational, we trust the PLZ for geocoding.
   const plzPrefix = trimmed.match(/^(\d{5})\b/)
   if (plzPrefix) {
     const plz = plzPrefix[1]
@@ -713,7 +713,7 @@ export async function getCompaniesForCraneTypeNearLocation(
 
   // Path 2: city name. Try the input as-is, then fall back to the first
   // segment when the user wrote "Stadt/Ortsteil" or "Stadt, Ortsteil"
-  // (e.g. "Lehrte/Ahlten" → "Lehrte"). For each candidate try an exact
+  // (e.g. "Lehrte/Ahlten"  "Lehrte"). For each candidate try an exact
   // umlaut-transliterated match, then a diacritic-stripped match, then a
   // startsWith match.
   const head = trimmed.split(/[/,]/)[0].trim()
@@ -741,7 +741,7 @@ export async function getCompaniesForCraneTypeNearLocation(
 
 /**
  * Get company count per city for a list of cities.
- * Returns a map of cityId → count.
+ * Returns a map of cityId  count.
  */
 export async function getCompanyCountsPerCity(
   cityIds: string[]
@@ -801,7 +801,7 @@ export async function submitLead(formData: {
   const { company_ids, ...leadData } = formData
   const sb = getServiceSupabase()
 
-  // Insert lead — stamp country from build-time env so the same DB serves both
+  // Insert lead, stamp country from build-time env so the same DB serves both
   // kranvergleich.de (country='DE') and kranvergleich.at (country='AT'); admin
   // dashboards and AT-routing logic split the pipeline by this column.
   const { data: lead, error: leadError } = await sb

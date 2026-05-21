@@ -13,11 +13,11 @@ const SUPERVISORY_NOTE = COUNTRY === 'AT'
 
 export const metadata: Metadata = {
   title: 'Datenschutzerklärung',
-  description: `Datenschutzerklärung von ${BRAND_NAME} — Informationen zur Verarbeitung personenbezogener Daten.`,
+  description: `Datenschutzerklärung von ${BRAND_NAME}. Informationen zur Verarbeitung personenbezogener Daten.`,
   alternates: alternatesFor('/datenschutz'),
   openGraph: {
     title: 'Datenschutzerklärung',
-    description: `Datenschutzerklärung von ${BRAND_NAME} — Informationen zur Verarbeitung personenbezogener Daten.`,
+    description: `Datenschutzerklärung von ${BRAND_NAME}. Informationen zur Verarbeitung personenbezogener Daten.`,
     type: 'website',
     url: '/datenschutz',
       images: [OG_IMAGE],
@@ -132,8 +132,8 @@ export default function DatenschutzPage() {
           <p>
             Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis Sie uns zur
             Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die
-            Datenspeicherung entfällt. Zwingende gesetzliche Bestimmungen — insbesondere
-            Aufbewahrungsfristen — bleiben unberührt.
+            Datenspeicherung entfällt. Zwingende gesetzliche Bestimmungen, insbesondere
+            Aufbewahrungsfristen, bleiben unberührt.
           </p>
 
           <p><strong>Folgende Daten werden im Kontaktformular erfasst:</strong></p>

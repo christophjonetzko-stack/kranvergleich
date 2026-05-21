@@ -11,7 +11,7 @@ import Link from 'next/link'
  * switch flows.
  *
  * Why: the calculator's deterministic Q&A only asks about weight, height
- * and duration — it can't tell that "13 Glasscheiben durch 3m Zufahrt
+ * and duration, it can't tell that "13 Glasscheiben durch 3m Zufahrt
  * aufs Dach" is really a Spinnenkran (= specialized Minikran) job rather
  * than the Mobilkran the rules pick from those numbers. Free text +
  * Haiku catches that, banner gives the user a one-click out before they
@@ -36,7 +36,7 @@ export function SubtypeCheck({
   heightMeters?: number | null
   projectDetails: string
   /** When set, "Mit X weitermachen" CTA links to /<slug>-mieten?plz=… or
-   *  /<slug>-mieten/<city> — same shape as resolveSearchTarget. */
+   *  /<slug>-mieten/<city>, same shape as resolveSearchTarget. */
   cityForRedirect?: string | null
 }) {
   const [hint, setHint] = useState<{
@@ -93,7 +93,7 @@ export function SubtypeCheck({
           message: data.message,
         })
       } catch {
-        // Silent — non-blocking addon, never bother the user with errors.
+        // Silent, non-blocking addon, never bother the user with errors.
       }
     }, 1500)
 
@@ -105,7 +105,7 @@ export function SubtypeCheck({
   if (!hint || dismissed) return null
 
   // Build the redirect URL for switch_type CTAs. Same shape as the home
-  // SearchBox uses (lib/search.ts) — frontend-side equivalent kept simple
+  // SearchBox uses (lib/search.ts), frontend-side equivalent kept simple
   // here because we only need PLZ-or-city + slug.
   let switchHref: string | null = null
   if (hint.kind === 'switch_type' && hint.suggestedSlug) {
@@ -146,7 +146,7 @@ export function SubtypeCheck({
               href={switchHref}
               className="inline-block mt-1.5 text-[12px] font-medium text-amber-900 underline-offset-2 underline hover:no-underline"
             >
-              Mit {hint.suggestedSlug.charAt(0).toUpperCase() + hint.suggestedSlug.slice(1)} weitermachen →
+              Mit {hint.suggestedSlug.charAt(0).toUpperCase() + hint.suggestedSlug.slice(1)} weitermachen 
             </Link>
           )}
         </div>

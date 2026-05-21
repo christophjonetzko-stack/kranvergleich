@@ -35,12 +35,12 @@ const PRICE_TABLE_ORDER = [
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kostenrechner — Wie viel kostet ein Kran für mein Projekt?',
+  title: 'Kostenrechner. Wie viel kostet ein Kran für mein Projekt?',
   description:
-    'Kran-Kostenrechner: In 4 Schritten erfahren Sie, welchen Kran Sie brauchen und was er kostet. Minikran, Autokran, Baukran — unverbindliche Preisschätzung mit Anbietervergleich.',
+    'Kran-Kostenrechner: In 4 Schritten erfahren Sie, welchen Kran Sie brauchen und was er kostet. Minikran, Autokran, Baukran, unverbindliche Preisschätzung mit Anbietervergleich.',
   alternates: alternatesFor('/kostenrechner'),
   openGraph: {
-    title: 'Kostenrechner — Wie viel kostet ein Kran für mein Projekt?',
+    title: 'Kostenrechner. Wie viel kostet ein Kran für mein Projekt?',
     description:
       'Kran-Kostenrechner: In 4 Schritten den passenden Kran finden und Kosten schätzen.',
     type: 'website',
@@ -91,7 +91,7 @@ export default async function KostenrechnerPage() {
         In 60 Sekunden zum richtigen Kran für Ihr Projekt
       </h1>
       <p className="text-[15px] text-gray-500 mb-6">
-        4 Fragen — basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
+        4 Fragen, basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
       </p>
 
       {/* Calculator */}
@@ -122,7 +122,7 @@ export default async function KostenrechnerPage() {
         </p>
       </div>
 
-      {/* Preis-Referenztabelle — covers the search intent for users who land
+      {/* Preis-Referenztabelle, covers the search intent for users who land
           here without using the wizard. Per Opus 4.7 audit (top-3 competitor
           edge): typical first-page results show price reference even
           alongside an interactive tool, so the page serves intent both ways. */}
@@ -131,7 +131,7 @@ export default async function KostenrechnerPage() {
         <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
           Bevor Sie den Rechner ausfüllen oder direkt nach einem Krantyp suchen, hier die
           aktuellen Mietpreise aller 8 Krantypen im Überblick. Wochen- und Monatspreise senken
-          den Tagespreis spürbar — bei einem Mobilkran beispielsweise von 600€/Tag auf rund
+          den Tagespreis spürbar, bei einem Mobilkran beispielsweise von 600€/Tag auf rund
           330€/Tag bei Monatsmiete.
         </p>
         <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -174,14 +174,14 @@ export default async function KostenrechnerPage() {
         </p>
       </section>
 
-      {/* "Was beeinflusst den Kranpreis?" — six factors with industry vocabulary
+      {/* "Was beeinflusst den Kranpreis?", six factors with industry vocabulary
           (Tragkraft, Hubhöhe, Auslegerlänge, Mietdauer, Region, An-/Abfahrt) per
-          Opus eval recommendation. Each ~70 words → ~420 words content total. */}
+          Opus eval recommendation. Each ~70 words  ~420 words content total. */}
       <section id="faktoren" className="mb-10">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Was beeinflusst den Kranpreis?</h2>
         <p className="text-[14px] text-gray-500 leading-relaxed mb-5">
           Der Tagespreis eines Krans hängt von sechs Faktoren ab, die sich zum Teil deutlich
-          auswirken. Wer die Stellschrauben kennt, kann gezielt sparen — oder umgekehrt früh
+          auswirken. Wer die Stellschrauben kennt, kann gezielt sparen, oder umgekehrt früh
           erkennen, ob ein Angebot fair kalkuliert ist.
         </p>
         <div className="space-y-3">
@@ -192,7 +192,7 @@ export default async function KostenrechnerPage() {
               Mobilkran 100t bereits 1.300–1.800€/Tag, ein Schwerlast-Mobilkran 500t über
               2.500€/Tag. Faustregel: Pro verdoppelter Tonnage steigt der Tagespreis um etwa
               60–80%. Wählen Sie immer den kleinsten Kran, der Ihre Last und Hubhöhe sicher
-              schafft — Reservetragkraft kostet bares Geld.
+              schafft. Reservetragkraft kostet bares Geld.
             </p>
           </div>
           <div className="border border-gray-200 rounded-lg p-4">
@@ -202,7 +202,7 @@ export default async function KostenrechnerPage() {
               spürbar mehr. Für eine Hubhöhe von 30 m reicht meist ein Standard-Autokran;
               ab 40 m brauchen Sie einen größeren Mobilkran oder einen Baukran. Ein 60-m-Mast
               auf einem Mobilkran kann den Tagespreis im Vergleich zur 30-m-Variante verdoppeln.
-              Hubhöhe nicht überdimensionieren — der Preis macht es spürbar.
+              Hubhöhe nicht überdimensionieren, der Preis macht es spürbar.
             </p>
           </div>
           <div className="border border-gray-200 rounded-lg p-4">
@@ -211,7 +211,7 @@ export default async function KostenrechnerPage() {
               Wochen- und Monatsmieten senken den effektiven Tagespreis um 30–50%. Ein
               Mobilkran kostet in Tagesmiete 600€, in Wochenmiete entspricht das ca. 430€/Tag,
               in Monatsmiete sogar nur ~330€/Tag. Wer ein 4-Tage-Projekt hat, fragt fast immer
-              günstiger mit Wochenpreis als mit 4 Einzeltagen — der Aufschlag für Mindestmietzeit
+              günstiger mit Wochenpreis als mit 4 Einzeltagen, der Aufschlag für Mindestmietzeit
               ist meist verhandelbar.
             </p>
           </div>
@@ -219,7 +219,7 @@ export default async function KostenrechnerPage() {
             <p className="font-medium text-gray-900 mb-1">4. Mit oder ohne Kranführer</p>
             <p className="text-[13px] text-gray-500 leading-relaxed">
               Bei Auto-, Mobil- und Raupenkran ist der Kranführer gesetzlich vorgeschrieben
-              (DGUV Vorschrift 52, Kran-Sachkundenachweis) und im Tagespreis enthalten —
+              (DGUV Vorschrift 52, Kran-Sachkundenachweis) und im Tagespreis enthalten 
               Stundenkosten Kranführer typischerweise 60–80€. Bei Mini-, Anhänger-, Dachdecker-,
               Lade- und Baukran übernehmen Sie die Bedienung selbst nach kurzer Einweisung
               durch den Vermieter. Das senkt den Mietpreis um 30–50% gegenüber bedienten
@@ -230,7 +230,7 @@ export default async function KostenrechnerPage() {
             <p className="font-medium text-gray-900 mb-1">5. Region und Anfahrt</p>
             <p className="text-[13px] text-gray-500 leading-relaxed">
               Anfahrtkosten machen bei Kurzeinsätzen einen Großteil des Endpreises aus. Ein
-              Autokran rechnet 1–4€/km für An- und Abfahrt — bei 100 km Entfernung sind das
+              Autokran rechnet 1–4€/km für An- und Abfahrt, bei 100 km Entfernung sind das
               200–800€ extra. In Ballungsräumen (Berlin, Hamburg, München, Ruhrgebiet) ist die
               Auswahl größer und die Anfahrt kürzer; in ländlichen Regionen kommen meist 50–150
               km Anfahrt ab Standort des Vermieters dazu. Bei Spezialkranen (Spinnenkran,
@@ -244,7 +244,7 @@ export default async function KostenrechnerPage() {
               Sondernutzungserlaubnis der Stadt (typischerweise 30–200€) und ggf. eine
               halbseitige Straßensperrung mit Verkehrszeichenplan (200–800€). In Innenstädten
               oder bei Hubarbeiten über öffentlichem Grund sind diese Posten Pflicht. Der
-              Vermieter erledigt die Anträge meist gegen Aufpreis (~150€ Servicegebühr) — das
+              Vermieter erledigt die Anträge meist gegen Aufpreis (~150€ Servicegebühr), das
               ist deutlich schneller als selbst zur Verkehrsbehörde zu gehen.
             </p>
           </div>

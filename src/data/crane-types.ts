@@ -27,7 +27,7 @@ export function getCraneTypeName(slug: string): string {
 }
 
 /**
- * UUID → name mapping. Populated at build time from Supabase crane_types table IDs.
+ * UUID  name mapping. Populated at build time from Supabase crane_types table IDs.
  */
 const CRANE_TYPE_ID_MAP: Record<string, string> = {
   '1a7019bd-7fd3-401a-8713-7f6be6fbd827': 'Minikran',
@@ -44,7 +44,7 @@ export function getCraneTypeNameById(id: string): string {
   return CRANE_TYPE_ID_MAP[id] ?? id
 }
 
-/** slug (e.g. 'minikran-mieten') → UUID. Reverse of the slug→name→id chain. */
+/** slug (e.g. 'minikran-mieten')  UUID. Reverse of the slugnameid chain. */
 const SLUG_TO_ID: Record<string, string> = Object.fromEntries(
   craneTypes.map((ct) => {
     const entry = Object.entries(CRANE_TYPE_ID_MAP).find(([, name]) => name === ct.name)

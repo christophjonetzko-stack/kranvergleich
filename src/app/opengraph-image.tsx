@@ -5,23 +5,23 @@ import { ImageResponse } from 'next/og'
 // emitted. Generated at build time and cached. No asset upload needed.
 //
 // Per-route override: drop another opengraph-image.tsx into a deeper segment
-// (e.g. app/ratgeber/opengraph-image.tsx) — Next picks the closest one.
+// (e.g. app/ratgeber/opengraph-image.tsx). Next picks the closest one.
 //
 // Brand strings are duplicated here (not imported from @/lib/country) because
 // next/og runs at Edge Runtime and pulling in country.ts transitively loads
-// the Supabase client — which crashes the ImageResponse pipeline ("failed to
+// the Supabase client, which crashes the ImageResponse pipeline ("failed to
 // pipe response"). Build-time env switch keeps the AT/DE split working.
 
 const COUNTRY = process.env.NEXT_PUBLIC_COUNTRY === 'AT' ? 'AT' : 'DE'
 const BRAND_NAME = COUNTRY === 'AT' ? 'KranVergleich.at' : 'KranVergleich.de'
 const COUNTRY_LABEL = COUNTRY === 'AT' ? 'Österreich' : 'Deutschland'
 
-export const alt = `${BRAND_NAME} — Kräne mieten in ${COUNTRY_LABEL} vergleichen`
+export const alt = `${BRAND_NAME}. Kräne mieten in ${COUNTRY_LABEL} vergleichen`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 // Palette matches the live site (white bg, neutral-950 headings, neutral-600
-// body, #FFD100 yellow accent — same as the strip under <Header>).
+// body, #FFD100 yellow accent, same as the strip under <Header>).
 export default async function OpengraphImage() {
   return new ImageResponse(
     (
@@ -35,7 +35,7 @@ export default async function OpengraphImage() {
           fontFamily: 'sans-serif',
         }}
       >
-        {/* Top yellow stripe — same as src/app/layout.tsx h-1 bg-[#FFD100] */}
+        {/* Top yellow stripe, same as src/app/layout.tsx h-1 bg-[#FFD100] */}
         <div style={{ display: 'flex', height: 12, width: '100%', background: '#FFD100' }} />
 
         <div
@@ -47,7 +47,7 @@ export default async function OpengraphImage() {
             padding: 72,
           }}
         >
-          {/* Brand mark — uppercase mono-ish small caps row */}
+          {/* Brand mark, uppercase mono-ish small caps row */}
           <div
             style={{
               display: 'flex',
@@ -87,11 +87,11 @@ export default async function OpengraphImage() {
                 lineHeight: 1.25,
               }}
             >
-              {`Anbieter & Preise vergleichen — kostenlose Angebote`}
+              {`Anbieter & Preise vergleichen, kostenlose Angebote`}
             </div>
           </div>
 
-          {/* Footer crane-types row — separator dot uses neutral-300 to match
+          {/* Footer crane-types row, separator dot uses neutral-300 to match
               the divider style on the home page hero (bg-neutral-300 dots). */}
           <div
             style={{

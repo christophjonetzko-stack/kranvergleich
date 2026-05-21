@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react'
 
 // Mobile-collapsed TOC. On viewports < md the TOC is closed by default with
 // a tap-to-expand summary; on md+ the content is always visible and the
-// toggle button is hidden. Added 2026-05-15 — viewport audit on
+// toggle button is hidden. Added 2026-05-15, viewport audit on
 // /kran-mieten-preise showed the static TOC was eating ~350px of mobile
 // fold above the wizard CTA. Server-rendered TOC links remain in the DOM
 // for SEO / mobile-first indexing regardless of collapsed state.

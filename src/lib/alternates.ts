@@ -1,11 +1,11 @@
 // hreflang helper for pages that exist on BOTH kranvergleich.de and kranvergleich.at.
 //
 // Use `alternatesFor(path)` in a page's metadata when the same URL path serves the
-// equivalent content on both deployments — typical for static pages (home, impressum,
+// equivalent content on both deployments, typical for static pages (home, impressum,
 // datenschutz, ratgeber/*, kran-mieten-preise, kostenrechner) and crane-type landing
 // pages (/[crane-type] without a city).
 //
-// DO NOT use it on /[crane-type]/[city] dynamic city pages — those have no
+// DO NOT use it on /[crane-type]/[city] dynamic city pages, those have no
 // equivalent across countries (Berlin has no AT counterpart, Wien has no DE one),
 // and a cross-country alternate would mislead Google into clustering unrelated pages.
 //

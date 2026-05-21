@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 // Records the pathname of the FIRST page mounted in this browser session into
 // sessionStorage so any later /api/leads submission can attribute the lead to
-// its true entry point — distinguishing a deeplink expert (lands on
+// its true entry point, distinguishing a deeplink expert (lands on
 // /raupenkran-mieten/hamburg, fills form there) from a generalist (lands on
 // "/", browses around, submits later).
 //
@@ -22,13 +22,13 @@ export function SessionEntryRecorder() {
     if (typeof window === 'undefined') return
     try {
       if (window.sessionStorage.getItem(SESSION_ENTRY_KEY)) return
-      // Pathname only — no query string, no fragment. Keeps the value below
+      // Pathname only, no query string, no fragment. Keeps the value below
       // the 120-char ceiling enforced server-side and avoids accidentally
       // leaking ?email=… style values through to the leads table.
       window.sessionStorage.setItem(SESSION_ENTRY_KEY, window.location.pathname)
     } catch {
       // sessionStorage disabled (private mode in some browsers, storage
-      // quota) — non-fatal; entry_path will be null on the lead row.
+      // quota), non-fatal; entry_path will be null on the lead row.
     }
   }, [])
   return null

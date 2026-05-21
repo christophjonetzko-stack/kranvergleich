@@ -69,7 +69,7 @@ export async function generateMetadata({
     ? titleWithCount
     : `${craneType.name} mieten ${city.name}`
   // Description: ≤155 chars. Synonyms dropped (they crowd the snippet without
-  // ranking benefit — meta-desc is not a ranking factor). Trailer compressed.
+  // ranking benefit, meta-desc is not a ranking factor). Trailer compressed.
   const description = companies.length > 0
     ? `${craneType.name} mieten in ${city.name}${priceStr ? `: Kosten ${priceStr}` : ''}. ${companies.length} Anbieter in ${city.name} vergleichen. Bewertungen, Preise & kostenlose Angebote.`
     : `${craneType.name} mieten in ${city.name}${priceStr ? `: ${priceStr}` : ''}. Anbieter vergleichen, Preise & kostenlose Angebote anfragen.`
@@ -112,12 +112,12 @@ export default async function CraneCityPage({
     getCompanyCountsPerCraneType(),
   ])
   const totalForType = craneTypeCounts.get(craneType.id) ?? 0
-  // Currency signal — refreshes monthly via 24h ISR (text only flips on
+  // Currency signal, refreshes monthly via 24h ISR (text only flips on
   // month boundary). Per AEO rules in seo-content-de skill: include "Stand"
   // timestamp so AI engines + Bauunternehmer see the page is current.
   const lastUpdated = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
   // Manually written city FAQ (from Supabase) takes priority over template FAQ.
-  // Override is city-wide (not crane-type-specific) — local info like permits, costs, logistics.
+  // Override is city-wide (not crane-type-specific), local info like permits, costs, logistics.
   const templateFaqs = getFAQsForCraneAndCity(craneType.slug, city.name, craneType.name)
   const cityOverrideFaqs = (city.city_faq_override ?? []).map(f => ({
     question: f.question.replace('{craneName}', craneType.name),
@@ -171,7 +171,7 @@ export default async function CraneCityPage({
           <p className="text-[15px] text-neutral-600 mb-3">
             Mietpreise &amp; Bewertungen von Kranvermietern in {city.name} und Umgebung vergleichen
           </p>
-          {/* Trust bar — scoped to city, same visual language as home hero */}
+          {/* Trust bar, scoped to city, same visual language as home hero */}
           <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-neutral-600 mb-2">
             {companies.length > 0 && (
               <>
@@ -323,9 +323,9 @@ export default async function CraneCityPage({
         </div>
       </div>
 
-      {/* Hub upsell — boosts parent /{craneType.slug} authority for country-wide queries.
+      {/* Hub upsell, boosts parent /{craneType.slug} authority for country-wide queries.
           Anchor text uses the hub's own SEO target ("{craneType.name} mieten") rather
-          than generic "hier" — internal-link power is anchor-text gated for Google.
+          than generic "hier", internal-link power is anchor-text gated for Google.
           COUNTRY_LABEL keeps phrasing correct on kranvergleich.at (Österreich) vs .de. */}
       {totalForType > 0 && (
         <p className="text-[13px] text-gray-500 mb-4">
@@ -337,7 +337,7 @@ export default async function CraneCityPage({
         </p>
       )}
 
-      {/* Cross-link to main price page — boosts /kran-mieten-preise authority for "preisliste" queries */}
+      {/* Cross-link to main price page, boosts /kran-mieten-preise authority for "preisliste" queries */}
       <p className="text-[13px] text-gray-500 mb-10">
         Komplette Preisübersicht aller Krantypen:{' '}
         <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
@@ -404,15 +404,15 @@ export default async function CraneCityPage({
           }}
         />
       )}
-      {/* Product + AggregateOffer — AEO-citable regional price range.
+      {/* Product + AggregateOffer. AEO-citable regional price range.
           AggregateRating added when ≥3 listed firms have a Google rating
-          (computeAggregateRating returns null otherwise — avoids cargo-cult
+          (computeAggregateRating returns null otherwise, avoids cargo-cult
           schema on small-sample city×type combos). */}
       {price && companies.length > 0 && (() => {
         const aggRating = computeAggregateRating(companies)
         // Technical params (typical_*) ride on the Product so AI agents can match
         // user constraints (weight/height/reach) to the crane type without parsing
-        // body copy. Strings — may include ranges like "8-60 t" — pass-through.
+        // body copy. Strings, may include ranges like "8-60 t", pass-through.
         const additionalProperty: object[] = []
         if (craneType.typical_capacity_kg) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Tragkraft', value: craneType.typical_capacity_kg })
         if (craneType.typical_height_m) additionalProperty.push({ '@type': 'PropertyValue', name: 'Typische Hubhöhe', value: craneType.typical_height_m })

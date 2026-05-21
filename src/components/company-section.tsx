@@ -19,9 +19,9 @@ interface CompanySectionProps {
   cityContext?: string | null
   typeContext?: string | null
   /** Threaded through from page-level searchParams.project to the inquiry
-   *  textarea — captures user's intent at the search step. */
+   *  textarea, captures user's intent at the search step. */
   initialProjectDescription?: string
-  /** Real catalog total — passed to CompanyListWithForm so the filter counter
+  /** Real catalog total, passed to CompanyListWithForm so the filter counter
    *  can show "X von Y angezeigt" instead of conflicting with a higher count
    *  in the section h2. Optional; falls back to companies.length. */
   totalCount?: number
@@ -90,7 +90,7 @@ export function CompanySection({
       {mapCompanies.length > 0 && (
         <section id="karte" className="mt-10 mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {craneTypeName ? `${craneTypeName}-Anbieter` : 'Anbieter'}{cityName ? ` in ${cityName}` : ` in ${COUNTRY_LABEL}`} — Karte
+            {craneTypeName ? `${craneTypeName}-Anbieter` : 'Anbieter'}{cityName ? ` in ${cityName}` : ` in ${COUNTRY_LABEL}`}. Karte
             <span className="text-[13px] font-normal text-gray-400 ml-2">({mapCompanies.length})</span>
           </h2>
           <CompanyMapWrapper

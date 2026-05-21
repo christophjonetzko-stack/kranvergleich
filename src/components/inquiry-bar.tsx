@@ -18,7 +18,7 @@ import { getStoredUtm } from '@/lib/utm'
 import { getSessionEntryPath } from './session-entry-recorder'
 import { trackPageEvent } from '@/lib/track'
 
-// Minimum chars for the Projektbeschreibung textarea — anti-spam quality
+// Minimum chars for the Projektbeschreibung textarea, anti-spam quality
 // filter. Short enough that a real "Stahlhalle 12x8m heben, 4t" fits, long
 // enough that bot "asdf" / lazy "test" submissions get rejected at the form.
 const DESCRIPTION_MIN_CHARS = 30
@@ -30,7 +30,7 @@ interface InquiryBarProps {
   craneTypeId?: string
   craneTypeName?: string
   cityName?: string
-  /** Pre-filled Projektbeschreibung — set when the user typed a description in
+  /** Pre-filled Projektbeschreibung, set when the user typed a description in
    *  the home SearchBox and was forwarded here via ?project=… query param.
    *  Used as `defaultValue` so the user can still edit it before submitting. */
   initialProjectDescription?: string
@@ -78,7 +78,7 @@ export function InquiryBar({
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
-  // Controlled value for the Projektbeschreibung textarea — needed so the AI
+  // Controlled value for the Projektbeschreibung textarea, needed so the AI
   // coach can watch the value via prop without lifting the form's whole state.
   const [description, setDescription] = useState(initialProjectDescription ?? '')
   const prevCount = useRef(selectedCompanies.length)
@@ -105,7 +105,7 @@ export function InquiryBar({
 
     const trimmedDescription = description.trim()
     if (trimmedDescription.length < DESCRIPTION_MIN_CHARS) {
-      setError(`Bitte beschreiben Sie Ihr Projekt kurz (mind. ${DESCRIPTION_MIN_CHARS} Zeichen) — sonst können die Anbieter Ihnen kein passendes Angebot machen.`)
+      setError(`Bitte beschreiben Sie Ihr Projekt kurz (mind. ${DESCRIPTION_MIN_CHARS} Zeichen), sonst können die Anbieter Ihnen kein passendes Angebot machen.`)
       return
     }
 
@@ -155,7 +155,7 @@ export function InquiryBar({
 
   return (
     <>
-      {/* Toast notification — top of screen */}
+      {/* Toast notification, top of screen */}
       {toast && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] animate-in slide-in-from-top fade-in duration-300">
           <div className="bg-green-600 text-white px-5 py-3 rounded-lg shadow-xl flex items-center gap-2 text-sm font-medium">
@@ -166,8 +166,8 @@ export function InquiryBar({
         </div>
       )}
 
-      {/* Sticky bar — floating card (bottom-right desktop, full-width drawer
-          on mobile). Replaces the prior full-width banner-cookie look — see
+      {/* Sticky bar, floating card (bottom-right desktop, full-width drawer
+          on mobile). Replaces the prior full-width banner-cookie look, see
           memory feedback_cta_color_convention (blue=transaction). Outer
           wrapper is pointer-events-none so the floating shell doesn't block
           clicks on content beneath; the card itself opts back in. */}
@@ -188,7 +188,7 @@ export function InquiryBar({
                 className="ml-auto shrink-0 px-4 py-2.5 sm:px-5 sm:py-3 bg-white hover:bg-gray-50 text-blue-700 text-sm font-semibold rounded-lg transition-colors shadow-sm inline-flex items-center gap-1.5"
               >
                 Sammelanfrage senden
-                <span aria-hidden>&rarr;</span>
+                <span aria-hidden></span>
               </button>
               {/* Clear (secondary) */}
               <button
@@ -210,7 +210,7 @@ export function InquiryBar({
           <DialogHeader>
             <DialogTitle>
               Kostenlos Angebot anfragen
-              {craneTypeName && ` — ${craneTypeName}`}
+              {craneTypeName && `, ${craneTypeName}`}
               {cityName && ` in ${cityName}`}
             </DialogTitle>
           </DialogHeader>
@@ -261,7 +261,7 @@ export function InquiryBar({
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Honeypot — hidden from real users, filled by bots */}
+                {/* Honeypot, hidden from real users, filled by bots */}
                 <input type="text" name="website_url" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute opacity-0 h-0 w-0 overflow-hidden pointer-events-none" />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
@@ -302,12 +302,12 @@ export function InquiryBar({
                     minLength={DESCRIPTION_MIN_CHARS}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Was soll gehoben werden? Gewicht, Höhe, Zufahrt — kurze Beschreibung hilft den Anbietern, ein passendes Angebot zu machen."
+                    placeholder="Was soll gehoben werden? Gewicht, Höhe, Zufahrt, kurze Beschreibung hilft den Anbietern, ein passendes Angebot zu machen."
                   />
                   <p className="mt-1 text-[11px] text-gray-400">
                     {description.trim().length < DESCRIPTION_MIN_CHARS
                       ? `Noch ${DESCRIPTION_MIN_CHARS - description.trim().length} Zeichen, damit der Anbieter ein passendes Angebot machen kann.`
-                      : `${description.trim().length} Zeichen — passt.`}
+                      : `${description.trim().length} Zeichen, passt.`}
                   </p>
                   <DescriptionCoach description={description} craneTypeName={craneTypeName} />
                 </div>

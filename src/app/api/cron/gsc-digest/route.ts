@@ -97,7 +97,7 @@ export async function GET(req: Request) {
   }
 
   const html = buildDigestHtml({ latestPeriod, prevPeriod, wins, losses, totals, pageCount: rows.length })
-  const subject = `GSC Digest — ${latestPeriod} · ${wins.length} wins / ${losses.length} losses`
+  const subject = `GSC Digest, ${latestPeriod} · ${wins.length} wins / ${losses.length} losses`
 
   const resend = new Resend(process.env.RESEND_API_KEY!)
   const { error } = await resend.emails.send({
@@ -139,9 +139,9 @@ function buildRow(r: DeltaRow, variant: 'win' | 'loss'): string {
   return `
     <tr>
       <td style="padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#1f2937;">${r.page}</td>
-      <td style="padding:8px 10px;font-family:ui-monospace;font-size:12px;text-align:right;color:#6b7280;">${r.posPrev.toFixed(1)} → ${r.posNow.toFixed(1)}</td>
+      <td style="padding:8px 10px;font-family:ui-monospace;font-size:12px;text-align:right;color:#6b7280;">${r.posPrev.toFixed(1)}  ${r.posNow.toFixed(1)}</td>
       <td style="padding:8px 10px;font-family:ui-monospace;font-size:12px;text-align:right;color:${color};font-weight:600;">${sign}${r.posDelta.toFixed(1)}</td>
-      <td style="padding:8px 10px;font-family:ui-monospace;font-size:12px;text-align:right;color:#6b7280;">${r.clicksPrev} → ${r.clicksNow}</td>
+      <td style="padding:8px 10px;font-family:ui-monospace;font-size:12px;text-align:right;color:#6b7280;">${r.clicksPrev}  ${r.clicksNow}</td>
       <td style="padding:8px 10px;font-family:ui-monospace;font-size:12px;text-align:right;color:#6b7280;">${fmt(r.imprNow)}</td>
     </tr>
   `
@@ -157,7 +157,7 @@ function buildDigestHtml(args: {
 }): string {
   const { latestPeriod, prevPeriod, wins, losses, totals, pageCount } = args
   const winsRows = wins.length ? wins.map((r) => buildRow(r, 'win')).join('') : `<tr><td colspan="5" style="padding:12px;color:#9ca3af;font-size:13px;text-align:center;">Keine nennenswerten Wins diese Woche.</td></tr>`
-  const lossesRows = losses.length ? losses.map((r) => buildRow(r, 'loss')).join('') : `<tr><td colspan="5" style="padding:12px;color:#9ca3af;font-size:13px;text-align:center;">Keine nennenswerten Losses — gut.</td></tr>`
+  const lossesRows = losses.length ? losses.map((r) => buildRow(r, 'loss')).join('') : `<tr><td colspan="5" style="padding:12px;color:#9ca3af;font-size:13px;text-align:center;">Keine nennenswerten Losses, gut.</td></tr>`
   const headerCell = 'padding:6px 10px;font-family:ui-monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;font-weight:600;border-bottom:1px solid #e5e7eb;'
 
   return `
@@ -185,7 +185,7 @@ function buildDigestHtml(args: {
         </div>
       </div>
 
-      <h2 style="margin:0 0 8px;font-size:14px;color:#059669;font-weight:600;">▲ Top Wins — Position verbessert</h2>
+      <h2 style="margin:0 0 8px;font-size:14px;color:#059669;font-weight:600;">▲ Top Wins. Position verbessert</h2>
       <table cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin-bottom:24px;">
         <thead>
           <tr>
@@ -199,7 +199,7 @@ function buildDigestHtml(args: {
         <tbody>${winsRows}</tbody>
       </table>
 
-      <h2 style="margin:0 0 8px;font-size:14px;color:#dc2626;font-weight:600;">▼ Top Losses — Position verschlechtert</h2>
+      <h2 style="margin:0 0 8px;font-size:14px;color:#dc2626;font-weight:600;">▼ Top Losses. Position verschlechtert</h2>
       <table cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin-bottom:24px;">
         <thead>
           <tr>
@@ -215,7 +215,7 @@ function buildDigestHtml(args: {
 
       <p style="margin:0;padding:12px;background:#f9fafb;border-left:3px solid #FFD100;font-size:12px;color:#6b7280;">
         Verglichen wurden ${pageCount} Seiten, die in beiden Perioden Daten hatten (min. 10 Impressions aktuell, 5 zuvor).
-        Filter Δ ≥ 2 Positionen — kleinere Schwankungen wurden als Rauschen ausgefiltert.
+        Filter Δ ≥ 2 Positionen, kleinere Schwankungen wurden als Rauschen ausgefiltert.
       </p>
 
       <p style="margin:20px 0 0;font-size:11px;color:#9ca3af;">

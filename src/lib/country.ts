@@ -10,7 +10,7 @@ export const COUNTRY: Country = (process.env.NEXT_PUBLIC_COUNTRY === 'AT' ? 'AT'
 
 // Country-resolved presentation strings. Centralised so layout, sitemap, robots,
 // /api/leads emails, hreflang helpers etc. stay consistent. The `SISTER_*` pair
-// holds the OTHER country's values — useful for hreflang alternate URLs.
+// holds the OTHER country's values, useful for hreflang alternate URLs.
 export const BASE_URL: string = COUNTRY === 'AT' ? 'https://kranvergleich.at' : 'https://kranvergleich.de'
 export const SISTER_BASE_URL: string = COUNTRY === 'AT' ? 'https://kranvergleich.de' : 'https://kranvergleich.at'
 export const DOMAIN: string = COUNTRY === 'AT' ? 'kranvergleich.at' : 'kranvergleich.de'
@@ -18,11 +18,11 @@ export const BRAND_NAME: string = COUNTRY === 'AT' ? 'KranVergleich.at' : 'KranV
 export const COUNTRY_LABEL: string = COUNTRY === 'AT' ? 'Österreich' : 'Deutschland'
 export const OG_LOCALE: string = COUNTRY === 'AT' ? 'de_AT' : 'de_DE'
 // VAT abbreviation: AT uses Umsatzsteuer (USt.) officially; DE uses Mehrwertsteuer (MwSt.) colloquially.
-// AT VAT rate is 20%, DE is 19% — currently we don't print the rate, only the label;
+// AT VAT rate is 20%, DE is 19%, currently we don't print the rate, only the label;
 // expand to include the rate if/when price-listing copy needs it.
 export const TAX_LABEL: string = COUNTRY === 'AT' ? 'USt.' : 'MwSt.'
 
-// Catalog verification date — bumps only on real verification (firm-count change,
+// Catalog verification date, bumps only on real verification (firm-count change,
 // price audit, content rewrite, catalog cleanup migration). Consumed by Product
 // and Service JSON-LD as dateModified to signal freshness to Google. Visible
 // "Stand:" labels on pages use build-time current month, not this constant.
@@ -37,12 +37,12 @@ const COMPANY_IDS_TTL_MS = 60_000
  *
  * Used to filter catalog-wide company queries (e.g. /autokran-mieten landing,
  * site-stats firm count) so kranvergleich.at lists only firms that actually
- * serve AT cities — including cross-country firms (Boels, BKL) whose Sitz is
+ * serve AT cities, including cross-country firms (Boels, BKL) whose Sitz is
  * DE but who maintain AT branches via company_regions to AT cities. We do
  * NOT filter on companies.country directly because that would drop those
  * cross-country firms from the AT site (their Sitz row is companies.country=DE).
  *
- * Cached in-process for 60s — adding/removing a region is rare relative to
+ * Cached in-process for 60s, adding/removing a region is rare relative to
  * page-render frequency, and a one-minute lag is acceptable for SEO catalog
  * pages. Cache is per-worker; Next.js spawns multiple, each populates lazily.
  */
@@ -51,11 +51,11 @@ export async function getCompanyIdsInCountry(): Promise<Set<string>> {
   if (_companyIdsCache && _companyIdsCache.expires > now) return _companyIdsCache.ids
 
   // company_regions has 2554 rows as of 2026-05-06; the default 1000-row PostgREST
-  // cap silently truncated this query — the bug masqueraded as a count-side
+  // cap silently truncated this query, the bug masqueraded as a count-side
   // problem (home page Autokran 246 instead of 403) but the actual upstream
   // truncation lives here: ids was incomplete, so every downstream caller that
   // filters by inCountryIds dropped firms whose region rows were past the cap.
-  // Paginates the bare company_regions table (no JOIN — JOIN range semantics in
+  // Paginates the bare company_regions table (no JOIN. JOIN range semantics in
   // PostgREST appear to misbehave for this case) then filters country in JS via
   // the cities table.
   const cityIdsByCountry = await (async () => {

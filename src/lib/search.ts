@@ -14,18 +14,18 @@ export interface SearchTarget {
 }
 
 /** Resolve the target URL for a crane-type + city/PLZ query. Shared by
- * SearchBox (home hero) and CompactSearch (header) so both behave identically —
+ * SearchBox (home hero) and CompactSearch (header) so both behave identically 
  * the most important case being that a 5-digit PLZ produces a distance-sorted
  * nationwide listing via ?plz=<code>.
  *
- * Empty craneType means "Egal welcher Typ" — falls through to /kranverleih
+ * Empty craneType means "Egal welcher Typ", falls through to /kranverleih
  * overview (lists all crane types). Added 2026-04-27 because the disabled
  * "Suchen" button blocked users who didn't know which type they needed
- * (project-intent leads — see Mario Wagner's Stahlhalle inquiry).
+ * (project-intent leads, see Mario Wagner's Stahlhalle inquiry).
  *
  * Optional projectDescription is forwarded as a `?project=` query param so the
  * downstream page's lead form (InquiryBar / LeadForm) can prefill its
- * Projektbeschreibung textarea — captures intent at search time so it doesn't
+ * Projektbeschreibung textarea, captures intent at search time so it doesn't
  * get lost when the user clicks through to the listing.
  */
 export function resolveSearchTarget(args: {
@@ -52,7 +52,7 @@ function resolveBaseUrl(
   typed: string,
   selectedCity: CityHit | null,
 ): SearchTarget | null {
-  // "Egal welcher Typ" path — fall through to the all-types overview. PLZ /
+  // "Egal welcher Typ" path, fall through to the all-types overview. PLZ /
   // city filtering aren't applied yet (would need /kranverleih to handle
   // searchParams); for now the user lands on the overview and clicks through.
   if (!craneType) {

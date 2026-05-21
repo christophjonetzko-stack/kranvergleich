@@ -21,7 +21,7 @@ export interface ExtendedCity {
 }
 
 // allCities defined after seoCities (below).
-// Exported for next.config.ts redirect generation — direct URLs to these
+// Exported for next.config.ts redirect generation, direct URLs to these
 // cities 404 (no Supabase row), so we route them to nearestSlug via 307.
 // DE-specific orphan list. AT counterpart is _extraCitiesAT (currently empty).
 const _extraCitiesDE: ExtendedCity[] = [
@@ -89,7 +89,7 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'ulm', name: 'Ulm', state: 'Bayern', companyCount: 3 },
   { slug: 'wiesbaden', name: 'Wiesbaden', state: 'Rheinland-Pfalz', companyCount: 3 },
   { slug: 'wuppertal', name: 'Wuppertal', state: 'Nordrhein-Westfalen', companyCount: 3 },
-  // 2026-04-18 expansion — 3 moved from _extraCities + 13 new (bottom-up demand ≥8 declared + ≥1 local)
+  // 2026-04-18 expansion, 3 moved from _extraCities + 13 new (bottom-up demand ≥8 declared + ≥1 local)
   { slug: 'regensburg', name: 'Regensburg', state: 'Bayern', companyCount: 2 },
   { slug: 'heilbronn', name: 'Heilbronn', state: 'Baden-Württemberg', companyCount: 1 },
   { slug: 'oldenburg', name: 'Oldenburg', state: 'Niedersachsen', companyCount: 1 },
@@ -106,7 +106,7 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'worms', name: 'Worms', state: 'Rheinland-Pfalz', companyCount: 1 },
   { slug: 'gernsheim', name: 'Gernsheim', state: 'Hessen', companyCount: 1 },
   { slug: 'bruchsal', name: 'Bruchsal', state: 'Baden-Württemberg', companyCount: 1 },
-  // 2026-04-20 cleanup — promote 11 _extraCities entries that already had live Supabase pages (home counts from companies.city)
+  // 2026-04-20 cleanup, promote 11 _extraCities entries that already had live Supabase pages (home counts from companies.city)
   { slug: 'aachen', name: 'Aachen', state: 'Nordrhein-Westfalen', companyCount: 0 },
   { slug: 'bielefeld', name: 'Bielefeld', state: 'Nordrhein-Westfalen', companyCount: 3 },
   { slug: 'bochum', name: 'Bochum', state: 'Nordrhein-Westfalen', companyCount: 1 },
@@ -118,7 +118,7 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'mainz', name: 'Mainz', state: 'Rheinland-Pfalz', companyCount: 1 },
   { slug: 'rostock', name: 'Rostock', state: 'Mecklenburg-Vorpommern', companyCount: 1 },
   { slug: 'saarbruecken', name: 'Saarbrücken', state: 'Saarland', companyCount: 1 },
-  // 2026-04-20 expansion — 9 _extraCities promoted after diagnostic showed ≥1 home + ≥8 declared firms (Göttingen/Osnabrück deferred — too thin after normalize)
+  // 2026-04-20 expansion, 9 _extraCities promoted after diagnostic showed ≥1 home + ≥8 declared firms (Göttingen/Osnabrück deferred, too thin after normalize)
   { slug: 'chemnitz', name: 'Chemnitz', state: 'Sachsen', companyCount: 2 },
   { slug: 'wuerzburg', name: 'Würzburg', state: 'Bayern', companyCount: 1 },
   { slug: 'gelsenkirchen', name: 'Gelsenkirchen', state: 'Nordrhein-Westfalen', companyCount: 1 },
@@ -128,21 +128,21 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'paderborn', name: 'Paderborn', state: 'Nordrhein-Westfalen', companyCount: 2 },
   { slug: 'recklinghausen', name: 'Recklinghausen', state: 'Nordrhein-Westfalen', companyCount: 1 },
   { slug: 'jena', name: 'Jena', state: 'Thüringen', companyCount: 1 },
-  // 2026-04-29 expansion — Kassel/Marburg/Osnabrück after company_regions audit;
+  // 2026-04-29 expansion. Kassel/Marburg/Osnabrück after company_regions audit;
   // Kassel + Osnabrück promoted from _extraCitiesDE (deferred 2026-04-20 was outdated
-  // after today's bulk-fix), Marburg fully new. Coverage: Kassel 4 ✅ types + 1 ⚠️
+  // after today's bulk-fix), Marburg fully new. Coverage: Kassel 4 covered types + 1 warning
   // (Baukran/Ladekran/Raupenkran excluded by thin-content gate); Marburg 8 types
-  // covered; Osnabrück 7 ✅ + 0 Dachdeckerkran (excluded).
+  // covered; Osnabrück 7 covered + 0 Dachdeckerkran (excluded).
   { slug: 'kassel',     name: 'Kassel',     state: 'Hessen',         companyCount: 7 },
   { slug: 'marburg',    name: 'Marburg',    state: 'Hessen',         companyCount: 8 },
   { slug: 'osnabrueck', name: 'Osnabrück',  state: 'Niedersachsen',  companyCount: 14 },
-  // 2026-05-18 fix — Heidelberg was stuck in _extraCitiesDE redirect list despite having a Supabase row + 23 firms (created 2026-04-18). GSC flagged the 307s as "Seite mit Weiterleitung". Promote to seoCitiesDE so all /{type}/heidelberg URLs render natively.
+  // 2026-05-18 fix. Heidelberg was stuck in _extraCitiesDE redirect list despite having a Supabase row + 23 firms (created 2026-04-18). GSC flagged the 307s as "Seite mit Weiterleitung". Promote to seoCitiesDE so all /{type}/heidelberg URLs render natively.
   { slug: 'heidelberg', name: 'Heidelberg', state: 'Baden-Württemberg', companyCount: 23 },
 ]
 
-// AT cities — populated 2026-04-26 after Phase B firm enrichment landed 20
+// AT cities, populated 2026-04-26 after Phase B firm enrichment landed 20
 // AT firms with crane_types. companyCount reflects unique active firms reachable
-// via company_regions JOIN (cross-region overlap is intentional — Felbermayr
+// via company_regions JOIN (cross-region overlap is intentional. Felbermayr
 // Graz also serves Wien, hence wien=12 vs 8 raw inserts).
 //
 // Villach + St. Pölten left at 0 because the Outscraper Step 1 returned no

@@ -29,9 +29,9 @@ export function PriceTable({ craneTypeSlug, showAll }: PriceTableProps) {
 
   const singleCraneName = !showAll && craneTypeSlug ? getCraneTypeName(craneTypeSlug) : null
   const heading = showAll
-    ? 'Kran mieten Preisliste 2026 — Kosten pro Tag, Woche & Monat'
+    ? 'Kran mieten Preisliste 2026. Kosten pro Tag, Woche & Monat'
     : singleCraneName
-      ? `${singleCraneName} Preisliste 2026 — Kosten pro Tag, Woche & Monat`
+      ? `${singleCraneName} Preisliste 2026. Kosten pro Tag, Woche & Monat`
       : 'Preisliste (Richtwerte)'
 
   return (
@@ -79,7 +79,7 @@ export function PriceTable({ craneTypeSlug, showAll }: PriceTableProps) {
           </table>
         </div>
         <p className="text-xs text-muted-foreground mt-3">
-          Alle Preise netto zzgl. {TAX_LABEL} Unverbindliche Richtwerte — die tatsächlichen Kosten
+          Alle Preise netto zzgl. {TAX_LABEL} Unverbindliche Richtwerte, die tatsächlichen Kosten
           hängen von Tragkraft, Einsatzdauer, Standort und Verfügbarkeit ab.
           {!showAll && prices[0] && ` ${prices[0].notes}`}
         </p>

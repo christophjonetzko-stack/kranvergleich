@@ -12,7 +12,7 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
  * keeping the URL compact.
  *
  * Sig payload is the canonical triple `${leadId}:${supplierId}:${action}`.
- * No timestamp is folded in for MVP — links don't expire. If TTL becomes
+ * No timestamp is folded in for MVP, links don't expire. If TTL becomes
  * a requirement, append `:${expEpochSeconds}` to the payload and add
  * an `exp` query param to the URL. The lead_responses.sig_version column
  * lets us rotate the secret later without losing the audit chain.
@@ -22,7 +22,7 @@ const SIG_LENGTH = 22
 function getSecret(): string {
   const s = process.env.LEAD_RESPONSE_SECRET
   if (!s || s.length < 32) {
-    throw new Error('LEAD_RESPONSE_SECRET not configured (or too short — needs >=32 chars)')
+    throw new Error('LEAD_RESPONSE_SECRET not configured (or too short, needs >=32 chars)')
   }
   return s
 }

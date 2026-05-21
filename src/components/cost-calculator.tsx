@@ -11,7 +11,7 @@ import { getSessionEntryPath } from './session-entry-recorder'
 import { getStoredUtm } from '@/lib/utm'
 
 // STEPS answer values are upper-bound buckets ('5' = "1–5 t", '20' = "5–20 t").
-// SubtypeCheck wants approximate numerics for context — use the upper bound
+// SubtypeCheck wants approximate numerics for context, use the upper bound
 // directly; the AI is meant to take it as a coarse hint not a precise figure.
 function parseTonsFromAnswer(v: string | undefined): number | null {
   if (!v) return null
@@ -89,7 +89,7 @@ function firmInitials(name: string): string {
   return (parts[0][0] + parts[1][0]).toUpperCase()
 }
 
-// Deterministic color per firm name — same firm → same avatar color on re-render.
+// Deterministic color per firm name, same firm  same avatar color on re-render.
 const AVATAR_PALETTE = [
   'bg-blue-500',
   'bg-emerald-500',
@@ -106,10 +106,10 @@ function firmAvatarColor(name: string): string {
   return AVATAR_PALETTE[Math.abs(hash) % AVATAR_PALETTE.length]
 }
 
-// --- BLOK H — price-range tightening ---
+// --- BLOK H, price-range tightening ---
 
-// Round a euro amount to a clean display value. Sub-1.000 → nearest 50,
-// 1k–10k → nearest 100, ≥10k → nearest 500. Keeps the "1.250€" look while
+// Round a euro amount to a clean display value. Sub-1.000  nearest 50,
+// 1k–10k  nearest 100, ≥10k  nearest 500. Keeps the "1.250€" look while
 // avoiding ugly numbers like "7.279€".
 function roundEuro(n: number): number {
   if (n < 1000) return Math.round(n / 50) * 50
@@ -121,13 +121,13 @@ function roundEuro(n: number): number {
 // spread) into a Credibility-grade displayable range with a midpoint
 // estimate. Returns { point, low, high } rounded to clean values.
 // Target spread ≤ 2.5× so the high/low ratio matches what users see
-// in real quotes — wider than that and the trust breaks the moment a
+// in real quotes, wider than that and the trust breaks the moment a
 // firm quotes inside the gap.
 function tightenedRange(rawLow: number, rawHigh: number): { point: number; low: number; high: number } {
   if (rawLow <= 0 || rawHigh <= 0 || rawHigh < rawLow) {
     return { point: 0, low: 0, high: 0 }
   }
-  // Geometric midpoint preserves multiplicative symmetry — better than
+  // Geometric midpoint preserves multiplicative symmetry, better than
   // arithmetic for log-scaled prices (a 500€/day and a 5.000€/day average
   // ~1.580€, not 2.750€).
   const point = Math.sqrt(rawLow * rawHigh)
@@ -139,7 +139,7 @@ function tightenedRange(rawLow: number, rawHigh: number): { point: number; low: 
   }
 }
 
-// Generic duration-based range for the isUncertain path — used when we have
+// Generic duration-based range for the isUncertain path, used when we have
 // no recommended crane_type to look up. Returns euro bounds covering the
 // typical realistic span for that duration across all crane types.
 function uncertainRange(durationDays: number | undefined): { low: number; high: number; unit: string } {
@@ -152,11 +152,11 @@ function uncertainRange(durationDays: number | undefined): { low: number; high: 
   if (durationDays <= 30) {
     return { low: 3500, high: 30000, unit: 'Monat' }
   }
-  // Multi-month — bias high because long projects skew toward Baukran rentals.
+  // Multi-month, bias high because long projects skew toward Baukran rentals.
   return { low: 8000, high: 50000, unit: 'Monat' }
 }
 
-// --- Display helpers (BLOK G — personalized recommendation reasoning) ---
+// --- Display helpers (BLOK G, personalized recommendation reasoning) ---
 
 // Map raw duration value (the option value string) to its human label.
 // Used in the result header so the reason text echoes the user's choice
@@ -184,7 +184,7 @@ function heightLabel(value: string | undefined): string {
 
 // Full display name with parenthetical synonym where the synonym is the
 // dominant industry term. Only Baukran (Turmdrehkran) and Minikran
-// (Spinnenkran) get the parenthetical — others stand alone clearly.
+// (Spinnenkran) get the parenthetical, others stand alone clearly.
 function displayName(slug: string, fallbackName: string): string {
   switch (slug) {
     case 'baukran-mieten': return 'Baukran (Turmdrehkran)'
@@ -195,7 +195,7 @@ function displayName(slug: string, fallbackName: string): string {
 
 // Personalized reasoning per recommended crane type, with a concrete
 // numeric comparison vs the next-most-likely alternative. Each template
-// answers "why this one and not the obvious alternative?" — the question
+// answers "why this one and not the obvious alternative?", the question
 // a buyer asks themselves before clicking submit. The duration/height
 // labels echo the user's own answers so it reads as a custom analysis,
 // not a static blurb.
@@ -204,7 +204,7 @@ function personalizedReason(slug: string, answers: Record<string, string>): stri
   const hLabel = heightLabel(answers.height)
   switch (slug) {
     case 'baukran-mieten':
-      return `Bei Ihrer Mietdauer von ${dLabel} und Hubhöhe ${hLabel} ist ein Turmdrehkran ca. 30–40% wirtschaftlicher als ein Mobilkran. Mobilkrane lohnen sich bei Einsätzen unter 4 Wochen — ab einem Monat dreht sich das Verhältnis.`
+      return `Bei Ihrer Mietdauer von ${dLabel} und Hubhöhe ${hLabel} ist ein Turmdrehkran ca. 30–40% wirtschaftlicher als ein Mobilkran. Mobilkrane lohnen sich bei Einsätzen unter 4 Wochen, ab einem Monat dreht sich das Verhältnis.`
     case 'mobilkran-mieten':
       return `Bei Ihrer Last und Hubhöhe ${hLabel} ist der Mobilkran 25–35% günstiger pro Hub als ein Raupenkran und schneller einsatzbereit. Raupenkrane werden erst bei sehr schwerem Gelände oder >100 t Last wirtschaftlich.`
     case 'autokran-mieten':
@@ -212,11 +212,11 @@ function personalizedReason(slug: string, answers: Record<string, string>): stri
     case 'raupenkran-mieten':
       return `Über 50 t Last erfordert einen Raupenkran. Vergleichbare Mobilkrane > 100 t kosten 200–400% mehr pro Tag und sind in weichem oder unwegsamem Gelände nicht einsetzbar.`
     case 'minikran-mieten':
-      return `Bei Ihrer Last bis 5 t und Hubhöhe ${hLabel} ist der Minikran ideal — kompakt für enge Zufahrten und ca. 30–50% günstiger als ein Autokran-Einsatz. Über 18 m Hubhöhe wechseln Sie auf Autokran.`
+      return `Bei Ihrer Last bis 5 t und Hubhöhe ${hLabel} ist der Minikran ideal, kompakt für enge Zufahrten und ca. 30–50% günstiger als ein Autokran-Einsatz. Über 18 m Hubhöhe wechseln Sie auf Autokran.`
     case 'anhaengerkran-mieten':
-      return `Bei leichten Lasten bis 1 t und Hubhöhe ${hLabel} ist der Anhängerkran die günstigste Wahl — kein Kranführerschein nötig und ca. 50–70% billiger pro Tag als ein Minikran.`
+      return `Bei leichten Lasten bis 1 t und Hubhöhe ${hLabel} ist der Anhängerkran die günstigste Wahl, kein Kranführerschein nötig und ca. 50–70% billiger pro Tag als ein Minikran.`
     case 'dachdeckerkran-mieten':
-      return `Optimal für Dacharbeiten — schneller Aufbau in 30 Minuten, kein Kranführerschein nötig, ca. 40–60% günstiger als ein vergleichbarer Autokran-Einsatz.`
+      return `Optimal für Dacharbeiten, schneller Aufbau in 30 Minuten, kein Kranführerschein nötig, ca. 40–60% günstiger als ein vergleichbarer Autokran-Einsatz.`
     default:
       return ''
   }
@@ -228,7 +228,7 @@ interface Recommendation {
   slug: string
   name: string
   reason: string
-  // BLOK H — three-part price breakdown. priceEstimate is the legacy single-
+  // BLOK H, three-part price breakdown. priceEstimate is the legacy single-
   // line string kept for callers that haven't been migrated yet. The new
   // numeric fields drive the dual-display ("~12.500€ netto" + "Richtwert-
   // Bandbreite: 8.000–20.000€"). pointEstimate is null when isUncertain or
@@ -257,11 +257,11 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     const durationNum = Number(answers.duration)
     const range = uncertainRange(Number.isFinite(durationNum) ? durationNum : undefined)
     return {
-      // No specific crane_type — submitting this lead leaves crane_type_id
+      // No specific crane_type, submitting this lead leaves crane_type_id
       // NULL, auto_select_nearest can't match, owner reroutes manually.
       slug: '',
       name: 'Mehrere Krantypen kommen in Frage',
-      reason: 'Mehrere Krantypen kommen für Ihr Projekt in Frage — unsere Anbieter beraten Sie kostenlos zur passenden Wahl.',
+      reason: 'Mehrere Krantypen kommen für Ihr Projekt in Frage, unsere Anbieter beraten Sie kostenlos zur passenden Wahl.',
       priceEstimate: `${range.low.toLocaleString('de-DE')}–${range.high.toLocaleString('de-DE')}€`,
       pointEstimate: null,
       priceLow: range.low,
@@ -279,7 +279,7 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
 
   // Decision tree based on weight, height, duration. project_type is captured
   // for segmentation (DB + future CRM nurture) but does not drive crane choice
-  // — engineering signals (weight + height + duration) decide that. The one
+  //, engineering signals (weight + height + duration) decide that. The one
   // exception is the Dachdeckerkran shortcut, where the project type is a
   // strong enough signal to override the generic "Anhängerkran for light low
   // loads" branch (a roofer needs the basket + tile-pulley flow, not a
@@ -291,45 +291,45 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
   if (projectType === 'dachdecker' && weight <= 1 && height <= 20) {
     slug = 'dachdeckerkran-mieten'
     name = 'Dachdeckerkran'
-    reason = 'Optimal für Dacharbeiten — schneller Aufbau, kein Kranführerschein nötig.'
+    reason = 'Optimal für Dacharbeiten, schneller Aufbau, kein Kranführerschein nötig.'
   } else if (weight <= 1 && height <= 10) {
     slug = 'anhaengerkran-mieten'
     name = 'Anhängerkran'
-    reason = 'Günstigste Option für leichte Lasten — transportierbar mit PKW.'
+    reason = 'Günstigste Option für leichte Lasten, transportierbar mit PKW.'
   } else if (weight <= 1 && height <= 20) {
     slug = 'minikran-mieten'
     name = 'Minikran'
-    reason = 'Kompakt und flexibel — passt durch enge Zufahrten und Türöffnungen.'
+    reason = 'Kompakt und flexibel, passt durch enge Zufahrten und Türöffnungen.'
   } else if (weight <= 5 && height <= 20) {
     slug = 'minikran-mieten'
     name = 'Minikran'
-    reason = 'Minikrane schaffen bis 3t Traglast und 18m Höhe — ideal für mittlere Projekte.'
+    reason = 'Minikrane schaffen bis 3t Traglast und 18m Höhe, ideal für mittlere Projekte.'
   } else if (weight <= 20 && height <= 40) {
     // Autokran covers light-to-medium loads at all reachable heights up to 40m;
     // bumping from height ≤ 30 to ≤ 40 prevents 1–5t jobs at 20–40m falling
     // through to Mobilkran (physically capable but economically overkill).
     slug = 'autokran-mieten'
     name = 'Autokran'
-    reason = 'Autokran — flexibel, schnell einsatzbereit, inkl. Kranführer.'
+    reason = 'Autokran, flexibel, schnell einsatzbereit, inkl. Kranführer.'
   } else if (weight <= 50 && height <= 40) {
     slug = 'mobilkran-mieten'
     name = 'Mobilkran'
-    reason = 'Mobilkran für schwere Lasten — hohe Tragkraft, inkl. Kranführer.'
+    reason = 'Mobilkran für schwere Lasten, hohe Tragkraft, inkl. Kranführer.'
   } else if (weight > 50) {
     slug = 'raupenkran-mieten'
     name = 'Raupenkran'
-    reason = 'Raupenkran für Schwerlast-Projekte — bis 3.000t Tragkraft möglich.'
+    reason = 'Raupenkran für Schwerlast-Projekte, bis 3.000t Tragkraft möglich.'
   } else if (height > 40) {
     slug = 'baukran-mieten'
     name = 'Baukran'
-    reason = 'Turmdrehkran für Großbaustellen — lohnt sich ab mehreren Wochen Einsatz.'
+    reason = 'Turmdrehkran für Großbaustellen, lohnt sich ab mehreren Wochen Einsatz.'
   } else {
     slug = 'autokran-mieten'
     name = 'Autokran'
-    reason = 'Autokran — vielseitig einsetzbar für die meisten Hebeprojekte.'
+    reason = 'Autokran, vielseitig einsetzbar für die meisten Hebeprojekte.'
   }
 
-  // Long duration + height → consider Baukran override
+  // Long duration + height  consider Baukran override
   if (duration >= 30 && height >= 20 && slug !== 'raupenkran-mieten') {
     slug = 'baukran-mieten'
     name = 'Baukran'
@@ -369,11 +369,11 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
   }
   const tightened = tightenedRange(rawLow, rawHigh)
 
-  // BLOK G — overlay a personalized reasoning sentence that references the
+  // BLOK G, overlay a personalized reasoning sentence that references the
   // user's actual duration + height choices and includes a concrete numeric
   // comparison vs the next-most-likely alternative crane type. Falls back
   // to the engineering branch's `reason` if no template matches (shouldn't
-  // happen — every slug above has a template — but defensive).
+  // happen, every slug above has a template, but defensive).
   const personalized = personalizedReason(slug, answers)
   const finalReason = personalized || reason
 
@@ -400,7 +400,7 @@ interface CostCalculatorProps {
   // Real firm count from getSiteStats(), already rounded down to nearest 10 by
   // queries.ts. Surfaces in the trust footer under each question (BLOK F) and
   // the result-page authority strip (BLOK K) so trust anchors stay accurate as
-  // the catalog grows. Undefined → trust elements skip the count line gracefully.
+  // the catalog grows. Undefined  trust elements skip the count line gracefully.
   firmCount?: number
 }
 
@@ -424,22 +424,22 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
       crane_type_names: string[]
     }>
     radiusKm: number | null
-    // What the backend resolved the location input to — e.g. "10115 Berlin"
+    // What the backend resolved the location input to, e.g. "10115 Berlin"
     // when the user typed a PLZ or just "Berlin" when they typed a city name.
     // Falls back to the raw input when the server didn't auto-select.
     locationLabel: string
     // True when the server confirmed the customer confirmation email was sent.
-    // False → show a "check spam" hint; user emailed us but didn't get receipt.
+    // False  show a "check spam" hint; user emailed us but didn't get receipt.
     customerConfirmationSent: boolean
   } | null>(null)
   const [dsgvoConsent, setDsgvoConsent] = useState(false)
-  // Live value of the optional Projektdetails textarea — needs to be
+  // Live value of the optional Projektdetails textarea, needs to be
   // controlled state so the SubtypeCheck addon can watch it via prop and
   // run an AI subtype suggestion when the description points to a more
   // specialized crane type than the Q&A picked.
   const [projectDetailsLive, setProjectDetailsLive] = useState('')
   const [locationLive, setLocationLive] = useState('')
-  // Hides phone/date/project-details by default — 2026-05-01 audit showed 25
+  // Hides phone/date/project-details by default, 2026-05-01 audit showed 25
   // recommendations vs 0 submit_attempts despite 101 step_completions in W18.
   // Hypothesis: 7 visible fields below recommendation = too much friction on
   // mobile (form scrolls below fold). Compact form (4 required only) closes
@@ -485,7 +485,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
     setLocationLive('')
   }
 
-  // Submit Sammelanfrage — /api/leads auto-selects up to 10 nearest firms
+  // Submit Sammelanfrage, /api/leads auto-selects up to 10 nearest firms
   // for the recommended crane type within 50/100 km of the PLZ, so the user
   // doesn't have to pick firms from a list (peak-intent UX, no extra step).
   async function handleSubmitLead(e: React.FormEvent<HTMLFormElement>) {
@@ -494,8 +494,8 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
 
     if (!dsgvoConsent) {
       setLeadError('Bitte stimmen Sie der Datenschutzerklärung zu.')
-      // Diagnose the recommendation→attempt drop (87% in the 2026-04-29 audit).
-      // Reason fires only on actual click — readers who never press submit
+      // Diagnose the recommendationattempt drop (87% in the 2026-04-29 audit).
+      // Reason fires only on actual click, readers who never press submit
       // produce no row, so high counts here mean "users tried but tripped on
       // DSGVO" while low counts mean "users left before clicking at all".
       trackPageEvent('calculator_form_validation_failed', { reason: 'dsgvo', field: 'dsgvo' })
@@ -556,7 +556,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           // Carries the FIRST page of the visitor's session so the lead can
           // be attributed to the entry point (deeplink vs. homepage).
           entry_path: getSessionEntryPath(),
-          // The calculator sits on /kran-mieten-preise — set type_context so
+          // The calculator sits on /kran-mieten-preise, set type_context so
           // firm_events form_submit rows show "this lead came from the
           // recommendation pipeline" instead of NULL.
           type_context: result.slug.replace(/-mieten$/, ''),
@@ -602,17 +602,14 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
 
   // --- Result screen ---
   if (result) {
-    // Success panel — shown after /api/leads successfully routed the Sammelanfrage
+    // Success panel, shown after /api/leads successfully routed the Sammelanfrage
     // to auto-selected nearest firms. Matched list is honest (real DB names +
     // real radius used), never invented.
     if (leadSuccess) {
       const count = leadSuccess.matched.length
       return (
         <div className="border border-green-200 bg-green-50/60 rounded-xl p-5 sm:p-6">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-              ✓
-            </div>
+          <div className="mb-3">
             <h3 className="text-lg font-semibold text-gray-900">Anfrage gesendet</h3>
           </div>
           <p className="text-[14px] text-gray-700 mb-3">
@@ -625,14 +622,14 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             ) : (
               <>
                 Wir haben Ihre Anfrage erhalten. Aktuell finden wir für {leadSuccess.locationLabel} keine
-                direkten {result.name}-Anbieter in der Nähe — wir prüfen manuell und melden uns
+                direkten {result.name}-Anbieter in der Nähe, wir prüfen manuell und melden uns
                 innerhalb von 1–2 Werktagen.
               </>
             )}
           </p>
           {leadSuccess.customerConfirmationSent && (
             <p className="text-[12px] text-gray-500 mb-3">
-              Eine Bestätigung wurde an Ihre E-Mail gesendet — bitte prüfen Sie ggf. auch den Spam-Ordner
+              Eine Bestätigung wurde an Ihre E-Mail gesendet, bitte prüfen Sie ggf. auch den Spam-Ordner
               (Absender: <span className="font-mono">noreply@send.kranvergleich.de</span>).
             </p>
           )}
@@ -720,17 +717,14 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
       <div className="border border-blue-200 bg-blue-50/50 rounded-xl p-5 sm:p-6">
         {isDryRunMode && (
           <div className="border border-amber-300 bg-amber-50 rounded-lg p-3 mb-4 text-[13px] text-amber-900">
-            <strong>⚠ Dry-run mode aktywny.</strong> Firmy NIE otrzymają e-maili. Tylko owner notification + customer confirmation + zapis w DB. Zdejmij <code>?dryrun=1</code> z URL, żeby wrócić do normalnego trybu.
+            <strong>Dry-run mode active.</strong> Firms will NOT receive emails. Only owner notification, customer confirmation and DB record. Remove <code>?dryrun=1</code> from the URL to restore normal mode.
           </div>
         )}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-            ✓
-          </div>
+        <div className="mb-4">
           <h3 className="text-lg font-semibold text-gray-900">Unsere Empfehlung</h3>
         </div>
 
-        {/* Recommendation card — price + operator visible up-front when we
+        {/* Recommendation card, price + operator visible up-front when we
             have a confident recommendation. When the user picked "nicht
             sicher" in weight or height (isUncertain), BLOK H replaces this
             with a broader range; for now we suppress the confident grid
@@ -740,7 +734,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             {result.isUncertain ? result.name : `Für Ihr Projekt empfehlen wir: ${result.name}`}
           </p>
           <p className="text-[14px] text-gray-500 mb-3">{result.reason}</p>
-          {/* BLOK H — dual-display cost: confident point estimate + tightened
+          {/* BLOK H, dual-display cost: confident point estimate + tightened
               Bandbreite next to operator info. When isUncertain, only the
               wider range is shown (no point estimate); the operator panel
               also hides because we don't know which crane type. */}
@@ -765,7 +759,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               )}
               <p className="text-[11px] text-gray-400">
                 {result.isUncertain
-                  ? `Pro ${result.priceUnit} — abhängig vom Krantyp.`
+                  ? `Pro ${result.priceUnit}, abhängig vom Krantyp.`
                   : `Abhängig von Region, Verfügbarkeit und Zusatzleistungen. Netto, zzgl. ${TAX_LABEL}`}
               </p>
             </div>
@@ -783,18 +777,18 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           </div>
         </div>
 
-        {/* Inline Sammelanfrage — POSTs to /api/leads with auto_select_nearest.
+        {/* Inline Sammelanfrage. POSTs to /api/leads with auto_select_nearest.
             Server picks up to 10 nearest firms offering this crane type within
             50/100 km of the PLZ and emails them directly. */}
         <div className="border border-gray-200 bg-white rounded-lg p-4">
           <p className="text-[14px] font-semibold text-gray-900 mb-1">
             {result.isUncertain
-              ? 'Kostenlose Beratung anfordern — wir finden den passenden Krantyp'
+              ? 'Kostenlose Beratung anfordern, wir finden den passenden Krantyp'
               : 'Erhalten Sie 3 vergleichbare Angebote von geprüften Anbietern in Ihrer Region'}
           </p>
           <p className="text-[12px] text-gray-500 mb-3">
             {result.isUncertain
-              ? 'Beschreiben Sie kurz Ihr Projekt — unsere Anbieter melden sich mit individuellen Empfehlungen und Angeboten.'
+              ? 'Beschreiben Sie kurz Ihr Projekt, unsere Anbieter melden sich mit individuellen Empfehlungen und Angeboten.'
               : `Ihre Anfrage geht an bis zu 3 passende Anbieter mit ${result.name}-Flotte in einem Umkreis von 50 km. Sie entscheiden, mit wem Sie sprechen.`}
           </p>
 
@@ -826,7 +820,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
                   </div>
                   <div className="sm:col-span-2">
                     <label htmlFor="calc-project-details" className="block text-[12px] text-gray-600 mb-1">
-                      Projektdetails (optional) — was soll konkret gehoben werden?
+                      Projektdetails (optional), was soll konkret gehoben werden?
                     </label>
                     <textarea
                       id="calc-project-details"
@@ -885,7 +879,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               </div>
             )}
 
-            {/* Button stays clickable when DSGVO is unchecked — handleSubmitLead
+            {/* Button stays clickable when DSGVO is unchecked, handleSubmitLead
                 catches it and surfaces an inline error. Pre-fix: disabled={!dsgvoConsent}
                 meant clicks did nothing silently AND calculator_form_validation_failed
                 (reason='dsgvo') never fired, leaving the audit blind to "users try
@@ -898,8 +892,8 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               {leadSending
                 ? 'Wird gesendet…'
                 : result.isUncertain
-                  ? 'Kostenlose Beratung anfragen →'
-                  : `${result.name}-Angebote jetzt erhalten →`}
+                  ? 'Kostenlose Beratung anfragen '
+                  : `${result.name}-Angebote jetzt erhalten `}
             </button>
 
             <p className="text-[11px] text-center text-gray-500">
@@ -907,7 +901,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             </p>
           </form>
 
-          {/* BLOK K — Authority strip pinned below the form CTA. Three signals
+          {/* BLOK K. Authority strip pinned below the form CTA. Three signals
               in one row: real catalog size, DSGVO posture, no-resale promise.
               Separator border-t above sets it visually apart from the form
               and the escape-hatch row below. */}
@@ -923,9 +917,9 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             >
               ← Neu berechnen
             </button>
-            {/* Escape route — users who don't want to submit a form yet should
+            {/* Escape route, users who don't want to submit a form yet should
                 still be able to browse providers (BLOK L: visually subordinate
-                to the main CTA above — same font size + muted gray, no
+                to the main CTA above, same font size + muted gray, no
                 primary-color treatment). The 2026-04-29 audit showed 87% of
                 step-4 completions never clicked submit; this lets them
                 continue in the funnel instead of bouncing. */}
@@ -933,7 +927,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               href={result.isUncertain ? '/kran-mieten-preise' : `/${result.slug}`}
               className="text-[12px] text-gray-400 hover:text-gray-600 hover:underline transition-colors"
             >
-              {result.isUncertain ? 'Alle Krantypen vergleichen ohne Anfrage →' : `Alle ${result.name}-Anbieter ohne Anfrage ansehen →`}
+              {result.isUncertain ? 'Alle Krantypen vergleichen ohne Anfrage ' : `Alle ${result.name}-Anbieter ohne Anfrage ansehen `}
             </Link>
           </div>
         </div>
@@ -989,7 +983,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
         </button>
       )}
 
-      {/* Persistent trust footer (BLOK F) — reassures users at every question
+      {/* Persistent trust footer (BLOK F), reassures users at every question
           that the catalog is GDPR-compliant + that submissions don't leak.
           Firm count anchors authority; falls back gracefully when the parent
           didn't pass firmCount. */}

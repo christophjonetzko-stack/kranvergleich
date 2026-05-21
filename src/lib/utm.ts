@@ -10,10 +10,10 @@
  * DSGVO posture: sessionStorage is session-scoped (clears on tab close);
  * §25(2) TDDDG treats it as strictly necessary for the comparison-portal
  * lead flow, no consent banner gating needed. Migration to localStorage
- * (cross-session attribution) would change the legal posture — escalate
+ * (cross-session attribution) would change the legal posture, escalate
  * to legal-check before doing that.
  *
- * All getters are SSR-safe — they return an empty payload during render
+ * All getters are SSR-safe, they return an empty payload during render
  * on the server and only read sessionStorage when called from the
  * browser. Client components must still gate sessionStorage writes to
  * after mount (see UtmCapture).
@@ -69,7 +69,7 @@ export function parseUtmFromSearch(search: string | null | undefined): UtmPayloa
 /**
  * Read the stored first-touch UTM payload from sessionStorage. Returns
  * EMPTY (all-null) if nothing is stored, on the server, or on parse error.
- * Safe to call from any context — gates internally.
+ * Safe to call from any context, gates internally.
  */
 export function getStoredUtm(): UtmPayload {
   if (typeof window === 'undefined') return EMPTY

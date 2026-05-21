@@ -41,7 +41,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Top Städte — contextual based on current crane type */}
+          {/* Top Städte, contextual based on current crane type */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Top Städte</h3>
             <ul className="space-y-1.5">
@@ -101,7 +101,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 pt-6 text-center text-[12px] text-gray-400">
-          &copy; {new Date().getFullYear()} {BRAND_NAME} — Alle Angaben ohne Gewähr.
+          &copy; {new Date().getFullYear()} {BRAND_NAME}. Alle Angaben ohne Gewähr.
         </div>
       </div>
     </footer>

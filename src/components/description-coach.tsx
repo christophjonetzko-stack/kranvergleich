@@ -9,12 +9,12 @@ import { useEffect, useRef, useState } from 'react'
  *
  * Why: GSC + lead-quality work showed that vague descriptions ("13
  * Terrassenscheiben aufs Dach") get fanned out to 10 offerers, of whom 7
- * write back "bitte mehr Details" — slow round-trip, frustrated user, lost
+ * write back "bitte mehr Details", slow round-trip, frustrated user, lost
  * lead. A single short hint ("Gewicht pro Element?") pre-submit closes that
  * gap. Backed by /api/ai-helper mode=coach (Haiku, ~$0.002/call).
  *
  * Wiring: pass the same value the form's textarea already shows, plus the
- * crane-type name when known. No state lift required — this is purely a
+ * crane-type name when known. No state lift required, this is purely a
  * read-only suggester rendered next to the textarea.
  */
 export function DescriptionCoach({
@@ -35,7 +35,7 @@ export function DescriptionCoach({
     if (dismissed) return
     const trimmed = description.trim()
 
-    // Don't fire on tiny inputs — too noisy. The form's regular placeholder
+    // Don't fire on tiny inputs, too noisy. The form's regular placeholder
     // already prompts. Wait until the user has written ~4+ words.
     if (trimmed.length < 25) {
       setHints([])
@@ -45,7 +45,7 @@ export function DescriptionCoach({
 
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
-      // Skip duplicate calls — common when the user pauses and then doesn't
+      // Skip duplicate calls, common when the user pauses and then doesn't
       // change anything (focus events, etc.).
       if (lastQueryRef.current === trimmed) return
       lastQueryRef.current = trimmed
@@ -65,7 +65,7 @@ export function DescriptionCoach({
         setHints(Array.isArray(data.hints) ? data.hints.slice(0, 5) : [])
         setSubtypeSuggestion(typeof data.subtype_suggestion === 'string' ? data.subtype_suggestion : '')
       } catch {
-        // Silent failure — coach is non-blocking, don't bother the user.
+        // Silent failure, coach is non-blocking, don't bother the user.
       } finally {
         setIsLoading(false)
       }

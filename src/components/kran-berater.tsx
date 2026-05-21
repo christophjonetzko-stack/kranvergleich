@@ -16,12 +16,12 @@ import { trackPageEvent } from '@/lib/track'
 const AVATAR_SRC = '/images/kran-berater-avatar.png'
 
 /**
- * Floating "Kran-Berater" chat bubble — global widget rendered in layout.tsx.
+ * Floating "Kran-Berater" chat bubble, global widget rendered in layout.tsx.
  *
  * Purpose: holding-pattern UX for project-intent visitors who don't yet know
- * which crane type they need (the Mario-Wagner persona). Click the bubble →
- * describe the project in 1-2 sentences → AI maps to a crane type + (optional)
- * city → CTA "Anbieter zeigen" routes to the listing page with the project
+ * which crane type they need (the Mario-Wagner persona). Click the bubble 
+ * describe the project in 1-2 sentences  AI maps to a crane type + (optional)
+ * city  CTA "Anbieter zeigen" routes to the listing page with the project
  * description pre-filled into the inquiry form via ?project=…
  *
  * Backed by /api/ai-helper mode=berater (Claude Haiku 4.5, ~$0.005-0.02 per
@@ -32,7 +32,7 @@ const AVATAR_SRC = '/images/kran-berater-avatar.png'
 const STORAGE_KEY = 'kran-berater-v1'
 const MAX_MESSAGES_UI = 12
 
-// Contextual prompt bubble — appears after PROMPT_DELAY_MS on high-bounce
+// Contextual prompt bubble, appears after PROMPT_DELAY_MS on high-bounce
 // pages (listings, ratgeber, anbieter detail) to surface the chatbot to
 // visitors who'd otherwise scan & leave. Dismissal persists PROMPT_DISMISS_TTL_MS
 // in localStorage so a recurring visitor isn't nagged on every page.
@@ -76,7 +76,7 @@ function markPromptDismissed(): void {
   try {
     window.localStorage.setItem(PROMPT_DISMISS_KEY, String(Date.now()))
   } catch {
-    // localStorage full / disabled — non-fatal.
+    // localStorage full / disabled, non-fatal.
   }
 }
 
@@ -113,7 +113,7 @@ function saveState(s: PersistedState) {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(s))
   } catch {
-    // localStorage full / disabled — non-fatal, just drops persistence.
+    // localStorage full / disabled, non-fatal, just drops persistence.
   }
 }
 
@@ -137,7 +137,7 @@ function buildTargetUrl(s: Suggestion): string {
     if (/^\d{5}$/.test(loc)) {
       url += `?plz=${loc}`
     } else if (s.type_slug) {
-      // City path only valid when we actually have a type slug — /kranverleih
+      // City path only valid when we actually have a type slug, /kranverleih
       // doesn't have a /<city> segment.
       url += `/${citySlug(loc)}`
     }
@@ -160,7 +160,7 @@ export function KranBerater() {
   const [promptVisible, setPromptVisible] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   // chatbot_opened fires once per page load (the very first time the dialog
-  // opens). Re-opens of the same instance are not tracked — they're zero-cost
+  // opens). Re-opens of the same instance are not tracked, they're zero-cost
   // re-engagements, not new sessions.
   const openedTrackedRef = useRef(false)
   // Re-fire chatbot_recommendation_shown only when the suggestion's type_slug
@@ -190,7 +190,7 @@ export function KranBerater() {
   }, [messages, open, loading, suggestion])
 
   // Contextual speech-bubble scheduler. Fires PROMPT_DELAY_MS after the user
-  // lands on a high-bounce path — IF (a) hydration is done so we can read
+  // lands on a high-bounce path. IF (a) hydration is done so we can read
   // localStorage / message history, (b) the path isn't on the skip list,
   // (c) the user has not dismissed within the last PROMPT_DISMISS_TTL_MS,
   // (d) the user has not previously used the chatbot in this browser, and
@@ -230,14 +230,14 @@ export function KranBerater() {
     const text = input.trim()
     if (!text || loading) return
     if (messages.length >= MAX_MESSAGES_UI) {
-      // Hard stop — direct user to the calculator if conversation goes long.
+      // Hard stop, direct user to the calculator if conversation goes long.
       setMessages((m) => [
         ...m,
         { role: 'user', content: text },
         {
           role: 'assistant',
           content:
-            'Wir haben jetzt schon einiges besprochen — am schnellsten finden Sie passende Anbieter über unseren Kostenrechner.',
+            'Wir haben jetzt schon einiges besprochen, am schnellsten finden Sie passende Anbieter über unseren Kostenrechner.',
         },
       ])
       setInput('')
@@ -315,7 +315,7 @@ export function KranBerater() {
 
   return (
     <>
-      {/* Floating launcher — bottom-right, hidden until React hydrates so the
+      {/* Floating launcher, bottom-right, hidden until React hydrates so the
           SSR HTML stays clean for SEO. Avatar shown in a circle stamp on the
           dark pill so the bot reads as a person, not a generic AI emoji.
           The container stacks the optional speech-bubble prompt above the
@@ -326,7 +326,7 @@ export function KranBerater() {
             <div
               role="button"
               tabIndex={0}
-              aria-label="Kran-Berater öffnen — Hinweis"
+              aria-label="Kran-Berater öffnen. Hinweis"
               onClick={openFromPrompt}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -351,7 +351,7 @@ export function KranBerater() {
                 Unsicher welcher Kran?
               </p>
               <p className="text-[12px] leading-snug text-gray-600">
-                In 30 Sekunden geklärt — fragen Sie kurz unseren Berater.
+                In 30 Sekunden geklärt, fragen Sie kurz unseren Berater.
               </p>
             </div>
           )}
@@ -407,7 +407,7 @@ export function KranBerater() {
             {messages.length === 0 && (
               <div className="rounded-xl bg-blue-50/60 border border-blue-100 px-4 py-3 text-[13px] text-gray-700 leading-relaxed">
                 <p className="font-medium text-gray-900 mb-1">Guten Tag!</p>
-                Beschreiben Sie kurz Ihr Projekt — ich finde für Sie den passenden
+                Beschreiben Sie kurz Ihr Projekt, ich finde für Sie den passenden
                 Krantyp und passende Anbieter in Ihrer Region.
                 <p className="mt-2 text-gray-500 text-[12px]">
                   Beispiel: „Stahlhalle 45×25m bauen, bei Hannover" oder „Glasscheiben
@@ -447,7 +447,7 @@ export function KranBerater() {
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white text-[13px]"
                   onClick={handleViewProviders}
                 >
-                  Passende Anbieter zeigen →
+                  Passende Anbieter zeigen 
                 </Button>
               </div>
             )}

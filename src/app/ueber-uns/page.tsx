@@ -6,7 +6,7 @@ import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY_LABEL, BRAND_NAME, BASE_URL, DATA_LAST_VERIFIED_ISO } from '@/lib/country'
 import { OG_IMAGE } from '@/lib/og-image'
 
-// LinkedIn URL — fed into Person.sameAs for entity linkage between LinkedIn
+// LinkedIn URL, fed into Person.sameAs for entity linkage between LinkedIn
 // profile and website E-E-A-T author identity. Must stay in sync with the
 // public LinkedIn profile content; any divergence between LinkedIn and site
 // bio is a credibility risk per user's "compromise rule".
@@ -17,11 +17,11 @@ export const revalidate = 86400
 export async function generateMetadata(): Promise<Metadata> {
   const { anbieterCount, staedteCount } = await getSiteStats()
   return {
-    title: `Über uns — ${BRAND_NAME}`,
+    title: `Über uns, ${BRAND_NAME}`,
     description: `${BRAND_NAME} ist ${COUNTRY_LABEL}s Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte. Kostenlos und unverbindlich.`,
     alternates: alternatesFor('/ueber-uns'),
     openGraph: {
-      title: `Über uns — ${BRAND_NAME}`,
+      title: `Über uns, ${BRAND_NAME}`,
       description: `${BRAND_NAME} ist ${COUNTRY_LABEL}s Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte.`,
       type: 'website',
       url: '/ueber-uns',
@@ -45,9 +45,9 @@ export default async function UeberUnsPage() {
         <span className="text-gray-900">Über uns</span>
       </nav>
 
-      {/* Hook headline — Priestley P1 problem-statement opener. 4 sentences,
-          decreasing length (claim → evidence → evidence → commitment). NOT
-          superlative-claim (UWG safe) — "die digital am wenigsten erschlossene
+      {/* Hook headline. Priestley P1 problem-statement opener. 4 sentences,
+          decreasing length (claim  evidence  evidence  commitment). NOT
+          superlative-claim (UWG safe), "die digital am wenigsten erschlossene
           B2B-Branche" is industry observation from 28 years operator
           experience, not market-leadership claim about us. */}
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 leading-tight mb-4">
@@ -56,7 +56,7 @@ export default async function UeberUnsPage() {
         gibt es nur auf Anfrage. Das ändere ich.
       </h1>
 
-      {/* Mid-page CTA banner — second waitlist exposure between hook and
+      {/* Mid-page CTA banner, second waitlist exposure between hook and
           one-liner (Priestley 7-11-4: multiple exposures within one page).
           Secondary visual weight (blue-50 vs primary blue-600 CTA below).
           Same mailto target as the primary CTA in the final section. */}
@@ -64,11 +64,11 @@ export default async function UeberUnsPage() {
         href="mailto:christoph@kranvergleich.de?subject=Vorab-Zugang%20Kran-Preisindex%202026&body=Hallo%20Christoph%2C%0A%0Aich%20m%C3%B6chte%20mich%20f%C3%BCr%20den%20Vorab-Zugang%20zum%20Kran-Preisindex%202026%20eintragen.%0A%0AName%2FFirma%3A%20%0A%0AGr%C3%BC%C3%9Fe"
         className="block mb-6 px-4 py-2.5 text-[13px] text-blue-700 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors"
       >
-        <span className="font-semibold">Aktuell im Aufbau:</span> Kran-Preisindex 2026 — Vorab-Zugang sichern →
+        <span className="font-semibold">Aktuell im Aufbau:</span> Kran-Preisindex 2026. Vorab-Zugang sichern 
       </a>
 
       {/* Single-line pitch (Name / Same / Fame / Aim in one sentence).
-          Colon-separator instead of em-dash (Phase 2 humanization rule I —
+          Colon-separator instead of em-dash (Phase 2 humanization rule I 
           even functional em-dashes replaced when colon/period works). */}
       <p className="text-[15px] sm:text-base text-gray-700 leading-relaxed mb-10">
         Ich bin Christoph Jonetzko. Nach 4 Jahren bei Liebherr Ehingen und
@@ -77,9 +77,9 @@ export default async function UeberUnsPage() {
       </p>
 
       <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
-        {/* Wer steht hinter — bio establishes credibility before "Drei
+        {/* Wer steht hinter, bio establishes credibility before "Drei
             Beobachtungen" insights validate POV. Photo block: photo +
-            tagline + credentials caption (ex-Liebherr + 28 Jahre — visible
+            tagline + credentials caption (ex-Liebherr + 28 Jahre, visible
             credibility marker). Name not duplicated as visible text; it
             lives in alt-text + JSON-LD Person schema. */}
         <section id="christoph">
@@ -117,7 +117,7 @@ export default async function UeberUnsPage() {
           </div>
         </section>
 
-        {/* Drei Beobachtungen — insights AFTER bio establishes credibility
+        {/* Drei Beobachtungen, insights AFTER bio establishes credibility
             (reviewer #4 final flow: bio first as identity, then insights as
             evidence of POV). Verb-led bullets, no judgment adjectives.
             33/713 mirrors LinkedIn Post #1 stat-tile. */}
@@ -143,8 +143,8 @@ export default async function UeberUnsPage() {
           </ul>
         </section>
 
-        {/* Meine Datenbank — moved before "Was als Nächstes kommt: Kran-Preisindex 2026" per reviewer #4
-            flow (data context → mission). Stand inline in first sentence
+        {/* Meine Datenbank, moved before "Was als Nächstes kommt: Kran-Preisindex 2026" per reviewer #4
+            flow (data context  mission). Stand inline in first sentence
             (was separate sentence). 713 hardcoded (matches LinkedIn Post #1
             and prose elsewhere on page). "Manuell geprüft" inline anchors
             "geprüft" claim from the pitch one-liner. */}
@@ -160,10 +160,10 @@ export default async function UeberUnsPage() {
           </p>
         </section>
 
-        {/* Was als Nächstes kommt: Kran-Preisindex 2026 — final content section. Page ends on CTA per
+        {/* Was als Nächstes kommt: Kran-Preisindex 2026, final content section. Page ends on CTA per
             reviewer #4 (end on call-to-action, not on metadata/contact).
             Game first ("Mein Ziel"), Aim second ("Aktuell entwickle ich").
-            "Die erste systematische" — claim approved 4x across reviewer
+            "Die erste systematische", claim approved 4x across reviewer
             iterations and explicitly authorized by user text-paste. Pre-
             launch claim requires WebSearch verification of competitive
             landscape before Q3 2026 product launch (Phase 3 note); if
@@ -178,12 +178,12 @@ export default async function UeberUnsPage() {
             Flotte passen.
           </p>
           <p className="mt-3">
-            Aktuell entwickle ich den Kran-Preisindex 2026 — die erste
+            Aktuell entwickle ich den Kran-Preisindex 2026, die erste
             systematische Übersicht von Tagessätzen über alle Tonnage-Klassen
             und Bundesländer in Deutschland und Österreich. Erscheint Q3 2026.
           </p>
 
-          {/* Primary CTA — Oversubscribed waitlist mechanic (Priestley: launch
+          {/* Primary CTA. Oversubscribed waitlist mechanic (Priestley: launch
               waitlist BEFORE product, +40% sales). Interim mailto link until
               real waitlist endpoint built (next-session task: minimal inline
               form with email + DSGVO checkbox + Resend confirmation).
@@ -194,11 +194,11 @@ export default async function UeberUnsPage() {
               href="mailto:christoph@kranvergleich.de?subject=Vorab-Zugang%20Kran-Preisindex%202026&body=Hallo%20Christoph%2C%0A%0Aich%20m%C3%B6chte%20mich%20f%C3%BCr%20den%20Vorab-Zugang%20zum%20Kran-Preisindex%202026%20eintragen.%0A%0AName%2FFirma%3A%20%0A%0AGr%C3%BC%C3%9Fe"
               className="inline-flex items-center gap-2 px-5 py-3 bg-blue-600 text-white text-[15px] font-semibold rounded hover:bg-blue-700 transition-colors"
             >
-              Vorab-Zugang zum Preisindex 2026 sichern →
+              Vorab-Zugang zum Preisindex 2026 sichern 
             </a>
           </div>
 
-          {/* Secondary supply-side block — Kranvermieter contact, smaller
+          {/* Secondary supply-side block. Kranvermieter contact, smaller
               font, below primary CTA so it doesn't compete for demand-side
               attention. */}
           <p className="mt-6 text-[12px] text-gray-500">
@@ -213,7 +213,7 @@ export default async function UeberUnsPage() {
         </section>
       </div>
 
-      {/* Person JSON-LD — author/founder E-E-A-T entity, addressable by @id so
+      {/* Person JSON-LD, author/founder E-E-A-T entity, addressable by @id so
           other pages (hub pages, ratgeber) can reference the same Person via
           editor/author fields without duplicating the full Person definition.
           Facts mirror the LinkedIn profile (cross-channel consistency rule). */}

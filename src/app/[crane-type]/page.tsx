@@ -35,7 +35,7 @@ export async function generateMetadata({
 
   // count = real catalog total for this crane type (from the paginated counts
   // map). getCompaniesForCraneType caps the returned list at 50 for the SEO
-  // listing — using its length as the title count showed "49 Anbieter" when
+  // listing, using its length as the title count showed "49 Anbieter" when
   // the catalog actually had 403, eroding trust on the most-trafficked hub
   // page. Title/description must reflect catalog depth, not list-render cap.
   const counts = await getCompanyCountsPerCraneType()
@@ -45,7 +45,7 @@ export async function generateMetadata({
   // Title: kept under ~40 chars before the layout's " | KranVergleich.de" suffix
   // (~19 chars) so the full SERP title stays under Google's ~580px ≈ 60-char
   // truncation limit. Price moved to description (it doesn't drive clicks at
-  // hub level — the count + crane-type name does).
+  // hub level, the count + crane-type name does).
   const title = `${craneType.name} mieten: ${count} Anbieter`
 
   // Description: ≤155 Zeichen, damit Google nicht abschneidet. Konkrete Zahlen, klarer CTA.
@@ -84,7 +84,7 @@ export default async function CraneTypePage({
 
   // Static info from crane-types.ts gives us the synonyms array. Rendered
   // below the description so Google sees terms like "Turmdrehkran" /
-  // "Spinnenkran" on the real /baukran-mieten / /minikran-mieten page —
+  // "Spinnenkran" on the real /baukran-mieten / /minikran-mieten page 
   // critical because /turmdrehkran-mieten and /spinnenkran-mieten redirect
   // here (next.config.ts) but the redirect alone doesn't carry the keyword
   // onto the destination's content; without the keyword in body text Google
@@ -97,7 +97,7 @@ export default async function CraneTypePage({
     getSiteStats(),
     getCompanyCountsPerCraneType(),
   ])
-  // Real catalog total for this crane type — companies.length is capped at 50
+  // Real catalog total for this crane type, companies.length is capped at 50
   // (SEO listing limit). Trust signals must show the full catalog depth.
   const totalCount = counts.get(craneType.id) ?? companies.length
 
@@ -118,7 +118,7 @@ export default async function CraneTypePage({
         <span className="text-gray-900">{craneType.name} mieten</span>
       </nav>
 
-      {/* Hero mini — portrait thumbnail anchors the left, copy flows right.
+      {/* Hero mini, portrait thumbnail anchors the left, copy flows right.
           Same equipment-catalog vocabulary as the homepage tile grid: 4:5
           ratio, hairline border, neutral-50 placeholder background. */}
       <div className="mb-8 flex flex-row gap-4 sm:gap-6 items-start">
@@ -167,7 +167,7 @@ export default async function CraneTypePage({
             )}
           </div>
 
-          {/* Trust bar — same visual language as home hero. Rating only
+          {/* Trust bar, same visual language as home hero. Rating only
               renders with a real review count behind it; otherwise we'd be
               showing the queries.ts fallback (4.2) as if it were data. */}
           <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-neutral-600">
@@ -190,10 +190,10 @@ export default async function CraneTypePage({
         </div>
       </div>
 
-      {/* Author byline + currency stamp combined — E-E-A-T signal (named human
+      {/* Author byline + currency stamp combined. E-E-A-T signal (named human
           responsible for the catalog) plus freshness signal in one subtle line.
           Anchor uses the strongest single credential ("ex-Liebherr Ehingen")
-          rather than generic role ("Gründer"), per Priestley P1 framework —
+          rather than generic role ("Gründer"), per Priestley P1 framework 
           DACH crane B2B audience recognises Liebherr Ehingen as the institution
           for mobile cranes. Links to /ueber-uns#christoph where full bio lives. */}
       <p className="text-[11px] text-gray-400 mb-6">
@@ -206,7 +206,7 @@ export default async function CraneTypePage({
 
       <ListingFastAnfrageCTA craneTypeSlug={craneType.slug.replace(/-mieten$/, '')} />
 
-      {/* Table of Contents — horizontal pills */}
+      {/* Table of Contents, horizontal pills */}
       <nav className="mb-8 border border-gray-200 rounded-lg px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
         <p className="text-[13px] font-medium text-gray-900 shrink-0">Inhalt:</p>
         <a href="#preise" className="text-[13px] text-blue-600 hover:underline">
@@ -254,7 +254,7 @@ export default async function CraneTypePage({
         )}
       </nav>
 
-      {/* Synonym H2 — SEO for "leihen", "ausleihen", "Verleih", "Vermietung" variants */}
+      {/* Synonym H2. SEO for "leihen", "ausleihen", "Verleih", "Vermietung" variants */}
       {(() => {
         const ctInfo = craneTypesList.find((c) => c.slug === craneType.slug)
         const synonyms = ctInfo?.synonyms ?? []
@@ -291,7 +291,7 @@ export default async function CraneTypePage({
         </p>
       </div>
 
-      {/* Company Listings + Map — placed right after prices for fast access */}
+      {/* Company Listings + Map, placed right after prices for fast access */}
       {companies.length > 0 && (
         <section id="anbieter" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -312,7 +312,7 @@ export default async function CraneTypePage({
         </section>
       )}
 
-      {/* Cost breakdown — targets "kosten pro tag/stunde/woche/monat" queries */}
+      {/* Cost breakdown, targets "kosten pro tag/stunde/woche/monat" queries */}
       {price && (
         <section className="mb-10 border border-gray-200 rounded-lg p-5">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -356,7 +356,7 @@ export default async function CraneTypePage({
         </section>
       )}
 
-      {/* Tragkraft-Klassen — which size for which project (long-tail "autokran 30 tonnen" queries) */}
+      {/* Tragkraft-Klassen, which size for which project (long-tail "autokran 30 tonnen" queries) */}
       {ratgeber?.sizeClasses && ratgeber.sizeClasses.length > 0 && (
         <section id="tragkraft" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -399,7 +399,7 @@ export default async function CraneTypePage({
         </section>
       )}
 
-      {/* Marken & Modelle — factual reference for branded long-tail queries */}
+      {/* Marken & Modelle, factual reference for branded long-tail queries */}
       {ratgeber?.brands && ratgeber.brands.length > 0 && (
         <section id="marken" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -428,7 +428,7 @@ export default async function CraneTypePage({
         </section>
       )}
 
-      {/* Ratgeber section — merged from /ratgeber/{slug}-mieten-kosten articles */}
+      {/* Ratgeber section, merged from /ratgeber/{slug}-mieten-kosten articles */}
       {ratgeber && (
         <section id="ratgeber" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -445,9 +445,8 @@ export default async function CraneTypePage({
               <p className="font-medium text-gray-900 mb-2 text-[14px]">Im Preis enthalten</p>
               <ul className="text-[13px] text-gray-600 space-y-1">
                 {ratgeber.included.map((item) => (
-                  <li key={item} className="flex gap-2">
-                    <span className="text-green-600 shrink-0">✓</span>
-                    <span>{item}</span>
+                  <li key={item}>
+                    {item}
                   </li>
                 ))}
               </ul>
@@ -499,7 +498,7 @@ export default async function CraneTypePage({
         </section>
       )}
 
-      {/* Schnellbaukran sub-topic — only on Baukran page, SEO for "schnellbaukran mieten" */}
+      {/* Schnellbaukran sub-topic, only on Baukran page, SEO for "schnellbaukran mieten" */}
       {craneType.slug === 'baukran-mieten' && (
         <section id="schnellbaukran" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -554,7 +553,7 @@ export default async function CraneTypePage({
         </section>
       )}
 
-      {/* Alternativen — when a different crane type fits better, with internal links */}
+      {/* Alternativen, when a different crane type fits better, with internal links */}
       {ratgeber?.alternatives && ratgeber.alternatives.length > 0 && (
         <section id="alternativen" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -651,8 +650,8 @@ export default async function CraneTypePage({
           }),
         }}
       />
-      {/* Product + AggregateOffer — AEO-citable price range per crane type.
-          AggregateRating is added when ≥3 listed firms have a Google rating —
+      {/* Product + AggregateOffer. AEO-citable price range per crane type.
+          AggregateRating is added when ≥3 listed firms have a Google rating 
           fixes GSC "missing aggregateRating" warning + earns SERP star snippets.
           The single rating + reviewCount aggregate Google's own per-firm data
           weighted by review count, so a firm with 200 reviews counts more than
@@ -711,12 +710,12 @@ export default async function CraneTypePage({
           />
         )
       })()}
-      {/* Service + areaServed — entity-level signal that KranVergleich operates
+      {/* Service + areaServed, entity-level signal that KranVergleich operates
           a comparison service for this crane type across the country. Product
           schema above describes "the thing rented"; Service describes "what we
           do". areaServed gives Google a strong geographic-scope cue, which the
           Product schema lacks. Provider is KranVergleich (the aggregator),
-          NOT the individual firms — they're listed elsewhere as LocalBusiness
+          NOT the individual firms, they're listed elsewhere as LocalBusiness
           in the city ItemList. Keeps the entity model honest. */}
       <script
         type="application/ld+json"

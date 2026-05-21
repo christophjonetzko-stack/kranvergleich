@@ -1,6 +1,6 @@
-// Coarse User-Agent → device classification for the analytics pipeline.
+// Coarse User-Agent  device classification for the analytics pipeline.
 // Server-side helper: raw UA is NOT stored in firm_events / page_events
-// (DSGVO minimisation) — only this 3-bucket label.
+// (DSGVO minimisation), only this 3-bucket label.
 //
 // We deliberately avoid a full UA-parser dependency: the call sites are
 // /api/beacon and /api/track which run on every event write, and we only

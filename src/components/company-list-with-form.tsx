@@ -44,7 +44,7 @@ interface CompanyListWithFormProps {
   showStateFilter?: boolean
   /** Show crane type filter (useful on city pages with mixed crane types) */
   showCraneTypeFilter?: boolean
-  /** Called when filtered company list changes — use to sync map */
+  /** Called when filtered company list changes, use to sync map */
   onFilteredChange?: (companies: CompanyWithCranes[]) => void
   /** Reference price label for companies without own pricing */
   referencePrice?: string | null
@@ -52,7 +52,7 @@ interface CompanyListWithFormProps {
   cityContext?: string | null
   /** Crane-type slug passed to firm_events for the same reason */
   typeContext?: string | null
-  /** Pre-filled from ?project=… on the listing page — passed through to
+  /** Pre-filled from ?project=… on the listing page, passed through to
    *  InquiryBar so the inquiry textarea opens with the user's home-page
    *  description already inside. */
   initialProjectDescription?: string
@@ -86,14 +86,14 @@ export function CompanyListWithForm({
   const [plzInput, setPlzInput] = useState('')
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null)
   const [plzLabel, setPlzLabel] = useState('')
-  // Controlled inquiry-bar dialog state — owned here so the 1-click
+  // Controlled inquiry-bar dialog state, owned here so the 1-click
   // "Anfrage an alle Anbieter" CTA can pre-select all filtered firms AND
   // open the form modal in a single user gesture (without requiring an
   // intermediate sticky-pill click).
   const [inquiryOpen, setInquiryOpen] = useState(false)
   const [inquiryFromAllCta, setInquiryFromAllCta] = useState(false)
 
-  // Lookup PLZ → coordinates via /api/cities
+  // Lookup PLZ  coordinates via /api/cities
   const lookupPlz = useCallback(async (plz: string) => {
     if (!/^\d{5}$/.test(plz)) {
       setUserCoords(null)
@@ -123,7 +123,7 @@ export function CompanyListWithForm({
     })
   }, [lookupPlz])
 
-  // Distance map: company id → km (only when userCoords set)
+  // Distance map: company id  km (only when userCoords set)
   const distanceMap = useMemo(() => {
     if (!userCoords) return new Map<string, number>()
     const map = new Map<string, number>()
@@ -210,7 +210,7 @@ export function CompanyListWithForm({
 
   const selectedCompanies = companies.filter((c) => selectedIds.includes(c.id))
 
-  // Reset the "from inquire-all CTA" flag when the dialog closes — so a later
+  // Reset the "from inquire-all CTA" flag when the dialog closes, so a later
   // reopen via the sticky pill is correctly classified as the legacy per-firm
   // flow, not as an inquire-all submission.
   const handleInquiryOpenChange = (next: boolean) => {
@@ -240,8 +240,8 @@ export function CompanyListWithForm({
       <Suspense fallback={null}>
         <PlzFromUrl onPlz={handlePlzFromUrl} />
       </Suspense>
-      {/* Primary CTA — 1-click sammelanfrage to all currently-visible firms.
-          City-listings only (`cityName` set) — type pages have too many firms
+      {/* Primary CTA, 1-click sammelanfrage to all currently-visible firms.
+          City-listings only (`cityName` set), type pages have too many firms
           country-wide for a single broadcast to make sense. The modal that
           opens lists every firm explicitly and lets the user deselect any
           before submit, so the flow stays DSGVO-explicit-consent. */}
@@ -252,7 +252,7 @@ export function CompanyListWithForm({
               Anfrage an alle {filtered.length} Anbieter in {cityName} senden
             </p>
             <p className="text-[13px] text-gray-600">
-              Ein Formular, eine Anfrage — Sie erhalten individuelle Angebote von allen{' '}
+              Ein Formular, eine Anfrage. Sie erhalten individuelle Angebote von allen{' '}
               {filtered.length} Anbietern. Kostenlos &amp; unverbindlich.
             </p>
           </div>
@@ -261,7 +261,7 @@ export function CompanyListWithForm({
             onClick={handleInquireAll}
             className="shrink-0 inline-flex items-center justify-center text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md px-4 py-2.5 transition-colors w-full sm:w-auto"
           >
-            Jetzt anfragen →
+            Jetzt anfragen 
           </button>
         </div>
       )}
