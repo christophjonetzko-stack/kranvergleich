@@ -174,6 +174,7 @@ export default async function KranMietenPreisePage() {
           <li><a href="#preisfaktoren" className="text-[13px] text-blue-600 hover:underline">Was beeinflusst die Kranmiete Kosten?</a></li>
           <li><a href="#regionalpreise" className="text-[13px] text-blue-600 hover:underline">Preise nach Stadt / Region</a></li>
           <li><a href="#zusatzkosten" className="text-[13px] text-blue-600 hover:underline">Zusatzkosten</a></li>
+          <li><a href="#kran-leihen-ausleihen" className="text-[13px] text-blue-600 hover:underline">Kran mieten, leihen oder ausleihen</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen zu Kosten</a></li>
         </ul>
       </CollapsibleToc>
@@ -1024,6 +1025,68 @@ export default async function KranMietenPreisePage() {
             <span className="font-medium text-gray-900">oft inklusive</span>
           </div>
         </div>
+      </section>
+
+      {/* Synonym section — captures "kran leihen" 920/mo + "kran ausleihen" + "kran vermietung"
+          + "kranmiete" + "mietkran" search intent without forking the URL. /kranverleih hub owns
+          the firm-list angle for the same synonyms (commit 3a6bec0); this section owns the
+          price-comparison angle. Sister ship to that commit. */}
+      <section id="kran-leihen-ausleihen" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Kran mieten, leihen oder ausleihen — was kostet was?
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4">
+          „Kran mieten", „Kran leihen", „Kran ausleihen", „Kran vermieten", „Kranverleih",
+          „Kranvermietung" und „Kranmiete" werden im deutschen Sprachgebrauch synonym verwendet —
+          alle bezeichnen die kurzzeitige Anmietung eines Krans, oft inklusive Kranführer.
+          Die Preise unterscheiden sich nicht je nach Begriff, sondern je nach Krantyp,
+          Mietdauer und Region. Tagesmiete startet bei 150€ (Anhängerkran), Schwerlast-Raupenkran
+          bis 5.000€.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2 mb-4">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-[14px] text-gray-900 mb-1">Kran mieten / Kran leihen</p>
+            <p className="text-[13px] text-gray-500">
+              Kurzfristige Anmietung für Stunden, Tage oder Wochen. Bei Autokran, Mobilkran und
+              Raupenkran ist der Kranführer im Mietpreis enthalten (DGUV V52). Bei Minikran,
+              Dachdeckerkran und Anhängerkran bedienen Sie selbst nach einer 30–60-minütigen
+              Einweisung — kein Kranführerschein nötig.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-[14px] text-gray-900 mb-1">Kran ausleihen / Kranverleih</p>
+            <p className="text-[13px] text-gray-500">
+              Inhaltlich identisch mit „Kran mieten" — regional unterschiedlicher Sprachgebrauch
+              (Nord-{COUNTRY_LABEL} bevorzugt „mieten", Süd-{COUNTRY_LABEL} und der Bauhandwerk
+              eher „ausleihen"). Der Kranverleih erfolgt über spezialisierte Vermieter, Bauunternehmen
+              mit eigenem Fuhrpark oder Maschinenringe.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-[14px] text-gray-900 mb-1">Kranvermietung / Kranmiete</p>
+            <p className="text-[13px] text-gray-500">
+              Substantivierte Form, gleiche Bedeutung. Die Kranvermietung ist der gewerbliche Service,
+              die Kranmiete der Vertrag mit der Vermieter-Firma. Branchenüblich rechnet die
+              Kranvermietung netto pro Tag oder Woche ab, mit Mindestmietdauer 4 Stunden bei
+              stundenweiser Abrechnung.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="font-medium text-[14px] text-gray-900 mb-1">Mietkran / Kran zum Leihen</p>
+            <p className="text-[13px] text-gray-500">
+              Der „Mietkran" ist die Maschine selbst, der „Kran zum Leihen" beschreibt das Angebot
+              eines Vermieters. Mietkran-Preise sind nicht verhandlungssache je nach Begriff —
+              vergleichen Sie immer mehrere Angebote von verschiedenen Vermietern, der Preisunterschied
+              liegt bei gleicher Maschine oft bei ±15–20%.
+            </p>
+          </div>
+        </div>
+        <p className="text-[13px] text-gray-500">
+          Sie suchen die vollständige Anbieter-Liste? Auf <Link href="/kranverleih" className="text-blue-600 hover:underline">/kranverleih</Link> {' '}
+          finden Sie alle {anbieterCount} Vermieter in {COUNTRY_LABEL} im direkten Vergleich — unabhängig davon,
+          ob Sie einen Kran mieten, leihen oder ausleihen möchten. Für lokale Anbieter im Umkreis siehe
+          {' '}<Link href="/kran-mieten-in-der-naehe" className="text-blue-600 hover:underline">Kran mieten in der Nähe</Link>.
+        </p>
       </section>
 
       {/* Intro text for SEO */}
