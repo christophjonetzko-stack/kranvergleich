@@ -10,7 +10,7 @@ export interface CraneRatgeberUseCase {
 }
 
 /**
- * Tragkraft class — one row in the size-class matrix.
+ * Tragkraft class, one row in the size-class matrix.
  * Captures the long-tail "autokran 30 tonnen" / "mobilkran 100t" queries
  * without spinning up new thin pages.
  */
@@ -28,14 +28,14 @@ export interface CraneSizeClass {
 }
 
 /**
- * Manufacturer reference — reporting, not endorsement.
+ * Manufacturer reference, reporting, not endorsement.
  * Covers the "liebherr autokran mieten" / "böcker dachdeckerkran" branded queries.
  */
 export interface CraneBrand {
   name: string
   /** Most commonly rented model lines for this brand */
   models: string[]
-  /** Short factual note — market position, country, product family */
+  /** Short factual note, market position, country, product family */
   note?: string
 }
 
@@ -58,7 +58,7 @@ export interface CraneRatgeber {
   tips: string[]
   /** Optional: typical use cases with project size and price examples */
   useCases?: CraneRatgeberUseCase[]
-  /** Tragkraft matrix — one row per typical size class */
+  /** Tragkraft matrix, one row per typical size class */
   sizeClasses?: CraneSizeClass[]
   /** Manufacturer/model reference for branded long-tail */
   brands?: CraneBrand[]
@@ -85,12 +85,12 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Stromanschluss & Beleuchtung: nach Aufwand',
     ],
     tips: [
-      'Faustregel: Baukran lohnt sich ab 3 Monaten Bauzeit oder 15–20 Einzeleinsätzen — bei kürzeren Projekten ist der Autokran günstiger.',
-      'Schnellmontagekrane (bis 30m Hakenhöhe) brauchen oft kein Fundament — spart 1.000–3.000€ und 2–3 Tage Vorlauf.',
+      'Faustregel: Baukran lohnt sich ab 3 Monaten Bauzeit oder 15–20 Einzeleinsätzen, bei kürzeren Projekten ist der Autokran günstiger.',
+      'Schnellmontagekrane (bis 30m Hakenhöhe) brauchen oft kein Fundament, spart 1.000–3.000€ und 2–3 Tage Vorlauf.',
       'Genehmigungen früh beantragen: Sondernutzung & Überschwenk dauern 1–3 Wochen Bearbeitungszeit.',
-      'Kranstandort schon im Bauantrag einzeichnen — spart einen separaten Antrag.',
+      'Kranstandort schon im Bauantrag einzeichnen, spart einen separaten Antrag.',
       'Demontage-Termin rechtzeitig planen, vor allem wenn nach dem Kran noch Außenanlagen oder Pflasterung kommen.',
-      'Bei Bauzeit über 6 Monate verhandeln — Vermieter geben oft 5–15% Rabatt auf den Monatspreis.',
+      'Bei Bauzeit über 6 Monate verhandeln. Vermieter geben oft 5–15% Rabatt auf den Monatspreis.',
     ],
     useCases: [
       {
@@ -115,14 +115,14 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Schnellmontagekran 18–25m (Untendreher)',
         tonnage: '1,5–2,5t max. Traglast',
         reach: '18–25m Hakenhöhe',
-        useCase: 'Einfamilien- und Doppelhäuser, Gartenvillen, kleine Gewerbegebäude — Untendreher mit faltbarem Turm, kein Fundament nötig, Aufbauzeit unter einem Tag',
+        useCase: 'Einfamilien- und Doppelhäuser, Gartenvillen, kleine Gewerbegebäude. Untendreher mit faltbarem Turm, kein Fundament nötig, Aufbauzeit unter einem Tag',
         priceRange: '2.500–4.500€/Monat',
       },
       {
         label: 'Standard-Obendreher 30–40m',
         tonnage: '4–5t am Auslegerende',
         reach: '30–40m Hakenhöhe, 35–45m Ausladung',
-        useCase: 'Mehrfamilienhäuser mit 3 Vollgeschossen, Reihenhauszeilen, Gewerbebauten mittlerer Größe — die am häufigsten gemietete Baukran-Klasse',
+        useCase: 'Mehrfamilienhäuser mit 3 Vollgeschossen, Reihenhauszeilen, Gewerbebauten mittlerer Größe, die am häufigsten gemietete Baukran-Klasse',
         priceRange: '4.000–7.500€/Monat + Montage',
       },
       {
@@ -143,7 +143,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Riesenkran ab 70m',
         tonnage: 'ab 16t am Auslegerende',
         reach: '70–110m Hakenhöhe, 75m+ Ausladung',
-        useCase: 'Hochhäuser ab 25 Geschosse, Kraftwerksbau, Raffinerien, Windkraft-Fundamente — bei dieser Klasse werden Kletterkräne (mitwachsend) eingesetzt',
+        useCase: 'Hochhäuser ab 25 Geschosse, Kraftwerksbau, Raffinerien, Windkraft-Fundamente, bei dieser Klasse werden Kletterkräne (mitwachsend) eingesetzt',
         priceRange: 'ab 22.000€/Monat + Montage',
       },
     ],
@@ -161,7 +161,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'WOLFFKRAN',
         models: ['6031.8 Clear', '7032.12 Clear', '355 B', '630 B'],
-        note: 'Deutscher Premiumhersteller mit Sitz in Heilbronn, spezialisiert auf Obendreher für Großbaustellen. Die Clear-Serie zeichnet sich durch starken Hub und präzise Positionierung aus — oft bei Hochhausprojekten im Einsatz.',
+        note: 'Deutscher Premiumhersteller mit Sitz in Heilbronn, spezialisiert auf Obendreher für Großbaustellen. Die Clear-Serie zeichnet sich durch starken Hub und präzise Positionierung aus, oft bei Hochhausprojekten im Einsatz.',
       },
       {
         name: 'Wilbert',
@@ -173,7 +173,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Autokran',
         slug: 'autokran-mieten',
-        whenBetter: 'Bei Projekten unter 3 Monaten oder wenn täglich nur 1–2 Hebeeinsätze nötig sind. Autokran kommt, erledigt den Einsatz, fährt wieder ab — keine Montage, keine Genehmigung. Ab 15–20 Einzeleinsätzen lohnt sich der Baukran wirtschaftlich.',
+        whenBetter: 'Bei Projekten unter 3 Monaten oder wenn täglich nur 1–2 Hebeeinsätze nötig sind. Autokran kommt, erledigt den Einsatz, fährt wieder ab, keine Montage, keine Genehmigung. Ab 15–20 Einzeleinsätzen lohnt sich der Baukran wirtschaftlich.',
       },
       {
         name: 'Mobilkran',
@@ -210,12 +210,12 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Verlängerung Mietdauer: nach Tagessatz',
     ],
     tips: [
-      'Kein Kranführerschein nötig — eine 30-60-minütige Einweisung gemäß DGUV Vorschrift 52 reicht aus. Mindestalter: 18 Jahre.',
-      'Für Dacharbeiten ist der Dachdeckerkran 60–70% günstiger als ein Autokran — wählen Sie ihn immer, wenn Hakenhöhe bis 30m reicht.',
-      'Wochenmiete spart 15–30% gegenüber 7 Tagessätzen — bei Sanierungen über 5 Tage sofort fragen.',
-      'Stellplatz prüfen: ein Dachdeckerkran braucht nur ca. 2,5×6m an der Straße — passt auch in enge Wohngebiete.',
-      'Aufbauzeit nur 15–30 Minuten — der Kran kann am Morgen aufgestellt und abends abgebaut werden, falls Stellplatz knapp ist.',
-      'Bei höheren Gebäuden (über 9 Stockwerke / 30m) brauchen Sie stattdessen einen Autokran — Dachdeckerkran reicht nicht.',
+      'Kein Kranführerschein nötig, eine 30-60-minütige Einweisung gemäß DGUV Vorschrift 52 reicht aus. Mindestalter: 18 Jahre.',
+      'Für Dacharbeiten ist der Dachdeckerkran 60–70% günstiger als ein Autokran, wählen Sie ihn immer, wenn Hakenhöhe bis 30m reicht.',
+      'Wochenmiete spart 15–30% gegenüber 7 Tagessätzen, bei Sanierungen über 5 Tage sofort fragen.',
+      'Stellplatz prüfen: ein Dachdeckerkran braucht nur ca. 2,5×6m an der Straße, passt auch in enge Wohngebiete.',
+      'Aufbauzeit nur 15–30 Minuten, der Kran kann am Morgen aufgestellt und abends abgebaut werden, falls Stellplatz knapp ist.',
+      'Bei höheren Gebäuden (über 9 Stockwerke / 30m) brauchen Sie stattdessen einen Autokran. Dachdeckerkran reicht nicht.',
     ],
     useCases: [
       {
@@ -240,14 +240,14 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Kompakt-Dachdeckerkran bis 10m',
         tonnage: 'bis 500kg',
         reach: '8–10m Hakenhöhe',
-        useCase: 'Garagen, Carports, niedrige Anbauten, Gartenhäuser — kleinste Klasse für Tagesprojekte auf Einzelobjekten',
+        useCase: 'Garagen, Carports, niedrige Anbauten, Gartenhäuser, kleinste Klasse für Tagesprojekte auf Einzelobjekten',
         priceRange: '120–220€/Tag',
       },
       {
         label: 'Standard-Dachdeckerkran 15–18m',
         tonnage: 'bis 800kg',
         reach: '15–18m Hakenhöhe',
-        useCase: 'Einfamilienhaus mit 1–2 Vollgeschossen und Satteldach — die am häufigsten gemietete Klasse für Dachsanierung und PV-Montage',
+        useCase: 'Einfamilienhaus mit 1–2 Vollgeschossen und Satteldach, die am häufigsten gemietete Klasse für Dachsanierung und PV-Montage',
         priceRange: '200–320€/Tag',
       },
       {
@@ -261,14 +261,14 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Hochleistungsklasse 27–30m',
         tonnage: 'bis 1.500kg',
         reach: '27–30m Hakenhöhe',
-        useCase: 'Mehrfamilienhäuser mit 4–5 Vollgeschossen, ältere Gründerzeithäuser, Dachsanierung im städtischen Bestand — die Obergrenze des klassischen Dachdeckerkran-Segments',
+        useCase: 'Mehrfamilienhäuser mit 4–5 Vollgeschossen, ältere Gründerzeithäuser, Dachsanierung im städtischen Bestand, die Obergrenze des klassischen Dachdeckerkran-Segments',
         priceRange: '380–520€/Tag',
       },
       {
         label: 'Profi-Klasse ab 32m',
         tonnage: '1.500–2.500kg',
         reach: '32–40m Hakenhöhe',
-        useCase: 'Hohe Mehrfamilienhäuser, Gewerbeimmobilien, Schornstein- und Kirchendacharbeiten. Ab dieser Klasse ist ein Autokran oft wirtschaftlicher — bitte im Einzelfall vergleichen',
+        useCase: 'Hohe Mehrfamilienhäuser, Gewerbeimmobilien, Schornstein- und Kirchendacharbeiten. Ab dieser Klasse ist ein Autokran oft wirtschaftlicher, bitte im Einzelfall vergleichen',
         priceRange: '450–700€/Tag',
       },
     ],
@@ -281,7 +281,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Klaas',
         models: ['K 27', 'K 35', 'K 42', 'K 1550'],
-        note: 'Familienunternehmen aus Ascheberg (NRW). Die K-Serie bietet LKW-Aufbaukrane und Anhängerkrane mit 27–42m Hakenhöhe und gilt als direkte Alternative zu Böcker — viele Handwerker wechseln nach Modellreihe, nicht nach Hersteller.',
+        note: 'Familienunternehmen aus Ascheberg (NRW). Die K-Serie bietet LKW-Aufbaukrane und Anhängerkrane mit 27–42m Hakenhöhe und gilt als direkte Alternative zu Böcker, viele Handwerker wechseln nach Modellreihe, nicht nach Hersteller.',
       },
       {
         name: 'Paus',
@@ -291,7 +291,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'GEDA',
         models: ['GEDA 500 Z/ZP', 'GEDA 200 Z', 'GEDA Solar Lift'],
-        note: 'Hersteller aus Asbach-Bäumenheim (Bayern). Bekannt für Schrägaufzüge und Solarlifte bis 14m Höhe — günstigste Alternative für reinen Materialtransport ohne Schwenkarm, oft unter 100€/Tag.',
+        note: 'Hersteller aus Asbach-Bäumenheim (Bayern). Bekannt für Schrägaufzüge und Solarlifte bis 14m Höhe, günstigste Alternative für reinen Materialtransport ohne Schwenkarm, oft unter 100€/Tag.',
       },
     ],
     alternatives: [
@@ -303,17 +303,17 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Anhängerkran',
         slug: 'anhaengerkran-mieten',
-        whenBetter: 'Bei kurzen Einsätzen mit eigenem Zugfahrzeug und Anhängerkupplung. Der Anhängerkran ist günstiger in der Miete und kann oft ohne CE-Führerschein gezogen werden — praktisch für selbstnutzende Bauherren.',
+        whenBetter: 'Bei kurzen Einsätzen mit eigenem Zugfahrzeug und Anhängerkupplung. Der Anhängerkran ist günstiger in der Miete und kann oft ohne CE-Führerschein gezogen werden, praktisch für selbstnutzende Bauherren.',
       },
       {
         name: 'Minikran',
         slug: 'minikran-mieten',
-        whenBetter: 'Bei Innenhöfen, Durchfahrten unter 2m oder Einsätzen im Gebäudeinneren. Ein Dachdeckerkran braucht ca. 2,5×6m freie Stellfläche an der Straße — wo das nicht geht, ist ein Spinnenkran die einzige Option.',
+        whenBetter: 'Bei Innenhöfen, Durchfahrten unter 2m oder Einsätzen im Gebäudeinneren. Ein Dachdeckerkran braucht ca. 2,5×6m freie Stellfläche an der Straße, wo das nicht geht, ist ein Spinnenkran die einzige Option.',
       },
       {
         name: 'Ladekran',
         slug: 'ladekran-mieten',
-        whenBetter: 'Wenn Material nur vom LKW abgeladen und am Boden abgesetzt werden soll — ohne Präzisionshub aufs Dach. Der Ladekran ist fest am Transport-LKW montiert und spart die separate Kran-Anmietung bei reiner Anlieferung.',
+        whenBetter: 'Wenn Material nur vom LKW abgeladen und am Boden abgesetzt werden soll, ohne Präzisionshub aufs Dach. Der Ladekran ist fest am Transport-LKW montiert und spart die separate Kran-Anmietung bei reiner Anlieferung.',
       },
     ],
   },
@@ -324,42 +324,42 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Stadtkran 25–40t',
         tonnage: '25–40t',
         reach: '30–40m',
-        useCase: 'Kompakte 3-Achser für Innenstadtbaustellen, enge Zufahrten, kurze Standzeiten — die kleinste Mobilkran-Klasse, oft als Autokran bezeichnet',
+        useCase: 'Kompakte 3-Achser für Innenstadtbaustellen, enge Zufahrten, kurze Standzeiten, die kleinste Mobilkran-Klasse, oft als Autokran bezeichnet',
         priceRange: '500–800€/Tag',
       },
       {
         label: 'Standard-Mobilkran 55–80t',
         tonnage: '55–80t',
         reach: '40–55m',
-        useCase: 'Standardmontagen in Gewerbe und Industrie — 4-Achser, All-Terrain-Fahrwerk, der häufigste Mobilkran im mittleren Segment',
+        useCase: 'Standardmontagen in Gewerbe und Industrie, 4-Achser, All-Terrain-Fahrwerk, der häufigste Mobilkran im mittleren Segment',
         priceRange: '900–1.400€/Tag',
       },
       {
         label: 'Mittelschwer 100–130t',
         tonnage: '100–130t',
         reach: '55–70m',
-        useCase: 'Industriemontage, Betonfertigteile, Brückenteile, Mittelspannungs-Trafos — 5-Achser, ab hier typische Grenze zwischen Autokran- und Mobilkran-Miete',
+        useCase: 'Industriemontage, Betonfertigteile, Brückenteile, Mittelspannungs-Trafos, 5-Achser, ab hier typische Grenze zwischen Autokran- und Mobilkran-Miete',
         priceRange: '1.400–2.200€/Tag',
       },
       {
         label: 'Schwer 200–250t',
         tonnage: '200–250t',
         reach: '70–85m',
-        useCase: 'Stahlbauhallen, Hochregallager, kleine Windkraftanlagen, Klärwerkskomponenten — 5-6-Achser, bei Anfahrt oft Schwertransportgenehmigung nötig',
+        useCase: 'Stahlbauhallen, Hochregallager, kleine Windkraftanlagen, Klärwerkskomponenten, 5-6-Achser, bei Anfahrt oft Schwertransportgenehmigung nötig',
         priceRange: '2.200–3.500€/Tag',
       },
       {
         label: 'Großkran 300–400t',
         tonnage: '300–400t',
         reach: '80–100m',
-        useCase: 'Windkraftanlagen bis 120m Nabenhöhe, Brückenträger, Petrochemie-Komponenten — 6-7-Achser, mehrtägige Projekte mit eigenem Aufbau-Team',
+        useCase: 'Windkraftanlagen bis 120m Nabenhöhe, Brückenträger, Petrochemie-Komponenten, 6-7-Achser, mehrtägige Projekte mit eigenem Aufbau-Team',
         priceRange: '3.500–6.000€/Tag',
       },
       {
         label: 'Schwerstkran ab 500t',
         tonnage: 'ab 500t',
         reach: '100m und mehr',
-        useCase: 'Megastruktur-Montage: Offshore-Vorbereitung, Raffinerie-Kolonnen, 160m+ Windkraft-Onshore — 7-9-Achser, oberhalb von ~500t oft Raupenkran wirtschaftlicher',
+        useCase: 'Megastruktur-Montage: Offshore-Vorbereitung, Raffinerie-Kolonnen, 160m+ Windkraft-Onshore, 7-9-Achser, oberhalb von ~500t oft Raupenkran wirtschaftlicher',
         priceRange: 'ab 6.000€/Tag',
       },
     ],
@@ -389,17 +389,17 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Autokran',
         slug: 'autokran-mieten',
-        whenBetter: 'Unter 100t Tragkraft oder bei kürzeren Projekten mit einfacher Anfahrt auf befestigten Straßen. Autokran und Mobilkran werden oft synonym verwendet — entscheidend sind Tragkraft und Fahrwerk, nicht die Bezeichnung.',
+        whenBetter: 'Unter 100t Tragkraft oder bei kürzeren Projekten mit einfacher Anfahrt auf befestigten Straßen. Autokran und Mobilkran werden oft synonym verwendet, entscheidend sind Tragkraft und Fahrwerk, nicht die Bezeichnung.',
       },
       {
         name: 'Raupenkran',
         slug: 'raupenkran-mieten',
-        whenBetter: 'Ab 500t Tragkraft, auf weichem Untergrund (Moor, aufgeschütteter Bauboden) oder wenn der Kran die Last fahrend versetzen muss. Raupenkrane sind bei Langzeit-Projekten wirtschaftlicher — kein täglicher An- und Abbau.',
+        whenBetter: 'Ab 500t Tragkraft, auf weichem Untergrund (Moor, aufgeschütteter Bauboden) oder wenn der Kran die Last fahrend versetzen muss. Raupenkrane sind bei Langzeit-Projekten wirtschaftlicher, kein täglicher An- und Abbau.',
       },
       {
         name: 'Minikran',
         slug: 'minikran-mieten',
-        whenBetter: 'Bei Innenhöfen, Durchfahrten unter 2m oder Einsätzen im Gebäudeinneren. Ein Mobilkran ab 25t benötigt mindestens 3×8m Stellfläche und 3m Durchfahrtshöhe — in der Stadt oft nicht vorhanden.',
+        whenBetter: 'Bei Innenhöfen, Durchfahrten unter 2m oder Einsätzen im Gebäudeinneren. Ein Mobilkran ab 25t benötigt mindestens 3×8m Stellfläche und 3m Durchfahrtshöhe, in der Stadt oft nicht vorhanden.',
       },
       {
         name: 'Dachdeckerkran',
@@ -424,12 +424,12 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Sondertraversen / Spezialanschlagmittel: nach Aufwand',
     ],
     tips: [
-      'Holen Sie immer mindestens 3 Angebote ein — bei Mobilkranen schwanken die Preise zwischen Anbietern um 30–50%, vor allem durch unterschiedliche Anfahrtswege.',
-      'Anfahrt ist der größte versteckte Kostenfaktor — wählen Sie einen Vermieter in Ihrer Region (max. 100km Entfernung).',
+      'Holen Sie immer mindestens 3 Angebote ein, bei Mobilkranen schwanken die Preise zwischen Anbietern um 30–50%, vor allem durch unterschiedliche Anfahrtswege.',
+      'Anfahrt ist der größte versteckte Kostenfaktor, wählen Sie einen Vermieter in Ihrer Region (max. 100km Entfernung).',
       'Faustregel Tragkraft: bis 100t reicht ein Autokran, 100–500t je nach Verfügbarkeit, ab 500t ist der Mobilkran die einzige Option.',
-      'Großkrane (ab 250t) 4–8 Wochen im Voraus buchen — kurzfristig sind sie kaum verfügbar.',
+      'Großkrane (ab 250t) 4–8 Wochen im Voraus buchen, kurzfristig sind sie kaum verfügbar.',
       'Hochsaison März–Oktober: zusätzliche 2–4 Wochen Vorlauf einplanen.',
-      'Bei mehrtägigem Einsatz Wochenmiete vereinbaren — spart 20–30% gegenüber Tagesmiete.',
+      'Bei mehrtägigem Einsatz Wochenmiete vereinbaren, spart 20–30% gegenüber Tagesmiete.',
     ],
     useCases: [
       {
@@ -446,7 +446,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       },
       {
         title: 'Kraftwerke & Raffinerien',
-        description: 'Kessel, Kolonnen, Reaktorbehälter heben — höchste Tragkraftanforderungen. Typisch: 500–1.000t+, langzeit, oft mit mehreren Kränen im Tandem.',
+        description: 'Kessel, Kolonnen, Reaktorbehälter heben, höchste Tragkraftanforderungen. Typisch: 500–1.000t+, langzeit, oft mit mehreren Kränen im Tandem.',
       },
     ],
   },
@@ -467,11 +467,11 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Straßensperrung / Sondernutzungsgenehmigung: 100–500€',
     ],
     tips: [
-      'Mindestmietdauer beträgt bei den meisten Anbietern 4 Stunden — kürzere Einsätze sind selten möglich.',
-      'Planen Sie Material und Einbauort vorab — jede Wartestunde kostet 80–150€ extra.',
+      'Mindestmietdauer beträgt bei den meisten Anbietern 4 Stunden, kürzere Einsätze sind selten möglich.',
+      'Planen Sie Material und Einbauort vorab, jede Wartestunde kostet 80–150€ extra.',
       'Bei mehrtägigen Einsätzen lohnt sich eine Wochenmiete (15–25% Ersparnis gegenüber Tagesmiete).',
-      'Vergleichen Sie 3+ Anbieter — Preise schwanken regional um bis zu 30%.',
-      'Frühzeitig buchen (1–2 Wochen Vorlauf) — kurzfristige Buchungen haben Aufpreis.',
+      'Vergleichen Sie 3+ Anbieter. Preise schwanken regional um bis zu 30%.',
+      'Frühzeitig buchen (1–2 Wochen Vorlauf), kurzfristige Buchungen haben Aufpreis.',
     ],
     useCases: [
       {
@@ -503,7 +503,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Standard-Autokran 25–35t',
         tonnage: '25–35t',
         reach: '30–35m',
-        useCase: 'Dachstuhl bei Ein- und Mehrfamilienhäusern, Hallenbau, Klimaanlagen auf Flachdächern — die am häufigsten vermietete Klasse',
+        useCase: 'Dachstuhl bei Ein- und Mehrfamilienhäusern, Hallenbau, Klimaanlagen auf Flachdächern, die am häufigsten vermietete Klasse',
         priceRange: '500–800€/Tag',
       },
       {
@@ -531,7 +531,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Großkran ab 250t',
         tonnage: 'ab 250t',
         reach: '80m und mehr',
-        useCase: 'Windkraftanlagen, Schwerlastmontage, Brückenträger, Stadionüberdachungen — meist mehrtägige Projekte',
+        useCase: 'Windkraftanlagen, Schwerlastmontage, Brückenträger, Stadionüberdachungen, meist mehrtägige Projekte',
         priceRange: 'ab 3.000€/Tag',
       },
     ],
@@ -561,7 +561,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Mobilkran',
         slug: 'mobilkran-mieten',
-        whenBetter: 'Ab 100t Tragkraft oder bei echten All-Terrain-Einsätzen mit langen Anfahrten über unbefestigte Wege. In der Vermietpraxis werden die Begriffe oft synonym verwendet — entscheidend sind Tragkraft und Fahrwerkstyp, nicht die Bezeichnung.',
+        whenBetter: 'Ab 100t Tragkraft oder bei echten All-Terrain-Einsätzen mit langen Anfahrten über unbefestigte Wege. In der Vermietpraxis werden die Begriffe oft synonym verwendet, entscheidend sind Tragkraft und Fahrwerkstyp, nicht die Bezeichnung.',
       },
       {
         name: 'Raupenkran',
@@ -571,7 +571,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Dachdeckerkran',
         slug: 'dachdeckerkran-mieten',
-        whenBetter: 'Bei reinen Dacharbeiten bis 30m Hakenhöhe. Deutlich günstiger (60–70% Ersparnis) und benötigt keinen Kranführerschein — eine 30-minütige Einweisung reicht.',
+        whenBetter: 'Bei reinen Dacharbeiten bis 30m Hakenhöhe. Deutlich günstiger (60–70% Ersparnis) und benötigt keinen Kranführerschein, eine 30-minütige Einweisung reicht.',
       },
       {
         name: 'Minikran',
@@ -581,7 +581,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       {
         name: 'Ladekran',
         slug: 'ladekran-mieten',
-        whenBetter: 'Bei reinem Transport mit Kurzeinsatz am Ziel — Paletten vom LKW abladen, Container be- und entladen. Der Ladekran ist fest am LKW montiert und im Transportpreis inkludiert.',
+        whenBetter: 'Bei reinem Transport mit Kurzeinsatz am Ziel. Paletten vom LKW abladen, Container be- und entladen. Der Ladekran ist fest am LKW montiert und im Transportpreis inkludiert.',
       },
     ],
   },
@@ -603,12 +603,12 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Stromanschluss-Adapter bei reinen Elektromodellen (Innenraum-Einsätze)',
     ],
     tips: [
-      'Türbreite vor der Buchung messen — die meisten Minikrane brauchen mindestens 80cm Durchfahrbreite, einige Spider-Crane-Modelle passen ab 60cm.',
-      'Für Innenräume ein Elektro-Akku-Modell wählen — keine Abgase, deutlich leiser (unter 65 dB), kein Stromkabel nötig.',
+      'Türbreite vor der Buchung messen, die meisten Minikrane brauchen mindestens 80cm Durchfahrbreite, einige Spider-Crane-Modelle passen ab 60cm.',
+      'Für Innenräume ein Elektro-Akku-Modell wählen, keine Abgase, deutlich leiser (unter 65 dB), kein Stromkabel nötig.',
       'Raupen-Minikran (Spinnenkran) vs LKW-Minikran: Raupen für weichen Untergrund und engste Zufahrten, LKW-Basis für direkten Straßeneinsatz.',
-      'Tragkraft IMMER im Zusammenhang mit der Ausladung prüfen — bei maximaler Reichweite sinkt die Nennlast oft auf 20–30%.',
-      'Für Glasmontage gezielt nach Modellen mit Vakuumsauger-Vorbereitung fragen — nicht jeder Minikran hat die Halterung.',
-      'Wochenmiete ab 3 Einsatztagen rechnet sich fast immer — 15–25% Ersparnis gegenüber 3 Tagesmieten.',
+      'Tragkraft IMMER im Zusammenhang mit der Ausladung prüfen, bei maximaler Reichweite sinkt die Nennlast oft auf 20–30%.',
+      'Für Glasmontage gezielt nach Modellen mit Vakuumsauger-Vorbereitung fragen, nicht jeder Minikran hat die Halterung.',
+      'Wochenmiete ab 3 Einsatztagen rechnet sich fast immer, 15–25% Ersparnis gegenüber 3 Tagesmieten.',
     ],
     useCases: [
       {
@@ -625,7 +625,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       },
       {
         title: 'Hinterhöfe & enge Zufahrten',
-        description: 'Projekte, wo ein Autokran nicht rankommt — Baumaterial in Innenhöfe, Pools, Gartenhäuser, Skulpturen. Typisch: 1–3 Tage, 250–400€/Tag.',
+        description: 'Projekte, wo ein Autokran nicht rankommt. Baumaterial in Innenhöfe, Pools, Gartenhäuser, Skulpturen. Typisch: 1–3 Tage, 250–400€/Tag.',
       },
     ],
     sizeClasses: [
@@ -633,28 +633,28 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Mini-Spider bis 1t',
         tonnage: 'bis 1t',
         reach: '8–12m',
-        useCase: 'Innenräume mit Türen ab 60cm Breite, Treppenhäuser, Kirchen, Museen — die kompakteste Klasse, oft als Elektro-Akku-Modell ohne Abgase',
+        useCase: 'Innenräume mit Türen ab 60cm Breite, Treppenhäuser, Kirchen, Museen, die kompakteste Klasse, oft als Elektro-Akku-Modell ohne Abgase',
         priceRange: '200–350€/Tag',
       },
       {
         label: 'Kompakt 1,5–2t',
         tonnage: '1,5–2t',
         reach: '12–16m',
-        useCase: 'Glasmontage, Schaufenster, Klimaanlagen auf Flachdächern bis 12m, Innenhöfe mit normaler Türbreite — die am häufigsten vermietete Klasse',
+        useCase: 'Glasmontage, Schaufenster, Klimaanlagen auf Flachdächern bis 12m, Innenhöfe mit normaler Türbreite, die am häufigsten vermietete Klasse',
         priceRange: '280–450€/Tag',
       },
       {
         label: 'Mittelklasse 2,5–3,5t',
         tonnage: '2,5–3,5t',
         reach: '15–20m',
-        useCase: 'Größere PV-Module, Heizkessel in der Altbau-Sanierung, Grabsteine, Gartenelemente über Hausmauern — Spinnenkran mit Raupenfahrwerk',
+        useCase: 'Größere PV-Module, Heizkessel in der Altbau-Sanierung, Grabsteine, Gartenelemente über Hausmauern. Spinnenkran mit Raupenfahrwerk',
         priceRange: '400–600€/Tag',
       },
       {
         label: 'Schwer 4–6t',
         tonnage: '4–6t',
         reach: '20–25m',
-        useCase: 'Dachfenster auf Mehrfamilienhäusern, schwere Edelstahlskulpturen, Innenraummontage in Industriehallen — Übergang zum Midikran',
+        useCase: 'Dachfenster auf Mehrfamilienhäusern, schwere Edelstahlskulpturen, Innenraummontage in Industriehallen. Übergang zum Midikran',
         priceRange: '550–850€/Tag',
       },
       {
@@ -685,12 +685,12 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Assist-Kran für den Aufbau des Raupenkrans: 2.000–8.000€',
     ],
     tips: [
-      'Raupenkrane 6–12 Wochen im Voraus buchen — Verfügbarkeit ist extrem knapp, besonders bei Modellen über 500t.',
-      'Tragkraftdiagramm (Lastmoment) genau prüfen — die Nennlast gilt nur bei kurzer Ausladung, bei voller Reichweite oft nur 15–25%.',
-      'Baugrund-Anforderung vom Vermieter schriftlich bestätigen lassen — Raupenkrane brauchen je nach Tragkraft 1–3 kg/cm² Traglast.',
-      'Unter 500t Nutzlast oft Mobilkran günstiger — keine wochenlange Transport- und Aufbaulogistik.',
-      'Aufbauzeit einkalkulieren — 2–5 Tage allein für Montage, die nicht zur Produktivzeit zählen.',
-      'Tandemhub mit zwei kleineren Kranen erwägen statt einem Riesen-Raupenkran — oft günstiger und flexibler.',
+      'Raupenkrane 6–12 Wochen im Voraus buchen. Verfügbarkeit ist extrem knapp, besonders bei Modellen über 500t.',
+      'Tragkraftdiagramm (Lastmoment) genau prüfen, die Nennlast gilt nur bei kurzer Ausladung, bei voller Reichweite oft nur 15–25%.',
+      'Baugrund-Anforderung vom Vermieter schriftlich bestätigen lassen. Raupenkrane brauchen je nach Tragkraft 1–3 kg/cm² Traglast.',
+      'Unter 500t Nutzlast oft Mobilkran günstiger, keine wochenlange Transport- und Aufbaulogistik.',
+      'Aufbauzeit einkalkulieren, 2–5 Tage allein für Montage, die nicht zur Produktivzeit zählen.',
+      'Tandemhub mit zwei kleineren Kranen erwägen statt einem Riesen-Raupenkran, oft günstiger und flexibler.',
     ],
     useCases: [
       {
@@ -715,42 +715,42 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Kompakt-Raupenkran 30–50t',
         tonnage: '30–50t',
         reach: '30–45m',
-        useCase: 'Telekran auf Raupenfahrwerk für mittlere Baustellen mit weichem Untergrund — wirtschaftliche Alternative zum Mobilkran bei längeren Standzeiten',
+        useCase: 'Telekran auf Raupenfahrwerk für mittlere Baustellen mit weichem Untergrund, wirtschaftliche Alternative zum Mobilkran bei längeren Standzeiten',
         priceRange: '1.200–1.800€/Tag',
       },
       {
         label: 'Standard-Raupenkran 80–150t',
         tonnage: '80–150t',
         reach: '50–75m',
-        useCase: 'Industrieanlagen-Montage, Tankbau, Wohnungsbau auf aufgeschüttetem Bauboden — die gängigste Klasse, Auf- und Abbau in 1–2 Tagen',
+        useCase: 'Industrieanlagen-Montage, Tankbau, Wohnungsbau auf aufgeschüttetem Bauboden, die gängigste Klasse, Auf- und Abbau in 1–2 Tagen',
         priceRange: '1.800–3.000€/Tag',
       },
       {
         label: 'Schwerer Raupenkran 200–350t',
         tonnage: '200–350t',
         reach: '75–110m',
-        useCase: 'Windkraftanlagen Onshore bis 120m Nabenhöhe, Brückenelemente, Stahlhallenbau — Gittermast-Ausleger statt Teleskop für größere Reichweiten',
+        useCase: 'Windkraftanlagen Onshore bis 120m Nabenhöhe, Brückenelemente, Stahlhallenbau. Gittermast-Ausleger statt Teleskop für größere Reichweiten',
         priceRange: '3.000–5.500€/Tag',
       },
       {
         label: 'Großraupe 500–800t',
         tonnage: '500–800t',
         reach: '110–140m',
-        useCase: 'Windkraft 130–160m Onshore, Brückenpfeiler, Kraftwerks-Komponenten — Aufbau dauert 3–5 Tage, oft mit Assist-Kran und mehreren Schwertransporten',
+        useCase: 'Windkraft 130–160m Onshore, Brückenpfeiler, Kraftwerks-Komponenten. Aufbau dauert 3–5 Tage, oft mit Assist-Kran und mehreren Schwertransporten',
         priceRange: '5.500–9.000€/Tag',
       },
       {
         label: 'Riesenraupe 1.000–1.500t',
         tonnage: '1.000–1.500t',
         reach: '140–180m',
-        useCase: 'Petrochemie und Raffinerien: Reaktorbehälter, Kolonnen, Großmodul-Montage — Superlift-System Pflicht, Aufbauzeit oft eine Woche',
+        useCase: 'Petrochemie und Raffinerien: Reaktorbehälter, Kolonnen, Großmodul-Montage. Superlift-System Pflicht, Aufbauzeit oft eine Woche',
         priceRange: '9.000–14.000€/Tag',
       },
       {
         label: 'Schwerstraupe ab 1.500t',
         tonnage: 'ab 1.500t',
         reach: '180m und mehr',
-        useCase: 'Offshore-Vorbereitung an Land, LNG-Terminals, Megastrukturen — die seltensten Krane in Deutschland, Österreich und der Schweiz, oft nur eine Handvoll Exemplare verfügbar',
+        useCase: 'Offshore-Vorbereitung an Land, LNG-Terminals, Megastrukturen, die seltensten Krane in Deutschland, Österreich und der Schweiz, oft nur eine Handvoll Exemplare verfügbar',
         priceRange: 'ab 14.000€/Tag',
       },
     ],
@@ -758,7 +758,7 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
 
   'anhaengerkran-mieten': {
     included: [
-      'Transport auf der PKW-Anhängerkupplung — Sie fahren den Kran selbst',
+      'Transport auf der PKW-Anhängerkupplung. Sie fahren den Kran selbst',
       'Einweisung durch den Vermieter (ca. 30 Minuten)',
       'Funkfernsteuerung für Bedienung vom Boden',
       'Kurbelstützen (manuell oder hydraulisch)',
@@ -774,12 +774,12 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Wochenend-Zuschlag: 10–20%',
     ],
     tips: [
-      'Anhängerkupplung Ihres PKW prüfen — Zugkraft muss zum Anhängerkran-Gewicht passen (meist 1.300–3.500 kg Gesamtgewicht).',
-      'Führerschein Klasse BE nötig bei Anhängerkranen über 750 kg — der normale Klasse-B-Schein reicht dafür NICHT aus.',
-      'Aufbauzeit nur 15–20 Minuten — ideal für kurze Einsätze, kann mehrmals am Tag versetzt werden.',
-      'Hakenhöhe und Ausladung vor der Buchung prüfen — typisch 10–25m Höhe, max. 1,5t Tragkraft.',
-      'Bei Dacharbeiten über 15m Höhe lieber einen Dachdeckerkran wählen — deutlich größere Reichweite.',
-      'Rückgabezeiten klären — manche Vermieter haben 24/7-Rückgabeboxen, andere nur Werktagsöffnungszeiten.',
+      'Anhängerkupplung Ihres PKW prüfen. Zugkraft muss zum Anhängerkran-Gewicht passen (meist 1.300–3.500 kg Gesamtgewicht).',
+      'Führerschein Klasse BE nötig bei Anhängerkranen über 750 kg, der normale Klasse-B-Schein reicht dafür NICHT aus.',
+      'Aufbauzeit nur 15–20 Minuten, ideal für kurze Einsätze, kann mehrmals am Tag versetzt werden.',
+      'Hakenhöhe und Ausladung vor der Buchung prüfen, typisch 10–25m Höhe, max. 1,5t Tragkraft.',
+      'Bei Dacharbeiten über 15m Höhe lieber einen Dachdeckerkran wählen, deutlich größere Reichweite.',
+      'Rückgabezeiten klären, manche Vermieter haben 24/7-Rückgabeboxen, andere nur Werktagsöffnungszeiten.',
     ],
     useCases: [
       {
@@ -804,28 +804,28 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Mini-Anhängerkran bis 500kg',
         tonnage: 'bis 500kg',
         reach: '8–12m',
-        useCase: 'Garten, Pflanztröge, leichte Baumaterialien — Anhängerkupplung mit Führerschein Klasse B ausreichend (Gesamtgewicht unter 750 kg)',
+        useCase: 'Garten, Pflanztröge, leichte Baumaterialien. Anhängerkupplung mit Führerschein Klasse B ausreichend (Gesamtgewicht unter 750 kg)',
         priceRange: '120–200€/Tag',
       },
       {
         label: 'Standard 800kg–1t',
         tonnage: '800kg–1t',
         reach: '12–16m',
-        useCase: 'Dachziegel, Lattung, Solarmodule für Einfamilienhäuser, Grabsteine bis 800kg — Führerschein BE erforderlich, häufigste Vermietklasse',
+        useCase: 'Dachziegel, Lattung, Solarmodule für Einfamilienhäuser, Grabsteine bis 800kg. Führerschein BE erforderlich, häufigste Vermietklasse',
         priceRange: '180–280€/Tag',
       },
       {
         label: 'Mittelklasse 1,2–1,5t',
         tonnage: '1,2–1,5t',
         reach: '15–20m',
-        useCase: 'Dacharbeiten auf 2-3-stöckigen Gebäuden, schwere Grabsteine, Findlinge im Garten- und Landschaftsbau — Hauptbereich für Dachdecker-Kleinbetriebe',
+        useCase: 'Dacharbeiten auf 2-3-stöckigen Gebäuden, schwere Grabsteine, Findlinge im Garten- und Landschaftsbau. Hauptbereich für Dachdecker-Kleinbetriebe',
         priceRange: '250–400€/Tag',
       },
       {
         label: 'Schwer 1,5–2t',
         tonnage: '1,5–2t',
         reach: '18–24m',
-        useCase: 'Dacharbeiten an Mehrfamilienhäusern, Carports, schwere Pflanztröge auf Dachterrassen — oberste Klasse vor dem Übergang zum Dachdeckerkran',
+        useCase: 'Dacharbeiten an Mehrfamilienhäusern, Carports, schwere Pflanztröge auf Dachterrassen, oberste Klasse vor dem Übergang zum Dachdeckerkran',
         priceRange: '350–500€/Tag',
       },
     ],
@@ -848,16 +848,16 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
       'Entsorgung / Abtransport von Material: nach Aufwand',
     ],
     tips: [
-      'Tragkraft sinkt dramatisch mit der Ausladung — bei max. Reichweite oft nur 1/3 der Nennlast. Vorher Lastdiagramm prüfen.',
-      'Die gängigen Marken (Hiab, Palfinger, Atlas, Fassi) haben ähnliche Preisniveaus — bei der Auswahl eher auf Reichweite achten.',
+      'Tragkraft sinkt dramatisch mit der Ausladung, bei max. Reichweite oft nur 1/3 der Nennlast. Vorher Lastdiagramm prüfen.',
+      'Die gängigen Marken (Hiab, Palfinger, Atlas, Fassi) haben ähnliche Preisniveaus, bei der Auswahl eher auf Reichweite achten.',
       'Ladekran + LKW als Komplettpaket ist fast immer günstiger als LKW und separater Kran einzeln zu buchen.',
       'Knickarm-Reichweite prüfen: 5m reichen oft nicht, um mittig auf der Ladefläche abzusetzen. 8–10m sind typisch empfehlenswert.',
-      'Bei regelmäßigem Bedarf (Speditionen, Baustoffhandel) lohnt Langzeitmiete — 15–30% Rabatt ab einem Monat.',
-      'Funkfernsteuerung gegen Aufpreis wert — der Fahrer kann neben der Last stehen und hat bessere Sicht als aus der Kabine.',
+      'Bei regelmäßigem Bedarf (Speditionen, Baustoffhandel) lohnt Langzeitmiete, 15–30% Rabatt ab einem Monat.',
+      'Funkfernsteuerung gegen Aufpreis wert, der Fahrer kann neben der Last stehen und hat bessere Sicht als aus der Kabine.',
     ],
     useCases: [
       {
-        title: 'Baustoffhandel — Paletten auf die Baustelle',
+        title: 'Baustoffhandel. Paletten auf die Baustelle',
         description: 'Ziegel, Zementpaletten, Dachziegel, Pflastersteine direkt von der Ladefläche auf die Baustelle heben. Typisch: halber Tag, 300–500€.',
       },
       {
@@ -878,35 +878,35 @@ export const craneRatgeber: Record<string, CraneRatgeber> = {
         label: 'Kompakt-Ladekran bis 2t',
         tonnage: 'bis 2t',
         reach: '5–8m',
-        useCase: 'Kleinere Paletten, Werkzeugkisten, Gartenmaterial — typisch am 7,5-Tonner-LKW montiert, Standardausstattung im Handwerker-Segment (3–6 mt Lastmoment)',
+        useCase: 'Kleinere Paletten, Werkzeugkisten, Gartenmaterial, typisch am 7,5-Tonner-LKW montiert, Standardausstattung im Handwerker-Segment (3–6 mt Lastmoment)',
         priceRange: '250–400€/Tag',
       },
       {
         label: 'Standard 3–5t',
         tonnage: '3–5t',
         reach: '8–12m',
-        useCase: 'Ziegelpaletten, Pflastersteine, Dachziegel an Baustellen liefern — am häufigsten verliehene Klasse, 8–12 mt Lastmoment, an 12–18t LKW montiert',
+        useCase: 'Ziegelpaletten, Pflastersteine, Dachziegel an Baustellen liefern, am häufigsten verliehene Klasse, 8–12 mt Lastmoment, an 12–18t LKW montiert',
         priceRange: '350–550€/Tag',
       },
       {
         label: 'Mittelklasse 6–10t',
         tonnage: '6–10t',
         reach: '12–18m',
-        useCase: 'Schwere Baustoffpaletten, kleine Stahlträger, Fertiggaragen-Elemente — 15–25 mt Lastmoment, oft mit Knickarm für Hindernisse',
+        useCase: 'Schwere Baustoffpaletten, kleine Stahlträger, Fertiggaragen-Elemente, 15–25 mt Lastmoment, oft mit Knickarm für Hindernisse',
         priceRange: '500–750€/Tag',
       },
       {
         label: 'Schwer 12–20t',
         tonnage: '12–20t',
         reach: '18–25m',
-        useCase: 'Fertigteilgaragen, kleine Hallensegmente, Stahlträger, Maschinen ausladen — 35–50 mt Lastmoment, große LKW mit zusätzlichen Stützen',
+        useCase: 'Fertigteilgaragen, kleine Hallensegmente, Stahlträger, Maschinen ausladen, 35–50 mt Lastmoment, große LKW mit zusätzlichen Stützen',
         priceRange: '700–1.100€/Tag',
       },
       {
         label: 'Schwerlast ab 25t',
         tonnage: 'ab 25t',
         reach: '25–32m',
-        useCase: 'Fertigteilhallen, Brückenelemente, große Maschinen oder Container — 65–100 mt Lastmoment, Spezial-LKW mit doppelten Stützen, oft mit Spezialfahrer',
+        useCase: 'Fertigteilhallen, Brückenelemente, große Maschinen oder Container, 65–100 mt Lastmoment, Spezial-LKW mit doppelten Stützen, oft mit Spezialfahrer',
         priceRange: 'ab 1.100€/Tag',
       },
     ],

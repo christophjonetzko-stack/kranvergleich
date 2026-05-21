@@ -10,12 +10,12 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: 'Pool mit Kran über Haus heben: Kosten & Anbieter 2026 | GFK-Pool',
   description:
-    'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite — nicht nur aus Pool-Gewicht.',
+    'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite, nicht nur aus Pool-Gewicht.',
   alternates: alternatesFor('/ratgeber/pool-kran-mieten'),
   openGraph: {
     title: 'Pool mit Kran über Haus heben: Kosten & Anbieter 2026',
     description:
-      'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite — nicht nur aus Pool-Gewicht.',
+      'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite, nicht nur aus Pool-Gewicht.',
     type: 'article',
     url: '/ratgeber/pool-kran-mieten',
       images: [OG_IMAGE],
@@ -26,32 +26,32 @@ const faqs = [
   {
     question: 'Was kostet ein Kran für einen GFK-Pool über das Haus?',
     answer:
-      'Für einen Standard-GFK-Pool 6×3 m (rund 1,5 t) über ein Einfamilienhaus mit normaler Front (8–10 m Auslage) zahlen Sie 600–1.000€ für einen Mobilkran 35–50t. Bei einem 8×4-m-Pool (2,5–3,5 t) und großem Haus mit weiter Auslage sind 1.000–1.800€ realistisch — dann oft Mobilkran 80t oder Autokran 100t. Der Preis hängt überraschend wenig vom Pool-Gewicht ab und stärker von der Reichweite, die der Kran über Haus oder Garage haben muss.',
+      'Für einen Standard-GFK-Pool 6×3 m (rund 1,5 t) über ein Einfamilienhaus mit normaler Front (8–10 m Auslage) zahlen Sie 600–1.000€ für einen Mobilkran 35–50t. Bei einem 8×4-m-Pool (2,5–3,5 t) und großem Haus mit weiter Auslage sind 1.000–1.800€ realistisch, dann oft Mobilkran 80t oder Autokran 100t. Der Preis hängt überraschend wenig vom Pool-Gewicht ab und stärker von der Reichweite, die der Kran über Haus oder Garage haben muss.',
   },
   {
     question: 'Welche Krangröße brauche ich für einen 8×4-m-Pool?',
     answer:
-      'Ein 8×4-m-GFK-Pool wiegt rund 2,5–3,5 t — das schafft theoretisch jeder Mobilkran ab 25t. Entscheidend ist aber nicht das Gewicht, sondern die Auslage: bei einem Standard-Einfamilienhaus mit 10 m Hausbreite und 4 m Tiefgarten brauchen Sie mindestens 14–16 m Reichweite. Dafür sind Mobilkran 50t (Reichweite bis 18 m) oder bei sehr großen Häusern Mobilkran 80t (Reichweite bis 24 m) die richtigen Größen. Pool-Lieferanten geben Ihnen nach Hausplan-Foto in der Regel binnen 24h eine konkrete Empfehlung.',
+      'Ein 8×4-m-GFK-Pool wiegt rund 2,5–3,5 t, das schafft theoretisch jeder Mobilkran ab 25t. Entscheidend ist aber nicht das Gewicht, sondern die Auslage: bei einem Standard-Einfamilienhaus mit 10 m Hausbreite und 4 m Tiefgarten brauchen Sie mindestens 14–16 m Reichweite. Dafür sind Mobilkran 50t (Reichweite bis 18 m) oder bei sehr großen Häusern Mobilkran 80t (Reichweite bis 24 m) die richtigen Größen. Pool-Lieferanten geben Ihnen nach Hausplan-Foto in der Regel binnen 24h eine konkrete Empfehlung.',
   },
   {
     question: 'Kann ich den Pool ohne Kran in den Garten bekommen?',
     answer:
-      'In den meisten Fällen nein. Ein GFK-Pool ist ein einteiliges Bauteil mit 5–9 m Länge — der passt durch keine Standard-Gartenpforte und nicht durch eine Doppelgarage (max. 4–5 m). Ausnahmen sind: (1) sehr kleine Becken bis 4 m Länge, die durch eine 1,5-m-Gartenpforte schräg durchgeschoben werden können, (2) Eckgrundstücke mit befahrbarem Seitenstreifen, (3) Doppelhäuser mit gemeinsamer Hofeinfahrt. Bei klassischer Reihenhaus- oder EFH-Lage ist der Hub über das Haus die einzige sinnvolle Option. Stahlwand-Aufstellpools können Sie zerlegt anliefern und ohne Kran installieren — aber das ist ein anderes Produkt.',
+      'In den meisten Fällen nein. Ein GFK-Pool ist ein einteiliges Bauteil mit 5–9 m Länge, der passt durch keine Standard-Gartenpforte und nicht durch eine Doppelgarage (max. 4–5 m). Ausnahmen sind: (1) sehr kleine Becken bis 4 m Länge, die durch eine 1,5-m-Gartenpforte schräg durchgeschoben werden können, (2) Eckgrundstücke mit befahrbarem Seitenstreifen, (3) Doppelhäuser mit gemeinsamer Hofeinfahrt. Bei klassischer Reihenhaus- oder EFH-Lage ist der Hub über das Haus die einzige sinnvolle Option. Stahlwand-Aufstellpools können Sie zerlegt anliefern und ohne Kran installieren, aber das ist ein anderes Produkt.',
   },
   {
     question: 'Wie lange dauert der Pool-Hub?',
     answer:
-      'Der reine Hub (Pool-Anschlagen → Anheben → Schwenk über Haus → Absetzen in vorbereiteter Baugrube) dauert meist 30–60 Minuten. Mit Vorbereitung, Krantraverse anlegen, Pool absichern und Aufstellplatz prüfen rechnen Sie 1,5–3 Stunden Gesamteinsatz. Der Tag ist damit aber nicht „voll" — der Kran ist meist nur einen halben Tag gebucht (3–4 Stunden). Pool-Lieferung und Hub erfolgen oft am gleichen Tag, der Pool wird also direkt vom LKW abgehoben und in die Grube gesetzt.',
+      'Der reine Hub (Pool-Anschlagen  Anheben  Schwenk über Haus  Absetzen in vorbereiteter Baugrube) dauert meist 30–60 Minuten. Mit Vorbereitung, Krantraverse anlegen, Pool absichern und Aufstellplatz prüfen rechnen Sie 1,5–3 Stunden Gesamteinsatz. Der Tag ist damit aber nicht „voll", der Kran ist meist nur einen halben Tag gebucht (3–4 Stunden). Pool-Lieferung und Hub erfolgen oft am gleichen Tag, der Pool wird also direkt vom LKW abgehoben und in die Grube gesetzt.',
   },
   {
     question: 'Brauche ich eine Genehmigung für den Kran-Einsatz?',
     answer:
-      'Wenn der Kran komplett auf Ihrem Grundstück steht (Einfahrt, Vorgarten), brauchen Sie keine behördliche Genehmigung. Steht der Kran auf öffentlichem Grund (Bürgersteig, Straße, Parkfläche), brauchen Sie eine Sondernutzungserlaubnis vom Ordnungsamt — Kosten 50–200€, Bearbeitungszeit 1–3 Wochen. Wichtig: Schwenkt der Kranausleger über ein Nachbargrundstück (auch nur kurz mit dem Pool als Last), brauchen Sie die schriftliche Zustimmung des Nachbarn. Sprechen Sie das spätestens 2–3 Wochen vorher an. Für den Pool selbst kann je nach Bundesland und Beckengröße eine Baugenehmigung nötig sein — das klären Sie separat mit Ihrer Gemeinde.',
+      'Wenn der Kran komplett auf Ihrem Grundstück steht (Einfahrt, Vorgarten), brauchen Sie keine behördliche Genehmigung. Steht der Kran auf öffentlichem Grund (Bürgersteig, Straße, Parkfläche), brauchen Sie eine Sondernutzungserlaubnis vom Ordnungsamt. Kosten 50–200€, Bearbeitungszeit 1–3 Wochen. Wichtig: Schwenkt der Kranausleger über ein Nachbargrundstück (auch nur kurz mit dem Pool als Last), brauchen Sie die schriftliche Zustimmung des Nachbarn. Sprechen Sie das spätestens 2–3 Wochen vorher an. Für den Pool selbst kann je nach Bundesland und Beckengröße eine Baugenehmigung nötig sein, das klären Sie separat mit Ihrer Gemeinde.',
   },
   {
-    question: 'Pool-Lieferung mit Kran — wer organisiert was?',
+    question: 'Pool-Lieferung mit Kran, wer organisiert was?',
     answer:
-      'In der Praxis gibt es zwei Modelle: (1) Komplettpaket vom Pool-Lieferanten — der Händler liefert per LKW, organisiert Kran und Kranführer, übernimmt Hub und Absetzen in die Baugrube. Sie bezahlen Pool plus Hub-Pauschale (300–800€) im Paket. (2) Trennung — Sie kaufen den Pool, bestellen den Kran selbst über einen lokalen Kran-Anbieter und koordinieren Liefertermin und Hub-Termin synchron. Variante 2 ist bei Standard-Pools meist 100–300€ günstiger, bei Spezial-Konstruktionen lohnt sich aber das Komplettpaket — der Lieferant kennt die Anschlagpunkte und das Hub-Schwerpunkt-Verhalten seines Produkts.',
+      'In der Praxis gibt es zwei Modelle: (1) Komplettpaket vom Pool-Lieferanten, der Händler liefert per LKW, organisiert Kran und Kranführer, übernimmt Hub und Absetzen in die Baugrube. Sie bezahlen Pool plus Hub-Pauschale (300–800€) im Paket. (2) Trennung. Sie kaufen den Pool, bestellen den Kran selbst über einen lokalen Kran-Anbieter und koordinieren Liefertermin und Hub-Termin synchron. Variante 2 ist bei Standard-Pools meist 100–300€ günstiger, bei Spezial-Konstruktionen lohnt sich aber das Komplettpaket, der Lieferant kennt die Anschlagpunkte und das Hub-Schwerpunkt-Verhalten seines Produkts.',
   },
 ]
 
@@ -76,7 +76,7 @@ export default async function PoolKranMietenPage() {
         </span>
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
-        Ein GFK-Pool 6×3 m wiegt rund 1,5 t — die Krangröße bestimmt aber nicht das Gewicht,
+        Ein GFK-Pool 6×3 m wiegt rund 1,5 t, die Krangröße bestimmt aber nicht das Gewicht,
         sondern die <strong className="text-gray-900">Reichweite</strong>, mit der der Kran
         über Haus oder Garage in den Garten schwenken muss. Für ein Standard-Einfamilienhaus
         reicht meist ein <strong className="text-gray-900">Mobilkran 50t ab 700€</strong>, bei
@@ -90,7 +90,7 @@ export default async function PoolKranMietenPage() {
         <p className="text-[13px] font-medium text-gray-900 mb-2">Inhalt</p>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#einstieg" className="text-[13px] text-blue-600 hover:underline">1. Warum braucht ein Pool einen Kran?</a></li>
-          <li><a href="#krantyp" className="text-[13px] text-blue-600 hover:underline">2. Auslage entscheidet — nicht das Gewicht</a></li>
+          <li><a href="#krantyp" className="text-[13px] text-blue-600 hover:underline">2. Auslage entscheidet, nicht das Gewicht</a></li>
           <li><a href="#kosten" className="text-[13px] text-blue-600 hover:underline">3. Kosten nach Pool-Größe & Hauslage</a></li>
           <li><a href="#planung" className="text-[13px] text-blue-600 hover:underline">4. Einsatzplanung &amp; Vorbereitung</a></li>
           <li><a href="#ausruestung" className="text-[13px] text-blue-600 hover:underline">5. Krantraverse &amp; Hebegurte</a></li>
@@ -109,11 +109,11 @@ export default async function PoolKranMietenPage() {
             1. Warum braucht ein Pool einen Kran?
           </h2>
           <p className="mb-3">
-            Ein GFK-Pool oder Fertigpool kommt in einem Stück auf einem LKW — typische Längen
+            Ein GFK-Pool oder Fertigpool kommt in einem Stück auf einem LKW, typische Längen
             zwischen <strong className="text-gray-900">5 und 9 Metern</strong>, Tiefe meist
             1,2–1,5 m. Diese Maße passen weder durch eine Gartenpforte noch durch eine Doppelgarage.
             Der Pool muss also <strong className="text-gray-900">über das Haus oder über das
-            Nachbargrundstück</strong> in den Garten gehoben werden — und dafür brauchen Sie
+            Nachbargrundstück</strong> in den Garten gehoben werden, und dafür brauchen Sie
             einen Mobilkran oder Autokran.
           </p>
           <p className="mb-4">
@@ -126,7 +126,7 @@ export default async function PoolKranMietenPage() {
               </p>
               <p className="text-[13px] text-gray-600">
                 Der häufigste Fall. Einteiliges GFK-Becken, 5–9 m Länge, 0,5–3,5 t Gewicht.
-                Wird zu 90% per Kran in den Garten gehoben — passt sonst durch keinen
+                Wird zu 90% per Kran in den Garten gehoben, passt sonst durch keinen
                 normalen Hauseingang.
               </p>
             </div>
@@ -150,7 +150,7 @@ export default async function PoolKranMietenPage() {
             </div>
           </div>
           <p className="text-[13px] text-gray-500">
-            Stahlwand-Aufstellpools (Quick-Up, Frame-Pool) sind ein anderes Produkt — die werden
+            Stahlwand-Aufstellpools (Quick-Up, Frame-Pool) sind ein anderes Produkt, die werden
             zerlegt geliefert und vor Ort aufgebaut. Kein Kran nötig, aber auch nicht im
             Boden eingelassen. Wer einen festen, eingelassenen Pool will, kommt am Kran nicht
             vorbei.
@@ -160,14 +160,14 @@ export default async function PoolKranMietenPage() {
         {/* Section 2: Welcher Kran (Auslage > Gewicht) */}
         <section id="krantyp" className="scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            2. Auslage entscheidet — nicht das Gewicht
+            2. Auslage entscheidet, nicht das Gewicht
           </h2>
           <p className="mb-3">
             Das ist der wichtigste Punkt beim Pool-Hub und wird oft falsch eingeschätzt: ein
             1,5-t-Pool über ein 10 m breites Haus zu heben braucht nicht den{' '}
             <em>kleinsten</em> Kran, der 1,5 t schafft, sondern den, der mit dieser Last die
             <strong className="text-gray-900"> Reichweite</strong> bedient. Krane verlieren bei
-            steigender Auslage massiv an Tragkraft — ein Mobilkran 25t kann am Standfuß 25 t
+            steigender Auslage massiv an Tragkraft, ein Mobilkran 25t kann am Standfuß 25 t
             heben, aber bei 14 m Reichweite nur noch 1,5–2 t.
           </p>
           <p className="mb-4">
@@ -238,9 +238,9 @@ export default async function PoolKranMietenPage() {
           <div className="mt-4 bg-amber-50 border border-amber-100 rounded-lg p-4">
             <p className="text-[13px] text-amber-800">
               <strong>Häufiger Fehler:</strong> „Mein Pool wiegt nur 1,5 t, da reicht ein 25t-Kran."
-              Falsch — bei 14 m Reichweite kann der 25t-Kran nur noch 1,5 t heben. Mit Sicherheits-Reserve
+              Falsch, bei 14 m Reichweite kann der 25t-Kran nur noch 1,5 t heben. Mit Sicherheits-Reserve
               brauchen Sie meist die nächst-größere Klasse (50t). Der Pool-Lieferant rechnet das in
-              der Regel korrekt durch — fragen Sie vor der Bestellung explizit nach der empfohlenen Krangröße.
+              der Regel korrekt durch, fragen Sie vor der Bestellung explizit nach der empfohlenen Krangröße.
             </p>
           </div>
         </section>
@@ -318,7 +318,7 @@ export default async function PoolKranMietenPage() {
             Alle Preise netto, Richtwerte für Standard-Anfahrt 30–50 km. Bei langen Anfahrten,
             schwierigem Stellplatz oder weiter Auslage über Nachbargrundstück können die Kosten
             20–40% höher liegen. Wenn der Pool-Lieferant eine eigene Hub-Pauschale anbietet,
-            vergleichen Sie diese mit dem freien Markt — meist sparen Sie 100–300€ wenn Sie
+            vergleichen Sie diese mit dem freien Markt, meist sparen Sie 100–300€ wenn Sie
             den Kran selbst beauftragen.
           </p>
           <div className="mt-4 bg-blue-50 border border-blue-100 rounded-lg p-4">
@@ -326,14 +326,14 @@ export default async function PoolKranMietenPage() {
               <strong className="text-gray-900">Faustregel:</strong> Für einen Standard-GFK-Pool
               6×3 m über ein normales Einfamilienhaus rechnen Sie mit{' '}
               <strong className="text-gray-900">700–1.100€ Kran-Kosten netto</strong>. Das sind
-              etwa 5–8% des typischen Pool-Investments (12.000–25.000€) — ein vernünftiger
+              etwa 5–8% des typischen Pool-Investments (12.000–25.000€), ein vernünftiger
               Anteil, der gegen den Aufwand und die Schadensrisiken bei Eigen-Hub-Versuchen
               spricht.
             </p>
           </div>
           <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4">
             <p className="text-[13px] text-gray-700 mb-2">
-              <strong className="text-gray-900">Aus der Praxis — zwei Datenpunkte aus dem Forum:</strong>
+              <strong className="text-gray-900">Aus der Praxis, zwei Datenpunkte aus dem Forum:</strong>
             </p>
             <ul className="text-[13px] text-gray-700 space-y-1.5 list-disc pl-5">
               <li>
@@ -349,7 +349,7 @@ export default async function PoolKranMietenPage() {
               </li>
             </ul>
             <p className="text-[12px] text-gray-500 mt-2">
-              Beide Werte sind regional &amp; zeitlich gebunden — heute liegen ländliche
+              Beide Werte sind regional &amp; zeitlich gebunden, heute liegen ländliche
               Süd-Quotes ca. 25–35% höher als 2021, Großstadt-Tarife (Berlin, München, Hamburg)
               eher 30–50% über den ländlichen Werten.
             </p>
@@ -362,20 +362,20 @@ export default async function PoolKranMietenPage() {
             4. Einsatzplanung & Vorbereitung
           </h2>
           <p className="mb-4">
-            Der reine Hub dauert 30–60 Minuten — der Kran ist meist 2–3 Stunden vor Ort. Die
+            Der reine Hub dauert 30–60 Minuten, der Kran ist meist 2–3 Stunden vor Ort. Die
             kritische Vorbereitung passiert aber lange vorher. Hier die typische Reihenfolge:
           </p>
           <div className="space-y-3 mb-4">
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1 text-[14px]">Tag minus 14 — Baugrube fertig</p>
+              <p className="font-medium text-gray-900 mb-1 text-[14px]">Tag minus 14. Baugrube fertig</p>
               <p className="text-[13px] text-gray-500">
                 Die Pool-Grube muss vor dem Liefertermin ausgehoben sein, mit Sandbett oder
-                Magerbeton-Sohle. Pool wird direkt vom Kran in die fertige Grube gesetzt — also
+                Magerbeton-Sohle. Pool wird direkt vom Kran in die fertige Grube gesetzt, also
                 nicht erst zur Seite stellen und später einbauen.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1 text-[14px]">Tag minus 7 — Stellplatz prüfen</p>
+              <p className="font-medium text-gray-900 mb-1 text-[14px]">Tag minus 7. Stellplatz prüfen</p>
               <p className="text-[13px] text-gray-500">
                 Kran-Standfläche mindestens 4 × 8 m, Bodenbelastbarkeit 12–20 t/m². Bei Asphalt
                 meist okay, bei Rasen oder Pflaster mit Lastverteilungsplatten arbeiten. Falls
@@ -383,10 +383,10 @@ export default async function PoolKranMietenPage() {
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1 text-[14px]">Tag minus 3 — Nachbarn informieren</p>
+              <p className="font-medium text-gray-900 mb-1 text-[14px]">Tag minus 3. Nachbarn informieren</p>
               <p className="text-[13px] text-gray-500">
                 Wenn Kranausleger über Nachbargrundstück schwenkt, schriftliche Zustimmung
-                einholen. Außerdem Nachbarn allgemein über Termin informieren — der Kran blockiert
+                einholen. Außerdem Nachbarn allgemein über Termin informieren, der Kran blockiert
                 oft 1/2 Tag die Straße oder Einfahrt.
               </p>
             </div>
@@ -400,7 +400,7 @@ export default async function PoolKranMietenPage() {
             </div>
           </div>
           <p className="text-[13px] text-gray-500">
-            Die Pool-Lieferung wird in der Regel mit dem Kran-Anbieter synchronisiert — entweder
+            Die Pool-Lieferung wird in der Regel mit dem Kran-Anbieter synchronisiert, entweder
             durch den Pool-Lieferanten direkt oder durch Sie als Bauherr. Wer beide Termine
             koordiniert, vermeidet den schlechtesten Fall: LKW kommt vorzeitig, Kran ist noch
             nicht da, Pool blockiert die Straße.
@@ -413,7 +413,7 @@ export default async function PoolKranMietenPage() {
             5. Krantraverse & Hebegurte für Pool
           </h2>
           <p className="mb-4">
-            GFK ist relativ druckempfindlich — direkt an zwei Hebegurten angeschlagen, kann der
+            GFK ist relativ druckempfindlich, direkt an zwei Hebegurten angeschlagen, kann der
             Pool-Rand verformen oder kleinste Risse bekommen. Standard ist deshalb eine{' '}
             <strong className="text-gray-900">Krantraverse</strong>, die die Hebegurte parallel
             hält und den Druck verteilt.
@@ -449,7 +449,7 @@ export default async function PoolKranMietenPage() {
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Pool-spezifische Anschlagpunkte</p>
               <p className="text-[13px] text-gray-500 mb-1">
                 Manche Premium-GFK-Hersteller liefern den Pool mit eingebauten Hebeösen, an die
-                der Kran direkt anschlagen kann — ohne Hebegurte um den Pool. Das ist die
+                der Kran direkt anschlagen kann, ohne Hebegurte um den Pool. Das ist die
                 schonendste Lösung und meist im Pool-Preis inbegriffen.
               </p>
               <p className="text-[11px] text-gray-400">Aufpreis: 0€ (im Pool inklusive)</p>
@@ -458,7 +458,7 @@ export default async function PoolKranMietenPage() {
           <div className="mt-4 bg-amber-50 border border-amber-100 rounded-lg p-4">
             <p className="text-[13px] text-amber-800">
               <strong>Wichtig:</strong> Fragen Sie den Pool-Lieferanten vor der Bestellung, welche
-              Anschlag-Methode er empfiehlt — und nennen Sie das beim Kran-Anbieter. Manche
+              Anschlag-Methode er empfiehlt, und nennen Sie das beim Kran-Anbieter. Manche
               Pool-Hersteller verlangen bei Garantieansprüchen den Nachweis, dass mit Krantraverse
               gearbeitet wurde. Eigeninitiative beim Hub kann die Pool-Garantie kosten.
             </p>
@@ -472,7 +472,7 @@ export default async function PoolKranMietenPage() {
           </h2>
           <p className="mb-4">
             Pool-Installationen sind in {COUNTRY_LABEL} stark saisonal. Wer im Sommer den Pool
-            nutzen will, plant Hub und Einbau in den Frühling — und stößt damit auf die
+            nutzen will, plant Hub und Einbau in den Frühling, und stößt damit auf die
             ausgebuchten Termine der Kran-Anbieter.
           </p>
           <div className="overflow-x-auto border border-gray-200 rounded-lg mb-4">
@@ -553,7 +553,7 @@ export default async function PoolKranMietenPage() {
           <div className="mt-4 bg-blue-50 border border-blue-100 rounded-lg p-4">
             <p className="text-[13px] text-gray-700">
               <strong className="text-gray-900">Tipp:</strong> Pool-Installationen lohnen sich
-              im September–Oktober oft am meisten — Pool-Hersteller geben Saisonende-Rabatte
+              im September–Oktober oft am meisten. Pool-Hersteller geben Saisonende-Rabatte
               (10–20% auf den Pool), Kran-Anbieter haben mehr freie Kapazität, und Sie haben
               den Winter, um die Außenanlage zu finalisieren. Im Frühjahr ist der Pool
               dann einsatzbereit ohne Bau-Stress.
@@ -572,12 +572,12 @@ export default async function PoolKranMietenPage() {
           </p>
           <div className="space-y-3">
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1 text-[14px]">Pool — Baugenehmigung</p>
+              <p className="font-medium text-gray-900 mb-1 text-[14px]">Pool. Baugenehmigung</p>
               <p className="text-[13px] text-gray-500">
                 Je nach Bundesland und Pool-Volumen ist eine Baugenehmigung nötig. Faustregel:
                 Becken bis ca. 50 m³ Volumen sind in vielen Bundesländern verfahrensfrei, größere
                 Pools brauchen eine Genehmigung. Klären Sie das mit der Bauaufsichtsbehörde Ihrer
-                Gemeinde, bevor Sie Pool und Kran buchen — sonst riskieren Sie einen
+                Gemeinde, bevor Sie Pool und Kran buchen, sonst riskieren Sie einen
                 Baustopp mitten im Hub-Termin.
               </p>
             </div>
@@ -595,23 +595,23 @@ export default async function PoolKranMietenPage() {
                 Wenn der Kran auf Straße oder Bürgersteig steht, brauchen Sie eine
                 Sondernutzungserlaubnis vom Ordnungsamt: 50–200€ Gebühr, 1–3 Wochen
                 Bearbeitungszeit. In manchen Städten muss zusätzlich die Halteverbots-Schilder
-                72 Std. vorher aufgestellt werden — das ist Teil der Erlaubnis.
+                72 Std. vorher aufgestellt werden, das ist Teil der Erlaubnis.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Schwenken über Nachbargrundstück</p>
               <p className="text-[13px] text-gray-500">
                 Wenn der Kranausleger den Pool über das Grundstück des Nachbarn trägt, brauchen
-                Sie die schriftliche Zustimmung des Nachbarn — auch wenn das nur 2–3 Minuten
+                Sie die schriftliche Zustimmung des Nachbarn, auch wenn das nur 2–3 Minuten
                 dauert. Sprechen Sie das 2–3 Wochen vorher an. Bei verweigerter Zustimmung müssen
-                Sie auf einen anderen Stellplatz umplanen — oft auf einen größeren, teureren Kran.
+                Sie auf einen anderen Stellplatz umplanen, oft auf einen größeren, teureren Kran.
               </p>
             </div>
           </div>
           <p className="text-[13px] text-gray-500 mt-3">
             Detaillierte Hinweise zu allen Stellplatz- und Schwenk-Genehmigungen:{' '}
             <Link href="/ratgeber/kran-aufstellen-genehmigung" className="text-blue-600 hover:underline">
-              Kran aufstellen: Genehmigungen im Detail &rarr;
+              Kran aufstellen: Genehmigungen im Detail 
             </Link>
           </p>
         </section>
@@ -628,7 +628,7 @@ export default async function PoolKranMietenPage() {
                 <p className="font-medium text-gray-900">Krangröße vom Pool-Lieferanten berechnen lassen</p>
                 <p className="text-[13px] text-gray-500">
                   Pool-Hersteller wissen aus Erfahrung, welche Krangröße bei welcher Hauslage
-                  funktioniert. Schicken Sie Foto vom Stellplatz + Hausplan — die Empfehlung ist
+                  funktioniert. Schicken Sie Foto vom Stellplatz + Hausplan, die Empfehlung ist
                   meist konkret und richtig. Vermeiden Sie Eigen-Schätzung mit Mobilkran 25t,
                   weil das oft an der Auslage scheitert.
                 </p>
@@ -641,7 +641,7 @@ export default async function PoolKranMietenPage() {
                 <p className="text-[13px] text-gray-500">
                   Pool-Lieferanten kalkulieren die Hub-Pauschale meist mit 100–300€ Aufschlag auf
                   den Markt-Preis. Wenn Sie den Kran selbst über einen lokalen Anbieter buchen,
-                  sparen Sie diesen Aufschlag — und haben einen direkten Ansprechpartner bei
+                  sparen Sie diesen Aufschlag, und haben einen direkten Ansprechpartner bei
                   Fragen am Einsatztag.
                 </p>
               </div>
@@ -651,7 +651,7 @@ export default async function PoolKranMietenPage() {
               <div>
                 <p className="font-medium text-gray-900">Krantraverse fest mit einplanen</p>
                 <p className="text-[13px] text-gray-500">
-                  Bei GFK-Pools über 6 m Länge ist die Krantraverse Pflicht — sonst riskieren
+                  Bei GFK-Pools über 6 m Länge ist die Krantraverse Pflicht, sonst riskieren
                   Sie Pool-Rand-Verformung und Garantie-Verlust. 50–150€ Aufpreis sind im
                   Vergleich zu einer Pool-Reparatur (1.500–8.000€) bedeutungslos.
                 </p>
@@ -664,7 +664,7 @@ export default async function PoolKranMietenPage() {
                 <p className="text-[13px] text-gray-500">
                   Wenn der Kran über das Nachbargrundstück schwenkt: kurze schriftliche Zustimmung
                   (E-Mail reicht), 2–3 Wochen vorher. Mündliche Zusagen werden manchmal kurz
-                  vor dem Termin zurückgezogen — und Sie stehen mit einem unbenutzbaren Kran
+                  vor dem Termin zurückgezogen, und Sie stehen mit einem unbenutzbaren Kran
                   und Pool-LKW auf der Straße.
                 </p>
               </div>
@@ -710,7 +710,7 @@ export default async function PoolKranMietenPage() {
           Kran für Ihren Pool-Hub finden
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Vergleichen Sie {anbieterCount}+ Kranvermieter in {COUNTRY_LABEL} — Mobilkran 50t für
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in {COUNTRY_LABEL}. Mobilkran 50t für
           Standard-EFH-Hub, Autokran 100t für große Pools oder weite Auslage. Kostenlos Angebote
           bei mehreren Anbietern gleichzeitig anfragen.
         </p>
@@ -742,7 +742,7 @@ export default async function PoolKranMietenPage() {
         </div>
       </section>
 
-      {/* Structured data — FAQPage + Article + BreadcrumbList */}
+      {/* Structured data. FAQPage + Article + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -765,7 +765,7 @@ export default async function PoolKranMietenPage() {
             '@type': 'Article',
             headline: 'Pool mit Kran über das Haus heben (GFK-Pool & Fertigpool Kran-Guide 2026)',
             description:
-              'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite — nicht nur aus Pool-Gewicht.',
+              'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite, nicht nur aus Pool-Gewicht.',
             author: { '@type': 'Organization', name: BRAND_NAME, url: BASE_URL },
             datePublished: '2026-05-06',
             dateModified: '2026-05-06',

@@ -9,12 +9,12 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Bootskran mieten: Yacht & Segelboot heben — Kosten & Anbieter 2026',
+  title: 'Bootskran mieten: Yacht & Segelboot heben. Kosten & Anbieter 2026',
   description:
     'Yacht oder Segelboot kranen: Mobilkran 50t ab 600€/Einsatz, Autokran 100t für schwere Boote ab 1.200€. Kosten nach Bootslänge, Krantraverse, Saison-Vorlauf und Anbieter im Vergleich.',
   alternates: alternatesFor('/ratgeber/bootskran-mieten'),
   openGraph: {
-    title: 'Bootskran mieten: Yacht & Segelboot heben — Kosten & Anbieter 2026',
+    title: 'Bootskran mieten: Yacht & Segelboot heben. Kosten & Anbieter 2026',
     description:
       'Yacht oder Segelboot kranen: Mobilkran 50t ab 600€/Einsatz, Autokran 100t für schwere Boote ab 1.200€. Kosten nach Bootslänge, Krantraverse und Saison-Vorlauf.',
     type: 'article',
@@ -27,32 +27,32 @@ const faqs = [
   {
     question: 'Was kostet ein Bootskran-Einsatz für eine 10-m-Yacht?',
     answer:
-      'Für eine typische 10-m-Segelyacht (4–6 t) zahlen Sie 500–900€ pro Einsatz mit einem Mobilkran 35–50t. Der Preis umfasst Anfahrt im Umkreis von 30–50 km, 2–3 Stunden Einsatzzeit inkl. Kranführer und Standard-Hebegurte. Bei einem Hafen mit fester Slip-Anlage rechnen Sie eher mit 250–450€ — dort kommt aber meist nur ein hafeneigener Bootslift zum Einsatz, kein Mobilkran. Krantraverse für empfindliche Hochsee-Yachten oder Mehrrumpfboote kostet 80–150€ extra.',
+      'Für eine typische 10-m-Segelyacht (4–6 t) zahlen Sie 500–900€ pro Einsatz mit einem Mobilkran 35–50t. Der Preis umfasst Anfahrt im Umkreis von 30–50 km, 2–3 Stunden Einsatzzeit inkl. Kranführer und Standard-Hebegurte. Bei einem Hafen mit fester Slip-Anlage rechnen Sie eher mit 250–450€, dort kommt aber meist nur ein hafeneigener Bootslift zum Einsatz, kein Mobilkran. Krantraverse für empfindliche Hochsee-Yachten oder Mehrrumpfboote kostet 80–150€ extra.',
   },
   {
     question: 'Welcher Kran für Segelboot vs. Motoryacht?',
     answer:
-      'Das hängt fast ausschließlich von Länge und Verdrängung ab, nicht vom Bootstyp. Segelboote bis 8 m und Motoryachten bis 7 m wiegen meist unter 3 t — dafür reicht ein Mobilkran 25–35t (400–700€/Einsatz). Segelyachten 9–12 m liegen bei 4–8 t und brauchen einen Mobilkran 50t (600–1.200€). Ab 12 m oder 8 t Verdrängung steigen Sie auf einen Mobilkran 80–100t um (1.000–2.000€). Bei Segelyachten kommt der hohe Mast als Faktor dazu — entweder Sie demaskieren vor dem Hub oder Sie brauchen einen Kran mit deutlich mehr Auslage.',
+      'Das hängt fast ausschließlich von Länge und Verdrängung ab, nicht vom Bootstyp. Segelboote bis 8 m und Motoryachten bis 7 m wiegen meist unter 3 t, dafür reicht ein Mobilkran 25–35t (400–700€/Einsatz). Segelyachten 9–12 m liegen bei 4–8 t und brauchen einen Mobilkran 50t (600–1.200€). Ab 12 m oder 8 t Verdrängung steigen Sie auf einen Mobilkran 80–100t um (1.000–2.000€). Bei Segelyachten kommt der hohe Mast als Faktor dazu, entweder Sie demaskieren vor dem Hub oder Sie brauchen einen Kran mit deutlich mehr Auslage.',
   },
   {
     question: 'Brauche ich einen Kranführer?',
     answer:
-      'Beim Mobilkran und Autokran ist der Kranführer gesetzlich vorgeschrieben (DGUV Vorschrift 52) und im Mietpreis enthalten — Sie übernehmen das Boot nicht selbst. Anders beim Minikran für sehr kleine Boote bis 1,5 t (Schlauchboot, Beiboot, Jolle): da reicht eine 30–60-minütige Einweisung und Sie bedienen den Kran per Funkfernsteuerung. Für eine Yacht ab 5 m Länge ist der Profi-Kranführer aber auch sicherheitstechnisch sinnvoll, weil das Boot beim Anschlagen unter Last verrutschen kann.',
+      'Beim Mobilkran und Autokran ist der Kranführer gesetzlich vorgeschrieben (DGUV Vorschrift 52) und im Mietpreis enthalten. Sie übernehmen das Boot nicht selbst. Anders beim Minikran für sehr kleine Boote bis 1,5 t (Schlauchboot, Beiboot, Jolle): da reicht eine 30–60-minütige Einweisung und Sie bedienen den Kran per Funkfernsteuerung. Für eine Yacht ab 5 m Länge ist der Profi-Kranführer aber auch sicherheitstechnisch sinnvoll, weil das Boot beim Anschlagen unter Last verrutschen kann.',
   },
   {
-    question: 'Bootslift im Hafen oder Mobilkran — was ist günstiger?',
+    question: 'Bootslift im Hafen oder Mobilkran, was ist günstiger?',
     answer:
-      'Wenn Ihr Hafen einen festen Bootslift hat, ist das fast immer die günstigere Lösung: 200–500€ pro Hub für Boote bis 15 m. Ein Mobilkran-Einsatz kostet 500–1.500€, weil Anfahrt, Stellplatz-Aufbau und Kranführerstunden hinzukommen. Mobilkran lohnt sich, wenn (a) der Hafen keinen Lift hat, (b) der Lift zu klein für Ihre Yacht ist, (c) Sie die Yacht im eigenen Garten überwintern oder (d) Sie ein Boot zwischen zwei nicht angeschlossenen Gewässern transferieren. Bei regelmäßigem Bedarf prüfen Sie auch Saison-Verträge mit kran-affiliierten Marinas — die sind oft 20–30% günstiger als Einzelbuchung.',
+      'Wenn Ihr Hafen einen festen Bootslift hat, ist das fast immer die günstigere Lösung: 200–500€ pro Hub für Boote bis 15 m. Ein Mobilkran-Einsatz kostet 500–1.500€, weil Anfahrt, Stellplatz-Aufbau und Kranführerstunden hinzukommen. Mobilkran lohnt sich, wenn (a) der Hafen keinen Lift hat, (b) der Lift zu klein für Ihre Yacht ist, (c) Sie die Yacht im eigenen Garten überwintern oder (d) Sie ein Boot zwischen zwei nicht angeschlossenen Gewässern transferieren. Bei regelmäßigem Bedarf prüfen Sie auch Saison-Verträge mit kran-affiliierten Marinas, die sind oft 20–30% günstiger als Einzelbuchung.',
   },
   {
     question: 'Kann ich meine Yacht aus dem Garten direkt zu Wasser kranen?',
     answer:
-      'Theoretisch ja — bei Booten bis 8 m und 3 t Verdrängung kommt ein Mobilkran 35–50t in fast jeden Vorgarten, sofern Anfahrt und Stellplatz mindestens 4 × 8 m frei sind. Praktisch hängt es von zwei Faktoren ab: (1) Bodenbelastbarkeit — der Kran braucht 12–20 t/m² Tragfähigkeit, das schaffen viele Rasenflächen nur mit Lastverteilungsplatten; (2) Schwenkradius — der Kran muss aus dem Stand das Boot über mindestens 6–10 m Auslage anheben und absetzen. Bei größeren Yachten oder ungünstiger Lage prüfen Sie eine Kran-Trailer-Kombination: das Boot wird mit Mobilkran auf den Bootstrailer gehoben, dort separat zur Slipstelle gefahren, dann am Wasser nochmal gekrant.',
+      'Theoretisch ja, bei Booten bis 8 m und 3 t Verdrängung kommt ein Mobilkran 35–50t in fast jeden Vorgarten, sofern Anfahrt und Stellplatz mindestens 4 × 8 m frei sind. Praktisch hängt es von zwei Faktoren ab: (1) Bodenbelastbarkeit, der Kran braucht 12–20 t/m² Tragfähigkeit, das schaffen viele Rasenflächen nur mit Lastverteilungsplatten; (2) Schwenkradius, der Kran muss aus dem Stand das Boot über mindestens 6–10 m Auslage anheben und absetzen. Bei größeren Yachten oder ungünstiger Lage prüfen Sie eine Kran-Trailer-Kombination: das Boot wird mit Mobilkran auf den Bootstrailer gehoben, dort separat zur Slipstelle gefahren, dann am Wasser nochmal gekrant.',
   },
   {
     question: 'Welche Versicherung brauche ich für den Hub?',
     answer:
-      'Der Kranbetreiber haftet für Schäden, die durch Bedienungsfehler oder Materialversagen am Kran entstehen — das ist über seine Betriebshaftpflicht abgedeckt (Standard 5–10 Mio. €). Schäden am Boot durch unsachgemäße Anschlagpunkte, falsche Hebegurte oder durch konstruktive Schwächen am Boot selbst sind aber nicht automatisch dabei: dafür brauchen Sie eine Yacht-Kasko mit Hub-Klausel oder eine separate Transportversicherung. Prüfen Sie vor dem Termin, ob Ihre bestehende Yacht-Versicherung Hub-Schäden einschließt — viele Standardpolicen schließen das aus, sind aber gegen Aufpreis (50–150€/Saison) erweiterbar.',
+      'Der Kranbetreiber haftet für Schäden, die durch Bedienungsfehler oder Materialversagen am Kran entstehen, das ist über seine Betriebshaftpflicht abgedeckt (Standard 5–10 Mio. €). Schäden am Boot durch unsachgemäße Anschlagpunkte, falsche Hebegurte oder durch konstruktive Schwächen am Boot selbst sind aber nicht automatisch dabei: dafür brauchen Sie eine Yacht-Kasko mit Hub-Klausel oder eine separate Transportversicherung. Prüfen Sie vor dem Termin, ob Ihre bestehende Yacht-Versicherung Hub-Schäden einschließt, viele Standardpolicen schließen das aus, sind aber gegen Aufpreis (50–150€/Saison) erweiterbar.',
   },
 ]
 
@@ -145,13 +145,13 @@ export default async function BootskranMietenPage() {
               </p>
               <p className="text-[13px] text-gray-600">
                 Demo-Boot, Verkaufsübergabe oder Reparatur-Annahme. Einzelhübe, oft kurzfristig
-                — Vorlaufzeit 1–3 Tage statt der üblichen 2–4 Wochen in Spitzenzeiten.
+               . Vorlaufzeit 1–3 Tage statt der üblichen 2–4 Wochen in Spitzenzeiten.
               </p>
             </div>
           </div>
           <p className="text-[13px] text-gray-500">
             Ein Hafenkran (fester Bootslift) ist bei regelmäßigem Wassergang günstiger, aber an
-            den Hafen gebunden. Mobilkran ist flexibler — und in vielen Binnen-Standorten und
+            den Hafen gebunden. Mobilkran ist flexibler, und in vielen Binnen-Standorten und
             kleinen Marinas die einzige Option.
           </p>
         </section>
@@ -165,7 +165,7 @@ export default async function BootskranMietenPage() {
             Die Krangröße ergibt sich aus <strong className="text-gray-900">Verdrängung
             (Gewicht)</strong> und <strong className="text-gray-900">Reichweite
             (Hub-Auslage)</strong>. Für die Auslage gilt: zwischen Kran-Standort und
-            Bootsmittelpunkt müssen 4–8 m frei bleiben — das wirkt sich stark auf die nötige
+            Bootsmittelpunkt müssen 4–8 m frei bleiben, das wirkt sich stark auf die nötige
             Krangröße aus. Hier eine Übersicht für typische Boote:
           </p>
           <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -323,7 +323,7 @@ export default async function BootskranMietenPage() {
             <p className="text-[13px] text-gray-700 mb-2">
               <strong className="text-gray-900">Regionaler Hinweis Bodensee &amp; Binnen-Yacht:</strong>{' '}
               Am Bodensee, an der Müritz und in Bayern haben Marinas und Yachtclubs oft eigene
-              Saison-Verträge mit lokalen Kran-Anbietern — die Wochen-Pauschale liegt dort 25–40%
+              Saison-Verträge mit lokalen Kran-Anbietern, die Wochen-Pauschale liegt dort 25–40%
               unter Einzelhub-Preisen aus Großstädten. Der Mobilkran-Stundensatz inklusive Kranführer
               startet im Süden in ländlichen Regionen bei rund 80–120€/Std., in Berlin und München
               eher bei 120–180€/Std.
@@ -337,7 +337,7 @@ export default async function BootskranMietenPage() {
               <Link href="/autokran-mieten" className="text-blue-600 hover:underline">
                 Autokran mieten
               </Link>{' '}
-              — beide Listen lassen sich nach Region filtern.
+             , beide Listen lassen sich nach Region filtern.
             </p>
           </div>
         </section>
@@ -349,8 +349,8 @@ export default async function BootskranMietenPage() {
           </h2>
           <p className="mb-4">
             Ein Boots-Hub dauert in der Regel 1–4 Stunden, je nach Bootsgröße und Zugänglichkeit.
-            Der eigentliche Hub (Anschlagen → Anheben → Transfer → Absetzen) ist nach 15–30 Minuten
-            erledigt — der Rest sind Vorbereitung, Boot trimmen, Mast und Takelage prüfen,
+            Der eigentliche Hub (Anschlagen  Anheben  Transfer  Absetzen) ist nach 15–30 Minuten
+            erledigt, der Rest sind Vorbereitung, Boot trimmen, Mast und Takelage prüfen,
             Fender und Schutzpolster montieren. Hier die typischen Einsatzdauern:
           </p>
           <div className="space-y-3 mb-5">
@@ -381,7 +381,7 @@ export default async function BootskranMietenPage() {
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Marina Sammel-Aktion</p>
               <p className="text-[13px] text-gray-500">
                 <strong>Dauer:</strong> 4–7 Tage Wochenmiete für 30–60 Boote. Reihenfolge nach
-                Bootsgröße planen — leichte Boote zuerst, schwere zuletzt — und Pufferzeit für
+                Bootsgröße planen, leichte Boote zuerst, schwere zuletzt, und Pufferzeit für
                 Wetter einbauen. Pro Tag schaffen Sie 8–14 Boote, je nach Bootsgröße und Hafen-Layout.
               </p>
             </div>
@@ -439,7 +439,7 @@ export default async function BootskranMietenPage() {
           <p className="mb-4">
             Ein Boot direkt mit zwei Hebegurten anzuschlagen, funktioniert nur bei robusten Sport-
             und Schlauchbooten. Für Yachten ist eine <strong className="text-gray-900">Krantraverse
-            (Spreizbalken)</strong> oder ein passendes Hebegeschirr Pflicht — sonst drücken die
+            (Spreizbalken)</strong> oder ein passendes Hebegeschirr Pflicht, sonst drücken die
             Gurte die Bordwände ein. Hier die wichtigsten Optionen:
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -484,7 +484,7 @@ export default async function BootskranMietenPage() {
             <p className="text-[13px] text-amber-800">
               <strong>Wichtig:</strong> Vor der Buchung prüfen, ob der Kran-Anbieter Krantraverse
               und passende Spezialgurte für Ihre Bootsklasse vorrätig hat. Manche kleinen Anbieter
-              haben nur Standard-Hebegurte — bei einer 12-m-Yacht ist das ein Schaden-Risiko.
+              haben nur Standard-Hebegurte, bei einer 12-m-Yacht ist das ein Schaden-Risiko.
             </p>
           </div>
         </section>
@@ -575,7 +575,7 @@ export default async function BootskranMietenPage() {
             <div className="border border-gray-200 rounded-lg p-4">
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Marina-Genehmigung</p>
               <p className="text-[13px] text-gray-500">
-                Bei einer Marina ist die Stellplatz-Frage in der Regel über das Hafenamt geregelt —
+                Bei einer Marina ist die Stellplatz-Frage in der Regel über das Hafenamt geregelt 
                 die Marina koordiniert Kran-Standort und Hub-Reihenfolge. Wenn Sie als Privatperson
                 an einer fremden Marina kranen wollen, brauchen Sie meist eine Gastnutzungs-Erlaubnis
                 (50–150€) und Termin-Abstimmung mit dem Hafenmeister.
@@ -600,7 +600,7 @@ export default async function BootskranMietenPage() {
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1 text-[14px]">Versicherung — Hub-Klausel prüfen</p>
+              <p className="font-medium text-gray-900 mb-1 text-[14px]">Versicherung. Hub-Klausel prüfen</p>
               <p className="text-[13px] text-gray-500">
                 Der Kranbetreiber haftet für Bedienungsfehler über seine Betriebshaftpflicht.
                 Schäden am Boot durch konstruktive Schwächen (Bordwand-Risse, Kiel-Brüche bei
@@ -614,7 +614,7 @@ export default async function BootskranMietenPage() {
             Detaillierte Hinweise zu allen Stellplatz- und Schwenk-Genehmigungen bei
             Land-Einsätzen:{' '}
             <Link href="/ratgeber/kran-aufstellen-genehmigung" className="text-blue-600 hover:underline">
-              Kran aufstellen: Genehmigungen im Detail &rarr;
+              Kran aufstellen: Genehmigungen im Detail 
             </Link>
           </p>
         </section>
@@ -628,7 +628,7 @@ export default async function BootskranMietenPage() {
             <li className="flex gap-3">
               <span className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-[12px] font-semibold">1</span>
               <div>
-                <p className="font-medium text-gray-900">Bootslänge & Verdrängung exakt angeben — nicht Werft-Schätzung</p>
+                <p className="font-medium text-gray-900">Bootslänge & Verdrängung exakt angeben, nicht Werft-Schätzung</p>
                 <p className="text-[13px] text-gray-500">
                   Eine 10-m-Yacht kann zwischen 3,5 t und 8 t wiegen, je nach Bauart. Der Kran-Anbieter
                   braucht das echte Gewicht aus den Schiffspapieren, nicht eine ungefähre Hersteller-Angabe.
@@ -676,7 +676,7 @@ export default async function BootskranMietenPage() {
                 <p className="font-medium text-gray-900">Foto-Dokumentation vor und nach dem Hub</p>
                 <p className="text-[13px] text-gray-500">
                   Fotografieren Sie den Bootszustand (Bordwand, Kiel, Beschläge) vor dem Hub und
-                  direkt nach dem Absetzen. Bei Reklamationen ist die Beweislast eindeutig — und
+                  direkt nach dem Absetzen. Bei Reklamationen ist die Beweislast eindeutig, und
                   bei seriösen Anbietern erleichtert das die Schadensregulierung. Auf eigene Faust
                   oder mit Marina-Personal als Zeuge.
                 </p>
@@ -711,7 +711,7 @@ export default async function BootskranMietenPage() {
           Kran für Ihren Boots-Hub finden
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Vergleichen Sie {anbieterCount}+ Kranvermieter in {COUNTRY_LABEL} — Mobilkran für
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in {COUNTRY_LABEL}. Mobilkran für
           Standard-Yachten, Autokran für schwere Hochsee-Boote. Kostenlos Angebote bei mehreren
           Anbietern gleichzeitig anfragen.
         </p>
@@ -744,7 +744,7 @@ export default async function BootskranMietenPage() {
         </div>
       </section>
 
-      {/* Structured data — FAQPage + Article + BreadcrumbList */}
+      {/* Structured data. FAQPage + Article + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

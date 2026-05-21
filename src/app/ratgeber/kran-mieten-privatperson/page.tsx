@@ -188,7 +188,7 @@ export default async function KranMietenPrivatpersonPage() {
           </div>
           <div className="mt-3">
             <Link href="/ratgeber/kran-mieten-ohne-fuehrerschein" className="text-[13px] text-blue-600 hover:underline">
-              Mehr zum Thema: Kran mieten ohne F&uuml;hrerschein &rarr;
+              Mehr zum Thema: Kran mieten ohne F&uuml;hrerschein 
             </Link>
           </div>
         </section>

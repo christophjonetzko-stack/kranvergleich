@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: 'Brauche ich eine Genehmigung, um einen Kran aufzustellen?',
-    answer: 'Auf Privatgelände: in der Regel nein — solange der Kran nur Ihr eigenes Grundstück betrifft und keine öffentlichen Wege blockiert. Auf öffentlichem Grund (Straße, Gehweg, Parkplatz): ja, Sie brauchen eine Sondernutzungserlaubnis vom Ordnungsamt oder Straßenverkehrsamt.',
+    answer: 'Auf Privatgelände: in der Regel nein, solange der Kran nur Ihr eigenes Grundstück betrifft und keine öffentlichen Wege blockiert. Auf öffentlichem Grund (Straße, Gehweg, Parkplatz): ja, Sie brauchen eine Sondernutzungserlaubnis vom Ordnungsamt oder Straßenverkehrsamt.',
   },
   {
     question: 'Was kostet eine Genehmigung für einen Kran?',
@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     question: 'Brauche ich eine Genehmigung für einen Autokran?',
-    answer: 'Wenn der Autokran auf Ihrem Privatgelände steht und die Stützen nicht auf öffentlichen Grund ragen: nein. Wenn der Autokran auf der Straße steht oder Stützen auf den Gehweg ausfahren: ja — Sondernutzungserlaubnis und ggf. Halteverbotszone erforderlich.',
+    answer: 'Wenn der Autokran auf Ihrem Privatgelände steht und die Stützen nicht auf öffentlichen Grund ragen: nein. Wenn der Autokran auf der Straße steht oder Stützen auf den Gehweg ausfahren: ja. Sondernutzungserlaubnis und ggf. Halteverbotszone erforderlich.',
   },
   {
     question: 'Kann ich einen Kran ohne Genehmigung aufstellen?',
@@ -35,8 +35,8 @@ const faqs = [
     answer: 'Bearbeitungszeit: 1–3 Wochen je nach Stadt und Auslastung der Behörde. In dringenden Fällen bieten manche Städte Eilverfahren an (Aufpreis). Planen Sie die Genehmigung mindestens 2–4 Wochen vor dem geplanten Kraneinsatz.',
   },
   {
-    question: 'Wer beantragt die Genehmigung — ich oder der Kranvermieter?',
-    answer: `Rechtlich ist der Auftraggeber (Bauherr) verantwortlich. In der Praxis helfen viele Kranvermieter bei der Antragstellung oder übernehmen sie komplett. Fragen Sie bei der Buchung danach — auf ${BRAND_NAME} können Sie dies direkt in Ihrer Anfrage angeben.`,
+    question: 'Wer beantragt die Genehmigung, ich oder der Kranvermieter?',
+    answer: `Rechtlich ist der Auftraggeber (Bauherr) verantwortlich. In der Praxis helfen viele Kranvermieter bei der Antragstellung oder übernehmen sie komplett. Fragen Sie bei der Buchung danach, auf ${BRAND_NAME} können Sie dies direkt in Ihrer Anfrage angeben.`,
   },
 ]
 
@@ -100,12 +100,12 @@ export default async function KranGenehmigungPage() {
                 <tr className="border-t">
                   <td className="py-3 px-4">Kran auf eigenem Grundstück</td>
                   <td className="py-3 px-4 text-green-600 font-medium">Nein</td>
-                  <td className="py-3 px-4">—</td>
+                  <td className="py-3 px-4"></td>
                 </tr>
                 <tr className="border-t bg-gray-50">
                   <td className="py-3 px-4">Autokran auf Privatparkplatz</td>
                   <td className="py-3 px-4 text-green-600 font-medium">Nein</td>
-                  <td className="py-3 px-4">—</td>
+                  <td className="py-3 px-4"></td>
                 </tr>
                 <tr className="border-t">
                   <td className="py-3 px-4">Kran-Stützen auf Gehweg</td>
@@ -134,7 +134,7 @@ export default async function KranGenehmigungPage() {
 
         {/* Ohne Genehmigung */}
         <section id="ohne-genehmigung" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Kran aufstellen ohne Genehmigung — wann geht das?</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Kran aufstellen ohne Genehmigung, wann geht das?</h2>
           <p className="mb-3">
             In folgenden Fällen können Sie einen Kran <strong className="text-gray-900">ohne Genehmigung</strong> aufstellen:
           </p>
@@ -143,7 +143,7 @@ export default async function KranGenehmigungPage() {
             <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> Keine Teile (Stützen, Ausleger, Gegengewichte) ragen auf öffentlichen Grund</li>
             <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> Der Kranausleger überschwenkt nicht das Nachbargrundstück (oder Sie haben dessen schriftliche Zustimmung)</li>
             <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> Keine Stromleitungen, Gasleitungen oder andere Infrastruktur im Schwenkbereich</li>
-            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> Minikrane, Anhängerkrane und Dachdeckerkrane auf Privatgelände — fast immer genehmigungsfrei</li>
+            <li className="flex gap-2"><span className="text-green-600 shrink-0">&#10003;</span> Minikrane, Anhängerkrane und Dachdeckerkrane auf Privatgelände, fast immer genehmigungsfrei</li>
           </ul>
           <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 mt-4">
             <p className="text-[13px] text-amber-800">
@@ -156,9 +156,9 @@ export default async function KranGenehmigungPage() {
 
         {/* Autokran */}
         <section id="autokran" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Autokran Genehmigung — Sonderfall Straße</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Autokran Genehmigung. Sonderfall Straße</h2>
           <p className="mb-3">
-            Autokrane (Kranwagen) werden häufig auf der Straße aufgestellt — weil das Zielgebäude
+            Autokrane (Kranwagen) werden häufig auf der Straße aufgestellt, weil das Zielgebäude
             nicht von eigenem Grund erreichbar ist. In diesem Fall brauchen Sie:
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -185,26 +185,26 @@ export default async function KranGenehmigungPage() {
           </div>
           <div className="mt-4">
             <Link href="/autokran-mieten" className="text-[13px] text-blue-600 hover:underline">
-              Autokran-Anbieter vergleichen — viele helfen bei Genehmigungen &rarr;
+              Autokran-Anbieter vergleichen, viele helfen bei Genehmigungen 
             </Link>
           </div>
         </section>
 
         {/* Baukran */}
         <section id="baukran" className="scroll-mt-20">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Baukran (Turmdrehkran) — besondere Vorschriften</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Baukran (Turmdrehkran), besondere Vorschriften</h2>
           <p className="mb-3">
             Baukrane stehen monatelang auf der Baustelle und haben besondere Anforderungen:
           </p>
           <ul className="space-y-2 text-[13px]">
-            <li className="flex gap-2"><span className="text-gray-400 shrink-0">&bull;</span> <strong className="text-gray-900">Baugenehmigung:</strong> In vielen Gemeinden ist der Baukran Teil der Baugenehmigung. Prüfen Sie Ihren Bauantrag — oft ist der Kran dort bereits genehmigt.</li>
+            <li className="flex gap-2"><span className="text-gray-400 shrink-0">&bull;</span> <strong className="text-gray-900">Baugenehmigung:</strong> In vielen Gemeinden ist der Baukran Teil der Baugenehmigung. Prüfen Sie Ihren Bauantrag, oft ist der Kran dort bereits genehmigt.</li>
             <li className="flex gap-2"><span className="text-gray-400 shrink-0">&bull;</span> <strong className="text-gray-900">Überschwenkrecht:</strong> Wenn der Ausleger über Nachbargrundstücke schwenkt, brauchen Sie deren schriftliche Zustimmung oder eine behördliche Überschwenkgenehmigung.</li>
             <li className="flex gap-2"><span className="text-gray-400 shrink-0">&bull;</span> <strong className="text-gray-900">Luftfahrtbehörde:</strong> Bei Kranhöhen über 100m (oder in Flughafennähe ab geringerer Höhe) muss die Luftfahrtbehörde informiert werden. Der Kran braucht dann eine Tageslichtkennzeichnung (rot-weiß).</li>
             <li className="flex gap-2"><span className="text-gray-400 shrink-0">&bull;</span> <strong className="text-gray-900">Prüfung:</strong> Baukrane müssen vor Inbetriebnahme von einem Sachverständigen geprüft werden (DGUV Vorschrift 52).</li>
           </ul>
           <div className="mt-4">
             <Link href="/baukran-mieten" className="text-[13px] text-blue-600 hover:underline">
-              Baukran-Anbieter vergleichen — inkl. Montage und Prüfung &rarr;
+              Baukran-Anbieter vergleichen, inkl. Montage und Prüfung 
             </Link>
           </div>
         </section>
@@ -214,11 +214,11 @@ export default async function KranGenehmigungPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-3">Welche Dokumente brauchen Sie?</h2>
           <p className="mb-3">Für den Antrag auf Sondernutzungserlaubnis benötigen Sie in der Regel:</p>
           <div className="border border-gray-200 rounded-lg p-4 space-y-2 text-[13px]">
-            <p className="flex gap-2"><span className="text-gray-400">1.</span> <strong className="text-gray-900">Lageplan / Aufstellplan</strong> — Zeichnung mit Standort des Krans, Stützen, Schwenkbereich</p>
-            <p className="flex gap-2"><span className="text-gray-400">2.</span> <strong className="text-gray-900">Verkehrszeichenplan</strong> — Skizze der geplanten Absperrung und Beschilderung</p>
-            <p className="flex gap-2"><span className="text-gray-400">3.</span> <strong className="text-gray-900">Krantyp und Datenblatt</strong> — Typ, Tragkraft, Ausladung, Gesamtgewicht</p>
-            <p className="flex gap-2"><span className="text-gray-400">4.</span> <strong className="text-gray-900">Zeitraum</strong> — Datum und Uhrzeit des geplanten Kraneinsatzes</p>
-            <p className="flex gap-2"><span className="text-gray-400">5.</span> <strong className="text-gray-900">Haftpflichtversicherung</strong> — Nachweis einer gültigen Betriebshaftpflicht</p>
+            <p className="flex gap-2"><span className="text-gray-400">1.</span> <strong className="text-gray-900">Lageplan / Aufstellplan</strong>. Zeichnung mit Standort des Krans, Stützen, Schwenkbereich</p>
+            <p className="flex gap-2"><span className="text-gray-400">2.</span> <strong className="text-gray-900">Verkehrszeichenplan</strong>. Skizze der geplanten Absperrung und Beschilderung</p>
+            <p className="flex gap-2"><span className="text-gray-400">3.</span> <strong className="text-gray-900">Krantyp und Datenblatt</strong>. Typ, Tragkraft, Ausladung, Gesamtgewicht</p>
+            <p className="flex gap-2"><span className="text-gray-400">4.</span> <strong className="text-gray-900">Zeitraum</strong>. Datum und Uhrzeit des geplanten Kraneinsatzes</p>
+            <p className="flex gap-2"><span className="text-gray-400">5.</span> <strong className="text-gray-900">Haftpflichtversicherung</strong>. Nachweis einer gültigen Betriebshaftpflicht</p>
           </div>
           <p className="text-[12px] text-gray-400 mt-2">
             Tipp: Ihr Kranvermieter hat diese Unterlagen in der Regel vorliegen und kann sie Ihnen zur Verfügung stellen.
@@ -278,7 +278,7 @@ export default async function KranGenehmigungPage() {
             </div>
           </div>
           <p className="text-[13px] text-gray-500 mt-4">
-            <strong className="text-gray-900">Tipp:</strong> Rufen Sie zuerst beim Ordnungsamt Ihrer Stadt an —
+            <strong className="text-gray-900">Tipp:</strong> Rufen Sie zuerst beim Ordnungsamt Ihrer Stadt an 
             die Mitarbeiter können Ihnen sagen, welche Genehmigungen Sie konkret brauchen und wo Sie diese beantragen.
             In den meisten Fällen reicht ein Telefonat und ein Formular.
           </p>

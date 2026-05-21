@@ -8,12 +8,12 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran mieten oder kaufen? Wann sich was lohnt — Vergleich 2026',
-  description: `Kran mieten oder kaufen? Faustregel: unter 100 Einsatztagen pro Jahr ist Mieten günstiger. Anschaffungskosten ab 50.000€ (Minikran) bis 1.000.000€ (Autokran), plus Wartung, Lagerung, Versicherung. Wann lohnt sich Kauf, wann Gebraucht-Kauf, wann Miete — alle Faktoren.`,
+  title: 'Kran mieten oder kaufen? Wann sich was lohnt. Vergleich 2026',
+  description: `Kran mieten oder kaufen? Faustregel: unter 100 Einsatztagen pro Jahr ist Mieten günstiger. Anschaffungskosten ab 50.000€ (Minikran) bis 1.000.000€ (Autokran), plus Wartung, Lagerung, Versicherung. Wann lohnt sich Kauf, wann Gebraucht-Kauf, wann Miete, alle Faktoren.`,
   alternates: alternatesFor('/ratgeber/kran-mieten-oder-kaufen'),
   openGraph: {
-    title: 'Kran mieten oder kaufen? Wann sich was lohnt — Vergleich 2026',
-    description: 'Kran mieten oder kaufen — Faustregel, Anschaffungskosten, versteckte Kosten und Entscheidungshilfe pro Krantyp.',
+    title: 'Kran mieten oder kaufen? Wann sich was lohnt. Vergleich 2026',
+    description: 'Kran mieten oder kaufen. Faustregel, Anschaffungskosten, versteckte Kosten und Entscheidungshilfe pro Krantyp.',
     type: 'article',
     url: '/ratgeber/kran-mieten-oder-kaufen',
     images: [OG_IMAGE],
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: 'Kran mieten oder kaufen — was ist günstiger?',
-    answer: 'Faustregel: Bei weniger als 100 Einsatztagen pro Jahr ist Mieten in fast allen Fällen günstiger. Ein neuer Autokran 30t kostet 200.000–350.000€ Anschaffung, plus 15–25.000€/Jahr für Wartung, Versicherung, Lagerung und Wertverlust. Bei 80 Einsatztagen jährlich kostet die Miete (500€/Tag × 80) 40.000€ — bei Kauf wären die laufenden Kosten allein schon bei der Hälfte, bevor die Anschaffung amortisiert ist. Erst ab 100–150 Einsatztagen wird Kauf wirtschaftlich.',
+    question: 'Kran mieten oder kaufen, was ist günstiger?',
+    answer: 'Faustregel: Bei weniger als 100 Einsatztagen pro Jahr ist Mieten in fast allen Fällen günstiger. Ein neuer Autokran 30t kostet 200.000–350.000€ Anschaffung, plus 15–25.000€/Jahr für Wartung, Versicherung, Lagerung und Wertverlust. Bei 80 Einsatztagen jährlich kostet die Miete (500€/Tag × 80) 40.000€, bei Kauf wären die laufenden Kosten allein schon bei der Hälfte, bevor die Anschaffung amortisiert ist. Erst ab 100–150 Einsatztagen wird Kauf wirtschaftlich.',
   },
   {
     question: 'Was kostet ein neuer Kran?',
@@ -35,23 +35,23 @@ const faqs = [
   },
   {
     question: 'Welche versteckten Kosten gibt es beim Kran-Kauf?',
-    answer: 'Neben dem Kaufpreis fallen jährlich an: Vollkaskoversicherung 1.500–4.000€, UVV-Prüfungen 200–600€ jährlich, Wartung 2.000–8.000€ je nach Größe, Lagerung/Halle 1.200–4.000€, Wertverlust 5–10% pro Jahr (linear über 10 Jahre meist 60–80% Gesamtwertverlust), Kranführerkosten falls Sie nicht selbst fahren 40.000–60.000€/Jahr für eine Vollzeitstelle. Summiert ergibt das bei einem Autokran 30t leicht 20.000–35.000€ Fixkosten pro Jahr — unabhängig davon, wie oft der Kran tatsächlich läuft.',
+    answer: 'Neben dem Kaufpreis fallen jährlich an: Vollkaskoversicherung 1.500–4.000€, UVV-Prüfungen 200–600€ jährlich, Wartung 2.000–8.000€ je nach Größe, Lagerung/Halle 1.200–4.000€, Wertverlust 5–10% pro Jahr (linear über 10 Jahre meist 60–80% Gesamtwertverlust), Kranführerkosten falls Sie nicht selbst fahren 40.000–60.000€/Jahr für eine Vollzeitstelle. Summiert ergibt das bei einem Autokran 30t leicht 20.000–35.000€ Fixkosten pro Jahr, unabhängig davon, wie oft der Kran tatsächlich läuft.',
   },
   {
     question: 'Wann lohnt sich Kran-Kauf trotz hoher Kosten?',
-    answer: 'Drei Szenarien: (1) Sie haben Dauereinsatz über 100–150 Tage pro Jahr — typisch für Bauunternehmen mit eigenem Fuhrpark oder Großhandwerker (Dachdeckerei mit 5+ Mitarbeitern). (2) Sie brauchen den Kran spontan verfügbar (Bereitschaftsdienst, Reparatureinsätze) und Mietzeiten von 24–48 Stunden Vorlauf passen nicht. (3) Der Kran ist Teil Ihres Kerngeschäfts (Kranvermietung, Schwerlast-Logistik) und Sie können ihn auslasten ODER weitervermieten.',
+    answer: 'Drei Szenarien: (1) Sie haben Dauereinsatz über 100–150 Tage pro Jahr, typisch für Bauunternehmen mit eigenem Fuhrpark oder Großhandwerker (Dachdeckerei mit 5+ Mitarbeitern). (2) Sie brauchen den Kran spontan verfügbar (Bereitschaftsdienst, Reparatureinsätze) und Mietzeiten von 24–48 Stunden Vorlauf passen nicht. (3) Der Kran ist Teil Ihres Kerngeschäfts (Kranvermietung, Schwerlast-Logistik) und Sie können ihn auslasten ODER weitervermieten.',
   },
   {
     question: 'Lohnt sich ein gebrauchter Dachdeckerkran für mein Dachdeckergeschäft?',
-    answer: 'Bei einer typischen Dachdeckerei mit 4–8 Mitarbeitern und 60–100 Einsatztagen pro Jahr liegen Sie an der Grenze. Rechnung: Gebrauchter Dachdeckerkran 50.000€ + 4.000€/Jahr Unterhalt + 4.000€/Jahr Wertverlust = ca. 13.000€ Jahresaufwand bei 10 Jahren Nutzung. Bei 80 Miet-Einsatztagen pro Jahr wären das 16.000€ (200€/Tag). Der Kauf ist also etwa 3.000€/Jahr günstiger — aber dafür haben Sie Kapitalbindung, Lagerung und Wartungsaufwand. Viele Dachdecker mieten trotzdem, weil die Variabilität (verschiedene Krantypen je Projekt) und Auslastungsschwankungen das Risiko erhöhen.',
+    answer: 'Bei einer typischen Dachdeckerei mit 4–8 Mitarbeitern und 60–100 Einsatztagen pro Jahr liegen Sie an der Grenze. Rechnung: Gebrauchter Dachdeckerkran 50.000€ + 4.000€/Jahr Unterhalt + 4.000€/Jahr Wertverlust = ca. 13.000€ Jahresaufwand bei 10 Jahren Nutzung. Bei 80 Miet-Einsatztagen pro Jahr wären das 16.000€ (200€/Tag). Der Kauf ist also etwa 3.000€/Jahr günstiger, aber dafür haben Sie Kapitalbindung, Lagerung und Wartungsaufwand. Viele Dachdecker mieten trotzdem, weil die Variabilität (verschiedene Krantypen je Projekt) und Auslastungsschwankungen das Risiko erhöhen.',
   },
   {
     question: 'Kann ich einen Kran finanzieren oder leasen?',
-    answer: 'Ja. Bei Krankauf üblich sind: Bankfinanzierung über 5–8 Jahre mit 3–6% Zinsen, Leasing (3–5 Jahre Laufzeit, monatliche Raten ohne Eigentumserwerb), Mietkauf (Miete zählt anteilig auf den Kaufpreis an). Bei Leasing fallen typischerweise 1.500–6.000€ pro Monat an je nach Krangröße. Leasing ist steuerlich oft attraktiver als Kauf, weil die Raten als Betriebsausgabe sofort absetzbar sind — anders als die Abschreibung beim Kauf (verteilt über 10 Jahre).',
+    answer: 'Ja. Bei Krankauf üblich sind: Bankfinanzierung über 5–8 Jahre mit 3–6% Zinsen, Leasing (3–5 Jahre Laufzeit, monatliche Raten ohne Eigentumserwerb), Mietkauf (Miete zählt anteilig auf den Kaufpreis an). Bei Leasing fallen typischerweise 1.500–6.000€ pro Monat an je nach Krangröße. Leasing ist steuerlich oft attraktiver als Kauf, weil die Raten als Betriebsausgabe sofort absetzbar sind, anders als die Abschreibung beim Kauf (verteilt über 10 Jahre).',
   },
   {
-    question: 'Hybrid-Strategie: Kran kaufen UND mieten — wie geht das?',
-    answer: 'Für mittlere Betriebe sinnvoll: Eigenen Standardkran kaufen (z.B. einen Dachdeckerkran oder Minikran für 80% der Aufträge), Spezialkrane mieten (Schwerlast-Mobilkran für Großprojekte, Spinnenkran für Glasarbeiten). So decken Sie das Tagesgeschäft mit eigenem Gerät bei optimaler Auslastung ab und greifen für Sonderaufgaben auf Mietkrane zu — ohne den Wertverlust eines selten genutzten Spezialkrans zu tragen.',
+    question: 'Hybrid-Strategie: Kran kaufen UND mieten, wie geht das?',
+    answer: 'Für mittlere Betriebe sinnvoll: Eigenen Standardkran kaufen (z.B. einen Dachdeckerkran oder Minikran für 80% der Aufträge), Spezialkrane mieten (Schwerlast-Mobilkran für Großprojekte, Spinnenkran für Glasarbeiten). So decken Sie das Tagesgeschäft mit eigenem Gerät bei optimaler Auslastung ab und greifen für Sonderaufgaben auf Mietkrane zu, ohne den Wertverlust eines selten genutzten Spezialkrans zu tragen.',
   },
 ]
 
@@ -67,12 +67,12 @@ export default function KranMietenOderKaufenPage() {
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Kran mieten oder kaufen? Wann sich was lohnt — Vergleich 2026
+        Kran mieten oder kaufen? Wann sich was lohnt. Vergleich 2026
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Sie überlegen, einen Kran zu kaufen oder zu mieten? Die kurze Antwort: <strong className="text-gray-900">
         Bei unter 100 Einsatztagen pro Jahr ist Mieten in fast allen Fällen günstiger.</strong> Ein neuer Autokran
-        kostet schnell 200.000–350.000€ — bei nur 50 Einsätzen pro Jahr amortisiert sich das nie. Mieten ist bei
+        kostet schnell 200.000–350.000€, bei nur 50 Einsätzen pro Jahr amortisiert sich das nie. Mieten ist bei
         dieser Auslastung 2–3× günstiger pro tatsächlich genutztem Tag.
       </p>
       <p className="text-[14px] text-gray-500 mb-8 max-w-3xl">
@@ -84,15 +84,15 @@ export default function KranMietenOderKaufenPage() {
       <div className="space-y-8 text-[14px] text-gray-600 leading-relaxed">
 
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Die 100-Einsatztage-Regel — Faustregel für Bauunternehmer</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Die 100-Einsatztage-Regel. Faustregel für Bauunternehmer</h2>
           <p className="mb-3">
             Die Bauindustrie nutzt seit Jahrzehnten eine einfache Faustregel: <strong className="text-gray-900">
             Unter 100 Einsatztagen pro Jahr lohnt sich der Kauf in der Regel nicht.</strong> Der Grund liegt
-            in den Fixkosten — ein eigener Kran kostet Sie auch dann Geld, wenn er in der Halle steht. Versicherung,
+            in den Fixkosten, ein eigener Kran kostet Sie auch dann Geld, wenn er in der Halle steht. Versicherung,
             UVV-Prüfung, Wertverlust, Wartung und Lagerung summieren sich auf 8–15% des Kaufpreises pro Jahr.
           </p>
           <p className="mb-3">
-            Konkretes Beispiel — ein Autokran 30t:
+            Konkretes Beispiel, ein Autokran 30t:
           </p>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3">
             <p className="font-medium text-gray-900 mb-2">Kauf eines neuen Autokrans 30t</p>
@@ -110,13 +110,13 @@ export default function KranMietenOderKaufenPage() {
           </div>
           <p className="mb-3">
             Bei 80 Einsatztagen pro Jahr entspricht das <strong className="text-gray-900">1.030€ pro tatsächlich
-            genutztem Tag</strong> — gegenüber 500€/Tag Mietpreis (inkl. Kranführer). Erst ab 165 Einsatztagen
+            genutztem Tag</strong>, gegenüber 500€/Tag Mietpreis (inkl. Kranführer). Erst ab 165 Einsatztagen
             kommen Sie unter den Miet-Tagessatz.
           </p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Anschaffungskosten neuer Krane — Übersicht 2026</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Anschaffungskosten neuer Krane. Übersicht 2026</h2>
           <div className="overflow-x-auto border border-gray-200 rounded-lg">
             <table className="w-full text-[13px]">
               <thead>
@@ -163,15 +163,15 @@ export default function KranMietenOderKaufenPage() {
             <div className="border border-gray-200 rounded-lg p-4">
               <p className="font-medium text-gray-900 mb-1">2. Spontane Verfügbarkeit kritisch</p>
               <p className="text-[13px]">
-                Wenn Sie regelmäßig kurzfristig einen Kran brauchen — etwa für Bereitschaftsdienste, Reparatureinsätze
-                oder Notfälle (Sturmschäden, Industrieausfälle) — können Mietzeiten von 24–48 Stunden Vorlauf zu lang
+                Wenn Sie regelmäßig kurzfristig einen Kran brauchen, etwa für Bereitschaftsdienste, Reparatureinsätze
+                oder Notfälle (Sturmschäden, Industrieausfälle), können Mietzeiten von 24–48 Stunden Vorlauf zu lang
                 sein. Eigener Kran bedeutet sofort einsatzbereit.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
               <p className="font-medium text-gray-900 mb-1">3. Kran ist Kerngeschäft</p>
               <p className="text-[13px]">
-                Kranvermietungen, Schwerlast-Logistiker, Industriedienstleister mit Kran-Service-Angebot — wer Krane
+                Kranvermietungen, Schwerlast-Logistiker, Industriedienstleister mit Kran-Service-Angebot, wer Krane
                 weitervermietet oder als Bestandteil einer höhermargigen Dienstleistung einsetzt, muss eigene Geräte
                 haben. Auslastung von 200+ Tagen/Jahr ist realistisch und der Kran zahlt sich aus.
               </p>
@@ -182,7 +182,7 @@ export default function KranMietenOderKaufenPage() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-3">Wann lohnt sich Mieten?</h2>
           <p className="mb-3">
-            Die meisten Bauunternehmer mieten — und das aus guten Gründen:
+            Die meisten Bauunternehmer mieten, und das aus guten Gründen:
           </p>
           <ul className="list-disc pl-5 space-y-2 mb-3">
             <li>
@@ -197,26 +197,26 @@ export default function KranMietenOderKaufenPage() {
             </li>
             <li>
               <strong className="text-gray-900">Kein Wartungsaufwand:</strong> Hauptuntersuchung, UVV-Prüfung,
-              hydraulische Wartung, Verschleißteile — beim Mietkran kümmert sich der Vermieter darum. Bei
+              hydraulische Wartung, Verschleißteile, beim Mietkran kümmert sich der Vermieter darum. Bei
               Eigentum sind Sie verantwortlich für jeden Schaden und jede Prüfung.
             </li>
             <li>
               <strong className="text-gray-900">Modernes Equipment:</strong> Mietkrane sind oft jünger als
-              Eigeneigentum — Kranvermieter erneuern ihren Fuhrpark alle 5–8 Jahre. Sie bekommen aktuelle Technik,
+              Eigeneigentum. Kranvermieter erneuern ihren Fuhrpark alle 5–8 Jahre. Sie bekommen aktuelle Technik,
               moderne Funkfernsteuerung und neue Sicherheitsfeatures.
             </li>
             <li>
               <strong className="text-gray-900">Kranführer inklusive:</strong> Bei Autokran, Mobilkran und Raupenkran
-              ist der Kranführer im Mietpreis enthalten — gesetzlich vorgeschrieben (DGUV V52). Sie sparen sich
+              ist der Kranführer im Mietpreis enthalten, gesetzlich vorgeschrieben (DGUV V52). Sie sparen sich
               den Lohn, die Sozialabgaben und Urlaubsvertretung eines eigenen Kranführers (50.000–60.000€/Jahr).
             </li>
           </ul>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Gebrauchten Kran kaufen — wann macht das Sinn?</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Gebrauchten Kran kaufen, wann macht das Sinn?</h2>
           <p className="mb-3">
-            Ein gebrauchter Kran kostet typischerweise 30–60% weniger als ein Neukran bei 8–15 Jahren Alter — und
+            Ein gebrauchter Kran kostet typischerweise 30–60% weniger als ein Neukran bei 8–15 Jahren Alter, und
             kann eine attraktive Option sein, wenn Sie:
           </p>
           <ul className="list-disc pl-5 space-y-2 mb-3">
@@ -226,10 +226,10 @@ export default function KranMietenOderKaufenPage() {
             </li>
             <li>
               <strong className="text-gray-900">Wartungstechnisch versiert sind</strong> oder einen Servicepartner
-              haben — ältere Krane brauchen mehr Pflege
+              haben, ältere Krane brauchen mehr Pflege
             </li>
             <li>
-              <strong className="text-gray-900">Kein Image-Risiko sehen</strong> — ein 12 Jahre alter Kran wirkt
+              <strong className="text-gray-900">Kein Image-Risiko sehen</strong>, ein 12 Jahre alter Kran wirkt
               auf manchen Baustellen weniger professionell als ein neuer
             </li>
           </ul>
@@ -243,7 +243,7 @@ export default function KranMietenOderKaufenPage() {
           <p className="mb-3">
             Anbieter für gebrauchte Krane: Hersteller-eigene Used-Programs (Liebherr, Tadano), spezialisierte
             Händler, Online-Plattformen (Mascus, MachineryZone, TruckScout24). Klaas und Böcker sind die
-            dominierenden Hersteller im Dachdeckerkran-Segment in {COUNTRY_LABEL} — gebrauchte Modelle dieser
+            dominierenden Hersteller im Dachdeckerkran-Segment in {COUNTRY_LABEL}, gebrauchte Modelle dieser
             Marken haben gute Wiederverkaufswerte.
           </p>
         </section>
@@ -255,7 +255,7 @@ export default function KranMietenOderKaufenPage() {
             oft die <strong className="text-gray-900">Hybrid-Strategie</strong> wirtschaftlich am besten:
           </p>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3">
-            <p className="font-medium text-gray-900 mb-2">Beispielrechnung — Dachdeckerei mit 80 Einsatztagen/Jahr</p>
+            <p className="font-medium text-gray-900 mb-2">Beispielrechnung. Dachdeckerei mit 80 Einsatztagen/Jahr</p>
             <ul className="space-y-1 text-[13px]">
               <li><strong>Eigener Dachdeckerkran</strong> (gebraucht 8 Jahre, 55.000€):
                 <ul className="ml-4 mt-1 space-y-0.5">
@@ -278,7 +278,7 @@ export default function KranMietenOderKaufenPage() {
           </div>
           <p>
             Im Vergleich: Wenn Sie alle 80 Einsätze mieten würden, lägen Sie bei 25.000–30.000€/Jahr. Wenn Sie alle
-            Krane kaufen würden, bei 100.000€+/Jahr. Die Hybrid-Strategie nutzt das Beste aus beiden Welten — eigener
+            Krane kaufen würden, bei 100.000€+/Jahr. Die Hybrid-Strategie nutzt das Beste aus beiden Welten, eigener
             Kran für das Tagesgeschäft, Miete für Variabilität und Spitzenlasten.
           </p>
         </section>
@@ -287,13 +287,13 @@ export default function KranMietenOderKaufenPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-3">Fazit: Mieten ist für die meisten der bessere Weg</h2>
           <p className="mb-3">
             Solange Sie nicht regelmäßig über 100 Tage pro Jahr einen Kran brauchen, ist <strong className="text-gray-900">
-            Mieten in fast allen Fällen die wirtschaftlichere Wahl</strong> — und sie skaliert mit Ihren Aufträgen,
+            Mieten in fast allen Fällen die wirtschaftlichere Wahl</strong>, und sie skaliert mit Ihren Aufträgen,
             statt Fixkosten in Form eines Krans in der Halle zu verursachen. Bei mehr als 150 Einsatztagen oder
             wenn ein Standardkran 80% Ihrer Aufträge abdeckt, lohnt sich Kauf (neu oder gebraucht) oder eine
             Hybrid-Strategie.
           </p>
           <p className="mb-4">
-            Wenn Sie sich unsicher sind, ist der schnellste Weg, eine kostenlose Sammelanfrage zu stellen — Sie
+            Wenn Sie sich unsicher sind, ist der schnellste Weg, eine kostenlose Sammelanfrage zu stellen. Sie
             bekommen Angebote von mehreren Vermietern in Ihrer Region und sehen sofort, wie viel das Mieten für
             Ihren konkreten Bedarf kostet. Damit haben Sie eine Vergleichsbasis für die Kauf-Entscheidung.
           </p>
@@ -302,7 +302,7 @@ export default function KranMietenOderKaufenPage() {
               href="/kran-mieten-preise"
               className="flex-1 text-center bg-blue-600 text-white text-[14px] font-medium py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Kostenrechner öffnen — Preise vergleichen
+              Kostenrechner öffnen. Preise vergleichen
             </Link>
             <Link
               href="/kranverleih"
@@ -321,7 +321,7 @@ export default function KranMietenOderKaufenPage() {
       <div className="mt-8 text-[13px] text-gray-500">
         <p>
           Sie planen einen konkreten Einsatz und möchten direkt Preise vergleichen?
-          Nutzen Sie die <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage auf {BRAND_NAME}</Link> —
+          Nutzen Sie die <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage auf {BRAND_NAME}</Link> 
           kostenlos, unverbindlich und in 2 Minuten ausgefüllt.
         </p>
       </div>

@@ -8,12 +8,12 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: 'Welchen Kran brauche ich? Kran-Ratgeber',
   description:
-    'Welchen Kran brauche ich? Minikran, Autokran oder Baukran — unser Ratgeber hilft Ihnen, den richtigen Kran für Ihr Projekt zu finden. Empfehlungen nach Einsatzzweck.',
+    'Welchen Kran brauche ich? Minikran, Autokran oder Baukran, unser Ratgeber hilft Ihnen, den richtigen Kran für Ihr Projekt zu finden. Empfehlungen nach Einsatzzweck.',
   alternates: { canonical: '/ratgeber/welchen-kran-brauche-ich' },
   openGraph: {
-    title: 'Welchen Kran brauche ich? — Der große Kran-Ratgeber',
+    title: 'Welchen Kran brauche ich?. Der große Kran-Ratgeber',
     description:
-      'Welchen Kran brauche ich? Minikran, Autokran oder Baukran — unser Ratgeber hilft Ihnen, den richtigen Kran für Ihr Projekt zu finden.',
+      'Welchen Kran brauche ich? Minikran, Autokran oder Baukran, unser Ratgeber hilft Ihnen, den richtigen Kran für Ihr Projekt zu finden.',
     type: 'website',
     url: '/ratgeber/welchen-kran-brauche-ich',
       images: [OG_IMAGE],
@@ -109,7 +109,7 @@ export default async function WelchenKranPage() {
                 href={`/${s.slug}`}
                 className="text-[13px] font-medium text-blue-600 hover:text-blue-700 shrink-0"
               >
-                {s.recommendation} &rarr;
+                {s.recommendation} 
               </Link>
               <p className="text-[12px] text-gray-400">{s.why}</p>
             </div>
@@ -146,17 +146,17 @@ export default async function WelchenKranPage() {
         </div>
       </section>
 
-      {/* Minikran vs. Autokran — der häufigste Vergleich.
+      {/* Minikran vs. Autokran, der häufigste Vergleich.
           Konsolidiert aus dem ehemaligen /ratgeber/minikran-vs-autokran
           (Google hat die Standalone-Seite nicht indexiert; Inhalt ist hier
           stärker, weil im Authority-Kontext des Eltern-Ratgebers). */}
       <section className="mb-10 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Minikran vs. Autokran — der häufigste Vergleich
+          Minikran vs. Autokran, der häufigste Vergleich
         </h2>
         <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
           Minikran und Autokran decken zusammen rund 80 % aller Hebearbeiten auf
-          deutschen Baustellen ab — sie sind aber für sehr unterschiedliche
+          deutschen Baustellen ab, sie sind aber für sehr unterschiedliche
           Einsätze gemacht. Hier die wichtigsten Unterschiede auf einen Blick:
         </p>
         <div className="overflow-x-auto">
@@ -173,8 +173,8 @@ export default async function WelchenKranPage() {
               <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Hubhöhe</td><td className="py-2 px-3">bis ca. 25 m</td><td className="py-2 px-3">bis ca. 80 m</td></tr>
               <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Min. Zufahrt</td><td className="py-2 px-3">ab 80 cm</td><td className="py-2 px-3">ab 3 m (LKW-Breite)</td></tr>
               <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Aufbauzeit</td><td className="py-2 px-3">5–15 Min. (Funkfernbedienung)</td><td className="py-2 px-3">15–30 Min. (Stützen ausfahren)</td></tr>
-              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Bediener nötig?</td><td className="py-2 px-3">Nein — Selbstbedienung nach 30 Min. Einweisung</td><td className="py-2 px-3">Ja — Kranführer im Preis enthalten</td></tr>
-              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Innenraum-tauglich?</td><td className="py-2 px-3">Ja — elektrisch, abgasfrei</td><td className="py-2 px-3">Nein — Diesel-LKW</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Bediener nötig?</td><td className="py-2 px-3">Nein. Selbstbedienung nach 30 Min. Einweisung</td><td className="py-2 px-3">Ja. Kranführer im Preis enthalten</td></tr>
+              <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Innenraum-tauglich?</td><td className="py-2 px-3">Ja, elektrisch, abgasfrei</td><td className="py-2 px-3">Nein. Diesel-LKW</td></tr>
               <tr className="border-b"><td className="py-2 px-3 font-medium text-gray-700">Tagespreis</td><td className="py-2 px-3">ab 250 € (ohne Bediener)</td><td className="py-2 px-3">ab 500 € (inkl. Kranführer)</td></tr>
               <tr><td className="py-2 px-3 font-medium text-gray-700">Wochenpreis</td><td className="py-2 px-3">ab 1.200 €</td><td className="py-2 px-3">ab 2.500 €</td></tr>
             </tbody>
@@ -200,15 +200,15 @@ export default async function WelchenKranPage() {
         </ul>
 
         <p className="text-[14px] text-gray-500 leading-relaxed">
-          <strong className="text-gray-700">Faustregel:</strong> Bis 3 t und/oder enge Zufahrt &rarr;{' '}
+          <strong className="text-gray-700">Faustregel:</strong> Bis 3 t und/oder enge Zufahrt {' '}
           <Link href="/minikran-mieten" className="text-blue-600 hover:underline">Minikran</Link>.
-          Über 3 t oder Tagesgeschäft &rarr;{' '}
+          Über 3 t oder Tagesgeschäft {' '}
           <Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link>.
-          Bei Glasmontage prüfen Sie zuerst die Zufahrtbreite — die entscheidet stärker als das Gewicht.
+          Bei Glasmontage prüfen Sie zuerst die Zufahrtbreite, die entscheidet stärker als das Gewicht.
         </p>
       </section>
 
-      {/* Echte Anfragen 2026 — worked-examples z 5 anonimizowanych realnych
+      {/* Echte Anfragen 2026, worked-examples z 5 anonimizowanych realnych
           leadów z 23.04 - 07.05. Komplement do abstrakcyjnych scenarios u góry.
           Anonimizowane (no Vorname, no PLZ, no firm names) per DSGVO Art. 6. */}
       <section className="mb-10 border border-gray-200 rounded-lg p-5">
@@ -222,7 +222,7 @@ export default async function WelchenKranPage() {
           werden.
         </p>
 
-        {/* Beispiel 1 — Fensterpaletten / Autokran */}
+        {/* Beispiel 1. Fensterpaletten / Autokran */}
         <article className="mb-7">
           <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
             1. Fensterpaletten aufs Dach: 30-Tonner für 1,5 t auf 22 m Höhe
@@ -234,13 +234,13 @@ export default async function WelchenKranPage() {
             <p><strong className="text-gray-800">Häufige Fehler.</strong> Tonnage am Mast ist nicht gleich Tonnage an der Spitze. Wer denkt „1,5 t, da reicht ein 5-Tonner", verkennt, dass die Tragkraft mit jedem Meter Auslage stark fällt. Bei einem 5-Tonner auf 10 m Auslage bleiben oft nur 1,2 t, ohne jede Sicherheitsmarge. Lieber eine Klasse größer wählen als zu knapp dimensionieren.</p>
             <p>
               <Link href="/autokran-mieten" className="text-blue-600 hover:underline text-[14px]">
-                Mehr zu Autokran mieten &rarr;
+                Mehr zu Autokran mieten 
               </Link>
             </p>
           </div>
         </article>
 
-        {/* Beispiel 2 — Glasscheiben / Minikran z Glassauger */}
+        {/* Beispiel 2. Glasscheiben / Minikran z Glassauger */}
         <article className="mb-7">
           <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
             2. Glasscheiben aufs Terrassendach: Minikran mit Glassauger
@@ -252,13 +252,13 @@ export default async function WelchenKranPage() {
             <p><strong className="text-gray-800">Häufige Fehler.</strong> Ein Glassauger sieht einfach aus, ist er aber nicht. Eine 200-kg-Scheibe an der Saugplatte zu führen, ohne sie anzukippen oder bei Wind aus der Bahn kommen zu lassen, braucht Übung. Bei Glasmontagen ist der Bediener die wichtigste Investition, nicht der Kran selbst. Zweiter Punkt: Ab Windstärke 4 fällt eine Glasmontage praktisch immer aus, der Termin sollte also mit Wetter-Reserve geplant werden.</p>
             <p>
               <Link href="/minikran-mieten" className="text-blue-600 hover:underline text-[14px]">
-                Mehr zu Minikran mieten &rarr;
+                Mehr zu Minikran mieten 
               </Link>
             </p>
           </div>
         </article>
 
-        {/* Beispiel 3 — Holzrahmenhaus / Mobilkran 45-60t */}
+        {/* Beispiel 3. Holzrahmenhaus / Mobilkran 45-60t */}
         <article className="mb-7">
           <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
             3. Holzrahmenhaus aufstellen: 45-60-Tonner über mehrere Tage
@@ -270,13 +270,13 @@ export default async function WelchenKranPage() {
             <p><strong className="text-gray-800">Häufige Fehler.</strong> An erster Stelle der Wind: Wandelemente eines Holzrahmenhauses haben große Flächen, und ab 6 Bft (rund 40 km/h) fällt der Aufbau aus. Wer den Termin auf einen einzigen Tag legt, riskiert Stillstandskosten. Zweiter Punkt: die tragfähige Aufstellfläche. Ein 45-Tonner stützt sich mit rund 30 t pro Stütze ab. Besteht die Standfläche neben der Bodenplatte aus weichem Erdreich, sind Stützplatten oder eine Bauwegeplatte zwingend.</p>
             <p>
               <Link href="/mobilkran-mieten" className="text-blue-600 hover:underline text-[14px]">
-                Mehr zu Mobilkran mieten &rarr;
+                Mehr zu Mobilkran mieten 
               </Link>
             </p>
           </div>
         </article>
 
-        {/* Beispiel 4 — Stahlhalle / Mobilkran 50-80t albo Raupenkran */}
+        {/* Beispiel 4. Stahlhalle / Mobilkran 50-80t albo Raupenkran */}
         <article className="mb-7">
           <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
             4. Stahlhalle aufrichten: 50-80-Tonner für Sandwich-Elemente
@@ -288,17 +288,17 @@ export default async function WelchenKranPage() {
             <p><strong className="text-gray-800">Häufige Fehler.</strong> Sandwichelemente werden gerne unterschätzt. Optisch wirken sie leicht, durch ihre große Fläche sind sie aber extrem windsensibel. Schon bei 30 km/h Wind gerät ein Element am Haken ins Schwingen. Das verlängert nicht nur den Einsatz, sondern erhöht auch das Beschädigungsrisiko jedes einzelnen Elements. Zweiter Punkt: Standfläche prüfen. Bei großen Hallen-Aufbauten steht der Kran oft auf nicht-verdichtetem Baustellenuntergrund. Ohne Stützplatten oder Raupenkran droht Absinken, und bei einem 70-Tonner unter Last ist das ein Notfall.</p>
             <p>
               <Link href="/mobilkran-mieten" className="text-blue-600 hover:underline text-[14px]">
-                Mehr zu Mobilkran mieten &rarr;
+                Mehr zu Mobilkran mieten 
               </Link>
               <span className="text-gray-400 mx-1.5">·</span>
               <Link href="/raupenkran-mieten" className="text-blue-600 hover:underline text-[14px]">
-                Raupenkran mieten &rarr;
+                Raupenkran mieten 
               </Link>
             </p>
           </div>
         </article>
 
-        {/* Beispiel 5 — Whirlpool transport / Ladekran */}
+        {/* Beispiel 5. Whirlpool transport / Ladekran */}
         <article>
           <h3 className="text-[15px] font-semibold text-gray-900 mb-2">
             5. Whirlpool transportieren: Ladekran mit Pritsche, kein Mobilkran
@@ -310,7 +310,7 @@ export default async function WelchenKranPage() {
             <p><strong className="text-gray-800">Häufige Fehler.</strong> Vorher Maße nehmen. Ein Whirlpool von 2,13 m Breite passt durch viele, aber nicht alle Tore und Hofdurchfahrten. Wer das nicht vor der Buchung misst, riskiert, dass der LKW vor Ort wenden muss, was Zusatzstunden oder eine Stornierung auslöst. Zweiter Punkt: Nicht das Gewicht ist hier das Problem, sondern die Empfindlichkeit der Bodenwanne. Beim Absetzen muss der Untergrund eben sein, sonst verzieht sich die Wanne und der spätere Wasserstand wird schief.</p>
             <p>
               <Link href="/ladekran-mieten" className="text-blue-600 hover:underline text-[14px]">
-                Mehr zu Ladekran mieten &rarr;
+                Mehr zu Ladekran mieten 
               </Link>
             </p>
           </div>
@@ -343,7 +343,7 @@ export default async function WelchenKranPage() {
         <p className="text-[12px] text-gray-400 mt-3">Kostenlos & unverbindlich. Keine versteckten Kosten.</p>
       </section>
 
-      {/* FAQPage — converts the 8 scenarios into Q&A pairs so AI agents and
+      {/* FAQPage, converts the 8 scenarios into Q&A pairs so AI agents and
           answer engines can cite the recommendation directly. Google removed
           FAQ rich-result snippets for non-gov sites in 2023, but ChatGPT,
           Claude, Perplexity still parse this format and prefer it for

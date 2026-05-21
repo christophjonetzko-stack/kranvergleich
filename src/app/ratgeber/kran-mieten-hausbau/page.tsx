@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     'Hausbau-Guide: Welcher Kran für welche Bauphase (Rohbau, Dachstuhl, Dacheindeckung)? Kostenbeispiel Einfamilienhaus, Timing und Genehmigungen.',
   alternates: alternatesFor('/ratgeber/kran-mieten-hausbau'),
   openGraph: {
-    title: 'Kran für Hausbau mieten: Welcher Kran wann? — Einfamilienhaus 2026',
+    title: 'Kran für Hausbau mieten: Welcher Kran wann?. Einfamilienhaus 2026',
     description:
       'Hausbau-Guide für Bauherren: Welcher Kran für welche Bauphase? Kostenbeispiel für ein typisches Einfamilienhaus, Timing und Genehmigungen.',
     type: 'article',
@@ -26,12 +26,12 @@ const faqs = [
   {
     question: 'Welcher Kran für den Hausbau?',
     answer:
-      'Für die meisten Einfamilienhäuser reicht ein Autokran (30–50 t) für punktuelle Einsätze bei Rohbau und Dachstuhl — kombiniert mit einem Dachdeckerkran für die Dacheindeckung. Ein Baukran (Turmdrehkran) lohnt sich erst ab einer Bauzeit von 6 Monaten oder bei mehrstöckigen Projekten mit täglichen Hebearbeiten. Für den Innenausbau (Kamin, Treppen, Glasmontage) kann zusätzlich ein Minikran sinnvoll sein.',
+      'Für die meisten Einfamilienhäuser reicht ein Autokran (30–50 t) für punktuelle Einsätze bei Rohbau und Dachstuhl, kombiniert mit einem Dachdeckerkran für die Dacheindeckung. Ein Baukran (Turmdrehkran) lohnt sich erst ab einer Bauzeit von 6 Monaten oder bei mehrstöckigen Projekten mit täglichen Hebearbeiten. Für den Innenausbau (Kamin, Treppen, Glasmontage) kann zusätzlich ein Minikran sinnvoll sein.',
   },
   {
     question: 'Was kostet ein Kran für ein Einfamilienhaus?',
     answer:
-      'Für ein typisches Einfamilienhaus (150 m², 2 Vollgeschosse, 8 Monate Bauzeit) liegen die Gesamt-Krankosten bei 6.000–12.000€ — verteilt auf 6–10 Autokran-Einsätze (Rohbau, Dachstuhl) und eine Wochenmiete Dachdeckerkran (Dacheindeckung). Die Alternative mit einem Schnellmontage-Baukran über 6 Monate kostet rund 30.000–35.000€ und lohnt sich nur bei sehr aktiven Baustellen mit mehreren Hebearbeiten pro Woche.',
+      'Für ein typisches Einfamilienhaus (150 m², 2 Vollgeschosse, 8 Monate Bauzeit) liegen die Gesamt-Krankosten bei 6.000–12.000€, verteilt auf 6–10 Autokran-Einsätze (Rohbau, Dachstuhl) und eine Wochenmiete Dachdeckerkran (Dacheindeckung). Die Alternative mit einem Schnellmontage-Baukran über 6 Monate kostet rund 30.000–35.000€ und lohnt sich nur bei sehr aktiven Baustellen mit mehreren Hebearbeiten pro Woche.',
   },
   {
     question: 'Brauche ich einen Baukran für mein Einfamilienhaus?',
@@ -41,17 +41,17 @@ const faqs = [
   {
     question: 'Wann muss ich einen Kran für den Hausbau bestellen?',
     answer:
-      'Die Vorlaufzeiten variieren stark je nach Krantyp: Autokran (30–50 t) 1–2 Wochen, in der Hochsaison (März–Oktober) 3–4 Wochen. Der Dachstuhl-Einsatz sollte bereits 4 Wochen im Voraus gebucht werden — dies ist der kritischste Einzeltermin des Rohbaus. Baukrane (Schnellmontage) brauchen 4–6 Wochen Vorlauf, in der Hochsaison bis zu 10 Wochen. Dachdeckerkrane sind kurzfristig verfügbar (3–7 Tage). Genehmigungen (Sondernutzung, Überschwenk) beantragen Sie 2–4 Wochen vor dem ersten Einsatz.',
+      'Die Vorlaufzeiten variieren stark je nach Krantyp: Autokran (30–50 t) 1–2 Wochen, in der Hochsaison (März–Oktober) 3–4 Wochen. Der Dachstuhl-Einsatz sollte bereits 4 Wochen im Voraus gebucht werden, dies ist der kritischste Einzeltermin des Rohbaus. Baukrane (Schnellmontage) brauchen 4–6 Wochen Vorlauf, in der Hochsaison bis zu 10 Wochen. Dachdeckerkrane sind kurzfristig verfügbar (3–7 Tage). Genehmigungen (Sondernutzung, Überschwenk) beantragen Sie 2–4 Wochen vor dem ersten Einsatz.',
   },
   {
     question: 'Welche Genehmigungen brauche ich für einen Kran beim Hausbau?',
     answer:
-      'Der Kranstandort sollte idealerweise schon im Bauantrag eingezeichnet sein — dann ist er Teil der Baugenehmigung. Zusätzlich brauchen Sie eine Sondernutzungserlaubnis (50–300€), wenn der Kran auf öffentlichem Straßenraum oder Gehweg steht, eine Überschwenkgenehmigung (mit schriftlicher Nachbarzustimmung), wenn der Ausleger über ein Nachbargrundstück schwenkt, und bei Baukranen zusätzlich einen Statiknachweis für das Fundament (500–2.000€). Bei reinen Autokran-Einsätzen auf eigenem Grundstück sind meist keine Extra-Genehmigungen nötig.',
+      'Der Kranstandort sollte idealerweise schon im Bauantrag eingezeichnet sein, dann ist er Teil der Baugenehmigung. Zusätzlich brauchen Sie eine Sondernutzungserlaubnis (50–300€), wenn der Kran auf öffentlichem Straßenraum oder Gehweg steht, eine Überschwenkgenehmigung (mit schriftlicher Nachbarzustimmung), wenn der Ausleger über ein Nachbargrundstück schwenkt, und bei Baukranen zusätzlich einen Statiknachweis für das Fundament (500–2.000€). Bei reinen Autokran-Einsätzen auf eigenem Grundstück sind meist keine Extra-Genehmigungen nötig.',
   },
   {
     question: 'Kann ein Autokran einen kompletten Hausbau übernehmen?',
     answer:
-      'Ja, für die meisten Einfamilienhäuser reichen Autokran-Einsätze aus. Planen Sie 6–10 Termine über die Bauzeit verteilt: Rohbau Keller (1–2 Einsätze), Erdgeschoss (3 Einsätze für Decken und Fertigteile), Obergeschoss (2 Einsätze), Dachstuhl (1–2 Tage). Für die anschließende Dacheindeckung (Ziegel, Dämmung, Solar) ist allerdings ein Dachdeckerkran deutlich günstiger — er lässt sich ohne Kranführer bedienen und spart 60–70% gegenüber einem Autokran-Einsatz.',
+      'Ja, für die meisten Einfamilienhäuser reichen Autokran-Einsätze aus. Planen Sie 6–10 Termine über die Bauzeit verteilt: Rohbau Keller (1–2 Einsätze), Erdgeschoss (3 Einsätze für Decken und Fertigteile), Obergeschoss (2 Einsätze), Dachstuhl (1–2 Tage). Für die anschließende Dacheindeckung (Ziegel, Dämmung, Solar) ist allerdings ein Dachdeckerkran deutlich günstiger, er lässt sich ohne Kranführer bedienen und spart 60–70% gegenüber einem Autokran-Einsatz.',
   },
 ]
 
@@ -77,7 +77,7 @@ export default async function KranMietenHausbauPage() {
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Für ein typisches Einfamilienhaus reichen meist 6–10 Autokran-Einsätze plus ein
-        Dachdeckerkran für die Dacheindeckung — Gesamtkosten rund{' '}
+        Dachdeckerkran für die Dacheindeckung. Gesamtkosten rund{' '}
         <strong className="text-gray-900">6.000–12.000€</strong>. Ein Baukran (Turmdrehkran)
         ist für Standard-EFH meist 3–5× teurer und lohnt sich erst bei längerer Bauzeit oder
         mehrstöckigen Projekten. Dieser Guide zeigt Ihnen als Bauherr, welcher Kran in welcher
@@ -109,7 +109,7 @@ export default async function KranMietenHausbauPage() {
             1. Überblick: Kran-Bedarf nach Bauphase
           </h2>
           <p className="mb-4">
-            Ein Einfamilienhaus-Bau besteht aus mehreren Phasen — und nicht in jeder brauchen
+            Ein Einfamilienhaus-Bau besteht aus mehreren Phasen, und nicht in jeder brauchen
             Sie einen Kran. Die folgende Tabelle zeigt, welcher Krantyp in welcher Phase typisch
             eingesetzt wird und mit welchen Kosten Sie rechnen müssen:
           </p>
@@ -127,7 +127,7 @@ export default async function KranMietenHausbauPage() {
                 <tr className="border-b">
                   <td className="py-2.5 px-4 font-medium text-gray-900">Aushub / Fundament</td>
                   <td className="py-2.5 px-4 text-gray-400">kein Kran (Bagger)</td>
-                  <td className="py-2.5 px-4">—</td>
+                  <td className="py-2.5 px-4"></td>
                   <td className="py-2.5 px-4 whitespace-nowrap text-gray-400">0€</td>
                 </tr>
                 <tr className="border-b bg-gray-50/50">
@@ -189,7 +189,7 @@ export default async function KranMietenHausbauPage() {
           <p className="mb-3">
             Im Rohbau geht es vor allem um das <strong className="text-gray-900">Setzen
             von Deckenelementen, Stahlträgern und Fertigteilen</strong>. Ein Autokran mit
-            30–50 Tonnen Tragkraft genügt für nahezu alle Einfamilienhaus-Projekte —
+            30–50 Tonnen Tragkraft genügt für nahezu alle Einfamilienhaus-Projekte 
             auch bei zwei Vollgeschossen.
           </p>
           <div className="grid gap-3 sm:grid-cols-2 mb-4">
@@ -204,7 +204,7 @@ export default async function KranMietenHausbauPage() {
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Reichweite</p>
               <p className="text-[13px] text-gray-500">
                 Ein 30t Autokran schafft ca. 20–25m Ausladung bei 500 kg Last.
-                Bei schwereren Lasten sinkt die Reichweite — Tragkraftdiagramm vorher prüfen.
+                Bei schwereren Lasten sinkt die Reichweite. Tragkraftdiagramm vorher prüfen.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
@@ -217,7 +217,7 @@ export default async function KranMietenHausbauPage() {
             <div className="border border-gray-200 rounded-lg p-4">
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Planung</p>
               <p className="text-[13px] text-gray-500">
-                Kran-Einsatz <strong className="text-gray-900">synchron mit Materiallieferung</strong> buchen —
+                Kran-Einsatz <strong className="text-gray-900">synchron mit Materiallieferung</strong> buchen 
                 sonst zahlen Sie 80–150€/h Wartezeit. 1 Woche Vorlauf einkalkulieren.
               </p>
             </div>
@@ -225,7 +225,7 @@ export default async function KranMietenHausbauPage() {
           <p className="text-[13px] text-gray-500">
             Detaillierte Autokran-Kosten, Tragkraftklassen und Tipps:{' '}
             <Link href="/autokran-mieten#ratgeber" className="text-blue-600 hover:underline">
-              Autokran mieten — Kosten im Detail &rarr;
+              Autokran mieten. Kosten im Detail 
             </Link>
           </p>
         </section>
@@ -237,7 +237,7 @@ export default async function KranMietenHausbauPage() {
           </h2>
           <p className="mb-3">
             Die Dachstuhl-Montage ist der <strong className="text-gray-900">kritischste
-            Einzeltermin</strong> im Rohbau — und gleichzeitig der klassische Autokran-Einsatz.
+            Einzeltermin</strong> im Rohbau, und gleichzeitig der klassische Autokran-Einsatz.
             Ein vorgefertigter Holz-Dachstuhl wird komplett angeliefert und in einem oder zwei
             Arbeitstagen vom Kran aufgerichtet.
           </p>
@@ -333,7 +333,7 @@ export default async function KranMietenHausbauPage() {
           <p className="text-[13px] text-gray-500 mt-3">
             Baukran-Kosten, Montagezeiten und Genehmigungen im Detail:{' '}
             <Link href="/baukran-mieten#ratgeber" className="text-blue-600 hover:underline">
-              Baukran mieten — Ratgeber &rarr;
+              Baukran mieten. Ratgeber 
             </Link>
           </p>
         </section>
@@ -366,7 +366,7 @@ export default async function KranMietenHausbauPage() {
                 <tr className="border-b">
                   <td className="py-2.5 px-3">Aushub</td>
                   <td className="py-2.5 px-3 text-gray-400">(Bagger)</td>
-                  <td className="py-2.5 px-3 text-gray-400">—</td>
+                  <td className="py-2.5 px-3 text-gray-400"></td>
                   <td className="py-2.5 px-3 text-gray-400 whitespace-nowrap">0€</td>
                 </tr>
                 <tr className="border-b">
@@ -466,7 +466,7 @@ export default async function KranMietenHausbauPage() {
           <p className="text-[11px] text-gray-400 mt-3">
             Preise sind Richtwerte basierend auf Marktrecherche Q1 2026.{' '}
             <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
-              Aktuelle Mietpreise aller Krantypen &rarr;
+              Aktuelle Mietpreise aller Krantypen 
             </Link>
           </p>
         </section>
@@ -477,7 +477,7 @@ export default async function KranMietenHausbauPage() {
             6. Timing: Wann welchen Kran bestellen?
           </h2>
           <p className="mb-4">
-            Die Vorlaufzeiten variieren stark — zwischen wenigen Tagen (Dachdeckerkran)
+            Die Vorlaufzeiten variieren stark, zwischen wenigen Tagen (Dachdeckerkran)
             und mehreren Monaten (große Baukrane). In der Hochsaison (März–Oktober) verdoppelt
             sich der Vorlauf oft. Planen Sie rückwärts vom Einsatzdatum:
           </p>
@@ -522,10 +522,10 @@ export default async function KranMietenHausbauPage() {
           <div className="bg-amber-50 border border-amber-100 rounded-lg p-4">
             <p className="text-[13px] text-amber-800">
               <strong>Bauherr-Tipp:</strong> Der <strong>Dachstuhl-Termin</strong> ist der
-              kritischste Einzeltermin — er hängt vom Zimmerer ab und ist oft monatelang
+              kritischste Einzeltermin, er hängt vom Zimmerer ab und ist oft monatelang
               ausgebucht. Buchen Sie den Autokran dafür 4 Wochen im Voraus, in der Hochsaison
               sogar 6 Wochen. Verzögert sich der Dachstuhl, rufen Sie beim Kranvermieter sofort an,
-              um den Termin zu verschieben — kurzfristige Stornierungen kosten oft 30–50% der Miete.
+              um den Termin zu verschieben, kurzfristige Stornierungen kosten oft 30–50% der Miete.
             </p>
           </div>
         </section>
@@ -537,14 +537,14 @@ export default async function KranMietenHausbauPage() {
           </h2>
           <p className="mb-4">
             Die meisten Kran-Einsätze auf dem eigenen Grundstück benötigen keine separaten
-            Genehmigungen — der Kranstandort ist Teil der Baugenehmigung. Sobald der Kran
+            Genehmigungen, der Kranstandort ist Teil der Baugenehmigung. Sobald der Kran
             aber öffentliche Flächen oder Nachbargrundstücke berührt, wird es komplizierter:
           </p>
           <div className="space-y-3 mb-4">
             <div className="border border-gray-200 rounded-lg p-4">
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Baugenehmigung (meist inklusive)</p>
               <p className="text-[13px] text-gray-500">
-                Der Kranstandort sollte bereits im Bauantrag eingezeichnet sein — dann ist er
+                Der Kranstandort sollte bereits im Bauantrag eingezeichnet sein, dann ist er
                 Teil der Baugenehmigung und Sie brauchen keinen separaten Antrag. Prüfen Sie
                 Ihre Baugenehmigung auf Kranposition und Ausleger-Schwenkbereich.
               </p>
@@ -563,7 +563,7 @@ export default async function KranMietenHausbauPage() {
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Überschwenkgenehmigung (bei Nachbargrundstück)</p>
               <p className="text-[13px] text-gray-500">
                 Wenn der Kranausleger über Nachbargrundstücke schwenkt, brauchen Sie deren
-                schriftliche Zustimmung — auch wenn nur Luft überschwenkt wird. Sprechen Sie
+                schriftliche Zustimmung, auch wenn nur Luft überschwenkt wird. Sprechen Sie
                 Nachbarn früh an, am besten bevor Sie mit dem Bau beginnen.
               </p>
               <p className="text-[11px] text-gray-400 mt-1">Kosten: 50–200€ bei Behörde · Bearbeitungszeit: 2–4 Wochen</p>
@@ -581,7 +581,7 @@ export default async function KranMietenHausbauPage() {
           <p className="text-[13px] text-gray-500">
             Ausführliche Anleitung zu allen Genehmigungen:{' '}
             <Link href="/ratgeber/kran-aufstellen-genehmigung" className="text-blue-600 hover:underline">
-              Kran aufstellen: Genehmigungen im Detail &rarr;
+              Kran aufstellen: Genehmigungen im Detail 
             </Link>
           </p>
         </section>
@@ -598,7 +598,7 @@ export default async function KranMietenHausbauPage() {
                 <p className="font-medium text-gray-900">Kran-Einsätze parallel zu Materiallieferungen planen</p>
                 <p className="text-[13px] text-gray-500">
                   Je besser Kran und Material koordiniert sind, desto weniger Wartezeit fällt an.
-                  Jede Wartestunde beim Autokran kostet 80–150€ — das summiert sich schnell.
+                  Jede Wartestunde beim Autokran kostet 80–150€, das summiert sich schnell.
                 </p>
               </div>
             </li>
@@ -618,7 +618,7 @@ export default async function KranMietenHausbauPage() {
               <div>
                 <p className="font-medium text-gray-900">Dachstuhl-Termin 4+ Wochen im Voraus reservieren</p>
                 <p className="text-[13px] text-gray-500">
-                  Der Dachstuhl ist der kritischste Einzeltermin — in der Hochsaison sind
+                  Der Dachstuhl ist der kritischste Einzeltermin, in der Hochsaison sind
                   Zimmerer und Autokran oft monatelang ausgebucht. 4–6 Wochen Vorlauf einplanen.
                 </p>
               </div>
@@ -639,7 +639,7 @@ export default async function KranMietenHausbauPage() {
               <div>
                 <p className="font-medium text-gray-900">Jeden Einsatz dokumentieren</p>
                 <p className="text-[13px] text-gray-500">
-                  Tagesberichte, Fotos und Lieferscheine sammeln — für Ihre Bauherrenabrechnung
+                  Tagesberichte, Fotos und Lieferscheine sammeln, für Ihre Bauherrenabrechnung
                   und im Falle späterer Gewährleistungsfragen. Ein einfaches Bautagebuch reicht.
                 </p>
               </div>
@@ -673,7 +673,7 @@ export default async function KranMietenHausbauPage() {
           Angebote für Ihren Hausbau einholen
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz {COUNTRY_LABEL} für jeden Bauabschnitt —
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz {COUNTRY_LABEL} für jeden Bauabschnitt 
           Autokran für Rohbau &amp; Dachstuhl, Dachdeckerkran für die Dacheindeckung.
           Kostenlos Angebote bei mehreren Anbietern gleichzeitig anfragen.
         </p>
@@ -698,7 +698,7 @@ export default async function KranMietenHausbauPage() {
         <div className="flex flex-wrap gap-2">
           <Link href="/kran-mieten-preise" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Mietpreise aller Krantypen</Link>
           <Link href="/kran-mieten-preise#tragkraft" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Preise nach Tragkraft (30t–500t)</Link>
-          <Link href="/kran-mieten-preise#kranfuehrer" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Kran mit Fahrer — Kosten</Link>
+          <Link href="/kran-mieten-preise#kranfuehrer" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Kran mit Fahrer. Kosten</Link>
           <Link href="/ratgeber/kran-aufstellen-genehmigung" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Kran-Genehmigungen</Link>
           <Link href="/ratgeber/krantypen" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Alle Krantypen im Vergleich</Link>
           <Link href="/ratgeber/welchen-kran-brauche-ich" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">Welchen Kran brauche ich?</Link>
@@ -707,7 +707,7 @@ export default async function KranMietenHausbauPage() {
         </div>
       </section>
 
-      {/* Structured data — FAQPage + Article + BreadcrumbList */}
+      {/* Structured data. FAQPage + Article + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -36,17 +36,17 @@ const faqs = [
   {
     question: 'Wie lange dauert die Kran-Miete für eine PV-Installation?',
     answer:
-      'Die Einsatzdauer hängt von der Anlagengröße und Dachkomplexität ab: Kleinanlage bis 6 kWp meist ein halber Tag, Standard-EFH (10 kWp) 1 Tag, größere Anlage (15 kWp) 1–2 Tage, 30 kWp rund 2–3 Tage, Gewerbe-Anlagen ab 50 kWp meist 3–7 Tage oder Wochenmiete. Der Kran wird hauptsächlich für den Modultransport aufs Dach benötigt — die eigentliche Montage der Module dauert anschließend deutlich länger.',
+      'Die Einsatzdauer hängt von der Anlagengröße und Dachkomplexität ab: Kleinanlage bis 6 kWp meist ein halber Tag, Standard-EFH (10 kWp) 1 Tag, größere Anlage (15 kWp) 1–2 Tage, 30 kWp rund 2–3 Tage, Gewerbe-Anlagen ab 50 kWp meist 3–7 Tage oder Wochenmiete. Der Kran wird hauptsächlich für den Modultransport aufs Dach benötigt, die eigentliche Montage der Module dauert anschließend deutlich länger.',
   },
   {
     question: 'Kann ich PV-Module ohne Kran aufs Dach heben?',
     answer:
-      'Theoretisch ja — bei kleinen Anlagen (unter 6 kWp) auf einem einstöckigen Gebäude können 2–3 Personen die Module über ein Gerüst oder eine Leiter tragen. Praktisch ist das aber langsam, riskant und bei modernen Modulen (20–25 kg pro Stück, oft sperrig mit 1,7–2 m Länge) unwirtschaftlich. Ab 10 Modulen oder bei Arbeitshöhen über 6 m ist ein Dachdeckerkran (ab 200€/Tag) praktisch immer die sinnvollere Lösung — er spart Zeit, Sicherheit und Transportschäden.',
+      'Theoretisch ja, bei kleinen Anlagen (unter 6 kWp) auf einem einstöckigen Gebäude können 2–3 Personen die Module über ein Gerüst oder eine Leiter tragen. Praktisch ist das aber langsam, riskant und bei modernen Modulen (20–25 kg pro Stück, oft sperrig mit 1,7–2 m Länge) unwirtschaftlich. Ab 10 Modulen oder bei Arbeitshöhen über 6 m ist ein Dachdeckerkran (ab 200€/Tag) praktisch immer die sinnvollere Lösung, er spart Zeit, Sicherheit und Transportschäden.',
   },
   {
     question: 'Brauche ich einen Kranführer für die PV-Montage?',
     answer:
-      'Für den Dachdeckerkran, der bei den meisten PV-Installationen zum Einsatz kommt, brauchen Sie keinen Kranführer. Eine 30–60-minütige Einweisung durch den Vermieter (gemäß DGUV Vorschrift 52) reicht aus, Sie bedienen den Kran per Funkfernsteuerung vom Boden. Nur beim Autokran ist der Kranführer gesetzlich vorgeschrieben und im Mietpreis enthalten — dann wird die Montage aber auch deutlich professioneller und schneller.',
+      'Für den Dachdeckerkran, der bei den meisten PV-Installationen zum Einsatz kommt, brauchen Sie keinen Kranführer. Eine 30–60-minütige Einweisung durch den Vermieter (gemäß DGUV Vorschrift 52) reicht aus, Sie bedienen den Kran per Funkfernsteuerung vom Boden. Nur beim Autokran ist der Kranführer gesetzlich vorgeschrieben und im Mietpreis enthalten, dann wird die Montage aber auch deutlich professioneller und schneller.',
   },
   {
     question: 'Welche Spezialausrüstung brauche ich für PV-Module?',
@@ -77,7 +77,7 @@ export default async function SolaranlageKranMietenPage() {
       </h1>
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Für eine typische 10-kWp-Photovoltaik-Anlage auf einem Einfamilienhaus reicht ein{' '}
-        <strong className="text-gray-900">Dachdeckerkran ab 200€/Tag</strong> — 60–70% günstiger
+        <strong className="text-gray-900">Dachdeckerkran ab 200€/Tag</strong>, 60–70% günstiger
         als ein Autokran. Bei großen Gewerbedächern oder sehr hohen Gebäuden kommt ein{' '}
         <strong className="text-gray-900">Autokran ab 500€/Tag</strong> zum Einsatz. Dieser Guide
         zeigt Ihnen, welcher Kran zu Ihrer Anlagengröße passt, wie viel das kostet und worauf
@@ -112,7 +112,7 @@ export default async function SolaranlageKranMietenPage() {
             Eine durchschnittliche Photovoltaik-Anlage auf einem Einfamilienhaus besteht aus{' '}
             <strong className="text-gray-900">20–25 Modulen mit je 20–25 kg</strong> bei Abmessungen
             von rund 1,7 × 1,1 m. Das sind insgesamt 400–600 kg Material, das auf eine Höhe von
-            8–15 Metern gebracht werden muss — plus Unterkonstruktion, Wechselrichter und Kabel.
+            8–15 Metern gebracht werden muss, plus Unterkonstruktion, Wechselrichter und Kabel.
           </p>
           <p className="mb-4">
             Ein Kran ist bei jeder Anlage ab etwa 10 Modulen die sicherste und wirtschaftlichste
@@ -130,9 +130,9 @@ export default async function SolaranlageKranMietenPage() {
                 Mehrfamilienhäuser bis ca. 15 m Hakenhöhe. Passt in enge Wohnstraßen.
               </p>
               <ul className="text-[12px] text-gray-600 space-y-0.5">
-                <li>✓ Deutlich günstiger als Autokran</li>
-                <li>✓ Kein Kranführerschein nötig</li>
-                <li>✓ Kompakter Stellplatz (2,5 × 6 m)</li>
+                <li>Deutlich günstiger als Autokran</li>
+                <li>Kein Kranführerschein nötig</li>
+                <li>Kompakter Stellplatz (2,5 × 6 m)</li>
               </ul>
             </div>
             <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
@@ -146,14 +146,14 @@ export default async function SolaranlageKranMietenPage() {
                 oder wenn der Dachdeckerkran aus Platz- oder Höhengründen nicht reicht.
               </p>
               <ul className="text-[12px] text-gray-600 space-y-0.5">
-                <li>✓ Kranführer im Preis enthalten</li>
-                <li>✓ Höhen bis 80 m erreichbar</li>
-                <li>✓ Schnell einsatzbereit (15–30 Min.)</li>
+                <li>Kranführer im Preis enthalten</li>
+                <li>Höhen bis 80 m erreichbar</li>
+                <li>Schnell einsatzbereit (15–30 Min.)</li>
               </ul>
             </div>
           </div>
           <p className="text-[13px] text-gray-500">
-            Für die meisten privaten PV-Anlagen ist der Dachdeckerkran die richtige Wahl —
+            Für die meisten privaten PV-Anlagen ist der Dachdeckerkran die richtige Wahl 
             und 3–5× günstiger als ein Autokran-Einsatz.
           </p>
         </section>
@@ -218,7 +218,7 @@ export default async function SolaranlageKranMietenPage() {
             </table>
           </div>
           <p className="text-[11px] text-gray-400 mt-2">
-            Dachdeckerkrane erreichen Hakenhöhen bis etwa 30 m — theoretisch reichen sie also
+            Dachdeckerkrane erreichen Hakenhöhen bis etwa 30 m, theoretisch reichen sie also
             auch für 3–5-stöckige Mehrfamilienhäuser, allerdings wird die Ausladung knapp.
             Im Zweifel beim Vermieter nachfragen und Dachlage exakt beschreiben.
           </p>
@@ -300,7 +300,7 @@ export default async function SolaranlageKranMietenPage() {
             <p className="text-[13px] text-gray-700">
               <strong className="text-gray-900">Faustregel:</strong> Die Krankosten machen meist{' '}
               <strong className="text-gray-900">1–3% der Gesamtkosten einer PV-Anlage</strong>{' '}
-              aus — ein minimaler Aufwand, der gegenüber manuellem Tragen Zeit, Sicherheit und
+              aus, ein minimaler Aufwand, der gegenüber manuellem Tragen Zeit, Sicherheit und
               potentielle Transportschäden spart.
             </p>
           </div>
@@ -313,7 +313,7 @@ export default async function SolaranlageKranMietenPage() {
           </h2>
           <p className="mb-4">
             Der Kran wird bei einer PV-Installation vor allem für den{' '}
-            <strong className="text-gray-900">Modultransport aufs Dach</strong> benötigt — die
+            <strong className="text-gray-900">Modultransport aufs Dach</strong> benötigt, die
             eigentliche Montage (Unterkonstruktion schrauben, Module befestigen, Verkabelung)
             dauert anschließend deutlich länger und braucht keinen Kran mehr. Planen Sie die
             Kranmiete daher gezielt für die Hebetage:
@@ -367,7 +367,7 @@ export default async function SolaranlageKranMietenPage() {
             5. Spezialausrüstung für PV-Module
           </h2>
           <p className="mb-4">
-            PV-Module sind empfindlich und sperrig — Kratzer, Mikrorisse oder unsachgemäße
+            PV-Module sind empfindlich und sperrig. Kratzer, Mikrorisse oder unsachgemäße
             Handhabung können Leistung und Garantie beeinträchtigen. Für sicheren Transport
             aufs Dach gibt es spezialisierte Hebeausrüstung:
           </p>
@@ -392,7 +392,7 @@ export default async function SolaranlageKranMietenPage() {
               <p className="font-medium text-gray-900 mb-1 text-[14px]">Modultransport-Gestelle</p>
               <p className="text-[13px] text-gray-500 mb-1">
                 Spezielle Stahlrahmen, in die 5–15 Module gleichzeitig gepackt werden. Spart
-                bei großen Anlagen deutlich Hebezeit — statt 25 Einzelhübe nur 3–5 Gestell-Hübe.
+                bei großen Anlagen deutlich Hebezeit, statt 25 Einzelhübe nur 3–5 Gestell-Hübe.
               </p>
               <p className="text-[11px] text-gray-400">Aufpreis: 30–80€/Tag</p>
             </div>
@@ -408,7 +408,7 @@ export default async function SolaranlageKranMietenPage() {
           <div className="mt-4 bg-amber-50 border border-amber-100 rounded-lg p-4">
             <p className="text-[13px] text-amber-800">
               <strong>Wichtig:</strong> Fragen Sie vor der Buchung explizit, welches Hebezubehör
-              verfügbar ist — gerade bei frameless-Modulen ist ein Vakuum-Heber entscheidend,
+              verfügbar ist, gerade bei frameless-Modulen ist ein Vakuum-Heber entscheidend,
               und nicht jeder Vermieter hat ihn im Sortiment.
             </p>
           </div>
@@ -436,7 +436,7 @@ export default async function SolaranlageKranMietenPage() {
                 <tr className="border-b">
                   <td className="py-2.5 px-4 font-medium text-gray-900">Windgeschwindigkeit</td>
                   <td className="py-2.5 px-4">&gt; 50 km/h</td>
-                  <td className="py-2.5 px-4 text-gray-500">Kranarbeit muss eingestellt werden — Module zu sperrig</td>
+                  <td className="py-2.5 px-4 text-gray-500">Kranarbeit muss eingestellt werden. Module zu sperrig</td>
                 </tr>
                 <tr className="border-b bg-gray-50/50">
                   <td className="py-2.5 px-4 font-medium text-gray-900">Starker Regen</td>
@@ -466,7 +466,7 @@ export default async function SolaranlageKranMietenPage() {
               <strong className="text-gray-900">Solar-Hochsaison:</strong> April–Oktober ist die
               PV-Installation am häufigsten. Dachdeckerkrane brauchen dann 1–2 Wochen Vorlauf,
               Autokrane 2–4 Wochen. In der Nebensaison (November–März) sind Krane kurzfristig
-              verfügbar, aber Wetter-Ausfälle sind häufig — planen Sie 1–2 Puffertage ein.
+              verfügbar, aber Wetter-Ausfälle sind häufig, planen Sie 1–2 Puffertage ein.
             </p>
           </div>
         </section>
@@ -479,7 +479,7 @@ export default async function SolaranlageKranMietenPage() {
           <p className="mb-4">
             Bei der PV-Installation geht es um zwei Genehmigungsebenen: (1) die PV-Anlage selbst
             (Netzanmeldung, ggf. Baurecht), (2) der Kran-Einsatz. Für die PV-Anlage sind je nach
-            Bundesland und Größe unterschiedliche Schritte nötig — das klären Sie mit Ihrem
+            Bundesland und Größe unterschiedliche Schritte nötig, das klären Sie mit Ihrem
             Installateur. Für den Kran gelten folgende Regeln:
           </p>
           <div className="space-y-3">
@@ -488,7 +488,7 @@ export default async function SolaranlageKranMietenPage() {
               <p className="text-[13px] text-gray-500">
                 Steht der Kran vollständig auf Ihrem eigenen Grundstück (Einfahrt, Garten),
                 brauchen Sie in der Regel keine Genehmigung. Bitte prüfen Sie trotzdem die
-                Bodenbelastbarkeit — der Dachdeckerkran braucht stabilen Untergrund.
+                Bodenbelastbarkeit, der Dachdeckerkran braucht stabilen Untergrund.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
@@ -504,14 +504,14 @@ export default async function SolaranlageKranMietenPage() {
               <p className="text-[13px] text-gray-500">
                 Wenn der Kranausleger über ein Nachbargrundstück schwenkt (auch nur kurz mit
                 dem Modulpaket), brauchen Sie die schriftliche Zustimmung des Nachbarn.
-                Sprechen Sie rechtzeitig — spätestens 2–3 Wochen vorher.
+                Sprechen Sie rechtzeitig, spätestens 2–3 Wochen vorher.
               </p>
             </div>
           </div>
           <p className="text-[13px] text-gray-500 mt-3">
             Ausführliche Informationen zu allen Kran-Genehmigungen:{' '}
             <Link href="/ratgeber/kran-aufstellen-genehmigung" className="text-blue-600 hover:underline">
-              Kran aufstellen: Genehmigungen im Detail &rarr;
+              Kran aufstellen: Genehmigungen im Detail 
             </Link>
           </p>
         </section>
@@ -525,7 +525,7 @@ export default async function SolaranlageKranMietenPage() {
             <li className="flex gap-3">
               <span className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-[12px] font-semibold">1</span>
               <div>
-                <p className="font-medium text-gray-900">Dachdeckerkran zuerst prüfen — 3–5× günstiger als Autokran</p>
+                <p className="font-medium text-gray-900">Dachdeckerkran zuerst prüfen, 3–5× günstiger als Autokran</p>
                 <p className="text-[13px] text-gray-500">
                   Für Standard-Einfamilienhäuser ist der Dachdeckerkran (ab 200€/Tag) fast
                   immer die bessere Wahl. Nur wenn Dachhöhe oder Platzverhältnisse ihn
@@ -538,7 +538,7 @@ export default async function SolaranlageKranMietenPage() {
               <div>
                 <p className="font-medium text-gray-900">Wochenmiete bei Anlagen ab 15 kWp</p>
                 <p className="text-[13px] text-gray-500">
-                  Ab 2–3 Einsatztagen lohnt sich die Wochenmiete fast immer — 15–30% Ersparnis
+                  Ab 2–3 Einsatztagen lohnt sich die Wochenmiete fast immer, 15–30% Ersparnis
                   gegenüber Einzeltagen. Auch wenn Sie den Kran nicht jeden Tag brauchen, ist
                   eine durchgehende Wochenmiete oft günstiger.
                 </p>
@@ -551,7 +551,7 @@ export default async function SolaranlageKranMietenPage() {
                 <p className="text-[13px] text-gray-500">
                   PV-Module werden meist in Paletten à 30+ Stück geliefert. Koordinieren Sie
                   Lieferant und Kranvermieter, damit die Module nicht tagelang auf der Straße
-                  stehen — oder der Kran auf die Lieferung wartet.
+                  stehen, oder der Kran auf die Lieferung wartet.
                 </p>
               </div>
             </li>
@@ -561,7 +561,7 @@ export default async function SolaranlageKranMietenPage() {
                 <p className="font-medium text-gray-900">Spezialausrüstung (Vakuumheber) nachfragen</p>
                 <p className="text-[13px] text-gray-500">
                   Bei rahmenlosen Modulen ist der Vakuum-Heber (50–120€/Tag extra) eine gute
-                  Investition — schont die Oberfläche und verhindert Garantieprobleme durch
+                  Investition, schont die Oberfläche und verhindert Garantieprobleme durch
                   Mikrorisse.
                 </p>
               </div>
@@ -573,7 +573,7 @@ export default async function SolaranlageKranMietenPage() {
                 <p className="text-[13px] text-gray-500">
                   Eine 10-kWp-Anlage wiegt mit Unterkonstruktion rund 600–800 kg verteilt auf
                   25–40 m² Dachfläche. Bei Altbauten oder ungewissem Zustand des Dachs vorher
-                  ein Statiker-Gutachten einholen — die meisten Dächer halten es aber problemlos.
+                  ein Statiker-Gutachten einholen, die meisten Dächer halten es aber problemlos.
                 </p>
               </div>
             </li>
@@ -606,7 +606,7 @@ export default async function SolaranlageKranMietenPage() {
           Kran für Ihre PV-Montage finden
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-lg mx-auto">
-          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz {COUNTRY_LABEL} — Dachdeckerkran
+          Vergleichen Sie {anbieterCount}+ Kranvermieter in ganz {COUNTRY_LABEL}. Dachdeckerkran
           für Standard-EFH-Anlagen, Autokran für große Gewerbedächer. Kostenlos Angebote bei
           mehreren Anbietern gleichzeitig anfragen.
         </p>
@@ -638,7 +638,7 @@ export default async function SolaranlageKranMietenPage() {
         </div>
       </section>
 
-      {/* Structured data — FAQPage + Article + BreadcrumbList */}
+      {/* Structured data. FAQPage + Article + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

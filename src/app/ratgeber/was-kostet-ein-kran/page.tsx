@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 }
 
 // Display name + key technical context per crane-type slug. Used in the
-// Mietpreis-Referenztabelle below — same vocabulary as the rest of the
+// Mietpreis-Referenztabelle below, same vocabulary as the rest of the
 // site so the user reads consistent language.
 const CRANE_DISPLAY: Record<string, { name: string; tonnage: string }> = {
   'anhaengerkran-mieten': { name: 'Anhängerkran', tonnage: 'bis 1,5 t' },
@@ -37,7 +37,7 @@ const CRANE_DISPLAY: Record<string, { name: string; tonnage: string }> = {
   'baukran-mieten': { name: 'Baukran (Turmdrehkran)', tonnage: '1–20 t' },
   'raupenkran-mieten': { name: 'Raupenkran', tonnage: '50–3.000 t' },
 }
-// Order: cheapest first — informational-intent visitors expect "ab X€" up top.
+// Order: cheapest first, informational-intent visitors expect "ab X€" up top.
 const PRICE_TABLE_ORDER = [
   'anhaengerkran-mieten',
   'dachdeckerkran-mieten',
@@ -58,7 +58,7 @@ const faqs = [
   {
     question: 'Was kostet ein Kran pro Stunde?',
     answer:
-      'Stundenpreise sind seltener als Tagespreise — die meisten Vermieter berechnen mindestens einen Tagessatz, weil An- und Abfahrt sowie Auf- und Abbau bereits 1–3 Stunden binden. Bei reinen Stundeneinsätzen (z. B. Hebebühne aufs Dach setzen) liegen die Preise bei 80–250€/Stunde inkl. Kranführer für einen mittleren Autokran. Mindestbuchung typischerweise 4 Stunden.',
+      'Stundenpreise sind seltener als Tagespreise, die meisten Vermieter berechnen mindestens einen Tagessatz, weil An- und Abfahrt sowie Auf- und Abbau bereits 1–3 Stunden binden. Bei reinen Stundeneinsätzen (z. B. Hebebühne aufs Dach setzen) liegen die Preise bei 80–250€/Stunde inkl. Kranführer für einen mittleren Autokran. Mindestbuchung typischerweise 4 Stunden.',
   },
   {
     question: 'Was kostet ein Mobilkran pro Tag?',
@@ -68,7 +68,7 @@ const faqs = [
   {
     question: 'Was kostet ein Baukran pro Monat?',
     answer:
-      'Ein Baukran (Turmdrehkran) kostet zwischen 4.000€ und 25.000€ pro Monat — abhängig von Hakenhöhe, Auslegerlänge und Tragkraft. Ein typischer Schnellmontagekran für ein Einfamilienhaus liegt bei 4.500–7.000€/Monat. Hinzu kommen einmalig 3.000–8.000€ für Montage und Demontage sowie Strom- und Fundamentkosten. Bei Mietzeiten unter 4 Wochen werden meist Tagespreise berechnet.',
+      'Ein Baukran (Turmdrehkran) kostet zwischen 4.000€ und 25.000€ pro Monat, abhängig von Hakenhöhe, Auslegerlänge und Tragkraft. Ein typischer Schnellmontagekran für ein Einfamilienhaus liegt bei 4.500–7.000€/Monat. Hinzu kommen einmalig 3.000–8.000€ für Montage und Demontage sowie Strom- und Fundamentkosten. Bei Mietzeiten unter 4 Wochen werden meist Tagespreise berechnet.',
   },
   {
     question: 'Was kostet ein Autokran 50t?',
@@ -83,27 +83,27 @@ const faqs = [
   {
     question: 'Was kostet ein gebrauchter Kran?',
     answer:
-      'Gebrauchte Krane kosten typischerweise 30–60% des Neupreises — abhängig von Baujahr, Betriebsstunden und Zustand. Beispiele: Gebrauchter Autokran 50t (5–10 Jahre alt): 150.000–300.000€. Gebrauchter Minikran: 25.000–120.000€. Gebrauchter Baukran: 50.000–400.000€. Beachten Sie: Bei älteren Kranen steigen die Wartungskosten, und die TÜV-Abnahme kann aufwendiger werden.',
+      'Gebrauchte Krane kosten typischerweise 30–60% des Neupreises, abhängig von Baujahr, Betriebsstunden und Zustand. Beispiele: Gebrauchter Autokran 50t (5–10 Jahre alt): 150.000–300.000€. Gebrauchter Minikran: 25.000–120.000€. Gebrauchter Baukran: 50.000–400.000€. Beachten Sie: Bei älteren Kranen steigen die Wartungskosten, und die TÜV-Abnahme kann aufwendiger werden.',
   },
   {
     question: 'Wie lange dauert es, bis sich der Kauf eines Krans amortisiert?',
     answer:
-      'Die Amortisationszeit hängt von der jährlichen Auslastung ab. Faustregel: Bei 150+ Einsatztagen/Jahr amortisiert sich ein Kran in 5–7 Jahren. Bei 80–120 Tagen dauert es 10–15 Jahre — oft länger als die wirtschaftliche Nutzungsdauer. Bei weniger als 80 Tagen pro Jahr rentiert sich der Kauf praktisch nie.',
+      'Die Amortisationszeit hängt von der jährlichen Auslastung ab. Faustregel: Bei 150+ Einsatztagen/Jahr amortisiert sich ein Kran in 5–7 Jahren. Bei 80–120 Tagen dauert es 10–15 Jahre, oft länger als die wirtschaftliche Nutzungsdauer. Bei weniger als 80 Tagen pro Jahr rentiert sich der Kauf praktisch nie.',
   },
   {
     question: 'Kann ich einen Kran leasen statt kaufen?',
     answer:
-      'Ja, Leasing ist eine gängige Alternative. Beim Finanzierungsleasing zahlen Sie monatliche Raten (ca. 1,5–2,5% des Kaufpreises) über 48–72 Monate und übernehmen am Ende den Restwert. Beim Operating Leasing geben Sie den Kran nach der Laufzeit zurück — ideal, wenn Sie immer aktuelle Technik wollen. Leasing ist steuerlich attraktiv (Raten sind Betriebsausgaben), bindet aber weniger Kapital als Kauf.',
+      'Ja, Leasing ist eine gängige Alternative. Beim Finanzierungsleasing zahlen Sie monatliche Raten (ca. 1,5–2,5% des Kaufpreises) über 48–72 Monate und übernehmen am Ende den Restwert. Beim Operating Leasing geben Sie den Kran nach der Laufzeit zurück, ideal, wenn Sie immer aktuelle Technik wollen. Leasing ist steuerlich attraktiv (Raten sind Betriebsausgaben), bindet aber weniger Kapital als Kauf.',
   },
   {
     question: 'Was kostet ein Baukran zum Kauf?',
     answer:
-      'Ein Baukran (Turmdrehkran) kostet neu zwischen 150.000€ (kleiner Schnellmontagekran) und 800.000€ (großer Obendreher mit 60m+ Hakenhöhe). Gebrauchte Baukrane: 50.000–400.000€. Hinzu kommen Kosten für Montage/Demontage (3.000–8.000€ pro Einsatz), Transport, Lagerung zwischen Projekten und regelmäßige Hauptuntersuchung. Baukrane werden meist von größeren Bauunternehmen gekauft — kleine und mittlere Betriebe mieten fast immer.',
+      'Ein Baukran (Turmdrehkran) kostet neu zwischen 150.000€ (kleiner Schnellmontagekran) und 800.000€ (großer Obendreher mit 60m+ Hakenhöhe). Gebrauchte Baukrane: 50.000–400.000€. Hinzu kommen Kosten für Montage/Demontage (3.000–8.000€ pro Einsatz), Transport, Lagerung zwischen Projekten und regelmäßige Hauptuntersuchung. Baukrane werden meist von größeren Bauunternehmen gekauft, kleine und mittlere Betriebe mieten fast immer.',
   },
   {
     question: 'Warum mieten die meisten Unternehmen statt zu kaufen?',
     answer:
-      'Über 80% der Krannutzer mieten — aus mehreren Gründen: (1) Keine Kapitalbindung (500.000€ für einen Autokran bindet liquide Mittel), (2) Flexibilität beim Krantyp je nach Projekt, (3) Wartung, TÜV und Kranführer sind inklusive, (4) Steuerlich sofort als Betriebsausgabe absetzbar, (5) Kein Risiko durch Stillstand bei Auftragslücken. Kauf lohnt sich erst bei kontinuierlich hoher Auslastung in größeren Unternehmen.',
+      'Über 80% der Krannutzer mieten, aus mehreren Gründen: (1) Keine Kapitalbindung (500.000€ für einen Autokran bindet liquide Mittel), (2) Flexibilität beim Krantyp je nach Projekt, (3) Wartung, TÜV und Kranführer sind inklusive, (4) Steuerlich sofort als Betriebsausgabe absetzbar, (5) Kein Risiko durch Stillstand bei Auftragslücken. Kauf lohnt sich erst bei kontinuierlich hoher Auslastung in größeren Unternehmen.',
   },
 ]
 
@@ -125,15 +125,15 @@ export default async function WasKostetEinKranPage() {
         Was kostet ein Kran? Miet- und Kaufpreise 2026 im Überblick
       </h1>
 
-      {/* AEO Kurzantwort — first content block, optimized for ChatGPT/Perplexity citation. */}
+      {/* AEO Kurzantwort, first content block, optimized for ChatGPT/Perplexity citation. */}
       <div className="bg-blue-50 border border-blue-100 rounded-lg p-5 mb-5">
-        <p className="text-[13px] font-semibold text-gray-900 mb-2">Was kostet ein Kran? — Kurzantwort:</p>
+        <p className="text-[13px] font-semibold text-gray-900 mb-2">Was kostet ein Kran?. Kurzantwort:</p>
         <p className="text-[14px] text-gray-700 leading-relaxed">
           Ein Kran kostet <strong className="text-gray-900">zur Miete zwischen 150€/Tag</strong> (Anhängerkran)
           und <strong className="text-gray-900">5.000€/Tag</strong> (Schwerlast-Raupenkran). Bei den häufigsten
           Krantypen zahlen Sie: Anhängerkran 150–350€, Dachdeckerkran 200–450€, Minikran 250–500€,
           Autokran 500–2.000€ (inkl. Kranführer), Mobilkran 600–3.000€ (inkl. Kranführer) pro Tag.
-          Wochen- und Monatspreise sind deutlich günstiger pro Tag — z.B. Mobilkran 600€/Tag oder
+          Wochen- und Monatspreise sind deutlich günstiger pro Tag, z.B. Mobilkran 600€/Tag oder
           10.000€/Monat (entspricht ~330€/Tag).
           <strong className="text-gray-900"> Beim Kauf</strong> liegen die Preise zwischen 25.000€ (Anhängerkran)
           und 5.000.000€ (Schwerlast-Raupenkran). Detaillierte Tabelle unten.
@@ -141,7 +141,7 @@ export default async function WasKostetEinKranPage() {
         <p className="text-[11px] text-gray-500 mt-2">Stand: 2026 · Alle Preise netto zzgl. {TAX_LABEL}, ohne Transport / An- &amp; Abfahrt.</p>
       </div>
 
-      {/* Mietpreis-Referenztabelle — primary intent match for "was kostet ein kran"
+      {/* Mietpreis-Referenztabelle, primary intent match for "was kostet ein kran"
           (informational, Mietpreis-driven). Kaufpreise + Break-even bleiben weiter
           unten als sekundärer Zweck. */}
       <section id="mietpreise" className="mb-10 scroll-mt-20">
@@ -149,7 +149,7 @@ export default async function WasKostetEinKranPage() {
           Was kostet ein Kran zur Miete? Tagespreise, Wochenpreise, Monatspreise
         </h2>
         <p className="text-[14px] text-gray-600 mb-4 leading-relaxed">
-          Über 80% aller Kraneinsätze in {COUNTRY_LABEL} laufen über Miete — die folgende Tabelle zeigt
+          Über 80% aller Kraneinsätze in {COUNTRY_LABEL} laufen über Miete, die folgende Tabelle zeigt
           Richtwerte für alle 8 Krantypen, basierend auf Marktdurchschnitt 2026. Längere Mietdauern
           senken den effektiven Tagespreis deutlich (eine Wochenmiete spart 30–50% gegenüber 5 Einzeltagen).
         </p>
@@ -194,14 +194,14 @@ export default async function WasKostetEinKranPage() {
           (Einweisung durch den Vermieter typischerweise inklusive).
         </p>
 
-        {/* Beispielrechnungen — concrete numbers Google rewards. */}
+        {/* Beispielrechnungen, concrete numbers Google rewards. */}
         <h3 className="text-[15px] font-semibold text-gray-900 mt-6 mb-3">Drei typische Beispielrechnungen</h3>
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
             <p className="text-[12px] text-gray-500 mb-1">Dachstuhl heben</p>
             <p className="text-[14px] font-semibold text-gray-900 mb-2">~850€</p>
             <p className="text-[12px] text-gray-500 leading-snug">
-              Autokran 30t, 1 Tag, inkl. Kranführer. Klassischer Einsatz beim Einfamilienhaus —
+              Autokran 30t, 1 Tag, inkl. Kranführer. Klassischer Einsatz beim Einfamilienhaus 
               Aufstellen vor dem Haus, alle Dachstuhl-Elemente in 4–6 Stunden gehoben.
             </p>
           </div>
@@ -210,7 +210,7 @@ export default async function WasKostetEinKranPage() {
             <p className="text-[14px] font-semibold text-gray-900 mb-2">~480€</p>
             <p className="text-[12px] text-gray-500 leading-snug">
               Minikran (Spinnenkran) mit Vakuumheber, 1 Tag, Selbstbedienung nach Einweisung.
-              Passt durch 80 cm Türöffnung — ideal für Innenräume und Hinterhöfe.
+              Passt durch 80 cm Türöffnung, ideal für Innenräume und Hinterhöfe.
             </p>
           </div>
           <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
@@ -225,11 +225,11 @@ export default async function WasKostetEinKranPage() {
         <p className="text-[12px] text-gray-500 mt-4">
           Konkretes Angebot in Ihrer Region:{' '}
           <Link href="/" className="text-blue-600 hover:underline">vergleichen Sie jetzt {anbieterCount}+ Anbieter in {COUNTRY_LABEL}</Link>
-          {' '}— oder nutzen Sie unseren <Link href="/kostenrechner" className="text-blue-600 hover:underline">Kostenrechner</Link> für eine projektbezogene Schätzung.
+          {' '} oder nutzen Sie unseren <Link href="/kostenrechner" className="text-blue-600 hover:underline">Kostenrechner</Link> für eine projektbezogene Schätzung.
         </p>
       </section>
 
-      {/* TOC — refocused on "was kostet ein kran" intent first, then the kaufen vs mieten content. */}
+      {/* TOC, refocused on "was kostet ein kran" intent first, then the kaufen vs mieten content. */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Weiterführende Inhalte</p>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
@@ -252,7 +252,7 @@ export default async function WasKostetEinKranPage() {
           </h2>
           <p className="mb-4">
             Die Anschaffungskosten für einen Kran hängen stark von Typ, Tragkraft und Hersteller ab.
-            Die folgenden Preise beziehen sich auf <strong className="text-gray-900">Neukrane</strong> —
+            Die folgenden Preise beziehen sich auf <strong className="text-gray-900">Neukrane</strong> 
             gebrauchte Modelle kosten typischerweise 30–60% davon.
           </p>
           <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -329,26 +329,26 @@ export default async function WasKostetEinKranPage() {
           <p className="mb-4">
             Der Kaufpreis ist nur die halbe Wahrheit. Wer einen Kran kauft, zahlt jedes Jahr zusätzlich
             zwischen <strong className="text-gray-900">15% und 30% des Anschaffungspreises</strong> an
-            laufenden Kosten — bei einem 600.000€ Autokran sind das 90.000–180.000€ pro Jahr, bevor
+            laufenden Kosten, bei einem 600.000€ Autokran sind das 90.000–180.000€ pro Jahr, bevor
             der Kran einen einzigen Handgriff getan hat.
           </p>
           <div className="space-y-3">
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Wartung &amp; Inspektionen — 5–8% pro Jahr</p>
+              <p className="font-medium text-gray-900 mb-1">Wartung &amp; Inspektionen, 5–8% pro Jahr</p>
               <p className="text-[13px] text-gray-500">
                 Regelmäßige Wartung durch den Hersteller, Verschleißteile (Seile, Bremsen, Hydraulik),
                 Ölwechsel. Bei älteren Kranen steigt dieser Posten deutlich.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Versicherung — 1–2% pro Jahr</p>
+              <p className="font-medium text-gray-900 mb-1">Versicherung, 1–2% pro Jahr</p>
               <p className="text-[13px] text-gray-500">
                 Maschinenbruchversicherung, Haftpflicht, Transportversicherung. Bei einem 600.000€
                 Autokran: 6.000–12.000€ jährlich.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Kranführer-Gehalt — 60.000–80.000€ brutto/Jahr</p>
+              <p className="font-medium text-gray-900 mb-1">Kranführer-Gehalt, 60.000–80.000€ brutto/Jahr</p>
               <p className="text-[13px] text-gray-500">
                 Bei Auto-, Mobil- und Raupenkranen gesetzlich vorgeschrieben (kein Einsatz ohne Bediener).
                 Inkl. Sozialversicherung, Weiterbildung und Urlaubsersatz kalkulieren die meisten
@@ -356,21 +356,21 @@ export default async function WasKostetEinKranPage() {
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Wertverlust (Abschreibung) — 6–10% pro Jahr</p>
+              <p className="font-medium text-gray-900 mb-1">Wertverlust (Abschreibung), 6–10% pro Jahr</p>
               <p className="text-[13px] text-gray-500">
                 Im ersten Jahr 10–15%, danach ca. 6–8% pro Jahr. Über 10 Jahre verliert ein Kran
                 rund 50–60% seines Neuwerts.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">Finanzierung / Kapitalbindung — 3–5% pro Jahr</p>
+              <p className="font-medium text-gray-900 mb-1">Finanzierung / Kapitalbindung, 3–5% pro Jahr</p>
               <p className="text-[13px] text-gray-500">
                 Zinsen auf Kredite oder entgangene Rendite auf gebundenes Eigenkapital. Bei
                 500.000€ Kaufpreis: 15.000–25.000€ pro Jahr Opportunitätskosten.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-1">TÜV, Prüfungen, Zertifikate — 500–3.000€ pro Jahr</p>
+              <p className="font-medium text-gray-900 mb-1">TÜV, Prüfungen, Zertifikate, 500–3.000€ pro Jahr</p>
               <p className="text-[13px] text-gray-500">
                 Jährliche Hauptuntersuchung nach BetrSichV, Kranprüfungen, Sachverständigen-Gutachten,
                 Dokumentation. Bei Schwerlastkranen entsprechend höher.
@@ -400,7 +400,7 @@ export default async function WasKostetEinKranPage() {
             Break-even-Tage/Jahr = (Jährliche Fixkosten) ÷ (Mietpreis pro Tag − variable Eigenkosten)
           </div>
           <p className="mb-4">
-            Hier die Richtwerte pro Krantyp — kalkuliert mit Standardauslastung, Finanzierung über
+            Hier die Richtwerte pro Krantyp, kalkuliert mit Standardauslastung, Finanzierung über
             8 Jahre und Mietpreisen aus <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">unserer Preisliste</Link>:
           </p>
           <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -469,7 +469,7 @@ export default async function WasKostetEinKranPage() {
                   <td className="py-3 px-4 whitespace-nowrap">~400.000€</td>
                   <td className="py-3 px-4 whitespace-nowrap">2.800€</td>
                   <td className="py-3 px-4 whitespace-nowrap font-medium text-gray-900">ca. 230 Tage</td>
-                  <td className="py-3 px-4 text-red-600">praktisch nie — immer mieten</td>
+                  <td className="py-3 px-4 text-red-600">praktisch nie, immer mieten</td>
                 </tr>
               </tbody>
             </table>
@@ -491,7 +491,7 @@ export default async function WasKostetEinKranPage() {
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="border border-green-200 bg-green-50 rounded-lg p-4">
-              <p className="font-medium text-gray-900 mb-2">✓ Kauf lohnt sich, wenn…</p>
+              <p className="font-medium text-gray-900 mb-2">Kauf lohnt sich, wenn…</p>
               <ul className="text-[13px] text-gray-600 space-y-1.5">
                 <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Auslastung über 150–220 Einsatztagen pro Jahr (je nach Krantyp)</li>
                 <li className="flex gap-2"><span className="text-green-600 shrink-0">•</span> Stabiler Auftragsbestand über 5+ Jahre</li>
@@ -531,7 +531,7 @@ export default async function WasKostetEinKranPage() {
               <p className="text-[13px] text-gray-500">
                 Monatliche Raten über 48–72 Monate (ca. 1,5–2,5% des Kaufpreises/Monat). Am Ende
                 übernehmen Sie den Restwert und werden Eigentümer. Leasingraten sind sofort als
-                Betriebsausgabe absetzbar — steuerlich oft attraktiver als Abschreibung.
+                Betriebsausgabe absetzbar, steuerlich oft attraktiver als Abschreibung.
               </p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4">
@@ -567,21 +567,21 @@ export default async function WasKostetEinKranPage() {
             Warum über 80% der Nutzer mieten statt kaufen
           </h2>
           <p className="mb-4">
-            Der Kranmarkt wird klar von der Miete dominiert — aus guten Gründen:
+            Der Kranmarkt wird klar von der Miete dominiert, aus guten Gründen:
           </p>
           <div className="grid gap-2 sm:grid-cols-2 text-[13px]">
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Keine Kapitalbindung</strong> — 500.000€ bleiben frei für andere Investitionen</span></div>
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Keine Wartungsaufgaben</strong> — Wartung, TÜV und Reparaturen sind Sache des Vermieters</span></div>
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Flexibilität beim Krantyp</strong> — für jedes Projekt der passende Kran</span></div>
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Kranführer inklusive</strong> — kein Einstellungs- und Gehaltsrisiko</span></div>
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Sofort abzugsfähig</strong> — Miete ist Betriebsausgabe, keine Abschreibung nötig</span></div>
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Kein Wertverlust-Risiko</strong> — kein Kopfzerbrechen beim Wiederverkauf</span></div>
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Skalierbar</strong> — bei Auftragslücken entstehen keine Fixkosten</span></div>
-            <div className="flex gap-2"><span className="text-green-600 shrink-0">✓</span> <span><strong className="text-gray-900">Immer aktuell</strong> — Sie nutzen neueste Modelle mit modernster Sicherheitstechnik</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Keine Kapitalbindung</strong>, 500.000€ bleiben frei für andere Investitionen</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Keine Wartungsaufgaben</strong>. Wartung, TÜV und Reparaturen sind Sache des Vermieters</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Flexibilität beim Krantyp</strong>, für jedes Projekt der passende Kran</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Kranführer inklusive</strong>, kein Einstellungs- und Gehaltsrisiko</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Sofort abzugsfähig</strong>. Miete ist Betriebsausgabe, keine Abschreibung nötig</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Kein Wertverlust-Risiko</strong>, kein Kopfzerbrechen beim Wiederverkauf</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Skalierbar</strong>, bei Auftragslücken entstehen keine Fixkosten</span></div>
+            <div className="flex gap-2"><span className="text-green-600 shrink-0"></span> <span><strong className="text-gray-900">Immer aktuell</strong>. Sie nutzen neueste Modelle mit modernster Sicherheitstechnik</span></div>
           </div>
           <div className="mt-4">
             <Link href="/kran-mieten-preise" className="text-[13px] text-blue-600 hover:underline">
-              Alle aktuellen Mietpreise im Überblick &rarr;
+              Alle aktuellen Mietpreise im Überblick 
             </Link>
           </div>
         </section>
@@ -595,7 +595,7 @@ export default async function WasKostetEinKranPage() {
         </h2>
         <p className="text-[14px] text-gray-500 mb-5 max-w-xl mx-auto">
           Vergleichen Sie {anbieterCount}+ Kranvermieter in {COUNTRY_LABEL} und holen Sie kostenlos
-          Angebote ein — ohne Kaufrisiko, ohne Kapitalbindung, mit Kranführer und voller Wartung.
+          Angebote ein, ohne Kaufrisiko, ohne Kapitalbindung, mit Kranführer und voller Wartung.
         </p>
         <div className="flex flex-wrap justify-center gap-2 mb-5">
           <Link href="/minikran-mieten" className="text-[12px] bg-white border border-gray-200 hover:border-blue-300 text-gray-700 rounded-full px-3 py-1 transition-colors">Minikran mieten</Link>

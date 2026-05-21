@@ -1,8 +1,8 @@
 /**
- * FAQ-Daten per Krantyp und per Stadt.
- * Typ-FAQs: ogólne, techniczne pytania o typ dźwigu.
- * Stadt-FAQs: specyficzne dla miasta (ceny, dostawcy, lokalne przepisy).
- * NIE kopiujemy typ-FAQ na strony miast — Google traktuje to jako duplicate content.
+ * FAQ data per crane type and per city.
+ * Type FAQs: general, technical questions about the crane type.
+ * City FAQs: city-specific (prices, vendors, local rules).
+ * Do NOT copy type FAQs into city pages. Google treats that as duplicate content.
  */
 export interface FAQItem {
   question: string
@@ -10,8 +10,8 @@ export interface FAQItem {
 }
 
 // ============================================
-// Typ-FAQs — wyświetlane TYLKO na /[krantyp]-mieten
-// Zawierają synonimy: mieten, leihen, ausleihen, Verleih, Vermietung
+// Type FAQs, shown ONLY on /[crane-type]-mieten
+// Includes synonyms: mieten, leihen, ausleihen, Verleih, Vermietung
 // ============================================
 const typeFAQs: Record<string, FAQItem[]> = {
   'minikran-mieten': [
@@ -25,7 +25,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Wie groß muss die Zufahrt für einen Minikran sein?',
-      answer: 'Minikrane sind sehr kompakt: Die meisten Modelle passen durch Türöffnungen ab 80cm Breite. Die Zufahrt sollte mindestens 1m breit und tragfähig sein — ideal für die Minikranvermietung bei Inneneinsätzen.',
+      answer: 'Minikrane sind sehr kompakt: Die meisten Modelle passen durch Türöffnungen ab 80cm Breite. Die Zufahrt sollte mindestens 1m breit und tragfähig sein, ideal für die Minikranvermietung bei Inneneinsätzen.',
     },
     {
       question: 'Kann ich einen Minikran mit Glassauger mieten?',
@@ -37,7 +37,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Was ist ein Raupen-Minikran und wo kann ich ihn leihen?',
-      answer: 'Ein Raupen-Minikran (auch Spinnenkran oder Spider Crane) ist ein kompakter Kran auf Raupenfahrwerk. Dank seiner geringen Breite ab 60 cm passt er durch Türen und Hallentore. Auf {BRAND_NAME} finden Sie Anbieter, bei denen Sie einen Raupen-Minikran leihen oder ausleihen können — mit oder ohne Bediener.',
+      answer: 'Ein Raupen-Minikran (auch Spinnenkran oder Spider Crane) ist ein kompakter Kran auf Raupenfahrwerk. Dank seiner geringen Breite ab 60 cm passt er durch Türen und Hallentore. Auf {BRAND_NAME} finden Sie Anbieter, bei denen Sie einen Raupen-Minikran leihen oder ausleihen können, mit oder ohne Bediener.',
     },
     {
       question: 'Wo finde ich eine Minikran-Preisliste?',
@@ -45,7 +45,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Kann ich einen kleinen Kran mieten?',
-      answer: 'Ja, einen kleinen Kran (Minikran) können Sie ab 250€/Tag mieten. Minikrane eignen sich ideal für enge Baustellen, Innenräume und Arbeiten mit eingeschränkter Zufahrt. Kein Kranführerschein erforderlich — eine Einweisung reicht.',
+      answer: 'Ja, einen kleinen Kran (Minikran) können Sie ab 250€/Tag mieten. Minikrane eignen sich ideal für enge Baustellen, Innenräume und Arbeiten mit eingeschränkter Zufahrt. Kein Kranführerschein erforderlich, eine Einweisung reicht.',
     },
   ],
   'autokran-mieten': [
@@ -59,7 +59,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Ist ein Kranführer bei der Autokranvermietung inklusive?',
-      answer: 'Ja, beim Autokranverleih wird der Kran ausschließlich mit qualifiziertem Kranführer vermietet. Die Kosten sind im Tagespreis enthalten — das ist gesetzlich vorgeschrieben.',
+      answer: 'Ja, beim Autokranverleih wird der Kran ausschließlich mit qualifiziertem Kranführer vermietet. Die Kosten sind im Tagespreis enthalten, das ist gesetzlich vorgeschrieben.',
     },
     {
       question: 'Brauche ich eine Genehmigung, wenn ich einen Autokran ausleihen will?',
@@ -71,11 +71,11 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Wo finde ich eine Autokran-Preisliste?',
-      answer: 'Eine aktuelle Autokran-Preisliste 2026 finden Sie auf {BRAND_NAME}: Tagespreise 500–2.000€, Wochenpreise 2.500–10.000€, Monatspreise 8.000–35.000€ — jeweils inklusive Kranführer. Die Autokran-Mietpreise hängen von Tragkraft (30t–500t), Einsatzdauer und Region ab. Vergleichen Sie kostenlos Angebote von mehreren Autokranvermietungen.',
+      answer: 'Eine aktuelle Autokran-Preisliste 2026 finden Sie auf {BRAND_NAME}: Tagespreise 500–2.000€, Wochenpreise 2.500–10.000€, Monatspreise 8.000–35.000€, jeweils inklusive Kranführer. Die Autokran-Mietpreise hängen von Tragkraft (30t–500t), Einsatzdauer und Region ab. Vergleichen Sie kostenlos Angebote von mehreren Autokranvermietungen.',
     },
     {
-      question: 'Autokran mieten — welche Tragkraft brauche ich?',
-      answer: 'Die richtige Tragkraft hängt vom Projekt ab: 30t-Autokran für Dachstuhl setzen, Fertiggarage, Klimaanlage (ab 500€/Tag). 50t für Stahlträger und Betonfertigteile (ab 700€/Tag). 80–100t für Industriemontage und schwere Maschinen (ab 1.000€/Tag). Wichtig: Die Tragkraft sinkt mit der Ausladung — bei 20m Reichweite hat ein 50t-Autokran oft nur noch 10–15t Nutzlast. Geben Sie in der Anfrage Gewicht UND Abstand an.',
+      question: 'Autokran mieten, welche Tragkraft brauche ich?',
+      answer: 'Die richtige Tragkraft hängt vom Projekt ab: 30t-Autokran für Dachstuhl setzen, Fertiggarage, Klimaanlage (ab 500€/Tag). 50t für Stahlträger und Betonfertigteile (ab 700€/Tag). 80–100t für Industriemontage und schwere Maschinen (ab 1.000€/Tag). Wichtig: Die Tragkraft sinkt mit der Ausladung, bei 20m Reichweite hat ein 50t-Autokran oft nur noch 10–15t Nutzlast. Geben Sie in der Anfrage Gewicht UND Abstand an.',
     },
     {
       question: 'Was kostet ein Autokran für einen Tag Hausbau?',
@@ -83,7 +83,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Kann ich einen Autokran für eine Stunde mieten?',
-      answer: 'Eine reine 1-Stunde-Miete ist bei Autokranen nicht üblich — die Mindestmietdauer beträgt bei den meisten Vermietern 4 Stunden (ca. 600–800€ inkl. Kranführer für einen 30t-Autokran). Der Grund: An-/Abfahrt und Auf-/Abbau dauern bereits 1–2 Stunden. Bei sehr kurzen Einsätzen unter 2 Stunden Hebezeit lohnt sich die Stundenabrechnung (150–350€/h je nach Tragkraft).',
+      answer: 'Eine reine 1-Stunde-Miete ist bei Autokranen nicht üblich, die Mindestmietdauer beträgt bei den meisten Vermietern 4 Stunden (ca. 600–800€ inkl. Kranführer für einen 30t-Autokran). Der Grund: An-/Abfahrt und Auf-/Abbau dauern bereits 1–2 Stunden. Bei sehr kurzen Einsätzen unter 2 Stunden Hebezeit lohnt sich die Stundenabrechnung (150–350€/h je nach Tragkraft).',
     },
   ],
   'dachdeckerkran-mieten': [
@@ -108,12 +108,12 @@ const typeFAQs: Record<string, FAQItem[]> = {
       answer: 'Einen Dachdecker-Kran (Dachdeckerkran) mieten kostet 200–450€/Tag. Für Dachsanierungen, Ziegeltransport und Dachstuhlarbeiten ist der Dachkran die effizienteste Lösung. Die Dachdeckerkran-Preisliste: Wochenmiete 1.000–2.500€, Monatsmiete 3.000–7.000€.',
     },
     {
-      question: 'Dachdeckerkran oder Autokran — was ist günstiger für Dacharbeiten?',
+      question: 'Dachdeckerkran oder Autokran, was ist günstiger für Dacharbeiten?',
       answer: 'Für Dacharbeiten bis 30 Meter Höhe ist der Dachdeckerkran deutlich günstiger: 200–450€/Tag ohne Bediener vs. 500–1.000€/Tag für einen Autokran (inkl. Kranführer). Der Dachdeckerkran (auch Dachkran oder Ziegelkran) wird in 15–30 Minuten aufgebaut, braucht nur 2,5×6 Meter Stellfläche und kann per Funkfernsteuerung selbst bedient werden. Ein Autokran lohnt sich erst bei Lasten über 1,5 Tonnen oder Gebäuden über 9 Stockwerke.',
     },
     {
       question: 'Wie funktioniert ein Dachdeckerkran?',
-      answer: 'Ein Dachdeckerkran ist ein Schrägaufzug auf einem LKW- oder Anhängerfahrgestell. Der Teleskopausleger wird auf die gewünschte Höhe ausgefahren (15–30 m) und Material wird über eine Seilwinde hochgezogen. Die Bedienung erfolgt per Funkfernsteuerung vom Boden aus — Sie steuern Heben, Senken und Schwenken. Aufbauzeit: ca. 15–30 Minuten. Kein Kranführerschein erforderlich, eine Einweisung durch den Vermieter (ca. 30 Minuten, DGUV Vorschrift 52) reicht aus.',
+      answer: 'Ein Dachdeckerkran ist ein Schrägaufzug auf einem LKW- oder Anhängerfahrgestell. Der Teleskopausleger wird auf die gewünschte Höhe ausgefahren (15–30 m) und Material wird über eine Seilwinde hochgezogen. Die Bedienung erfolgt per Funkfernsteuerung vom Boden aus. Sie steuern Heben, Senken und Schwenken. Aufbauzeit: ca. 15–30 Minuten. Kein Kranführerschein erforderlich, eine Einweisung durch den Vermieter (ca. 30 Minuten, DGUV Vorschrift 52) reicht aus.',
     },
     {
       question: 'Kann man einen Dachdeckerkran für Solaranlagen-Montage mieten?',
@@ -121,7 +121,7 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Welche Dachdeckerkran-Marken gibt es zum Mieten?',
-      answer: 'Die gängigsten Dachdeckerkran-Marken in {COUNTRY_LABEL} sind Böcker (häufig im Verleih, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf {BRAND_NAME} bieten Böcker-Dachdeckerkrane an — sie gelten als besonders zuverlässig und einfach zu bedienen.',
+      answer: 'Die gängigsten Dachdeckerkran-Marken in {COUNTRY_LABEL} sind Böcker (häufig im Verleih, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf {BRAND_NAME} bieten Böcker-Dachdeckerkrane an, sie gelten als besonders zuverlässig und einfach zu bedienen.',
     },
   ],
   'raupenkran-mieten': [
@@ -141,11 +141,11 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Kann ich einen Anhängerkran mit meinem PKW transportieren?',
-      answer: 'Ja, Anhängerkrane sind für den Transport mit normaler PKW-Anhängerkupplung ausgelegt. Das Zugfahrzeug sollte für das Gesamtgewicht (ca. 1.500–3.500 kg) zugelassen sein. Kein Kranführerschein nötig — eine Einweisung durch den Vermieter reicht.',
+      answer: 'Ja, Anhängerkrane sind für den Transport mit normaler PKW-Anhängerkupplung ausgelegt. Das Zugfahrzeug sollte für das Gesamtgewicht (ca. 1.500–3.500 kg) zugelassen sein. Kein Kranführerschein nötig, eine Einweisung durch den Vermieter reicht.',
     },
     {
       question: 'Wo finde ich einen Anhängerkran in meiner Nähe?',
-      answer: 'Auf {BRAND_NAME} finden Sie Anhängerkran-Vermieter in ganz {COUNTRY_LABEL}. Geben Sie Ihre Stadt in die Suche ein und vergleichen Sie Anbieter nach Preis und Bewertung. Kostenlos Angebote anfragen — bei einem oder mehreren Vermietern gleichzeitig.',
+      answer: 'Auf {BRAND_NAME} finden Sie Anhängerkran-Vermieter in ganz {COUNTRY_LABEL}. Geben Sie Ihre Stadt in die Suche ein und vergleichen Sie Anbieter nach Preis und Bewertung. Kostenlos Angebote anfragen, bei einem oder mehreren Vermietern gleichzeitig.',
     },
     {
       question: 'Brauche ich einen Führerschein für einen Anhängerkran?',
@@ -153,23 +153,23 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Welche Anhängerkran-Marken kann man mieten?',
-      answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (eine der am häufigsten verliehenen Marken in {COUNTRY_LABEL}), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet — viele Vermieter auf {BRAND_NAME} bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
+      answer: 'Die gängigsten Marken im Anhängerkranverleih sind Böcker (eine der am häufigsten verliehenen Marken in {COUNTRY_LABEL}), Klaas, Paus und Denka Lift. Böcker-Anhängerkrane sind besonders verbreitet, viele Vermieter auf {BRAND_NAME} bieten Böcker-Modelle wie den AK 46 oder AK 52 an.',
     },
     {
       question: 'Was ist ein PKW-Anhänger mit Kran?',
-      answer: 'Ein PKW-Anhänger mit Kran (auch Anhängerkran oder Trailerkran) ist ein Hebekran, der auf einem PKW-Anhänger montiert ist. Er lässt sich mit jedem Fahrzeug mit Anhängerkupplung transportieren — ideal zum Ausleihen für Dachdeckerarbeiten, Baumaterialtransport oder Montagen bis 1.500 kg Traglast.',
+      answer: 'Ein PKW-Anhänger mit Kran (auch Anhängerkran oder Trailerkran) ist ein Hebekran, der auf einem PKW-Anhänger montiert ist. Er lässt sich mit jedem Fahrzeug mit Anhängerkupplung transportieren, ideal zum Ausleihen für Dachdeckerarbeiten, Baumaterialtransport oder Montagen bis 1.500 kg Traglast.',
     },
     {
       question: 'Was kostet ein PKW-Anhänger mit Kran pro Tag?',
-      answer: 'Ein PKW-Anhänger mit Kran (Anhängerkran) kostet ab 150€ pro Tag netto. Die Preise variieren je nach Hakenhöhe und Tragkraft: Modelle bis 15m Höhe ab 150€/Tag, bis 25m Höhe ab 250€/Tag, bis 30m+ ab 300€/Tag. Wochenmiete ab 700€, Monatsmiete ab 2.000€. Transport inklusive — Sie fahren den Anhängerkran mit Ihrem eigenen PKW zur Baustelle.',
+      answer: 'Ein PKW-Anhänger mit Kran (Anhängerkran) kostet ab 150€ pro Tag netto. Die Preise variieren je nach Hakenhöhe und Tragkraft: Modelle bis 15m Höhe ab 150€/Tag, bis 25m Höhe ab 250€/Tag, bis 30m+ ab 300€/Tag. Wochenmiete ab 700€, Monatsmiete ab 2.000€. Transport inklusive. Sie fahren den Anhängerkran mit Ihrem eigenen PKW zur Baustelle.',
     },
     {
-      question: 'Anhängerkran oder Dachdeckerkran — was ist der Unterschied?',
+      question: 'Anhängerkran oder Dachdeckerkran, was ist der Unterschied?',
       answer: 'Beide sind ideal für Dacharbeiten, aber: Der Anhängerkran wird mit Ihrem PKW transportiert (günstigster Einstieg ab 150€/Tag), der Dachdeckerkran ist LKW-basiert und wird vom Vermieter geliefert (ab 200€/Tag). Der Anhängerkran hat bis zu 1.500 kg Tragkraft und 25m Hakenhöhe, der Dachdeckerkran bis 2.000 kg und 30m. Für kleinere Dacharbeiten (Ziegel, Solarmodule) reicht oft der günstigere Anhängerkran.',
     },
     {
       question: 'Welche Hakenhöhe hat ein Anhängerkran?',
-      answer: 'Anhängerkrane erreichen je nach Modell 10–32 Meter Hakenhöhe. Die gängigsten Mietmodelle (Böcker AK 27, AK 32, AK 46) bieten 27–46 Meter Arbeitshöhe. Für ein Einfamilienhaus (2 Stockwerke, ca. 8m) reicht ein Einstiegsmodell mit 15m — für Mehrfamilienhäuser bis 5 Etagen sollten Sie 25–30m wählen.',
+      answer: 'Anhängerkrane erreichen je nach Modell 10–32 Meter Hakenhöhe. Die gängigsten Mietmodelle (Böcker AK 27, AK 32, AK 46) bieten 27–46 Meter Arbeitshöhe. Für ein Einfamilienhaus (2 Stockwerke, ca. 8m) reicht ein Einstiegsmodell mit 15m, für Mehrfamilienhäuser bis 5 Etagen sollten Sie 25–30m wählen.',
     },
   ],
   'mobilkran-mieten': [
@@ -223,14 +223,14 @@ const typeFAQs: Record<string, FAQItem[]> = {
     },
     {
       question: 'Wo finde ich eine Baukran-Preisliste?',
-      answer: 'Auf {BRAND_NAME} finden Sie eine aktuelle Baukran-Preisliste mit Tages-, Wochen- und Monatspreisen. Vergleichen Sie Baukran-Mietpreise von über 100 Anbietern in ganz {COUNTRY_LABEL} — kostenlos und unverbindlich.',
+      answer: 'Auf {BRAND_NAME} finden Sie eine aktuelle Baukran-Preisliste mit Tages-, Wochen- und Monatspreisen. Vergleichen Sie Baukran-Mietpreise von über 100 Anbietern in ganz {COUNTRY_LABEL}, kostenlos und unverbindlich.',
     },
   ],
 }
 
 // ============================================
-// Stadt-FAQs — wyświetlane TYLKO na /[krantyp]-mieten/[stadt]
-// UNIKALNE per miasto, nie kopiowane z typ-FAQ
+// City FAQs, shown ONLY on /[crane-type]-mieten/[city]
+// UNIQUE per city, never copied from type FAQs
 // ============================================
 function getCityFAQs(craneName: string, cityName: string, priceFrom?: number, priceTo?: number): FAQItem[] {
   const priceStr = priceFrom && priceTo ? `zwischen ca. ${priceFrom}€ und ${priceTo}€ pro Tag (netto)` : 'je nach Anbieter und Tragkraft'
@@ -250,7 +250,7 @@ function getCityFAQs(craneName: string, cityName: string, priceFrom?: number, pr
     },
     {
       question: `Wo finde ich ${craneName}-Vermietung in ${cityName}?`,
-      answer: `Auf {BRAND_NAME} finden Sie alle ${craneName}-Vermieter in ${cityName} und Umgebung. Vergleichen Sie Preise und Bewertungen und fragen Sie kostenlos Angebote an — bei einem oder mehreren Anbietern gleichzeitig.`,
+      answer: `Auf {BRAND_NAME} finden Sie alle ${craneName}-Vermieter in ${cityName} und Umgebung. Vergleichen Sie Preise und Bewertungen und fragen Sie kostenlos Angebote an, bei einem oder mehreren Anbietern gleichzeitig.`,
     },
   ]
 }
@@ -259,7 +259,7 @@ export function getFAQsForCraneType(slug: string): FAQItem[] {
   return typeFAQs[slug] ?? []
 }
 
-/** Deduplicate FAQs by normalized question. First occurrence wins — so when
+/** Deduplicate FAQs by normalized question. First occurrence wins, so when
  * city_faq_override (Supabase) is spread before templateFaqs, override replaces
  * any template entry with the same question. */
 export function dedupeFaqs(items: FAQItem[]): FAQItem[] {
@@ -295,6 +295,6 @@ export function getFAQsForCraneAndCity(craneSlug: string, cityName: string, cran
 
   const [priceFrom, priceTo] = priceMap[craneSlug] ?? [undefined, undefined]
 
-  // Return ONLY city-specific FAQs — no typ-FAQs copied
+  // Return ONLY city-specific FAQs, no typ-FAQs copied
   return getCityFAQs(name, cityName, priceFrom, priceTo)
 }

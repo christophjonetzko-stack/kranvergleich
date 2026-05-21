@@ -4,7 +4,7 @@ import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const metadata: Metadata = {
-  title: 'Ratgeber — Kran mieten: Tipps, Kosten & Vergleiche',
+  title: 'Ratgeber. Kran mieten: Tipps, Kosten & Vergleiche',
   description:
     `Ratgeber rund um Kranvermietung: Welchen Kran brauche ich? Minikran vs. Autokran, Kranführerschein, 7 Tipps für Bauunternehmer. Kostenlos auf ${BRAND_NAME}.`,
   alternates: alternatesFor('/ratgeber'),
@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 
 // Curated list of real ratgeber pages (those that exist as standalone routes
 // under /ratgeber/<slug>/page.tsx). DO NOT add slugs here that redirect to a
-// type page in next.config.ts — Google was discovering these tiles, following
+// type page in next.config.ts. Google was discovering these tiles, following
 // the link, getting a 308, and never seeing the canonical type page directly,
 // which made the rewrite path look like the canonical one. Per 2026-04-27
-// audit five ratgeber were genuinely orphan (no internal links anywhere) —
+// audit five ratgeber were genuinely orphan (no internal links anywhere) 
 // adding them here is what gets Googlebot to crawl them.
 const articles = [
   {
@@ -26,7 +26,7 @@ const articles = [
   {
     slug: 'welchen-kran-brauche-ich',
     title: 'Welchen Kran brauche ich?',
-    description: '8 typische Baustellen-Szenarien mit Empfehlung — plus Minikran vs. Autokran im direkten Vergleich. Vergleichstabelle aller 8 Krantypen.',
+    description: '8 typische Baustellen-Szenarien mit Empfehlung, plus Minikran vs. Autokran im direkten Vergleich. Vergleichstabelle aller 8 Krantypen.',
   },
   {
     slug: 'krantypen',
@@ -46,31 +46,31 @@ const articles = [
   {
     slug: 'bootskran-mieten',
     title: 'Bootskran mieten: Yacht & Segelboot heben',
-    description: 'Yacht oder Segelboot kranen — Mobilkran 50t ab 600€, Krantraverse + Saison-Vorlauf in der Krängungs-Spitze. Kosten nach Bootslänge und Lage.',
+    description: 'Yacht oder Segelboot kranen. Mobilkran 50t ab 600€, Krantraverse + Saison-Vorlauf in der Krängungs-Spitze. Kosten nach Bootslänge und Lage.',
   },
   {
     slug: 'pool-kran-mieten',
     title: 'Pool mit Kran über das Haus heben',
-    description: 'GFK-Pool oder Fertigpool in den Garten heben — Mobilkran 50t ab 700€. Auslage entscheidet, nicht das Pool-Gewicht.',
+    description: 'GFK-Pool oder Fertigpool in den Garten heben. Mobilkran 50t ab 700€. Auslage entscheidet, nicht das Pool-Gewicht.',
   },
   {
     slug: 'whirlpool-kran-mieten',
     title: 'Whirlpool mit Kran heben: Garten oder Dachterrasse',
-    description: 'Mobilkran 35–50t ab 450€ für Garten-Hub. Wann Sie wirklich einen Kran brauchen — und wann der Spa-Dolly reicht.',
+    description: 'Mobilkran 35–50t ab 450€ für Garten-Hub. Wann Sie wirklich einen Kran brauchen, und wann der Spa-Dolly reicht.',
   },
   {
     slug: 'kran-mieten-privatperson',
-    title: 'Kran mieten als Privatperson — Was ist möglich?',
+    title: 'Kran mieten als Privatperson. Was ist möglich?',
     description: 'Minikran ab 250€/Tag und Anhängerkran ab 150€/Tag ohne Führerschein. Kosten, Versicherung und Tipps für Privatpersonen.',
   },
   {
     slug: 'kran-mieten-ohne-fuehrerschein',
-    title: 'Kran mieten ohne Führerschein — was ist erlaubt?',
+    title: 'Kran mieten ohne Führerschein, was ist erlaubt?',
     description: 'Welche Krane darf man selbst bedienen, wo ist ein Kranführer Pflicht? Übersichtstabelle aller 8 Krantypen.',
   },
   {
     slug: 'kran-mieten-oder-kaufen',
-    title: 'Kran mieten oder kaufen? Wann sich was lohnt — Vergleich 2026',
+    title: 'Kran mieten oder kaufen? Wann sich was lohnt. Vergleich 2026',
     description: 'Faustregel: unter 100 Einsatztagen ist Mieten günstiger. Anschaffungskosten ab 50.000€ (Minikran) bis 1.000.000€ (Autokran). Hybrid-Strategie für mittlere Betriebe.',
   },
   {
@@ -81,11 +81,11 @@ const articles = [
   {
     slug: 'kran-aufstellen-genehmigung',
     title: 'Kran aufstellen: Genehmigung & Vorschriften',
-    description: 'Welche Genehmigungen brauchen Sie zum Aufstellen eines Krans? Bauamt, Straßensperrung, Statik — alle Vorschriften im Überblick.',
+    description: 'Welche Genehmigungen brauchen Sie zum Aufstellen eines Krans? Bauamt, Straßensperrung, Statik, alle Vorschriften im Überblick.',
   },
 ]
 
-// Quick-Answer-Box — top 3 questions + 1-sentence answer each. AEO-optimized:
+// Quick-Answer-Box, top 3 questions + 1-sentence answer each. AEO-optimized:
 // AI engines (Perplexity, ChatGPT) lift this verbatim when they find a "kran
 // ratgeber" query. Numbers must match the actual articles below.
 const QUICK_ANSWERS = [
@@ -101,7 +101,7 @@ const QUICK_ANSWERS = [
   },
   {
     q: 'Brauche ich einen Kranführerschein?',
-    a: 'Nicht für Mini-, Anhänger-, Dachdecker-, Lade- und Baukran — Bedienung nach Einweisung. Für Auto-, Mobil- und Raupenkran ist ein Kranführer mit Sachkundenachweis (DGUV Vorschrift 52) gesetzlich vorgeschrieben und im Mietpreis enthalten.',
+    a: 'Nicht für Mini-, Anhänger-, Dachdecker-, Lade- und Baukran. Bedienung nach Einweisung. Für Auto-, Mobil- und Raupenkran ist ein Kranführer mit Sachkundenachweis (DGUV Vorschrift 52) gesetzlich vorgeschrieben und im Mietpreis enthalten.',
     href: '/ratgeber/kran-mieten-ohne-fuehrerschein',
   },
 ] as const
@@ -116,16 +116,16 @@ export default function RatgeberIndexPage() {
       </nav>
 
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
-        Kran-Ratgeber 2026 — Kosten, Auswahl, Genehmigung
+        Kran-Ratgeber 2026. Kosten, Auswahl, Genehmigung
       </h1>
       <p className="text-[15px] text-gray-500 mb-6 max-w-3xl leading-relaxed">
         Bevor Sie einen Kran mieten, helfen drei Fragen: Welcher Krantyp passt zu Ihrem Projekt,
-        was kostet er — und welche rechtlichen und technischen Voraussetzungen müssen Sie kennen?
+        was kostet er, und welche rechtlichen und technischen Voraussetzungen müssen Sie kennen?
         Unsere {articles.length} Ratgeber-Artikel decken genau diese Themen ab und basieren auf
         einer Marktanalyse von {BRAND_NAME} mit Kranvermietern in {COUNTRY_LABEL}.
       </p>
 
-      {/* Quick-Answer-Box — AEO play. */}
+      {/* Quick-Answer-Box. AEO play. */}
       <section className="mb-8 rounded-xl bg-blue-50/60 border border-blue-100 p-5">
         <h2 className="text-[14px] font-semibold text-gray-900 mb-3">Die drei wichtigsten Fragen vor der Kranmiete</h2>
         <div className="space-y-3">
@@ -134,7 +134,7 @@ export default function RatgeberIndexPage() {
               <p className="text-[13px] font-medium text-gray-900 mb-0.5">{qa.q}</p>
               <p className="text-[13px] text-gray-600 leading-snug">
                 {qa.a}{' '}
-                <Link href={qa.href} className="text-blue-600 hover:underline">Mehr erfahren →</Link>
+                <Link href={qa.href} className="text-blue-600 hover:underline">Mehr erfahren </Link>
               </p>
             </div>
           ))}
@@ -145,7 +145,7 @@ export default function RatgeberIndexPage() {
         <strong className="text-gray-700">So nutzen Sie unsere Ratgeber:</strong> Wenn Sie noch nicht
         wissen, welchen Krantyp Sie brauchen, starten Sie bei{' '}
         <Link href="/ratgeber/welchen-kran-brauche-ich" className="text-blue-600 hover:underline">„Welchen Kran brauche ich?"</Link>
-        {' '}— der Artikel führt durch acht typische Bauszenarien (Dachsanierung, Glasmontage,
+        {' '} der Artikel führt durch acht typische Bauszenarien (Dachsanierung, Glasmontage,
         Schwerlast, Großbaustelle …) zur passenden Empfehlung. Wenn die Kostenfrage im Vordergrund
         steht, gehen Sie zu{' '}
         <Link href="/ratgeber/was-kostet-ein-kran" className="text-blue-600 hover:underline">„Was kostet ein Kran?"</Link>
@@ -165,7 +165,7 @@ export default function RatgeberIndexPage() {
           >
             <h3 className="font-medium text-[15px] text-gray-900 mb-2">{article.title}</h3>
             <p className="text-[13px] text-gray-500 leading-relaxed">{article.description}</p>
-            <span className="inline-block mt-3 text-[13px] text-blue-600">Weiterlesen &rarr;</span>
+            <span className="inline-block mt-3 text-[13px] text-blue-600">Weiterlesen </span>
           </Link>
         ))}
       </div>
@@ -179,7 +179,7 @@ export default function RatgeberIndexPage() {
         </p>
       </div>
 
-      {/* ItemList + BreadcrumbList JSON-LD — gives Google a machine-readable
+      {/* ItemList + BreadcrumbList JSON-LD, gives Google a machine-readable
           map of the hub's children, fixes "no schema" gap from the Opus eval
           and helps Googlebot discover the orphan ratgeber pages faster. */}
       <script
