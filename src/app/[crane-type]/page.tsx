@@ -46,7 +46,7 @@ export async function generateMetadata({
   // (~19 chars) so the full SERP title stays under Google's ~580px ≈ 60-char
   // truncation limit. Price moved to description (it doesn't drive clicks at
   // hub level — the count + crane-type name does).
-  const title = `${craneType.name} mieten — ${count} Anbieter`
+  const title = `${craneType.name} mieten: ${count} Anbieter`
 
   // Description: ≤155 Zeichen, damit Google nicht abschneidet. Konkrete Zahlen, klarer CTA.
   const description = priceStr
@@ -142,7 +142,7 @@ export default async function CraneTypePage({
           <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[1.0] tracking-[-0.02em] text-[28px] sm:text-[36px] lg:text-[40px] mb-2">
             {craneType.name} mieten
             {craneType.price_day_from && (
-              <span className="text-blue-600"> — ab {craneType.price_day_from.toLocaleString('de-DE')}€/Tag</span>
+              <span className="text-blue-600">, ab {craneType.price_day_from.toLocaleString('de-DE')}€/Tag</span>
             )}
           </h1>
           <p className="text-[15px] text-neutral-600 mb-3">
@@ -265,13 +265,13 @@ export default async function CraneTypePage({
               {craneType.name} leihen, ausleihen oder mieten? {plural} Vermietung in ganz {COUNTRY_LABEL}
             </h2>
             <p className="text-[14px] text-gray-500 leading-relaxed">
-              Ob Sie einen <strong className="text-gray-900">{craneType.name}</strong> mieten, leihen oder ausleihen möchten —
+              Ob Sie einen <strong className="text-gray-900">{craneType.name}</strong> mieten, leihen oder ausleihen möchten:
               {' '}auf {BRAND_NAME} vergleichen Sie {plural}-Vermietung, {craneType.name}verleih und Anbieter im direkten Preisvergleich.
               {synonyms.length > 0 && (
                 <> Der {craneType.name} wird auch als <strong className="text-gray-900">{synonyms.slice(0, 4).join(', ')}</strong>
                 {synonyms.length > 4 ? ` oder ${synonyms[4]}` : ''} bezeichnet.</>
               )}
-              {' '}Die Vermieter bieten Tages-, Wochen- und Monatsmiete — mit oder ohne Kranführer, inkl. Transport.
+              {' '}Die Vermieter bieten Tages-, Wochen- und Monatsmiete, mit oder ohne Kranführer, inklusive Transport.
             </p>
           </section>
         )
@@ -280,7 +280,7 @@ export default async function CraneTypePage({
       {/* Price Table */}
       <div id="preise" className="mb-8 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          {craneType.name} mieten — Preisliste 2026 mit Tages-, Wochen- und Monatspreisen
+          {craneType.name} mieten: Preisliste 2026 mit Tages-, Wochen- und Monatspreisen
         </h2>
         <PriceTable craneTypeSlug={craneType.slug} />
         <p className="mt-3 text-[13px] text-gray-500">
@@ -304,7 +304,7 @@ export default async function CraneTypePage({
             showStateFilter
             centerLat={51.1657}
             centerLng={10.4515}
-            referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
+            referencePrice={price ? `ab ${price.dayFrom}€/Tag, Richtwert` : null}
             typeContext={craneType.slug}
             initialProjectDescription={project}
             totalCount={totalCount}
@@ -320,7 +320,7 @@ export default async function CraneTypePage({
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px]">
             <div className="bg-gray-50 rounded-md p-3">
-              <p className="text-[11px] text-gray-400 mb-1">{craneType.name} mieten — Kosten pro Tag</p>
+              <p className="text-[11px] text-gray-400 mb-1">{craneType.name} mieten: Kosten pro Tag</p>
               <p className="text-gray-700">
                 Ein {craneType.name} kostet zwischen <strong>{price.dayFrom.toLocaleString('de-DE')}€ und {price.dayTo.toLocaleString('de-DE')}€ pro Tag</strong> (netto).
                 {price.includesOperator ? ' Kranführer inklusive.' : ' Ohne Kranführer.'}
@@ -345,12 +345,12 @@ export default async function CraneTypePage({
               <p className="text-gray-700">
                 {price.includesOperator
                   ? `Stundenpreis ca. ${Math.round(price.dayFrom / 8).toLocaleString('de-DE')}–${Math.round(price.dayTo / 6).toLocaleString('de-DE')}€/h inkl. Kranführer. Mindestmietdauer meist 4 Stunden.`
-                  : `Stundensätze sind bei ${craneType.name} unüblich — der ${craneType.name} wird tageweise vermietet. Kurzzeitmiete auf Anfrage.`}
+                  : `Stundensätze sind bei ${craneType.name} unüblich. Der ${craneType.name} wird tageweise vermietet. Kurzzeitmiete auf Anfrage.`}
               </p>
             </div>
           </div>
           <p className="text-[11px] text-gray-400 mt-3">
-            Alle Preise netto, zzgl. {TAX_LABEL} Richtwerte — die tatsächlichen {craneType.name}-Mietpreise hängen von Tragkraft, Einsatzdauer und Standort ab.
+            Alle Preise netto, zzgl. {TAX_LABEL} Richtwerte. Die tatsächlichen {craneType.name}-Mietpreise hängen von Tragkraft, Einsatzdauer und Standort ab.
             {' '}Transport (An-/Abfahrt) kommt je nach Entfernung hinzu (ca. 150–500€).
           </p>
         </section>
@@ -360,11 +360,11 @@ export default async function CraneTypePage({
       {ratgeber?.sizeClasses && ratgeber.sizeClasses.length > 0 && (
         <section id="tragkraft" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            {craneType.name} nach Tragkraft — welche Klasse für welches Projekt?
+            {craneType.name} nach Tragkraft: welche Klasse für welches Projekt?
           </h2>
           <p className="text-[14px] text-gray-500 mb-4 leading-relaxed">
             {craneType.name}e werden in Tragkraftklassen unterteilt. Die benötigte Tragkraft ergibt
-            sich aus dem Gewicht der Last <em>plus</em> der erforderlichen Ausladung — bei voller
+            sich aus dem Gewicht der Last <em>plus</em> der erforderlichen Ausladung. Bei voller
             Reichweite sinkt die Nennlast oft auf 25–40%. Faustregel: lieber eine Klasse größer
             wählen als zu knapp dimensionieren.
           </p>
@@ -384,7 +384,7 @@ export default async function CraneTypePage({
                   <tr key={sc.label} className="border-t border-gray-100 align-top">
                     <td className="px-3 py-2.5 font-medium text-gray-900">{sc.label}</td>
                     <td className="px-3 py-2.5 text-gray-700 whitespace-nowrap tabular-nums">{sc.tonnage}</td>
-                    <td className="px-3 py-2.5 text-gray-500 whitespace-nowrap tabular-nums">{sc.reach ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-gray-500 whitespace-nowrap tabular-nums">{sc.reach ?? '-'}</td>
                     <td className="px-3 py-2.5 text-gray-600 leading-relaxed">{sc.useCase}</td>
                     <td className="px-3 py-2.5 text-gray-700 whitespace-nowrap tabular-nums font-mono text-[12px]">{sc.priceRange}</td>
                   </tr>
@@ -394,7 +394,7 @@ export default async function CraneTypePage({
           </div>
           <p className="text-[11px] text-gray-400 mt-3">
             Preise sind Richtwerte netto, zzgl. {TAX_LABEL} Die tatsächliche Miete hängt von Region,
-            Anfahrtsentfernung, Mietdauer und Auslastung ab — fordern Sie immer verbindliche Angebote an.
+            Anfahrtsentfernung, Mietdauer und Auslastung ab. Fordern Sie immer verbindliche Angebote an.
           </p>
         </section>
       )}
@@ -403,11 +403,11 @@ export default async function CraneTypePage({
       {ratgeber?.brands && ratgeber.brands.length > 0 && (
         <section id="marken" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            {craneType.name} — Marken und Modelle in den Vermietflotten
+            {craneType.name}: Marken und Modelle in den Vermietflotten
           </h2>
           <p className="text-[14px] text-gray-500 mb-4 leading-relaxed">
             {craneType.name}-Vermieter setzen überwiegend auf eine Handvoll Hersteller. Die
-            folgende Übersicht zeigt die gängigsten Modellreihen und ihre Positionierung im Markt —
+            folgende Übersicht zeigt die gängigsten Modellreihen und ihre Positionierung im Markt,
             als Orientierung, nicht als Empfehlung.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -503,7 +503,7 @@ export default async function CraneTypePage({
       {craneType.slug === 'baukran-mieten' && (
         <section id="schnellbaukran" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            Schnellbaukran mieten — kompakte Baukrane ab 20 m Ausladung
+            Schnellbaukran mieten: kompakte Baukrane ab 20 m Ausladung
           </h2>
           <p className="text-[14px] text-gray-600 leading-relaxed mb-4">
             Ein <strong>Schnellbaukran</strong> (auch <em>Untendreher</em> oder <em>Mobilbaukran</em> genannt) ist die mobile Variante des klassischen Turmdrehkrans.
@@ -538,9 +538,9 @@ export default async function CraneTypePage({
 
           <h3 className="text-[14px] font-semibold text-gray-900 mb-2">Bekannte Schnellbaukran-Modelle</h3>
           <p className="text-[13px] text-gray-600 leading-relaxed mb-4">
-            <strong>Potain IGO</strong> (T70, T85, T130) — die meistvermieteten Schnellbaukrane überhaupt.{' '}
-            <strong>Potain GTMR</strong> (331 C, 336 B, 346 A, 386 A) — Serie für mittelgroße Hochbauprojekte.{' '}
-            <strong>Liebherr K</strong>-Serie, <strong>Wolffkran WOLFF 7018</strong>, <strong>Eurogru DS 216</strong> — kompakte Modelle für Sanierungen und Einfamilienhäuser.
+            <strong>Potain IGO</strong> (T70, T85, T130) sind die meistvermieteten Schnellbaukrane überhaupt.{' '}
+            <strong>Potain GTMR</strong> (331 C, 336 B, 346 A, 386 A) ist die Serie für mittelgroße Hochbauprojekte.{' '}
+            <strong>Liebherr K</strong>-Serie, <strong>Wolffkran WOLFF 7018</strong> und <strong>Eurogru DS 216</strong> sind kompakte Modelle für Sanierungen und Einfamilienhäuser.
           </p>
 
           <h3 className="text-[14px] font-semibold text-gray-900 mb-2">Wann Schnellbaukran statt Turmdrehkran?</h3>
@@ -548,7 +548,7 @@ export default async function CraneTypePage({
             <li>Einfamilien- oder Doppelhaus bis 2 Vollgeschosse</li>
             <li>Sanierung, Umbau, Dachaufstockung, Anbau</li>
             <li>Enge Einfahrten, begrenzte Stellfläche (ab 4,5 × 4,5 m Abstützung)</li>
-            <li>Bauzeit unter 6 Monaten — kein Fundament spart 1.000–3.000 €</li>
+            <li>Bauzeit unter 6 Monaten, kein Fundament spart 1.000–3.000 €</li>
             <li>Wochen- oder Monatsmiete gewünscht (typisch 1.900–4.000 €/Monat)</li>
           </ul>
         </section>
@@ -558,11 +558,11 @@ export default async function CraneTypePage({
       {ratgeber?.alternatives && ratgeber.alternatives.length > 0 && (
         <section id="alternativen" className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            Alternativen zum {craneType.name} — wann lohnt sich ein anderer Krantyp?
+            Alternativen zum {craneType.name}: wann lohnt sich ein anderer Krantyp?
           </h2>
           <p className="text-[14px] text-gray-500 mb-4 leading-relaxed">
             Nicht jedes Hebeprojekt braucht einen {craneType.name}. Je nach Tragkraft, Untergrund,
-            Einsatzort und Mietdauer kann ein anderer Krantyp besser passen — oft bei deutlich
+            Einsatzort und Mietdauer kann ein anderer Krantyp besser passen, oft bei deutlich
             niedrigeren Kosten.
           </p>
           <div className="space-y-3">
@@ -574,7 +574,6 @@ export default async function CraneTypePage({
               >
                 <p className="font-semibold text-gray-900 mb-1 text-[14px]">
                   {alt.name} mieten
-                  <span className="text-gray-300 group-hover:text-gray-900 ml-1 transition-colors">→</span>
                 </p>
                 <p className="text-[13px] text-gray-600 leading-relaxed">{alt.whenBetter}</p>
               </Link>
@@ -601,7 +600,7 @@ export default async function CraneTypePage({
                   ? ' Der Preis beinhaltet in der Regel einen qualifizierten Kranführer.'
                   : ' Ein Kranführer ist nicht im Preis enthalten und kann separat gebucht werden.'}</>
               )}
-              {' '}Vergleichen Sie Bewertungen, Preise und Leistungen — und fordern Sie kostenlos Angebote an.
+              {' '}Vergleichen Sie Bewertungen, Preise und Leistungen und fordern Sie kostenlos Angebote an.
             </p>
           </div>
         )
@@ -726,7 +725,7 @@ export default async function CraneTypePage({
             '@context': 'https://schema.org',
             '@type': 'Service',
             serviceType: `${craneType.name}-Vermietung Vergleich`,
-            name: `${craneType.name} mieten — Anbieter-Vergleich`,
+            name: `${craneType.name} mieten: Anbieter-Vergleich`,
             description: totalCount > 0
               ? `Vergleichen Sie ${totalCount} Anbieter für ${craneType.name}-Vermietung in ${COUNTRY_LABEL}. Tages-, Wochen- & Monatspreise im direkten Preisvergleich.`
               : `Anbieter-Vergleich für ${craneType.name}-Vermietung in ${COUNTRY_LABEL}. Tages-, Wochen- & Monatspreise im direkten Preisvergleich.`,

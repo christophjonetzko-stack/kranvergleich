@@ -16,12 +16,12 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran mieten Preisliste 2026 — ab 150€/Tag, alle 8 Krantypen',
+  title: 'Kran mieten Preisliste 2026, ab 150€/Tag, alle 8 Krantypen',
   description:
     'Kran mieten Preise 2026: Tages-, Wochen-, Monatspreise für 8 Krantypen. Anhängerkran ab 150€, Autokran ab 500€. Kostenlos 3 Angebote vergleichen.',
   alternates: alternatesFor('/kran-mieten-preise'),
   openGraph: {
-    title: 'Kran mieten Preisliste 2026 — ab 150€/Tag, alle 8 Krantypen',
+    title: 'Kran mieten Preisliste 2026, ab 150€/Tag, alle 8 Krantypen',
     description:
       'Kran mieten Preise 2026: Tages-, Wochen-, Monatspreise für 8 Krantypen. Anhängerkran ab 150€, Autokran ab 500€. Kostenlos 3 Angebote vergleichen.',
     type: 'website',
@@ -34,7 +34,7 @@ const costFAQs = [
   {
     question: 'Was kostet ein Kran pro Tag?',
     answer:
-      `Die Tagesmiete variiert je nach Krantyp: Anhängerkran ab 150€, Minikran ab 250€, Dachdeckerkran ab 200€, Autokran ab 500€, Mobilkran ab 600€, Raupenkran ab 800€. Baukran (Turmdrehkran) wird typischerweise im Monatstarif ab 8.000€/Monat inkl. Montage gemietet — nicht im Tagestarif. Alle Preise netto zzgl. ${TAX_LABEL} Transport und Auf-/Abbau kommen je nach Anbieter hinzu.`,
+      `Die Tagesmiete variiert je nach Krantyp: Anhängerkran ab 150€, Minikran ab 250€, Dachdeckerkran ab 200€, Autokran ab 500€, Mobilkran ab 600€, Raupenkran ab 800€. Baukran (Turmdrehkran) wird typischerweise im Monatstarif ab 8.000€/Monat inkl. Montage gemietet, nicht im Tagestarif. Alle Preise netto zzgl. ${TAX_LABEL} Transport und Auf-/Abbau kommen je nach Anbieter hinzu.`,
   },
   {
     question: 'Was kostet ein Autokran pro Stunde?',
@@ -49,22 +49,22 @@ const costFAQs = [
   {
     question: 'Was kostet ein Kran pro Monat?',
     answer:
-      'Monatsmieten sind die günstigste Option pro Tag: Minikran ab 3.500€/Monat, Autokran ab 8.000€/Monat, Baukran ab 4.000€/Monat. Baukrane werden oft für mehrere Monate gemietet — hier sind zusätzliche Rabatte üblich.',
+      'Monatsmieten sind die günstigste Option pro Tag: Minikran ab 3.500€/Monat, Autokran ab 8.000€/Monat, Baukran ab 4.000€/Monat. Baukrane werden oft für mehrere Monate gemietet, hier sind zusätzliche Rabatte üblich.',
   },
   {
     question: 'Ist der Kranführer im Preis enthalten?',
     answer:
-      'Bei Autokranen, Mobilkranen und Raupenkranen ist der Kranführer in der Regel inklusive (gesetzlich vorgeschrieben). Bei Minikranen, Dachdeckerkranen, Anhängerkranen und Ladekranen bedienen Sie den Kran nach Einweisung selbst — oder buchen einen Bediener separat.',
+      'Bei Autokranen, Mobilkranen und Raupenkranen ist der Kranführer in der Regel inklusive (gesetzlich vorgeschrieben). Bei Minikranen, Dachdeckerkranen, Anhängerkranen und Ladekranen bedienen Sie den Kran nach Einweisung selbst, oder buchen einen Bediener separat.',
   },
   {
     question: 'Was kostet ein Kran mit Fahrer pro Tag?',
     answer:
-      'Ein Kran mit Fahrer kostet je nach Typ 500–3.000€ pro Tag — der Kranführer ist bei Autokran (ab 500€/Tag), Mobilkran (ab 600€/Tag) und Raupenkran (ab 800€/Tag) gesetzlich vorgeschrieben und im Tagespreis enthalten. Bei Baukranen wird der Turmdrehkranführer separat gebucht (50–70€/h oder 400–560€/Tag). Bei Ladekranen ist der LKW-Fahrer oft als Komplettpaket verfügbar (500–800€/Tag inkl. LKW). Minikran, Dachdeckerkran und Anhängerkran können Sie nach einer Einweisung selbst bedienen — ein separater Bediener kostet 50–80€/h oder 400–650€/Tag.',
+      'Ein Kran mit Fahrer kostet je nach Typ 500–3.000€ pro Tag, der Kranführer ist bei Autokran (ab 500€/Tag), Mobilkran (ab 600€/Tag) und Raupenkran (ab 800€/Tag) gesetzlich vorgeschrieben und im Tagespreis enthalten. Bei Baukranen wird der Turmdrehkranführer separat gebucht (50–70€/h oder 400–560€/Tag). Bei Ladekranen ist der LKW-Fahrer oft als Komplettpaket verfügbar (500–800€/Tag inkl. LKW). Minikran, Dachdeckerkran und Anhängerkran können Sie nach einer Einweisung selbst bedienen, ein separater Bediener kostet 50–80€/h oder 400–650€/Tag.',
   },
   {
     question: 'Brauche ich einen Kranführerschein zum Kran mieten?',
     answer:
-      'Für die meisten Kranvermietungen brauchen Sie KEINEN Kranführerschein. Bei Autokran, Mobilkran und Raupenkran ist der zertifizierte Kranführer gesetzlich vorgeschrieben und im Mietpreis enthalten — Sie müssen nichts selbst bedienen. Bei Minikran, Dachdeckerkran und Anhängerkran reicht eine 30–60-minütige Einweisung durch den Vermieter (gemäß DGUV Vorschrift 52), Sie brauchen lediglich das Mindestalter 18 Jahre. Einen Kranführerschein (Befähigungsnachweis nach DGUV V52) benötigen Sie nur, wenn Sie einen Baukran (Turmdrehkran) selbst bedienen oder als angestellter Kranführer arbeiten möchten.',
+      'Für die meisten Kranvermietungen brauchen Sie KEINEN Kranführerschein. Bei Autokran, Mobilkran und Raupenkran ist der zertifizierte Kranführer gesetzlich vorgeschrieben und im Mietpreis enthalten. Sie müssen nichts selbst bedienen. Bei Minikran, Dachdeckerkran und Anhängerkran reicht eine 30–60-minütige Einweisung durch den Vermieter (gemäß DGUV Vorschrift 52), Sie brauchen lediglich das Mindestalter 18 Jahre. Einen Kranführerschein (Befähigungsnachweis nach DGUV V52) benötigen Sie nur, wenn Sie einen Baukran (Turmdrehkran) selbst bedienen oder als angestellter Kranführer arbeiten möchten.',
   },
   {
     question: 'Welche Zusatzkosten gibt es beim Kran mieten?',
@@ -77,21 +77,21 @@ const costFAQs = [
       'Tipps zur Kostenoptimierung: Mehrere Angebote vergleichen (nutzen Sie unsere kostenlose Sammelanfrage), längere Mietdauer wählen (Monatspreise sind pro Tag günstiger), den passenden Krantyp wählen (nicht zu groß), Einsatz gut planen (Wartezeiten vermeiden) und frühzeitig buchen.',
   },
   {
-    question: 'Kran mieten oder kaufen — was lohnt sich?',
+    question: 'Kran mieten oder kaufen, was lohnt sich?',
     answer:
-      'Für die meisten Bauunternehmen lohnt sich die Miete. Ein neuer Minikran kostet 50.000–150.000€, ein Autokran 200.000–1.000.000€+. Bei weniger als 100 Einsatztagen pro Jahr ist Mieten fast immer günstiger — keine Wartungskosten, keine Lagerhaltung, keine Kapitalbindung.',
+      'Für die meisten Bauunternehmen lohnt sich die Miete. Ein neuer Minikran kostet 50.000–150.000€, ein Autokran 200.000–1.000.000€+. Bei weniger als 100 Einsatztagen pro Jahr ist Mieten fast immer günstiger, keine Wartungskosten, keine Lagerhaltung, keine Kapitalbindung.',
   },
   {
     question: 'Was kostet ein 30-Tonnen-Kran?',
-    answer: 'Ein 30-Tonnen-Autokran kostet ca. 500–800€ pro Tag inklusive Kranführer (gesetzlich vorgeschrieben). Stundenweise Abrechnung: 150–200€/h, Mindestmietdauer 4 Stunden. Bei längeren Einsätzen: Wochenmiete 2.500–4.000€, Monatsmiete 8.000–15.000€. Der 30-Tonner ist der häufigste Krantyp im Hausbau und bei Dachstuhlmontagen — er deckt die meisten Rohbau-Einsätze ab. Anfahrt zur Baustelle wird separat berechnet (ca. 2–4€/km, meist 150–400€ insgesamt).',
+    answer: 'Ein 30-Tonnen-Autokran kostet ca. 500–800€ pro Tag inklusive Kranführer (gesetzlich vorgeschrieben). Stundenweise Abrechnung: 150–200€/h, Mindestmietdauer 4 Stunden. Bei längeren Einsätzen: Wochenmiete 2.500–4.000€, Monatsmiete 8.000–15.000€. Der 30-Tonner ist der häufigste Krantyp im Hausbau und bei Dachstuhlmontagen, er deckt die meisten Rohbau-Einsätze ab. Anfahrt zur Baustelle wird separat berechnet (ca. 2–4€/km, meist 150–400€ insgesamt).',
   },
   {
     question: 'Was kostet ein 80-Tonnen-Kran?',
-    answer: 'Ein 80-Tonnen-Mobilkran kostet ca. 1.000–2.000€ pro Tag inklusive Kranführer. Stundenpreise liegen bei 250–500€/h (Mindestmietdauer 4 Stunden). Wochenmiete: 5.000–10.000€, Monatsmiete: 15.000–25.000€. Der 80-Tonner kommt bei Industriemontagen, Brückenteilen und schweren Stahlbauarbeiten zum Einsatz. Ab dieser Tragklasse fällt häufig Schwertransport zur Baustelle an — je nach Entfernung 300–3.000€ extra.',
+    answer: 'Ein 80-Tonnen-Mobilkran kostet ca. 1.000–2.000€ pro Tag inklusive Kranführer. Stundenpreise liegen bei 250–500€/h (Mindestmietdauer 4 Stunden). Wochenmiete: 5.000–10.000€, Monatsmiete: 15.000–25.000€. Der 80-Tonner kommt bei Industriemontagen, Brückenteilen und schweren Stahlbauarbeiten zum Einsatz. Ab dieser Tragklasse fällt häufig Schwertransport zur Baustelle an, je nach Entfernung 300–3.000€ extra.',
   },
   {
     question: 'Was kostet ein PKW-Anhänger mit Kran (Anhängerkran)?',
-    answer: 'Ein Anhängerkran (PKW-Anhänger mit Kran) kostet ab 150€ pro Tag. Wochenmiete ab 700€. Tragkraft bis 1.500 kg. Kann mit normaler PKW-Anhängerkupplung transportiert werden — kein Führerschein für den Kran nötig, nur Einweisung.',
+    answer: 'Ein Anhängerkran (PKW-Anhänger mit Kran) kostet ab 150€ pro Tag. Wochenmiete ab 700€. Tragkraft bis 1.500 kg. Kann mit normaler PKW-Anhängerkupplung transportiert werden, kein Führerschein für den Kran nötig, nur Einweisung.',
   },
   {
     question: 'Was kostet es, einen Kran zu mieten?',
@@ -99,7 +99,7 @@ const costFAQs = [
   },
   {
     question: 'Was kostet ein Kran am Tag?',
-    answer: `Ein Kran kostet am Tag zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane zum Ausleihen: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Mobilkran ab 600€/Tag. Baukran (Turmdrehkran) wird üblicherweise im Monatstarif gemietet — ab 8.000€/Monat inkl. Montage. Alle Tagespreise sind Richtwerte ohne ${TAX_LABEL}`,
+    answer: `Ein Kran kostet am Tag zwischen 150€ (Anhängerkran) und 5.000€ (Schwerlast-Raupenkran). Die gängigsten Krane zum Ausleihen: Minikran ab 250€/Tag, Autokran ab 500€/Tag, Mobilkran ab 600€/Tag. Baukran (Turmdrehkran) wird üblicherweise im Monatstarif gemietet, ab 8.000€/Monat inkl. Montage. Alle Tagespreise sind Richtwerte ohne ${TAX_LABEL}`,
   },
   {
     question: 'Wie viel kostet ein Kran?',
@@ -107,15 +107,15 @@ const costFAQs = [
   },
   {
     question: 'Wie teuer ist ein Kran im Monat?',
-    answer: 'Wie teuer ein Kran im Monat ist, hängt vom Krantyp ab: Anhängerkran ab 2.000€/Monat, Minikran ab 3.500€/Monat, Dachdeckerkran ab 3.000€/Monat, Autokran ab 8.000€/Monat, Baukran ab 4.000€/Monat (zzgl. Montage), Mobilkran ab 10.000€/Monat, Raupenkran ab 15.000€/Monat. Monatsmieten sind pro Tag rund 30–40% günstiger als Einzeltage — lohnt sich ab 10 Einsatztagen.',
+    answer: 'Wie teuer ein Kran im Monat ist, hängt vom Krantyp ab: Anhängerkran ab 2.000€/Monat, Minikran ab 3.500€/Monat, Dachdeckerkran ab 3.000€/Monat, Autokran ab 8.000€/Monat, Baukran ab 4.000€/Monat (zzgl. Montage), Mobilkran ab 10.000€/Monat, Raupenkran ab 15.000€/Monat. Monatsmieten sind pro Tag rund 30–40% günstiger als Einzeltage, lohnt sich ab 10 Einsatztagen.',
   },
   {
     question: 'Was kostet es, einen Kran zu mieten oder zu leihen?',
-    answer: 'Einen Kran zu mieten oder zu leihen kostet je nach Typ zwischen 150€ und 5.000€ pro Tag (netto). Der Mietkran-Preis enthält bei Autokranen, Mobilkranen und Raupenkranen den Kranführer. Bei Minikranen, Dachdeckerkranen und Anhängerkranen können Sie den Kran nach Einweisung selbst bedienen — einen Bediener buchen Sie separat (ca. 40–60€/h). Synonyme: Kran ausleihen, Kranverleih, Kranvermietung, Kranmiete — alle meinen dasselbe.',
+    answer: 'Einen Kran zu mieten oder zu leihen kostet je nach Typ zwischen 150€ und 5.000€ pro Tag (netto). Der Mietkran-Preis enthält bei Autokranen, Mobilkranen und Raupenkranen den Kranführer. Bei Minikranen, Dachdeckerkranen und Anhängerkranen können Sie den Kran nach Einweisung selbst bedienen, einen Bediener buchen Sie separat (ca. 40–60€/h). Synonyme: Kran ausleihen, Kranverleih, Kranvermietung, Kranmiete, alle meinen dasselbe.',
   },
   {
-    question: 'Ich brauche einen Kran — welcher Krantyp ist der richtige für mein Projekt?',
-    answer: 'Welchen Kran Sie brauchen, hängt von Tragkraft, Hubhöhe und Zufahrt ab. Kurze Entscheidungshilfe: (1) Arbeiten in Innenräumen oder enge Zufahrt? → Minikran (ab 250€/Tag). (2) Dacharbeiten, Ziegel, Dachstuhl? → Dachdeckerkran (ab 200€/Tag). (3) Mittelschwere Montagen im Freien? → Autokran 30–80t (ab 500€/Tag). (4) Schwerlasten 100t+? → Mobilkran oder Raupenkran. (5) Langzeit-Baustelle (3+ Monate)? → Baukran (Turmdrehkran). Nutzen Sie unseren Kostenrechner — in 2 Minuten erhalten Sie eine Empfehlung und Preisschätzung.',
+    question: 'Ich brauche einen Kran, welcher Krantyp ist der richtige für mein Projekt?',
+    answer: 'Welchen Kran Sie brauchen, hängt von Tragkraft, Hubhöhe und Zufahrt ab. Kurze Entscheidungshilfe: (1) Arbeiten in Innenräumen oder enge Zufahrt?  Minikran (ab 250€/Tag). (2) Dacharbeiten, Ziegel, Dachstuhl?  Dachdeckerkran (ab 200€/Tag). (3) Mittelschwere Montagen im Freien?  Autokran 30–80t (ab 500€/Tag). (4) Schwerlasten 100t+?  Mobilkran oder Raupenkran. (5) Langzeit-Baustelle (3+ Monate)?  Baukran (Turmdrehkran). Nutzen Sie unseren Kostenrechner, in 2 Minuten erhalten Sie eine Empfehlung und Preisschätzung.',
   },
 ]
 
@@ -136,7 +136,7 @@ export default async function KranMietenPreisePage() {
         Was kostet ein Kran? Preise &amp; Kosten 2026
       </h1>
 
-      {/* Hero CTA — primary conversion path. Anchors to #angebot-anfragen
+      {/* Hero CTA, primary conversion path. Anchors to #angebot-anfragen
           (direct Sammelanfrage, skips the 4-step calculator) so visitors
           with clear intent can submit without scrolling 3138px / 2.7
           fold-heights to find the form. Visual audit 2026-05-15. */}
@@ -144,18 +144,18 @@ export default async function KranMietenPreisePage() {
         href="#angebot-anfragen"
         className="mb-6 inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-blue-700 active:bg-blue-800 sm:w-auto"
       >
-        Kostenlos Angebot anfragen →
+        Kostenlos Angebot anfragen 
       </a>
 
       <p className="text-[15px] text-gray-500 mb-4 max-w-3xl">
         Komplette Mietkran-Preisliste für alle 8 Krantypen in {COUNTRY_LABEL}: Tagespreise, Wochenpreise und
-        Monatspreise im Überblick — von Minikran über Autokran (Kranwagen) bis Schwerlastkran.
+        Monatspreise im Überblick, von Minikran über Autokran (Kranwagen) bis Schwerlastkran.
         Ob Sie einen Kran mieten oder leihen möchten: hier finden Sie alle Kranmiete Kosten auf einen Blick.
         Alle Preise sind unverbindliche Richtwerte (netto, zzgl. {TAX_LABEL}) basierend auf Marktrecherche Q1 2026.
       </p>
       <p className="text-[11px] text-gray-300 mb-8">Zuletzt aktualisiert: 20. April 2026 · Marktrecherche Q2/2026 über {anbieterCount}+ Anbieter</p>
 
-      {/* TOC — collapsible on mobile (closed by default), always-visible on
+      {/* TOC, collapsible on mobile (closed by default), always-visible on
           md+. Audit 2026-05-15 showed the static TOC ate ~350px of mobile
           fold above the wizard CTA. */}
       <CollapsibleToc>
@@ -169,7 +169,7 @@ export default async function KranMietenPreisePage() {
           <li><a href="#minikran-kosten" className="text-[13px] text-blue-600 hover:underline">Minikran mieten Preise</a></li>
           <li><a href="#preise-detail" className="text-[13px] text-blue-600 hover:underline">Preise nach Krantyp</a></li>
           <li><a href="#tragkraft" className="text-[13px] text-blue-600 hover:underline">Kosten nach Tragkraft (30t, 50t, 80t, 100t+)</a></li>
-          <li><a href="#kranfuehrer" className="text-[13px] text-blue-600 hover:underline">Kran mit Fahrer — was kostet ein Kranführer?</a></li>
+          <li><a href="#kranfuehrer" className="text-[13px] text-blue-600 hover:underline">Kran mit Fahrer, was kostet ein Kranführer?</a></li>
           <li><a href="#kostenbeispiele" className="text-[13px] text-blue-600 hover:underline">Kostenbeispiele aus der Praxis</a></li>
           <li><a href="#preisfaktoren" className="text-[13px] text-blue-600 hover:underline">Was beeinflusst die Kranmiete Kosten?</a></li>
           <li><a href="#regionalpreise" className="text-[13px] text-blue-600 hover:underline">Preise nach Stadt / Region</a></li>
@@ -205,20 +205,20 @@ export default async function KranMietenPreisePage() {
         </div>
       </section>
 
-      {/* Cost calculator — interactive estimate for the visitor's specific project.
+      {/* Cost calculator, interactive estimate for the visitor's specific project.
           Hoisted above the static price table on 2026-05-12 as H3-test re-order:
           baseline measurement (14d ending 2026-05-12) showed 25/84 GSC clicks
           started step 1 (~30%) while a complete Preistabelle sat first. Hypothesis:
           the table answered the price intent before the calculator could capture
           it. Measure window closes 2026-05-27; remeasure same funnel
-          (GSC clicks → calculator_step_completed step=1 unique sessions →
+          (GSC clicks  calculator_step_completed step=1 unique sessions 
           calculator_lead_submit_success). Confirm if engagement ≥50%. */}
       <section id="kostenrechner" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
           In 60 Sekunden zum richtigen Kran für Ihr Projekt
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
-          4 Fragen — basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
+          4 Fragen, basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
         </p>
         <CostCalculator page="/kran-mieten-preise" firmCount={anbieterCount} />
       </section>
@@ -226,12 +226,12 @@ export default async function KranMietenPreisePage() {
       {/* Full price table */}
       <section id="preistabelle" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Kran mieten Preisliste — alle Krantypen 2026
+          Kran mieten Preisliste, alle Krantypen 2026
         </h2>
         <PriceTable showAll />
       </section>
 
-      {/* Backup path — Sammelanfrage ohne Kalkulator. Primary conversion happens
+      {/* Backup path. Sammelanfrage ohne Kalkulator. Primary conversion happens
           inside <CostCalculator /> above (auto-selects nearest firms); this
           section catches visitors who already know what they need and want to
           skip the 4-step calculator. */}
@@ -241,7 +241,7 @@ export default async function KranMietenPreisePage() {
             Sie wissen schon, was Sie brauchen? Sammelanfrage ohne Kalkulator
           </h2>
           <p className="text-[14px] text-gray-700 leading-relaxed">
-            Kein Kalkulator nötig — wenn Sie den passenden Krantyp bereits kennen,
+            Kein Kalkulator nötig, wenn Sie den passenden Krantyp bereits kennen,
             stellen Sie direkt eine <strong>kostenlose Sammelanfrage</strong>. Ihre Anfrage geht
             an passende Anbieter in Ihrer Region. Kostenlos, unverbindlich.
           </p>
@@ -249,7 +249,7 @@ export default async function KranMietenPreisePage() {
         <InlineSammelanfrageForm />
       </section>
 
-      {/* Autokran prices — day + hourly */}
+      {/* Autokran prices, day + hourly */}
       <section id="autokran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
           Was kostet ein Autokran pro Tag &amp; pro Stunde?
@@ -281,13 +281,13 @@ export default async function KranMietenPreisePage() {
         </p>
       </section>
 
-      {/* Dachdeckerkran costs — targets dachdeckerkran mieten kosten (pos 5.9!), dachdecker kran mieten */}
+      {/* Dachdeckerkran costs, targets dachdeckerkran mieten kosten (pos 5.9!), dachdecker kran mieten */}
       <section id="dachdeckerkran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Dachdeckerkran mieten Kosten — Preisliste &amp; Preise 2026
+          Dachdeckerkran mieten Kosten. Preisliste &amp; Preise 2026
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
-          Ein Dachdeckerkran ist die günstigste und schnellste Lösung für Dacharbeiten — Materialien
+          Ein Dachdeckerkran ist die günstigste und schnellste Lösung für Dacharbeiten. Materialien
           werden direkt aufs Dach gehoben, ohne aufwendiges Gerüst. Die Miete erfolgt in der Regel
           ohne Bediener (Selbstbedienung nach Einweisung).
         </p>
@@ -311,19 +311,19 @@ export default async function KranMietenPreisePage() {
         <div className="mt-4 text-[13px] text-gray-500 space-y-1">
           <p><strong className="text-gray-700">Typische Einsätze:</strong> Dachsanierung, Dachstuhlarbeiten, Solaranlagen-Montage, Schornsteinarbeiten</p>
           <p><strong className="text-gray-700">Zusatzkosten:</strong> Transport/Anlieferung 150–300€, Einweisung meist inklusive</p>
-          <p><strong className="text-gray-700">Aufbauart:</strong> LKW-Aufbau oder Anhänger — passt in enge Zufahrten</p>
+          <p><strong className="text-gray-700">Aufbauart:</strong> LKW-Aufbau oder Anhänger, passt in enge Zufahrten</p>
         </div>
         <div className="mt-4">
           <Link href="/dachdeckerkran-mieten" className="text-[13px] text-blue-600 hover:underline">
-            Alle Dachdeckerkran-Anbieter vergleichen &rarr;
+            Alle Dachdeckerkran-Anbieter vergleichen 
           </Link>
         </div>
       </section>
 
-      {/* Baukran costs — targets baukran mieten preisliste, baukran mieten kosten, mietpreis baukran, baukran kosten pro tag */}
+      {/* Baukran costs, targets baukran mieten preisliste, baukran mieten kosten, mietpreis baukran, baukran kosten pro tag */}
       <section id="baukran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Baukran mieten Preisliste 2026 — Kosten pro Tag, Woche &amp; Monat
+          Baukran mieten Preisliste 2026. Kosten pro Tag, Woche &amp; Monat
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Ein Baukran (Turmdrehkran) wird bei Großbaustellen für Wochen oder Monate aufgestellt.
@@ -350,19 +350,19 @@ export default async function KranMietenPreisePage() {
         <div className="mt-4 text-[13px] text-gray-500 space-y-1">
           <p><strong className="text-gray-700">Zusatzkosten:</strong> Montage/Demontage 3.000–8.000€, Fundament 1.000–3.000€, Transport 500–2.000€</p>
           <p><strong className="text-gray-700">Typische Einsätze:</strong> Hochbau, Wohnungsbau, Gewerbebauten, Brückenbau</p>
-          <p><strong className="text-gray-700">Mietdauer:</strong> Meist mehrere Monate — längere Laufzeit = niedrigerer Monatspreis</p>
+          <p><strong className="text-gray-700">Mietdauer:</strong> Meist mehrere Monate, längere Laufzeit = niedrigerer Monatspreis</p>
         </div>
         <div className="mt-4">
           <Link href="/baukran-mieten" className="text-[13px] text-blue-600 hover:underline">
-            Alle Baukran-Anbieter vergleichen &rarr;
+            Alle Baukran-Anbieter vergleichen 
           </Link>
         </div>
       </section>
 
-      {/* Mobilkran costs — targets mobilkran mieten preisliste, mobilkran preisliste, mobilkran mieten preise */}
+      {/* Mobilkran costs, targets mobilkran mieten preisliste, mobilkran preisliste, mobilkran mieten preise */}
       <section id="mobilkran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Mobilkran mieten Preisliste 2026 — Kosten, Preise &amp; Stundensätze
+          Mobilkran mieten Preisliste 2026. Kosten, Preise &amp; Stundensätze
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Ein Mobilkran (auch Schwerlastkran oder Kranwagen) ist schnell einsatzbereit und bietet
@@ -387,25 +387,25 @@ export default async function KranMietenPreisePage() {
         </div>
         <div className="mt-4 text-[13px] text-gray-500 space-y-1">
           <p><strong className="text-gray-700">Typische Einsätze:</strong> Industriemontage, Stahlbau, Windkraftanlagen, Brückenarbeiten</p>
-          <p><strong className="text-gray-700">Vorteil:</strong> Keine Montage nötig — fährt auf die Baustelle und ist sofort einsatzbereit</p>
+          <p><strong className="text-gray-700">Vorteil:</strong> Keine Montage nötig, fährt auf die Baustelle und ist sofort einsatzbereit</p>
           <p><strong className="text-gray-700">Synonyme:</strong> Schwerlastkran, Kranwagen, Teleskopkran</p>
         </div>
         <div className="mt-4">
           <Link href="/mobilkran-mieten" className="text-[13px] text-blue-600 hover:underline">
-            Alle Mobilkran-Anbieter vergleichen &rarr;
+            Alle Mobilkran-Anbieter vergleichen 
           </Link>
         </div>
       </section>
 
-      {/* Minikran costs — targets minikran mieten preise (pos 20.78), minikran mieten kosten (pos 14.9), minikran mieten preisliste (pos 11) */}
+      {/* Minikran costs, targets minikran mieten preise (pos 20.78), minikran mieten kosten (pos 14.9), minikran mieten preisliste (pos 11) */}
       <section id="minikran-kosten" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Minikran mieten Preise — Kosten &amp; Preisliste 2026
+          Minikran mieten Preise. Kosten &amp; Preisliste 2026
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Ein Minikran (auch Miniraupenkran oder Spinnenkran) ist die ideale Lösung für beengte
           Einsatzorte: Innenräume, Hinterhöfe, Dachterrassen und Industriehallen. Kompakt, leicht
-          und durch Türen transportierbar. Die Bedienung erfolgt per Fernsteuerung — <strong className="text-gray-900">kein
+          und durch Türen transportierbar. Die Bedienung erfolgt per Fernsteuerung, <strong className="text-gray-900">kein
           Kranführerschein nötig</strong>, eine Einweisung durch den Vermieter reicht.
         </p>
         <div className="grid gap-3 sm:grid-cols-3 text-center">
@@ -433,19 +433,19 @@ export default async function KranMietenPreisePage() {
         </div>
         <div className="mt-4">
           <Link href="/minikran-mieten" className="text-[13px] text-blue-600 hover:underline">
-            Alle Minikran-Anbieter vergleichen &rarr;
+            Alle Minikran-Anbieter vergleichen 
           </Link>
         </div>
       </section>
 
-      {/* Krankosten nach Tragkraft — targets "30 tonnen kran kosten" (pos 9), "80 tonnen kran kosten" (pos 38), "120 t kran kosten" */}
+      {/* Krankosten nach Tragkraft, targets "30 tonnen kran kosten" (pos 9), "80 tonnen kran kosten" (pos 38), "120 t kran kosten" */}
       <section id="tragkraft" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
           Was kostet ein 30-Tonnen-Kran? Preise nach Tragkraft 2026
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Die Kranmiete hängt vor allem von der benötigten Tragkraft ab. Hier finden Sie Tages-, Wochen-
-          und Monatspreise für die gängigsten Tragklassen — von 30 Tonnen für den Hausbau bis 500+ Tonnen
+          und Monatspreise für die gängigsten Tragklassen, von 30 Tonnen für den Hausbau bis 500+ Tonnen
           für Windkraft und Industrie. Alle Preise inklusive Kranführer (bei Auto- und Mobilkran gesetzlich vorgeschrieben).
         </p>
         <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -535,15 +535,15 @@ export default async function KranMietenPreisePage() {
         </p>
       </section>
 
-      {/* Kranführer costs — targets "kran mieten mit fahrer" (pos 29), "was kostet ein kranführer" */}
+      {/* Kranführer costs, targets "kran mieten mit fahrer" (pos 29), "was kostet ein kranführer" */}
       <section id="kranfuehrer" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
-          Kran mit Fahrer mieten — was kostet ein Kranführer?
+          Kran mit Fahrer mieten, was kostet ein Kranführer?
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Ein <strong className="text-gray-900">Kranführer kostet 50–80€ pro Stunde</strong> oder
           {' '}<strong className="text-gray-900">400–650€ pro Tag</strong> (8 Stunden). Bei manchen
-          Krantypen ist der Bediener gesetzlich vorgeschrieben und im Mietpreis enthalten — bei anderen
+          Krantypen ist der Bediener gesetzlich vorgeschrieben und im Mietpreis enthalten, bei anderen
           können Sie den Kran nach einer kurzen Einweisung selbst bedienen oder den Kranführer separat
           dazubuchen.
         </p>
@@ -583,38 +583,38 @@ export default async function KranMietenPreisePage() {
             <tbody className="text-gray-600">
               <tr className="border-b bg-green-50/40">
                 <td className="py-2.5 px-4 font-medium"><Link href="/autokran-mieten" className="text-blue-600 hover:underline">Autokran</Link></td>
-                <td className="py-2.5 px-4 text-green-700 font-medium">✓ Immer inklusive</td>
-                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52 — nur zertifizierte Kranführer</td>
+                <td className="py-2.5 px-4 text-green-700 font-medium">Immer inklusive</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52, nur zertifizierte Kranführer</td>
               </tr>
               <tr className="border-b bg-green-50/40">
                 <td className="py-2.5 px-4 font-medium"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link></td>
-                <td className="py-2.5 px-4 text-green-700 font-medium">✓ Immer inklusive</td>
-                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52 — gesetzlich vorgeschrieben</td>
+                <td className="py-2.5 px-4 text-green-700 font-medium">Immer inklusive</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52, gesetzlich vorgeschrieben</td>
               </tr>
               <tr className="border-b bg-green-50/40">
                 <td className="py-2.5 px-4 font-medium"><Link href="/raupenkran-mieten" className="text-blue-600 hover:underline">Raupenkran</Link></td>
-                <td className="py-2.5 px-4 text-green-700 font-medium">✓ Immer inklusive</td>
-                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52 — nur zertifizierte Kranführer</td>
+                <td className="py-2.5 px-4 text-green-700 font-medium">Immer inklusive</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV Vorschrift 52, nur zertifizierte Kranführer</td>
               </tr>
               <tr className="border-b bg-amber-50/40">
                 <td className="py-2.5 px-4 font-medium"><Link href="/baukran-mieten" className="text-blue-600 hover:underline">Baukran (Turmdrehkran)</Link></td>
                 <td className="py-2.5 px-4 text-amber-700 font-medium">↻ Separat buchbar</td>
-                <td className="py-2.5 px-4 text-gray-500">Turmdrehkranführer-Schein nötig — 50–70€/h</td>
+                <td className="py-2.5 px-4 text-gray-500">Turmdrehkranführer-Schein nötig, 50–70€/h</td>
               </tr>
               <tr className="border-b">
                 <td className="py-2.5 px-4 font-medium"><Link href="/minikran-mieten" className="text-blue-600 hover:underline">Minikran</Link></td>
                 <td className="py-2.5 px-4 text-gray-700">– Nicht nötig (Einweisung)</td>
-                <td className="py-2.5 px-4 text-gray-500">DGUV V52 — Einweisung durch Vermieter reicht</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV V52. Einweisung durch Vermieter reicht</td>
               </tr>
               <tr className="border-b">
                 <td className="py-2.5 px-4 font-medium"><Link href="/dachdeckerkran-mieten" className="text-blue-600 hover:underline">Dachdeckerkran</Link></td>
                 <td className="py-2.5 px-4 text-gray-700">– Nicht nötig (Einweisung)</td>
-                <td className="py-2.5 px-4 text-gray-500">DGUV V52 — Funkfernsteuerung vom Boden</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV V52. Funkfernsteuerung vom Boden</td>
               </tr>
               <tr className="border-b">
                 <td className="py-2.5 px-4 font-medium"><Link href="/anhaengerkran-mieten" className="text-blue-600 hover:underline">Anhängerkran</Link></td>
                 <td className="py-2.5 px-4 text-gray-700">– Nicht nötig (Einweisung)</td>
-                <td className="py-2.5 px-4 text-gray-500">DGUV V52 — Einweisung reicht, ab 18 Jahren</td>
+                <td className="py-2.5 px-4 text-gray-500">DGUV V52. Einweisung reicht, ab 18 Jahren</td>
               </tr>
               <tr>
                 <td className="py-2.5 px-4 font-medium"><Link href="/ladekran-mieten" className="text-blue-600 hover:underline">Ladekran</Link></td>
@@ -628,16 +628,16 @@ export default async function KranMietenPreisePage() {
         {/* Kontext boxes: Inkludiert vs separat vs ohne */}
         <div className="grid gap-3 sm:grid-cols-3 mt-5">
           <div className="border border-green-200 bg-green-50 rounded-lg p-4">
-            <p className="font-medium text-gray-900 mb-1 text-[13px]">✓ Kranführer immer inklusive</p>
+            <p className="font-medium text-gray-900 mb-1 text-[13px]">Kranführer immer inklusive</p>
             <p className="text-[12px] text-gray-600">
               Autokran, Mobilkran und Raupenkran dürfen nur mit zertifiziertem Kranführer betrieben
-              werden (DGUV Vorschrift 52). Der Bediener ist im Tagespreis enthalten — Sie zahlen nichts extra.
+              werden (DGUV Vorschrift 52). Der Bediener ist im Tagespreis enthalten. Sie zahlen nichts extra.
             </p>
           </div>
           <div className="border border-amber-200 bg-amber-50 rounded-lg p-4">
             <p className="font-medium text-gray-900 mb-1 text-[13px]">↻ Separat dazubuchen</p>
             <p className="text-[12px] text-gray-600">
-              Bei Baukranen brauchen Sie einen Turmdrehkranführer — entweder eigenes Personal oder
+              Bei Baukranen brauchen Sie einen Turmdrehkranführer, entweder eigenes Personal oder
               separat gebucht (50–70€/h). Bei Ladekranen oft als Komplettpaket mit LKW-Fahrer (500–800€/Tag).
             </p>
           </div>
@@ -654,7 +654,7 @@ export default async function KranMietenPreisePage() {
           Bei allen Krantypen ohne inklusiven Bediener können Sie einen Kranführer separat dazubuchen,
           wenn Sie den Kran nicht selbst bedienen möchten. Mehr Info:{' '}
           <Link href="/ratgeber/kran-mieten-ohne-fuehrerschein" className="text-blue-600 hover:underline">
-            Kran mieten ohne Führerschein &rarr;
+            Kran mieten ohne Führerschein 
           </Link>
         </p>
       </section>
@@ -671,7 +671,7 @@ export default async function KranMietenPreisePage() {
             <div key={p.craneTypeSlug} className="border border-gray-200 rounded-lg p-4">
               <Link href={`/${ct.slug}`} className="hover:underline">
                 <h3 className="font-medium text-[15px] text-gray-900 mb-1">
-                  {ct.name} mieten — ab {p.dayFrom.toLocaleString('de-DE')}€/Tag
+                  {ct.name} mieten, ab {p.dayFrom.toLocaleString('de-DE')}€/Tag
                 </h3>
               </Link>
               <p className="text-[13px] text-gray-500 mb-2">{ct.desc}</p>
@@ -697,21 +697,20 @@ export default async function KranMietenPreisePage() {
         })}
       </section>
 
-      {/* Kostenbeispiele aus der Praxis — unique content, targets long-tail queries */}
+      {/* Kostenbeispiele aus der Praxis, unique content, targets long-tail queries */}
       <section id="kostenbeispiele" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
-          Kostenbeispiele aus der Praxis — was kostet ein Kran wirklich?
+          Kostenbeispiele aus der Praxis, was kostet ein Kran wirklich?
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
-          Abstrakte Preisspannen helfen nur bedingt — deshalb zeigen wir Ihnen vier
+          Abstrakte Preisspannen helfen nur bedingt, deshalb zeigen wir Ihnen vier
           typische Einsatzszenarien mit vollständiger Kostenaufstellung. Alle Preise sind Richtwerte
           (netto, zzgl. {TAX_LABEL}) und können je nach Region und Anbieter variieren.
         </p>
         <div className="grid gap-4 md:grid-cols-2">
           {/* Beispiel 1: Dachsanierung */}
           <div className="border border-gray-200 rounded-lg p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl">🏠</span>
+            <div className="mb-3">
               <h3 className="font-medium text-[15px] text-gray-900">Dachsanierung Einfamilienhaus</h3>
             </div>
             <p className="text-[13px] text-gray-500 mb-3">
@@ -735,13 +734,12 @@ export default async function KranMietenPreisePage() {
                 <span className="font-semibold text-green-700">ca. 1.090€</span>
               </div>
             </div>
-            <p className="text-[11px] text-gray-400 mt-2">Kein Kranführer nötig — Selbstbedienung nach Einweisung.</p>
+            <p className="text-[11px] text-gray-400 mt-2">Kein Kranführer nötig. Selbstbedienung nach Einweisung.</p>
           </div>
 
           {/* Beispiel 2: Hausbau Dachstuhl */}
           <div className="border border-gray-200 rounded-lg p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl">🏗️</span>
+            <div className="mb-3">
               <h3 className="font-medium text-[15px] text-gray-900">Dachstuhlmontage Neubau</h3>
             </div>
             <p className="text-[13px] text-gray-500 mb-3">
@@ -770,8 +768,7 @@ export default async function KranMietenPreisePage() {
 
           {/* Beispiel 3: Klimaanlage Innenraum */}
           <div className="border border-gray-200 rounded-lg p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl">❄️</span>
+            <div className="mb-3">
               <h3 className="font-medium text-[15px] text-gray-900">Klimaanlage auf Flachdach heben</h3>
             </div>
             <p className="text-[13px] text-gray-500 mb-3">
@@ -795,13 +792,12 @@ export default async function KranMietenPreisePage() {
                 <span className="font-semibold text-green-700">ca. 550€</span>
               </div>
             </div>
-            <p className="text-[11px] text-gray-400 mt-2">Minikran passt durch enge Zufahrten — ideal für Hinterhöfe und Innenhöfe.</p>
+            <p className="text-[11px] text-gray-400 mt-2">Minikran passt durch enge Zufahrten, ideal für Hinterhöfe und Innenhöfe.</p>
           </div>
 
           {/* Beispiel 4: Industriemontage Schwerlast */}
           <div className="border border-gray-200 rounded-lg p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl">🏭</span>
+            <div className="mb-3">
               <h3 className="font-medium text-[15px] text-gray-900">Maschinenmontage Industriehalle</h3>
             </div>
             <p className="text-[13px] text-gray-500 mb-3">
@@ -829,19 +825,19 @@ export default async function KranMietenPreisePage() {
                 <span className="font-semibold text-green-700">ca. 2.350€</span>
               </div>
             </div>
-            <p className="text-[11px] text-gray-400 mt-2">Mobilkran ist sofort einsatzbereit — keine Montage, keine Genehmigung auf Privatgrund.</p>
+            <p className="text-[11px] text-gray-400 mt-2">Mobilkran ist sofort einsatzbereit, keine Montage, keine Genehmigung auf Privatgrund.</p>
           </div>
         </div>
         <p className="text-[12px] text-gray-400 mt-3">
           Tipp: Fordern Sie über unsere <Link href="/" className="text-blue-600 hover:underline">kostenlose Sammelanfrage</Link> Angebote
-          von mehreren Anbietern an — die Preisunterschiede betragen oft 20–30%.
+          von mehreren Anbietern an, die Preisunterschiede betragen oft 20–30%.
         </p>
       </section>
 
-      {/* Preisfaktoren — targets "mietkran preise" (pos 24.4), "kranmiete preise" (pos 20.64), "kran mieten kosten" (pos 27) */}
+      {/* Preisfaktoren, targets "mietkran preise" (pos 24.4), "kranmiete preise" (pos 20.64), "kran mieten kosten" (pos 27) */}
       <section id="preisfaktoren" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Was beeinflusst die Kranmiete Kosten? — 6 Preisfaktoren
+          Was beeinflusst die Kranmiete Kosten?, 6 Preisfaktoren
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Die Mietkran Preise variieren je nach Projekt und Region erheblich. Diese sechs Faktoren
@@ -852,7 +848,7 @@ export default async function KranMietenPreisePage() {
             <h3 className="font-medium text-[14px] text-gray-900 mb-1">1. Krantyp &amp; Tragkraft</h3>
             <p className="text-[13px] text-gray-500">
               Der größte Kostenfaktor. Ein Minikran (2t) kostet ab 250€/Tag, ein Schwerlastkran (500t+) über 5.000€/Tag.
-              Wählen Sie den kleinsten Kran, der Ihre Anforderung sicher erfüllt — Überdimensionierung kostet unnötig.
+              Wählen Sie den kleinsten Kran, der Ihre Anforderung sicher erfüllt. Überdimensionierung kostet unnötig.
             </p>
           </div>
           <div className="bg-gray-50 rounded-lg p-4">
@@ -872,7 +868,7 @@ export default async function KranMietenPreisePage() {
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-medium text-[14px] text-gray-900 mb-1">4. Saison &amp; Verfügbarkeit</h3>
             <p className="text-[13px] text-gray-500">
-              Frühling bis Herbst ist Hochsaison im Bau — höhere Preise, geringere Verfügbarkeit. Im
+              Frühling bis Herbst ist Hochsaison im Bau, höhere Preise, geringere Verfügbarkeit. Im
               Winter sind Krane oft 10–20% günstiger. Frühzeitig buchen spart bei jeder Saison.
             </p>
           </div>
@@ -880,24 +876,24 @@ export default async function KranMietenPreisePage() {
             <h3 className="font-medium text-[14px] text-gray-900 mb-1">5. Einsatzort-Bedingungen</h3>
             <p className="text-[13px] text-gray-500">
               Enge Zufahrt, weicher Untergrund, Höhenbeschränkungen oder Innenstadtlage erfordern
-              Spezialkrane oder zusätzliche Maßnahmen (Baggermatratzen, Nachtanlieferung) — das kostet extra.
+              Spezialkrane oder zusätzliche Maßnahmen (Baggermatratzen, Nachtanlieferung), das kostet extra.
             </p>
           </div>
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-medium text-[14px] text-gray-900 mb-1">6. Anbietervergleich</h3>
             <p className="text-[13px] text-gray-500">
               Die Preisunterschiede zwischen Anbietern betragen oft 20–30% für denselben Krantyp und Einsatzort.
-              Holen Sie mindestens 3 Angebote ein — unsere{' '}
+              Holen Sie mindestens 3 Angebote ein, unsere{' '}
               <Link href="/" className="text-blue-600 hover:underline">kostenlose Sammelanfrage</Link> macht das in 2 Minuten.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Regional price variation — targets "kran mieten hamburg", "autokran münchen preis", "kranvermietung köln" longtail */}
+      {/* Regional price variation, targets "kran mieten hamburg", "autokran münchen preis", "kranvermietung köln" longtail */}
       <section id="regionalpreise" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
-          Kran mieten Preise nach Stadt — regionale Preisunterschiede 2026
+          Kran mieten Preise nach Stadt, regionale Preisunterschiede 2026
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           Die Kranmiete Kosten unterscheiden sich je nach Region erheblich. Ballungsräume mit
@@ -994,7 +990,7 @@ export default async function KranMietenPreisePage() {
         <p className="text-[11px] text-gray-400 mt-2">
           Richtwerte für einen 30-Tonnen-Autokran (Tagespreis inkl. Kranführer, ohne Anfahrt). Basis: Durchschnitt
           aus Angeboten über {BRAND_NAME}, Q1&nbsp;2026. Reale Preise variieren je nach Anbieter um ±15&nbsp;%
-          — fordern Sie für Ihren Ort mehrere Angebote an, um den günstigsten Anbieter zu finden.
+         , fordern Sie für Ihren Ort mehrere Angebote an, um den günstigsten Anbieter zu finden.
         </p>
       </section>
 
@@ -1027,17 +1023,17 @@ export default async function KranMietenPreisePage() {
         </div>
       </section>
 
-      {/* Synonym section — captures "kran leihen" 920/mo + "kran ausleihen" + "kran vermietung"
+      {/* Synonym section, captures "kran leihen" 920/mo + "kran ausleihen" + "kran vermietung"
           + "kranmiete" + "mietkran" search intent without forking the URL. /kranverleih hub owns
           the firm-list angle for the same synonyms (commit 3a6bec0); this section owns the
           price-comparison angle. Sister ship to that commit. */}
       <section id="kran-leihen-ausleihen" className="mb-10 scroll-mt-20 border border-gray-200 rounded-lg p-5">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Kran mieten, leihen oder ausleihen — was kostet was?
+          Kran mieten, leihen oder ausleihen, was kostet was?
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
           „Kran mieten", „Kran leihen", „Kran ausleihen", „Kran vermieten", „Kranverleih",
-          „Kranvermietung" und „Kranmiete" werden im deutschen Sprachgebrauch synonym verwendet —
+          „Kranvermietung" und „Kranmiete" werden im deutschen Sprachgebrauch synonym verwendet 
           alle bezeichnen die kurzzeitige Anmietung eines Krans, oft inklusive Kranführer.
           Die Preise unterscheiden sich nicht je nach Begriff, sondern je nach Krantyp,
           Mietdauer und Region. Tagesmiete startet bei 150€ (Anhängerkran), Schwerlast-Raupenkran
@@ -1050,13 +1046,13 @@ export default async function KranMietenPreisePage() {
               Kurzfristige Anmietung für Stunden, Tage oder Wochen. Bei Autokran, Mobilkran und
               Raupenkran ist der Kranführer im Mietpreis enthalten (DGUV V52). Bei Minikran,
               Dachdeckerkran und Anhängerkran bedienen Sie selbst nach einer 30–60-minütigen
-              Einweisung — kein Kranführerschein nötig.
+              Einweisung, kein Kranführerschein nötig.
             </p>
           </div>
           <div className="bg-gray-50 rounded-lg p-4">
             <p className="font-medium text-[14px] text-gray-900 mb-1">Kran ausleihen / Kranverleih</p>
             <p className="text-[13px] text-gray-500">
-              Inhaltlich identisch mit „Kran mieten" — regional unterschiedlicher Sprachgebrauch
+              Inhaltlich identisch mit „Kran mieten", regional unterschiedlicher Sprachgebrauch
               (Nord-{COUNTRY_LABEL} bevorzugt „mieten", Süd-{COUNTRY_LABEL} und der Bauhandwerk
               eher „ausleihen"). Der Kranverleih erfolgt über spezialisierte Vermieter, Bauunternehmen
               mit eigenem Fuhrpark oder Maschinenringe.
@@ -1075,7 +1071,7 @@ export default async function KranMietenPreisePage() {
             <p className="font-medium text-[14px] text-gray-900 mb-1">Mietkran / Kran zum Leihen</p>
             <p className="text-[13px] text-gray-500">
               Der „Mietkran" ist die Maschine selbst, der „Kran zum Leihen" beschreibt das Angebot
-              eines Vermieters. Mietkran-Preise sind nicht verhandlungssache je nach Begriff —
+              eines Vermieters. Mietkran-Preise sind nicht verhandlungssache je nach Begriff 
               vergleichen Sie immer mehrere Angebote von verschiedenen Vermietern, der Preisunterschied
               liegt bei gleicher Maschine oft bei ±15–20%.
             </p>
@@ -1083,7 +1079,7 @@ export default async function KranMietenPreisePage() {
         </div>
         <p className="text-[13px] text-gray-500">
           Sie suchen die vollständige Anbieter-Liste? Auf <Link href="/kranverleih" className="text-blue-600 hover:underline">/kranverleih</Link> {' '}
-          finden Sie alle {anbieterCount} Vermieter in {COUNTRY_LABEL} im direkten Vergleich — unabhängig davon,
+          finden Sie alle {anbieterCount} Vermieter in {COUNTRY_LABEL} im direkten Vergleich, unabhängig davon,
           ob Sie einen Kran mieten, leihen oder ausleihen möchten. Für lokale Anbieter im Umkreis siehe
           {' '}<Link href="/kran-mieten-in-der-naehe" className="text-blue-600 hover:underline">Kran mieten in der Nähe</Link>.
         </p>
@@ -1094,7 +1090,7 @@ export default async function KranMietenPreisePage() {
         <p>
           Die Kosten für die Kranmiete hängen von mehreren Faktoren ab: Krantyp, Tragkraft,
           Mietdauer, Region und Verfügbarkeit. <strong className="text-gray-900">Auf {BRAND_NAME}</strong> vergleichen
-          Sie die Preise von über {anbieterCount} Anbietern in ganz {COUNTRY_LABEL} — kostenlos und unverbindlich.
+          Sie die Preise von über {anbieterCount} Anbietern in ganz {COUNTRY_LABEL}, kostenlos und unverbindlich.
           Fordern Sie über unsere <Link href="/" className="text-blue-600 hover:underline">Sammelanfrage</Link> Angebote
           von mehreren Firmen gleichzeitig an und sparen Sie Zeit und Geld.
         </p>
@@ -1105,9 +1101,9 @@ export default async function KranMietenPreisePage() {
         <FAQSection faqs={costFAQs} craneTypeName="Kran" />
       </div>
 
-      {/* Cross-links to pillar pages — keyword-rich anchors for internal link equity */}
+      {/* Cross-links to pillar pages, keyword-rich anchors for internal link equity */}
       <section className="mb-10">
-        <h2 className="text-sm font-semibold text-gray-900 mb-3">Kran mieten nach Typ — Anbieter &amp; Preise vergleichen</h2>
+        <h2 className="text-sm font-semibold text-gray-900 mb-3">Kran mieten nach Typ. Anbieter &amp; Preise vergleichen</h2>
         <div className="flex flex-wrap gap-2">
           {craneTypes.map((ct) => (
             <Link
@@ -1142,7 +1138,7 @@ export default async function KranMietenPreisePage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Article',
-            headline: 'Was kostet ein Kran? Preise & Kosten 2026 — alle Krantypen',
+            headline: 'Was kostet ein Kran? Preise & Kosten 2026, alle Krantypen',
             description:
               `Komplette Mietkran-Preisliste 2026: Tages-, Wochen-, Monats- und Stundenpreise für alle 8 Krantypen in ${COUNTRY_LABEL}. Regionale Preisunterschiede, Tragkraft-Kostentabelle, Kranführer-Preise, Zusatzkosten und Kostenbeispiele aus der Praxis.`,
             datePublished: '2026-03-20',
@@ -1165,7 +1161,7 @@ export default async function KranMietenPreisePage() {
           }),
         }}
       />
-      {/* Service + areaServed — entity-level signal that KranVergleich operates a
+      {/* Service + areaServed, entity-level signal that KranVergleich operates a
           pricing-comparison service across all crane types. Article schema above
           frames the page as editorial content; Service describes the underlying
           aggregator function. areaServed gives Google a strong geographic-scope
@@ -1178,7 +1174,7 @@ export default async function KranMietenPreisePage() {
             '@context': 'https://schema.org',
             '@type': 'Service',
             serviceType: 'Kranvermietung Preisvergleich',
-            name: `Kran mieten Preise — Anbieter-Vergleich in ${COUNTRY_LABEL}`,
+            name: `Kran mieten Preise. Anbieter-Vergleich in ${COUNTRY_LABEL}`,
             description: anbieterCount > 0
               ? `Vergleichen Sie Tages-, Wochen- und Monatspreise für 8 Krantypen von ${anbieterCount} Anbietern in ${COUNTRY_LABEL}. Anhängerkran ab 150€, Autokran ab 500€, Mobilkran ab 600€.`
               : `Tages-, Wochen- und Monatspreise für 8 Krantypen in ${COUNTRY_LABEL}. Anhängerkran ab 150€, Autokran ab 500€, Mobilkran ab 600€.`,

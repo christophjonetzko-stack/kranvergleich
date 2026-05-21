@@ -64,7 +64,7 @@ export async function generateMetadata({
   // and ran to 63-69 chars, getting truncated and killing CTR. Price moved to
   // description; count alone drives the click. Long crane-type + long city
   // combos (Dachdeckerkran in Frankfurt am Main, etc.) drop the count to fit.
-  const titleWithCount = `${craneType.name} mieten ${city.name} — ${companies.length} Anbieter`
+  const titleWithCount = `${craneType.name} mieten ${city.name}: ${companies.length} Anbieter`
   const title = companies.length > 0 && titleWithCount.length <= 41
     ? titleWithCount
     : `${craneType.name} mieten ${city.name}`
@@ -163,7 +163,7 @@ export default async function CraneCityPage({
       <div className="mb-8">
           <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[1.0] tracking-[-0.02em] text-[28px] sm:text-[36px] lg:text-[40px] mb-2">
             {craneType.name} mieten {city.name}
-            {price && <span className="text-blue-600"> — ab {price.dayFrom}€/Tag</span>}
+            {price && <span className="text-blue-600">, ab {price.dayFrom}€/Tag</span>}
             {companies.length > 0 && (
               <span className="text-neutral-500 font-normal"> | {companies.length} Anbieter</span>
             )}
@@ -226,7 +226,7 @@ export default async function CraneCityPage({
             showCraneTypeFilter
             centerLat={city.lat ?? 51.1657}
             centerLng={city.lng ?? 10.4515}
-            referencePrice={price ? `ab ${price.dayFrom}€/Tag — Richtwert` : null}
+            referencePrice={price ? `ab ${price.dayFrom}€/Tag, Richtwert` : null}
             cityContext={city.slug}
             typeContext={craneType.slug}
           />
@@ -258,7 +258,7 @@ export default async function CraneCityPage({
               {synonyms.length > 0 && <> ({synonyms.slice(0, 2).join(', ')})</>}
               {' '}mieten oder leihen in <strong className="text-gray-900">{city.name}</strong> ({city.state})?
               Auf {BRAND_NAME} finden Sie {companies.length > 0 ? `${companies.length} ` : ''}
-              {craneType.name}-Vermieter in {city.name} und Umgebung — mit Preisen, Google-Bewertungen und direkter Kontaktmöglichkeit.
+              {craneType.name}-Vermieter in {city.name} und Umgebung, mit Preisen, Google-Bewertungen und direkter Kontaktmöglichkeit.
               {price && (
                 <> Die {craneType.name}-Kosten in {city.name} liegen bei ca. {price.dayFrom}€–{price.dayTo}€ pro Tag (Richtwerte, netto).
                 {price.includesOperator
@@ -331,7 +331,7 @@ export default async function CraneCityPage({
         <p className="text-[13px] text-gray-500 mb-4">
           Suchen Sie in ganz {COUNTRY_LABEL}?{' '}
           <Link href={`/${craneType.slug}`} className="text-blue-600 hover:underline">
-            {craneType.name} mieten — alle {totalForType} Anbieter im Vergleich
+            {craneType.name} mieten: alle {totalForType} Anbieter im Vergleich
           </Link>
           .
         </p>
@@ -343,7 +343,7 @@ export default async function CraneCityPage({
         <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">
           Kran mieten Preisliste 2026
         </Link>
-        {' '}— Tages-, Wochen- und Monatspreise im Vergleich.
+        {' '}mit Tages-, Wochen- und Monatspreisen im Vergleich.
       </p>
 
       {/* Structured data */}

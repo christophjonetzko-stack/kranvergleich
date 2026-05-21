@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // Use absolute title to bypass the layout's "%s | KranVergleich.de" template
   // — Google only shows ~60 chars of the title, so we bake the brand into the
   // string ourselves and keep the keyword phrase up front.
-  const title = `Kran mieten 2026 — ${count} Anbieter ab 150€/Tag | ${BRAND_NAME}`
+  const title = `Kran mieten 2026: ${count} Anbieter ab 150€/Tag | ${BRAND_NAME}`
   const description = `Kranvermietung in ${COUNTRY_LABEL} vergleichen: ${count} geprüfte Anbieter, 8 Krantypen ab 150€/Tag. Kostenlos 3 Angebote in 2 Minuten.`
   return {
     title: { absolute: title },
@@ -107,8 +107,8 @@ export default async function HomePage() {
             <strong className="font-semibold text-neutral-900">
               {anbieterCount.toLocaleString('de-DE')}+ geprüfte Kranvermieter
             </strong>{' '}
-            in {COUNTRY_LABEL}. Minikran, Autokran, Mobilkran, Raupenkran und weitere Typen — mit
-            transparenten Tagespreisen und kostenlosen, unverbindlichen Angeboten.
+            in {COUNTRY_LABEL}. Minikran, Autokran, Mobilkran, Raupenkran und weitere Typen
+            mit transparenten Tagespreisen und kostenlosen, unverbindlichen Angeboten.
           </p>
 
           {/* SearchBox — LCP, above the fold on all viewports */}
@@ -178,7 +178,6 @@ export default async function HomePage() {
               className="group text-[12px] font-semibold text-neutral-900 inline-flex items-center gap-1.5 border-b-2 border-[#FFD100] pb-0.5 hover:border-neutral-900 transition-colors"
             >
               Kostenrechner öffnen
-              <span className="transition-transform group-hover:translate-x-0.5" aria-hidden>→</span>
             </Link>
           </div>
 
@@ -234,7 +233,7 @@ export default async function HomePage() {
                     </h3>
                     <div className="mt-1.5 flex items-baseline gap-2 text-[11px] font-[var(--font-mono)] tabular-nums">
                       <span className="font-semibold text-neutral-900">
-                        ab {priceFrom?.toLocaleString('de-DE') ?? '—'} €/Tag
+                        ab {priceFrom?.toLocaleString('de-DE') ?? '-'} €/Tag
                       </span>
                       <span className="text-neutral-300" aria-hidden>·</span>
                       <span className="text-neutral-500">
@@ -272,7 +271,7 @@ export default async function HomePage() {
             href="/kranverleih"
             className="inline-flex items-center text-[13px] text-blue-600 hover:text-blue-700 px-2 py-1.5 transition-colors"
           >
-            Alle Städte &rarr;
+            Alle Städte
           </Link>
         </div>
       </section>
@@ -297,7 +296,7 @@ export default async function HomePage() {
           </div>
           <div className="bg-gray-50 rounded-lg p-4">
             <p className="font-medium text-gray-900 mb-1">Mietdauer</p>
-            <p className="text-gray-500">Längere Mietdauer = niedrigerer Tagespreis. Monatsmiete spart bis 40%</p>
+            <p className="text-gray-500">Längere Mietdauer bedeutet niedrigeren Tagespreis. Monatsmiete spart bis 40%</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-4">
             <p className="font-medium text-gray-900 mb-1">Kranführer</p>
@@ -309,8 +308,8 @@ export default async function HomePage() {
           </div>
         </div>
         <p className="text-[12px] text-gray-400 mt-3">
-          Alle Preise netto zzgl. {TAX_LABEL} Richtwerte — verbindliche Angebote erhalten Sie direkt von den Anbietern.{' '}
-          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Ausführliche Preisliste &rarr;</Link>
+          Alle Preise netto zzgl. {TAX_LABEL} Richtwerte, verbindliche Angebote erhalten Sie direkt von den Anbietern.{' '}
+          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Ausführliche Preisliste</Link>
         </p>
       </section>
 
@@ -322,7 +321,7 @@ export default async function HomePage() {
             {[
               {
                 q: 'Was kostet es, einen Kran zu mieten?',
-                a: 'Die Kosten hängen vom Krantyp, der Mietdauer und dem Einsatzort ab. Ein Minikran kostet ab ca.\u00A0250\u00A0€/Tag, ein Autokran ab ca.\u00A0500\u00A0€/Tag und ein Raupenkran ab ca.\u00A0800\u00A0€/Tag (netto). Bei längerer Mietdauer sinkt der Tagespreis — Wochenmiete spart rund 20\u00A0%, Monatsmiete bis zu 40\u00A0%. Dazu kommen ggf. Transport, Kranführer und Montagekosten.',
+                a: 'Die Kosten hängen vom Krantyp, der Mietdauer und dem Einsatzort ab. Ein Minikran kostet ab ca.\u00A0250\u00A0€/Tag, ein Autokran ab ca.\u00A0500\u00A0€/Tag und ein Raupenkran ab ca.\u00A0800\u00A0€/Tag (netto). Bei längerer Mietdauer sinkt der Tagespreis. Wochenmiete spart rund 20\u00A0%, Monatsmiete bis zu 40\u00A0%. Dazu kommen ggf. Transport, Kranführer und Montagekosten.',
               },
               {
                 q: 'Welchen Kran brauche ich für mein Projekt?',
@@ -330,7 +329,7 @@ export default async function HomePage() {
               },
               {
                 q: 'Brauche ich einen Kranführer?',
-                a: 'Bei Autokranen und Mobilkranen ist ein ausgebildeter Kranführer gesetzlich vorgeschrieben — er ist bei diesen Typen in der Regel im Mietpreis enthalten. Minikrane und Dachdeckerkrane dürfen nach einer Einweisung oft selbst bedient werden. Fragen Sie beim Anbieter nach, ob ein Bediener inklusive ist oder separat gebucht werden muss.',
+                a: 'Bei Autokranen und Mobilkranen ist ein ausgebildeter Kranführer gesetzlich vorgeschrieben. Er ist bei diesen Typen in der Regel im Mietpreis enthalten. Minikrane und Dachdeckerkrane dürfen nach einer Einweisung oft selbst bedient werden. Fragen Sie beim Anbieter nach, ob ein Bediener inklusive ist oder separat gebucht werden muss.',
               },
               {
                 q: 'Wie weit im Voraus muss ich einen Kran reservieren?',
@@ -338,7 +337,7 @@ export default async function HomePage() {
               },
               {
                 q: 'Wie finde ich den besten Kranvermieter in meiner Nähe?',
-                a: `Auf ${BRAND_NAME} können Sie über ${anbieterCount} Kranvermieter in ganz ${COUNTRY_LABEL} nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an — so finden Sie den besten Preis für Ihr Projekt.`,
+                a: `Auf ${BRAND_NAME} können Sie über ${anbieterCount} Kranvermieter in ganz ${COUNTRY_LABEL} nach Stadt, Krantyp und Bewertung filtern. Vergleichen Sie Preise, lesen Sie Google-Bewertungen und fordern Sie kostenlos und unverbindlich Angebote bei mehreren Anbietern an. So finden Sie den besten Preis für Ihr Projekt.`,
               },
             ].map((faq, i) => (
               <details key={i} className="group bg-white border border-gray-200 rounded-lg">
@@ -371,7 +370,7 @@ export default async function HomePage() {
                 name: 'Was kostet es, einen Kran zu mieten?',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Die Kosten hängen vom Krantyp, der Mietdauer und dem Einsatzort ab. Ein Minikran kostet ab ca. 250 €/Tag, ein Autokran ab ca. 500 €/Tag und ein Raupenkran ab ca. 800 €/Tag (netto). Bei längerer Mietdauer sinkt der Tagespreis — Wochenmiete spart rund 20 %, Monatsmiete bis zu 40 %. Dazu kommen ggf. Transport, Kranführer und Montagekosten.',
+                  text: 'Die Kosten hängen vom Krantyp, der Mietdauer und dem Einsatzort ab. Ein Minikran kostet ab ca. 250 €/Tag, ein Autokran ab ca. 500 €/Tag und ein Raupenkran ab ca. 800 €/Tag (netto). Bei längerer Mietdauer sinkt der Tagespreis. Wochenmiete spart rund 20 %, Monatsmiete bis zu 40 %. Dazu kommen ggf. Transport, Kranführer und Montagekosten.',
                 },
               },
               {
@@ -387,7 +386,7 @@ export default async function HomePage() {
                 name: 'Brauche ich einen Kranführer?',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Bei Autokranen und Mobilkranen ist ein ausgebildeter Kranführer gesetzlich vorgeschrieben — er ist bei diesen Typen in der Regel im Mietpreis enthalten. Minikrane und Dachdeckerkrane dürfen nach einer Einweisung oft selbst bedient werden.',
+                  text: 'Bei Autokranen und Mobilkranen ist ein ausgebildeter Kranführer gesetzlich vorgeschrieben. Er ist bei diesen Typen in der Regel im Mietpreis enthalten. Minikrane und Dachdeckerkrane dürfen nach einer Einweisung oft selbst bedient werden.',
                 },
               },
               {
@@ -452,7 +451,7 @@ export default async function HomePage() {
             '@context': 'https://schema.org',
             '@type': 'Service',
             '@id': `${BASE_URL}#service`,
-            name: `${BRAND_NAME} — Vergleichsportal für Kranvermietung`,
+            name: `${BRAND_NAME}: Vergleichsportal für Kranvermietung`,
             serviceType: 'Vergleichsportal Kranvermietung',
             description: `Neutraler Vergleich von ${anbieterCount}+ Kranvermietern in ${COUNTRY_LABEL}. Kostenlos und unverbindlich Angebote für Minikran, Autokran, Mobilkran, Baukran, Raupenkran, Dachdeckerkran, Anhängerkran und Ladekran einholen.`,
             provider: { '@id': `${BASE_URL}#organization` },
