@@ -27,6 +27,7 @@ const DATE_HOME = '2026-04-19'          // tile layout + icon redesign
 const DATE_KRANVERLEIH = '2026-04-18'   // seoCities expansion
 const DATE_KOSTENRECHNER = '2026-03-12'
 const DATE_PRICES = '2026-05-15' // +hero CTA above fold + TOC collapsible on mobile
+const DATE_NAEHE = '2026-05-21' // initial publish — geo-intent landing for "kran mieten in der nähe"
 const DATE_RATGEBER = '2026-03-01'
 const DATE_LEGAL = '2026-01-01'
 
@@ -66,6 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: baseUrl, lastModified: toDate(DATE_HOME), changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/kranverleih`, lastModified: toDate(DATE_KRANVERLEIH), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/kran-mieten-preise`, lastModified: toDate(DATE_PRICES), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/kran-mieten-in-der-naehe`, lastModified: toDate(DATE_NAEHE), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/kostenrechner`, lastModified: toDate(DATE_KOSTENRECHNER), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/impressum`, lastModified: toDate(DATE_LEGAL), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${baseUrl}/datenschutz`, lastModified: toDate(DATE_LEGAL), changeFrequency: 'yearly', priority: 0.3 },
