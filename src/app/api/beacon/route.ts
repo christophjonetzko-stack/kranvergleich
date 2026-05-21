@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { createHash } from 'node:crypto'
 import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY } from '@/lib/country'
 import { classifyUserAgent } from '@/lib/device'
@@ -8,6 +7,13 @@ import { classifyUserAgent } from '@/lib/device'
 // for the DSGVO rationale. Same cookie-free, daily-salt, hashed-IP design as
 // /api/track (which is firm-specific). This endpoint handles page-scope events
 // that do NOT belong to a single firm (calculator funnel, scroll depth, etc.).
+//
+// Runs on Edge runtime: this endpoint fires on every scroll, click, hero
+// submit, calculator step etc. — by far the highest-frequency function in
+// the app. Edge cold start ~5-20ms vs Node ~200-400ms, and Edge CPU billing
+// is per-request not per-runtime-second. Uses Web Crypto for hashing instead
+// of node:crypto so it can run there.
+export const runtime = 'edge'
 
 const EVENT_TYPES = new Set([
   'calculator_step_completed',
@@ -61,8 +67,12 @@ function isRateLimited(ip: string): boolean {
   return recent.length > RATE_LIMIT_MAX
 }
 
-function hashIp(ip: string, eventDate: string): string {
-  return createHash('sha256').update(`${ip}|${eventDate}|${SALT_BASE}`).digest('hex')
+async function hashIp(ip: string, eventDate: string): Promise<string> {
+  const data = new TextEncoder().encode(`${ip}|${eventDate}|${SALT_BASE}`)
+  const buf = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
 }
 
 // Page path must start with `/`, be ≤120 chars, contain only characters that
@@ -143,7 +153,7 @@ export async function POST(request: Request) {
     }
 
     const eventDate = new Date().toISOString().slice(0, 10)
-    const ipHash = hashIp(ip, eventDate)
+    const ipHash = await hashIp(ip, eventDate)
     const device = classifyUserAgent(ua)
 
     // UTM stamping (mig 027). Client sends first-touch payload from

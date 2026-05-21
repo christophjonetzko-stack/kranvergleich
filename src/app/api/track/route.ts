@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server'
-import { createHash } from 'node:crypto'
 import { getServiceSupabase } from '@/lib/supabase'
 import { classifyUserAgent } from '@/lib/device'
 
 // Firm engagement tracking — see supabase/migrations/005_firm_events.sql for
 // the DSGVO rationale (no cookies, no fingerprint, IP pseudonymized with
 // daily salt, Art. 6(1)(f) legitimate interest).
+//
+// Runs on Edge runtime alongside /api/beacon — same high-frequency pattern,
+// same Web Crypto hashing.
+export const runtime = 'edge'
 
 const EVENT_TYPES = new Set([
   'profile_view',
@@ -48,8 +51,12 @@ function isRateLimited(ip: string): boolean {
   return recent.length > RATE_LIMIT_MAX
 }
 
-function hashIp(ip: string, eventDate: string): string {
-  return createHash('sha256').update(`${ip}|${eventDate}|${SALT_BASE}`).digest('hex')
+async function hashIp(ip: string, eventDate: string): Promise<string> {
+  const data = new TextEncoder().encode(`${ip}|${eventDate}|${SALT_BASE}`)
+  const buf = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
 }
 
 function sanitizeContext(val: unknown): string | null {
@@ -88,7 +95,7 @@ export async function POST(request: Request) {
     }
 
     const eventDate = new Date().toISOString().slice(0, 10)
-    const ipHash = hashIp(ip, eventDate)
+    const ipHash = await hashIp(ip, eventDate)
     const device = classifyUserAgent(ua)
 
     const sb = getServiceSupabase()
