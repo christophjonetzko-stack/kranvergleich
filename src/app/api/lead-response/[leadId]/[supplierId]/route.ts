@@ -10,10 +10,20 @@ import { BASE_URL, BRAND_NAME } from '@/lib/country'
  * CTAs in their notification mail; this route logs the event, rolls it up
  * into lead_companies, alerts the owner, and forwards to the thanks page.
  *
- * Sig verify first, a forged URL gets a 403 + owner alert and never
- * touches the DB. After verify the (lead, supplier) pair is validated
- * against lead_companies so a click for a firm that wasn't on the lead
- * can't write a row even if the sig somehow checks out (defence in depth).
+ * Two-step flow added 2026-05-28 after the Knöss lead surfaced bot-prefetch
+ * pollution (1 human click on GS Crane Service inflated to 6 lead_responses
+ * rows via Cloudflare/Gmail link-preview proxies hitting the URL from
+ * different egress IPs):
+ *
+ *   GET   render a minimal confirm page with a single-button POST form.
+ *          Read-only: verifies sig but writes nothing, sends no alert.
+ *          Bots/preview scanners stop here.
+ *   POST  the original logic, insert lead_responses, roll up
+ *          lead_companies, alert owner, redirect to /lead-response/thanks.
+ *
+ * Sig verify happens on both verbs. After verify the (lead, supplier)
+ * pair is validated against lead_companies so a click for a firm that
+ * wasn't on the lead can't write a row even if the sig somehow checks out.
  */
 
 const RESEND_KEY = process.env.RESEND_API_KEY
@@ -43,7 +53,84 @@ const paramsSchema = z.object({
   supplierId: z.string().uuid(),
 })
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+/**
+ * GET, render a confirm page only. No DB writes, no owner alerts; bot
+ * prefetchers and mail-scanner proxies hit this and stop. The page contains
+ * a form whose POST hits this same URL and triggers the actual signal-back.
+ */
 export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ leadId: string; supplierId: string }> },
+) {
+  const rawParams = await context.params
+  const parsed = paramsSchema.safeParse(rawParams)
+  if (!parsed.success) {
+    return new NextResponse('Invalid link.', { status: 400, headers: { 'Content-Type': 'text/plain; charset=utf-8' } })
+  }
+  const { leadId, supplierId } = parsed.data
+  const url = new URL(req.url)
+  const action = url.searchParams.get('action') || ''
+  const sig = url.searchParams.get('sig') || ''
+
+  if (!verifyLeadResponseSig(leadId, supplierId, action, sig)) {
+    // Bare GET on a bad sig is most likely a preview bot scanning a stale link,
+    // not an active forge attempt. Render generic page, no owner alert spam.
+    return new NextResponse(
+      `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Link ungültig</title></head>
+       <body style="font-family:system-ui;max-width:520px;margin:60px auto;padding:24px;color:#111;">
+         <h1 style="font-size:22px;">Link ungültig oder abgelaufen</h1>
+         <p style="color:#4b5563;line-height:1.6;">Bitte öffnen Sie die Anfrage erneut über die ursprüngliche E-Mail.</p>
+       </body></html>`,
+      { status: 403, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+    )
+  }
+
+  const actionLabel = action === 'accept' ? 'Angebot erstellen' : 'Nicht passend'
+  const buttonStyle = action === 'accept'
+    ? 'background:#059669;color:#fff;'
+    : 'background:#dc2626;color:#fff;'
+  const intro = action === 'accept'
+    ? 'Sie möchten der Kundin/dem Kunden ein Angebot erstellen.'
+    : 'Sie möchten die Anfrage als nicht passend markieren.'
+
+  // Form POSTs to the SAME URL (including action+sig in query) so the POST
+  // handler below has the same context. Hidden inputs are not required.
+  const formAction = `${req.nextUrl.pathname}?${url.searchParams.toString()}`
+
+  return new NextResponse(
+    `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Bestätigen, ${escapeHtml(actionLabel)}</title>
+     <meta name="robots" content="noindex">
+     </head>
+     <body style="font-family:system-ui;max-width:520px;margin:60px auto;padding:24px;color:#111;">
+       <h1 style="font-size:22px;margin-bottom:12px;">${escapeHtml(actionLabel)}</h1>
+       <p style="color:#4b5563;line-height:1.6;">${escapeHtml(intro)} Bitte bestätigen Sie unten:</p>
+       <form method="POST" action="${escapeHtml(formAction)}" style="margin-top:24px;">
+         <button type="submit" style="${buttonStyle}padding:14px 22px;border:0;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;">
+           ${escapeHtml(actionLabel)} bestätigen
+         </button>
+       </form>
+       <p style="color:#9ca3af;font-size:12px;margin-top:32px;line-height:1.5;">
+         Diese Zwischenbestätigung schützt vor automatischen Klicks durch E-Mail-Scanner. Ihre Antwort wird erst nach Klick auf den Button registriert.
+       </p>
+     </body></html>`,
+    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+  )
+}
+
+/**
+ * POST, the actual state-mutating handler. Triggered by the GET-page form
+ * button so bot/preview prefetches (GET-only) can't generate false signals.
+ */
+export async function POST(
   req: NextRequest,
   context: { params: Promise<{ leadId: string; supplierId: string }> },
 ) {
@@ -60,8 +147,8 @@ export async function GET(
 
   if (!verifyLeadResponseSig(leadId, supplierId, action, sig)) {
     await sendOwnerAlert(
-      `${BRAND_NAME} - 🚨 lead-response sig mismatch`,
-      `<p>HMAC verification failed for a click on the firm-side CTA.</p>
+      `${BRAND_NAME} - 🚨 lead-response sig mismatch (POST)`,
+      `<p>HMAC verification failed on the POST commit.</p>
        <ul>
          <li>action=<code>${action}</code></li>
          <li>leadId=<code>${leadId}</code></li>
@@ -69,7 +156,7 @@ export async function GET(
          <li>ip=${getIp(req) || '?'}</li>
          <li>UA=${(req.headers.get('user-agent') || '').slice(0, 200)}</li>
        </ul>
-       <p>Either a forged URL, a stale link from before a LEAD_RESPONSE_SECRET rotation, or a copy-paste truncation. Not stored in the audit log.</p>`,
+       <p>POST-side check, so this is more interesting than a bare-GET preview-scan. Possibly a forged form, replay attempt, or stale link.</p>`,
     )
     return NextResponse.json({ error: 'invalid_sig' }, { status: 403 })
   }
