@@ -9,7 +9,7 @@ function PlzFromUrl({ onPlz }: { onPlz: (plz: string) => void }) {
   const searchParams = useSearchParams()
   useEffect(() => {
     const plz = searchParams.get('plz')
-    if (plz && /^\d{5}$/.test(plz)) onPlz(plz)
+    if (plz && PLZ_REGEX.test(plz)) onPlz(plz)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return null
@@ -19,6 +19,7 @@ import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getCraneTypeNameById } from '@/data/crane-types'
 import { trackPageEvent } from '@/lib/track'
+import { PLZ_REGEX } from '@/lib/country'
 
 const PAGE_SIZE = 20
 
@@ -95,7 +96,7 @@ export function CompanyListWithForm({
 
   // Lookup PLZ  coordinates via /api/cities
   const lookupPlz = useCallback(async (plz: string) => {
-    if (!/^\d{5}$/.test(plz)) {
+    if (!PLZ_REGEX.test(plz)) {
       setUserCoords(null)
       setPlzLabel('')
       return

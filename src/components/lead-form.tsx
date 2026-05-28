@@ -11,6 +11,7 @@ import type { CompanyWithCranes } from '@/lib/types'
 import { getSessionEntryPath } from './session-entry-recorder'
 import { getStoredUtm } from '@/lib/utm'
 import { craneTypes, getCraneTypeIdBySlug } from '@/data/crane-types'
+import { CITY_OR_PLZ_PLACEHOLDER } from '@/lib/country'
 
 interface LeadFormProps {
   craneTypeId?: string
@@ -231,7 +232,7 @@ export function LeadForm({
             {!cityName && (
               <div>
                 <Label htmlFor="city">Stadt / PLZ *</Label>
-                <Input id="city" name="city" required placeholder="z.B. Berlin, 10115" />
+                <Input id="city" name="city" required placeholder={CITY_OR_PLZ_PLACEHOLDER} />
               </div>
             )}
             <div>

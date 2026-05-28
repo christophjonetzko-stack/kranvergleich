@@ -28,6 +28,17 @@ export const TAX_LABEL: string = COUNTRY === 'AT' ? 'USt.' : 'MwSt.'
 // "Stand:" labels on pages use build-time current month, not this constant.
 export const DATA_LAST_VERIFIED_ISO: string = '2026-05-06'
 
+// PLZ format: DE uses 5 digits, AT uses 4 digits. Centralized here so every
+// validator + UI placeholder stays consistent across the form, the cost
+// calculator, and the auto-select-nearest backend path.
+export const PLZ_DIGITS: number = COUNTRY === 'AT' ? 4 : 5
+export const PLZ_REGEX: RegExp = COUNTRY === 'AT' ? /^\d{4}$/ : /^\d{5}$/
+// Captures a leading PLZ (followed by space/punctuation/end) so inputs like
+// "1010 Wien" or "10115 Berlin, Mitte" parse into PLZ + remainder.
+export const PLZ_PREFIX_REGEX: RegExp = COUNTRY === 'AT' ? /^(\d{4})\b/ : /^(\d{5})\b/
+export const PLZ_OR_CITY_PLACEHOLDER: string = COUNTRY === 'AT' ? 'z.B. 1010 oder Wien' : 'z.B. 10115 oder Berlin'
+export const CITY_OR_PLZ_PLACEHOLDER: string = COUNTRY === 'AT' ? 'z.B. Wien, 1010' : 'z.B. Berlin, 10115'
+
 let _companyIdsCache: { ids: Set<string>; expires: number } | null = null
 const COMPANY_IDS_TTL_MS = 60_000
 

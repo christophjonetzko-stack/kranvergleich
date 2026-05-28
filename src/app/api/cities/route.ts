@@ -1,22 +1,34 @@
 import { NextResponse } from 'next/server'
-import citiesData from '@/data/german-cities.json'
+import { COUNTRY } from '@/lib/country'
 
 interface CityEntry {
-  p: string  // PLZ
+  p: string  // PLZ (DE: 5 digits, AT: 4 digits)
   n: string  // name
   s: string  // state (Bundesland)
   la: number // latitude
   ln: number // longitude
 }
 
-const cities = citiesData as CityEntry[]
+interface IndexedCity extends CityEntry {
+  _lower: string
+  _plz: string
+}
 
-// Pre-build lowercase index for fast search
-const citiesWithLower = cities.map((c) => ({
-  ...c,
-  _lower: c.n.toLowerCase(),
-  _plz: c.p,
-}))
+// Lazy-init so the country-specific PLZ dataset is loaded once per worker.
+// Build-time COUNTRY decides which dataset; the other branch is tree-shaken.
+let _index: IndexedCity[] | null = null
+async function getIndexedCities(): Promise<IndexedCity[]> {
+  if (_index) return _index
+  const raw = COUNTRY === 'AT'
+    ? ((await import('@/data/austrian-cities.json')).default as CityEntry[])
+    : ((await import('@/data/german-cities.json')).default as CityEntry[])
+  _index = raw.map((c) => ({
+    ...c,
+    _lower: c.n.toLowerCase(),
+    _plz: c.p,
+  }))
+  return _index
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -28,8 +40,9 @@ export async function GET(request: Request) {
 
   const q = query.toLowerCase()
   const isPlzSearch = /^\d+$/.test(query)
+  const cities = await getIndexedCities()
 
-  const results = citiesWithLower
+  const results = cities
     .filter((c) => {
       if (isPlzSearch) return c._plz.startsWith(query)
       return c._lower.includes(q)

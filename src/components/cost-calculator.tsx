@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { cranePrices } from '@/data/crane-prices'
 import { getCraneTypeIdBySlug } from '@/data/crane-types'
 import { trackPageEvent } from '@/lib/track'
-import { TAX_LABEL, COUNTRY_LABEL } from '@/lib/country'
+import { TAX_LABEL, COUNTRY_LABEL, PLZ_OR_CITY_PLACEHOLDER } from '@/lib/country'
 import { SubtypeCheck } from './subtype-check'
 import { getSessionEntryPath } from './session-entry-recorder'
 import { getStoredUtm } from '@/lib/utm'
@@ -806,7 +806,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               </div>
               <div>
                 <label htmlFor="calc-location" className="block text-[12px] text-gray-600 mb-1">PLZ oder Stadt Einsatzort *</label>
-                <input id="calc-location" name="location" required placeholder="z.B. 10115 oder Berlin" maxLength={80} value={locationLive} onChange={(e) => setLocationLive(e.target.value)} className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
+                <input id="calc-location" name="location" required placeholder={PLZ_OR_CITY_PLACEHOLDER} maxLength={80} value={locationLive} onChange={(e) => setLocationLive(e.target.value)} className="w-full text-[13px] border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400" />
               </div>
               {showOptionalFields && (
                 <>

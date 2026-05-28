@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { craneTypes } from '@/data/crane-types'
 import { resolveSearchTarget } from '@/lib/search'
 import { trackPageEvent } from '@/lib/track'
+import { PLZ_REGEX } from '@/lib/country'
 
 interface CityResult {
   plz: string
@@ -118,7 +119,7 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
     setHint('')
 
     // Clear PLZ label when input changes
-    if (!/^\d{5}$/.test(value.trim())) {
+    if (!PLZ_REGEX.test(value.trim())) {
       setPlzLabel('')
     }
 
@@ -136,8 +137,8 @@ export function SearchBox({ craneTypeCounts }: SearchBoxProps = {}) {
         const data: CityResult[] = await res.json()
         setResults(data)
         setIsOpen(data.length > 0)
-        // Auto-show city label when user typed a 5-digit PLZ
-        if (/^\d{5}$/.test(value.trim()) && data.length > 0) {
+        // Auto-show city label when user typed a valid PLZ (DE 5-digit / AT 4-digit)
+        if (PLZ_REGEX.test(value.trim()) && data.length > 0) {
           setPlzLabel(`${data[0].plz} ${data[0].name}`)
         }
       } catch {

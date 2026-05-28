@@ -18,6 +18,7 @@
  */
 
 import { craneTypes as craneTypesList } from '@/data/crane-types'
+import { COUNTRY, PLZ_REGEX } from '@/lib/country'
 import { getServiceSupabase } from '@/lib/supabase'
 
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
@@ -40,7 +41,11 @@ let _plzMap: Map<string, PlzCoords> | null = null
 
 async function getPlzMap(): Promise<Map<string, PlzCoords>> {
   if (_plzMap) return _plzMap
-  const mod = await import('@/data/german-cities.json')
+  // Country-aware: DE deploy uses german-cities.json, AT deploy uses
+  // austrian-cities.json. Tree-shaking drops the unused branch at build.
+  const mod = COUNTRY === 'AT'
+    ? await import('@/data/austrian-cities.json')
+    : await import('@/data/german-cities.json')
   const cities = (mod.default ?? mod) as Array<{ p: string; n: string; la: number; ln: number }>
   const m = new Map<string, PlzCoords>()
   for (const c of cities) m.set(c.p, { la: c.la, ln: c.ln, n: c.n })
@@ -66,7 +71,7 @@ export async function getAvailabilityByPlz(plz: string): Promise<{
   city: string
   perType: Record<string, { in_50km: number; in_100km: number; nearest_km: number | null }>
 } | null> {
-  if (!/^\d{5}$/.test(plz)) return null
+  if (!PLZ_REGEX.test(plz)) return null
   const plzMap = await getPlzMap()
   const ref = plzMap.get(plz)
   if (!ref) return null

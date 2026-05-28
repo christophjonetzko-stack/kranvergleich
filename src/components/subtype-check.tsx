@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { PLZ_REGEX } from '@/lib/country'
 
 /**
  * AI subtype-check addon for the Kostenrechner result panel. Watches the
@@ -112,7 +113,7 @@ export function SubtypeCheck({
     let path = `/${hint.suggestedSlug}-mieten`
     const loc = (cityForRedirect || '').trim()
     if (loc) {
-      if (/^\d{5}$/.test(loc)) {
+      if (PLZ_REGEX.test(loc)) {
         path += `?plz=${loc}`
       } else {
         const slug = loc

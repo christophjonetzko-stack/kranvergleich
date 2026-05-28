@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { trackPageEvent } from '@/lib/track'
+import { PLZ_REGEX } from '@/lib/country'
 
 const AVATAR_SRC = '/images/kran-berater-avatar.png'
 
@@ -134,7 +135,7 @@ function buildTargetUrl(s: Suggestion): string {
   let url = typePath
   const loc = s.plz_or_city.trim()
   if (loc) {
-    if (/^\d{5}$/.test(loc)) {
+    if (PLZ_REGEX.test(loc)) {
       url += `?plz=${loc}`
     } else if (s.type_slug) {
       // City path only valid when we actually have a type slug, /kranverleih

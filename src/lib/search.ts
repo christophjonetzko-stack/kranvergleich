@@ -1,5 +1,5 @@
 import { seoCities } from '@/data/cities-static'
-import { COUNTRY } from '@/lib/country'
+import { COUNTRY, PLZ_REGEX } from '@/lib/country'
 
 const COUNTRY_WIDE = COUNTRY === 'AT' ? 'österreichweit' : 'deutschlandweit'
 
@@ -59,7 +59,7 @@ function resolveBaseUrl(
     return { url: '/kranverleih' }
   }
 
-  if (/^\d{5}$/.test(typed)) {
+  if (PLZ_REGEX.test(typed)) {
     return { url: `/${craneType}?plz=${typed}` }
   }
 

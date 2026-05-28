@@ -1,5 +1,5 @@
 import { supabase, getServiceSupabase } from './supabase'
-import { COUNTRY, getCompanyIdsInCountry } from './country'
+import { COUNTRY, PLZ_REGEX, PLZ_PREFIX_REGEX, getCompanyIdsInCountry } from './country'
 import type { CraneType, City, Company, CompanyWithCranes } from './types'
 
 // ============================================
@@ -430,12 +430,11 @@ export async function getCompaniesForCraneType(
   const limit = 50
 
   // PLZ-near path: load ALL matching companies (in batches), sort by distance,
-  // then return the 50 nearest. Only triggers when nearPlz is a valid 5-digit
-  // code that resolves to a city in german-cities.json.
-  if (nearPlz && /^\d{5}$/.test(nearPlz)) {
-    const citiesJson = (await import('@/data/german-cities.json')).default as Array<{
-      p: string; n: string; s: string; la: number; ln: number
-    }>
+  // then return the 50 nearest. Only triggers when nearPlz is a valid PLZ for
+  // the current country (DE: 5 digits, AT: 4 digits) that resolves to a city
+  // in the country-specific PLZ dataset.
+  if (nearPlz && PLZ_REGEX.test(nearPlz)) {
+    const citiesJson = await getCitiesJson()
     const plzCity = citiesJson.find((c) => c.p === nearPlz)
 
     if (plzCity) {
@@ -548,7 +547,11 @@ type CityRow = { p: string; n: string; s: string; la: number; ln: number }
 let _citiesJsonCache: CityRow[] | null = null
 async function getCitiesJson(): Promise<CityRow[]> {
   if (_citiesJsonCache) return _citiesJsonCache
-  const raw = (await import('@/data/german-cities.json')).default as CityRow[]
+  // Build-time COUNTRY decides which dataset; the other file is never bundled
+  // because Next.js tree-shakes the unreached branch.
+  const raw = COUNTRY === 'AT'
+    ? ((await import('@/data/austrian-cities.json')).default as CityRow[])
+    : ((await import('@/data/german-cities.json')).default as CityRow[])
   const nameFreq = new Map<string, number>()
   for (const c of raw) nameFreq.set(c.n, (nameFreq.get(c.n) ?? 0) + 1)
   _citiesJsonCache = [...raw].sort(
@@ -662,11 +665,10 @@ export async function getCompaniesForCraneTypeNearPlz(
   plz: string,
   opts?: { limit?: number },
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number } | null> {
-  // PLZ-based search uses german-cities.json (5-digit DE codes only). Until the
-  // AT counterpart (austrian-cities.json with 4-digit codes) ships, the function
-  // is DE-only. AT users hitting it get null and the UI falls back to the city-list path.
-  if (COUNTRY !== 'DE') return null
-  if (!/^\d{5}$/.test(plz)) return null
+  // PLZ-based search uses the country-specific PLZ dataset (DE: 5 digits in
+  // german-cities.json, AT: 4 digits in austrian-cities.json). PLZ_REGEX is
+  // resolved at build time per COUNTRY.
+  if (!PLZ_REGEX.test(plz)) return null
   const cities = await getCitiesJson()
   const plzCity = cities.find((c) => c.p === plz)
   if (!plzCity) return null
@@ -688,21 +690,20 @@ export async function getCompaniesForCraneTypeNearLocation(
   location: string,
   opts?: { limit?: number },
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number; resolved_label: string } | null> {
-  // Same DE-only gate as getCompaniesForCraneTypeNearPlz, uses german-cities.json
-  // for PLZ + city-name lookup. AT counterpart pending.
-  if (COUNTRY !== 'DE') return null
+  // Country-aware: loads the right PLZ dataset (DE 5-digit / AT 4-digit) via
+  // getCitiesJson() + uses PLZ_PREFIX_REGEX to extract the leading PLZ. The
+  // city-name fallback works identically across both countries.
   const trimmed = location.trim()
   if (!trimmed) return null
 
   const cities = await getCitiesJson()
   const limit = opts?.limit ?? 10
 
-  // Path 1: extract a 5-digit PLZ from the start of the input. Handles both
-  // pure "31275" and the very common "31275 Lehrte" / "31275 Lehrte/Ahlten"
-  // form (a German address habit; the placeholder "z.B. 10115 oder Berlin"
-  // doesn't forbid it). When a PLZ prefix matches, the remainder is
-  // informational, we trust the PLZ for geocoding.
-  const plzPrefix = trimmed.match(/^(\d{5})\b/)
+  // Path 1: extract a leading PLZ from the start of the input. Handles both
+  // pure "31275" / "1010" and the very common "31275 Lehrte" / "1010 Wien"
+  // form. When a PLZ prefix matches, the remainder is informational, we trust
+  // the PLZ for geocoding.
+  const plzPrefix = trimmed.match(PLZ_PREFIX_REGEX)
   if (plzPrefix) {
     const plz = plzPrefix[1]
     const plzCity = cities.find((c) => c.p === plz)
