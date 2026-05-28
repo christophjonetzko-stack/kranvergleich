@@ -82,13 +82,21 @@ export function LeadForm({
     const formData = new FormData(e.currentTarget)
 
     const utm = getStoredUtm()
+    // When the form lands with no user-selected firms (inline path on
+    // /kran-mieten-preise + /kran-mieten-in-der-naehe), opt into the
+    // /api/leads auto_select_nearest branch so the backend resolves PLZ/city
+    // to coords and picks the nearest matching firms. Without this every
+    // inline submission landed as 🚨 LEAD OHNE ANBIETER (Vivienne / Irina
+    // silent-fails 2026-05-24..26). The cost-calculator path already opts in.
+    const cityInput = cityName || (formData.get('city') as string | null) || ''
+    const noFirmsPreSelected = selectedCompanies.length === 0
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           crane_type_id: resolvedCraneTypeId,
-          city: cityName || formData.get('city'),
+          city: cityInput,
           customer_name: formData.get('name'),
           customer_phone: formData.get('phone'),
           customer_email: formData.get('email'),
@@ -97,6 +105,8 @@ export function LeadForm({
           duration_days: formData.get('duration') ? Number(formData.get('duration')) : null,
           dsgvo_consent: dsgvoConsent,
           company_ids: selectedCompanies,
+          auto_select_nearest: noFirmsPreSelected,
+          location: noFirmsPreSelected ? cityInput : undefined,
           website_url: formData.get('website_url') || '',
           entry_path: getSessionEntryPath(),
           utm_source: utm.utm_source,
