@@ -269,7 +269,7 @@ export function LeadForm({
               className="mt-0.5 shrink-0"
             />
             <span className="text-xs text-muted-foreground leading-relaxed">
-              Ich stimme der Verarbeitung meiner Daten gemäß der <a href="/datenschutz" className="underline hover:text-foreground" target="_blank" onClick={(e) => e.stopPropagation()}>Datenschutzerklärung</a> zu. Meine Daten werden zur Bearbeitung meiner Anfrage an die ausgewählten Anbieter weitergeleitet. *
+              Ich stimme der Verarbeitung meiner Daten gemäß der <a href="/datenschutz" className="underline hover:text-foreground" target="_blank" onClick={(e) => e.stopPropagation()}>Datenschutzerklärung</a> zu. Meine Daten werden zur Bearbeitung meiner Anfrage an die ausgewählten Anbieter weitergeleitet, oder, falls ich keine Auswahl treffe, an passende Kranbetriebe in meiner Nähe. *
             </span>
           </label>
 

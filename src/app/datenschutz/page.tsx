@@ -119,8 +119,10 @@ export default function DatenschutzPage() {
             Wenn Sie uns per Kontaktformular eine Anfrage zukommen lassen, werden Ihre Angaben aus
             dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks
             Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert und an
-            die von Ihnen ausgewählten Kranvermietungsunternehmen weitergeleitet. Diese Daten geben
-            wir nicht ohne Ihre Einwilligung weiter.
+            die von Ihnen ausgewählten Kranvermietungsunternehmen weitergeleitet. Treffen Sie keine
+            Auswahl, leiten wir Ihre Anfrage an passende Kranbetriebe in der Nähe des angegebenen
+            Einsatzorts weiter, damit Sie Angebote erhalten. Eine darüber hinausgehende Weitergabe
+            erfolgt nicht ohne Ihre Einwilligung.
           </p>
           <p>
             Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO,
