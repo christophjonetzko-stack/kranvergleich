@@ -1,5 +1,5 @@
 import { supabase, getServiceSupabase } from './supabase'
-import { COUNTRY, PLZ_REGEX, PLZ_PREFIX_REGEX, getCompanyIdsInCountry } from './country'
+import { COUNTRY, PLZ_REGEX, PLZ_PREFIX_REGEX, PLZ_DIGITS, getCompanyIdsInCountry } from './country'
 import type { CraneType, City, Company, CompanyWithCranes } from './types'
 
 // ============================================
@@ -738,6 +738,30 @@ export async function getCompaniesForCraneTypeNearLocation(
 
   const base = await _computeFirmMatchesFromCoords(craneTypeId, cityMatch.la, cityMatch.ln, cities, limit)
   return { ...base, resolved_label: cityMatch.n }
+}
+
+/**
+ * True when the input contains a syntactically valid PLZ token (DE 5-digit /
+ * AT 4-digit) but NONE of those tokens resolves to a city in our country
+ * dataset. This is the signature of a foreign postal code (e.g. French
+ * "57600" Forbach, ~7 km from Saarbrücken) or a typo. The /api/leads
+ * auto-select flow uses it to return a "check your PLZ / we only serve DE+AT"
+ * message instead of silently saving a 0-firm "LEAD OHNE ANBIETER".
+ *
+ * Deliberately scoped to PLZ-format tokens only: a pure city-name input with
+ * no digits returns false (the city-name fallback path handles those, and a
+ * mistyped city is far more likely to be a real reachable place than a foreign
+ * 5-digit code). Returns false on any input without a PLZ-shaped token so the
+ * existing genuine-coverage-gap behavior (save + manual owner alert) is kept.
+ */
+export async function isUnresolvedPlz(location: string): Promise<boolean> {
+  const trimmed = (location ?? '').trim()
+  if (!trimmed) return false
+  const tokens = trimmed.match(new RegExp(`\\b\\d{${PLZ_DIGITS}}\\b`, 'g'))
+  if (!tokens || tokens.length === 0) return false
+  const cities = await getCitiesJson()
+  const plzSet = new Set(cities.map((c) => c.p))
+  return !tokens.some((t) => plzSet.has(t))
 }
 
 /**

@@ -117,11 +117,17 @@ export function LeadForm({
         }),
       })
 
-      if (!response.ok) throw new Error('Fehler beim Senden')
+      if (!response.ok) {
+        // Surface the server-side message (e.g. unresolved/foreign PLZ guard,
+        // 422 code 'location_unresolved') so the user can correct a typo or
+        // learn we only cover DE+AT, instead of a generic failure notice.
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data.error || 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
+      }
       setIsSubmitted(true)
       onSubmitted?.()
-    } catch {
-      setError('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
     } finally {
       setIsSubmitting(false)
     }

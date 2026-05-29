@@ -5,7 +5,7 @@ import { Resend, type CreateEmailOptions } from 'resend'
 import { z } from 'zod'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { signLeadResponse } from '@/lib/lead-response-sig'
-import { submitLead, getCompaniesForCraneTypeNearLocation, getSiteStats, type FirmMatch } from '@/lib/queries'
+import { submitLead, getCompaniesForCraneTypeNearLocation, isUnresolvedPlz, getSiteStats, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById } from '@/data/crane-types'
@@ -299,6 +299,33 @@ export async function POST(request: Request) {
         console.error('auto_select_nearest lookup failed:', err)
         // Fall through, lead still gets saved without company_ids, owner handles manually.
       }
+    }
+
+    // Guard: foreign / mistyped PLZ. When the auto-select flow found no firms
+    // because the location is a syntactically valid PLZ that maps to no city in
+    // our dataset (e.g. French "57600" Forbach, ~7 km from Saarbrücken, or a
+    // typo), tell the customer to check their input instead of silently
+    // creating a 0-firm "LEAD OHNE ANBIETER" that is lost unless manually
+    // rescued (lead 6c7bd92c, 2026-05-29). Fires only on the auto-select flow;
+    // explicit /anbieter company_ids and genuine coverage gaps (PLZ resolves
+    // but no firm of that type nearby) keep their existing behavior.
+    if (
+      !validationFailed &&
+      body.auto_select_nearest === true &&
+      companyIds.length === 0 &&
+      locationInput &&
+      (await isUnresolvedPlz(locationInput))
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            `Wir konnten „${locationInput}“ keinem Ort in ${COUNTRY_LABEL} zuordnen. ` +
+            `Bitte prüfen Sie Ihre Postleitzahl. Hinweis: Wir vermitteln aktuell ausschließlich ` +
+            `Kranbetriebe in Deutschland und Österreich.`,
+          code: 'location_unresolved',
+        },
+        { status: 422 },
+      )
     }
 
     // Truncate text fields
