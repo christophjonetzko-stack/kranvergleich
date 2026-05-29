@@ -250,44 +250,54 @@ export async function getOtherCompaniesInCity(
 export async function getCompaniesForCraneAndCity(
   craneTypeId: string,
   cityId: string
-): Promise<CompanyWithCranes[]> {
+): Promise<{ matching: CompanyWithCranes[]; others: CompanyWithCranes[] }> {
   // Get ALL company IDs that serve this city
   const { data: regionData } = await supabase
     .from('company_regions')
     .select('company_id')
     .eq('city_id', cityId)
 
-  if (!regionData || regionData.length === 0) return []
+  if (!regionData || regionData.length === 0) return { matching: [], others: [] }
 
   const companyIds = [...new Set(regionData.map(r => r.company_id))]
 
-  // Fetch in batches of 50 to avoid URL length limits
-  const batchSize = 50
-  const firstBatch = companyIds.slice(0, batchSize)
+  // Fetch in batches of 50 to stay under PostgREST URL-length limits. Earlier
+  // this took only the FIRST 50 ids (companyIds.slice(0, 50)), which silently
+  // dropped firms in any city served by >50 companies, including, potentially,
+  // the actual crane-type specialists. Now every batch is fetched + merged.
+  const BATCH = 50
+  const all: CompanyWithCranes[] = []
+  for (let i = 0; i < companyIds.length; i += BATCH) {
+    const { data, error } = await supabase
+      .from('companies')
+      .select(`*, company_cranes (*)`)
+      .in('id', companyIds.slice(i, i + BATCH))
+      .eq('is_active', true)
+      .eq('is_relevant', true)
+    if (error) throw error
+    if (data) all.push(...(data as CompanyWithCranes[]))
+  }
 
-  const { data, error } = await supabase
-    .from('companies')
-    .select(`
-      *,
-      company_cranes (*)
-    `)
-    .in('id', firstBatch)
-    .eq('is_active', true)
-    .eq('is_relevant', true)
-    .order('is_premium', { ascending: false })
-    .order('google_rating', { ascending: false })
+  // Order across all batches: premium first, then by Google rating (nulls last).
+  all.sort((a, b) => {
+    if (!!b.is_premium !== !!a.is_premium) return b.is_premium ? 1 : -1
+    return (b.google_rating ?? -1) - (a.google_rating ?? -1)
+  })
 
-  if (error) throw error
-  const all = data ?? []
-
-  // Sort: companies with matching crane type first, then the rest
-  const withType = all.filter((c) =>
-    c.company_cranes?.some((cc: any) => cc.crane_type_id === craneTypeId)
+  // Split: firms that actually OFFER this crane type vs. other firms that serve
+  // the city but don't. Only `matching` is selectable for the Sammelanfrage;
+  // `others` is rendered as read-only regional context (no per-type Anfrage),
+  // so a customer can no longer send e.g. a trailer-crane (Anhängerkran)
+  // request to a Minikran-only generalist that merely happens to serve the
+  // city (lead 788b037b: Boels, Minikran-only, was selectable on an
+  // Anhängerkran city page).
+  const matching = all.filter((c) =>
+    c.company_cranes?.some((cc) => cc.crane_type_id === craneTypeId)
   )
-  const withoutType = all.filter(
-    (c) => !c.company_cranes?.some((cc: any) => cc.crane_type_id === craneTypeId)
+  const others = all.filter(
+    (c) => !c.company_cranes?.some((cc) => cc.crane_type_id === craneTypeId)
   )
-  return [...withType, ...withoutType]
+  return { matching, others }
 }
 
 /**

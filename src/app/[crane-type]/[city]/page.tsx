@@ -54,7 +54,13 @@ export async function generateMetadata({
 
   if (!craneType || !city) return {}
 
-  const companies = await getCompaniesForCraneAndCity(craneType.id, city.id)
+  const { matching, others } = await getCompaniesForCraneAndCity(craneType.id, city.id)
+  // "Anbieter" count = firms that actually offer this crane type. `others`
+  // (firms serving the city without this type) only count toward the thin-
+  // content noindex threshold so the page is not de-indexed when it still
+  // carries regional substance.
+  const companies = matching
+  const totalForThreshold = matching.length + others.length
   const price = getPriceForCraneType(craneType.slug)
   const priceStr = price ? `ab ${price.dayFrom}€/Tag` : ''
 
@@ -86,8 +92,9 @@ export async function generateMetadata({
       url: canonical,
           images: [OG_IMAGE],
     },
-    // noindex pages with fewer than 3 companies to avoid thin content penalty
-    ...(companies.length < 3 && { robots: { index: false, follow: true } }),
+    // noindex pages with fewer than 3 firms (type-matching + regional) to avoid
+    // thin content penalty
+    ...(totalForThreshold < 3 && { robots: { index: false, follow: true } }),
   }
 }
 
@@ -105,12 +112,17 @@ export default async function CraneCityPage({
 
   if (!craneType || !city) notFound()
 
-  const [companies, allCities, siteStats, craneTypeCounts] = await Promise.all([
+  const [companiesSplit, allCities, siteStats, craneTypeCounts] = await Promise.all([
     getCompaniesForCraneAndCity(craneType.id, city.id),
     getCities(),
     getSiteStats(),
     getCompanyCountsPerCraneType(),
   ])
+  // `companies` = firms that actually offer this crane type (selectable for the
+  // Sammelanfrage). `otherCompanies` = firms serving the city without this type,
+  // shown read-only as regional context further down (no per-type Anfrage).
+  const companies = companiesSplit.matching
+  const otherCompanies = companiesSplit.others
   const totalForType = craneTypeCounts.get(craneType.id) ?? 0
   // Currency signal, refreshes monthly via 24h ISR (text only flips on
   // month boundary). Per AEO rules in seo-content-de skill: include "Stand"
@@ -234,11 +246,39 @@ export default async function CraneCityPage({
       ) : (
         <section className="border border-gray-200 rounded-lg p-8 text-center mb-10">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
-            Noch keine Anbieter in {city.name}
+            Noch keine {craneType.name}-Anbieter in {city.name}
           </h2>
           <p className="text-sm text-gray-500">
             Wir erweitern unser Verzeichnis ständig. Schauen Sie bald wieder vorbei.
           </p>
+        </section>
+      )}
+
+      {/* Other firms that serve the city but do not offer this crane type.
+          Read-only regional context, no per-type Anfrage CTA, so trailer-crane
+          requests can't be routed to a Minikran-only generalist (lead 788b037b). */}
+      {otherCompanies.length > 0 && (
+        <section id="weitere-anbieter" className="mb-10 scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-1">
+            Weitere Kranbetriebe in {city.name}
+          </h2>
+          <p className="text-[13px] text-gray-500 mb-4">
+            Diese Betriebe sind in {city.name} und Umgebung tätig, führen {craneType.name} aber nicht im gelisteten Angebot.
+            Für eine {craneType.name}-Anfrage nutzen Sie bitte die Anbieter oben.
+          </p>
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {otherCompanies.map((c) => (
+              <li key={c.id}>
+                <Link
+                  href={`/anbieter/${c.slug}`}
+                  className="block text-[13px] text-gray-600 hover:text-gray-900 border border-gray-100 hover:border-gray-200 rounded-md px-3 py-2 transition-colors"
+                >
+                  <span className="font-medium">{c.name}</span>
+                  {c.city && <span className="text-gray-400"> · {c.city}</span>}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
