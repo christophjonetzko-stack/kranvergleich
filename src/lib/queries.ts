@@ -284,19 +284,22 @@ export async function getCompaniesForCraneAndCity(
     return (b.google_rating ?? -1) - (a.google_rating ?? -1)
   })
 
-  // Split: firms that actually OFFER this crane type vs. other firms that serve
-  // the city but don't. Only `matching` is selectable for the Sammelanfrage;
-  // `others` is rendered as read-only regional context (no per-type Anfrage),
-  // so a customer can no longer send e.g. a trailer-crane (Anhängerkran)
-  // request to a Minikran-only generalist that merely happens to serve the
-  // city (lead 788b037b: Boels, Minikran-only, was selectable on an
-  // Anhängerkran city page).
-  const matching = all.filter((c) =>
-    c.company_cranes?.some((cc) => cc.crane_type_id === craneTypeId)
-  )
-  const others = all.filter(
-    (c) => !c.company_cranes?.some((cc) => cc.crane_type_id === craneTypeId)
-  )
+  // Split into selectable (`matching`) vs read-only regional context (`others`).
+  // A firm is `others` ONLY when we have positive evidence it does something
+  // else: it carries crane-type tags AND none of them is this type (e.g. Boels,
+  // tagged Minikran-only, on an Anhängerkran page, lead 788b037b). Firms with
+  // NO crane-type tags stay selectable, ~40% of the catalog (incl. big players
+  // like Schmidbauer, Bracht) has zero tags, and excluding "unknown capability"
+  // firms would wrongly drop them from every type page. We only demote firms
+  // we positively know specialise elsewhere.
+  const matching = all.filter((c) => {
+    const tags = c.company_cranes ?? []
+    return tags.length === 0 || tags.some((cc) => cc.crane_type_id === craneTypeId)
+  })
+  const others = all.filter((c) => {
+    const tags = c.company_cranes ?? []
+    return tags.length > 0 && !tags.some((cc) => cc.crane_type_id === craneTypeId)
+  })
   return { matching, others }
 }
 
