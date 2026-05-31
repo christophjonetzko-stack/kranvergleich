@@ -16,12 +16,15 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran mieten Preisliste 2026, ab 150€/Tag, alle 8 Krantypen',
+  // `absolute` bypasses the layout title template (`%s | KranVergleich.de`):
+  // the previous title + suffix = 77 chars and got truncated in SERP (GSC 2026-05-31:
+  // 23k impr, pos 7.35, CTR 2.01%). 55 chars, keyword-front + price hook, no brand.
+  title: { absolute: 'Kran mieten: Preisliste 2026, alle 8 Krantypen, ab 150€' },
   description:
     'Kran mieten Preise 2026: Tages-, Wochen-, Monatspreise für 8 Krantypen. Anhängerkran ab 150€, Autokran ab 500€. Kostenlos 3 Angebote vergleichen.',
   alternates: alternatesFor('/kran-mieten-preise'),
   openGraph: {
-    title: 'Kran mieten Preisliste 2026, ab 150€/Tag, alle 8 Krantypen',
+    title: 'Kran mieten: Preisliste 2026, alle 8 Krantypen, ab 150€/Tag',
     description:
       'Kran mieten Preise 2026: Tages-, Wochen-, Monatspreise für 8 Krantypen. Anhängerkran ab 150€, Autokran ab 500€. Kostenlos 3 Angebote vergleichen.',
     type: 'website',

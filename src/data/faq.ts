@@ -123,6 +123,18 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Welche Dachdeckerkran-Marken gibt es zum Mieten?',
       answer: 'Die gängigsten Dachdeckerkran-Marken in {COUNTRY_LABEL} sind Böcker (häufig im Verleih, z.B. Böcker AK 46, AK 52), Klaas (z.B. Klaas K30-35), Paus und Denka Lift. Die meisten Vermieter auf {BRAND_NAME} bieten Böcker-Dachdeckerkrane an, sie gelten als besonders zuverlässig und einfach zu bedienen.',
     },
+    {
+      question: 'Dachkran, Dachdeckerkran oder Ziegelkran, ist das dasselbe?',
+      answer: 'Ja, das sind drei Namen für dasselbe Gerät: einen teleskopierbaren Schrägaufzug-Kran für Dacharbeiten. Mancher Vermieter nennt ihn Dachkran, ein anderer Dachdeckerkran oder Ziegelkran, gemeint ist immer der Dachaufzug mit 15–30 m Reichweite. Auf {BRAND_NAME} finden Sie alle Varianten unter „Dachdeckerkran mieten", die Tagesmiete liegt einheitlich bei 200–450€ ohne Bediener.',
+    },
+    {
+      question: 'Bis in welche Etage reicht ein Dachdeckerkran?',
+      answer: 'Mit einer Hakenhöhe von 15–30 m erreicht ein Dachdeckerkran am Wohnhaus etwa das 5. bis 9. Obergeschoss. Für ein zweistöckiges Einfamilienhaus genügt ein kleines Modell mit 15–19 m, für mehrgeschossige Stadthäuser wählen Sie eine Auslage ab 25 m. Entscheidend ist neben der Höhe der Abstand zum Gebäude, denn die Tragkraft sinkt mit zunehmender Ausladung.',
+    },
+    {
+      question: 'Wo kann ich einen Dachdeckerkran in meiner Region mieten?',
+      answer: 'Auf {BRAND_NAME} vergleichen Sie Dachdeckerkran-Anbieter nach Stadt, von Köln und Oberhausen über Karlsruhe bis München. Geben Sie in der Anfrage Ihre Postleitzahl an, dann sehen Sie die nächstgelegenen Vermieter samt Entfernung. Ein kurzer Anfahrtsweg senkt die Transportkosten, die sonst mit 150–300€ zu Buche schlagen.',
+    },
   ],
   'raupenkran-mieten': [
     {
