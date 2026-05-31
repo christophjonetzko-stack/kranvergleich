@@ -237,6 +237,14 @@ const typeFAQs: Record<string, FAQItem[]> = {
       question: 'Wo finde ich eine Baukran-Preisliste?',
       answer: 'Auf {BRAND_NAME} finden Sie eine aktuelle Baukran-Preisliste mit Tages-, Wochen- und Monatspreisen. Vergleichen Sie Baukran-Mietpreise von über 100 Anbietern in ganz {COUNTRY_LABEL}, kostenlos und unverbindlich.',
     },
+    {
+      question: 'Was ist ein mobiler Baukran (Mobilbaukran) und was kostet er?',
+      answer: 'Ein mobiler Baukran (Mobilbaukran, z.B. Liebherr MK) verbindet Turmdrehkran und Autokran: Er fährt selbst zur Baustelle und ist in ein bis zwei Stunden einsatzbereit, ohne separate Montage. Die Tragkraft liegt meist bei 6–8 t, die Hakenhöhe bei 30–50 m. Gemietet wird er inklusive Bediener ab etwa 800€/Tag, bei kurzen Einsätzen von wenigen Tagen damit deutlich wirtschaftlicher als ein klassischer Turmdrehkran mit aufwendiger Montage.',
+    },
+    {
+      question: 'Was kostet ein Schnellbaukran zu mieten?',
+      answer: 'Ein Schnellbaukran (kompakter Untendreher) liegt am unteren Ende der Baukran-Mietpreise. Große Turmdrehkrane kosten 4.000–25.000€ im Monat, ein kleiner Schnellbaukran für Einfamilienhäuser und kleinere Hochbauten deutlich weniger. Der Hauptvorteil: Er ist in wenigen Stunden aufgebaut und braucht kein aufwendiges Fundament, das senkt Montagekosten und Bauzeit. Genaue Preise vergleichen Sie kostenlos auf {BRAND_NAME}.',
+    },
   ],
 }
 
