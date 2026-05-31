@@ -128,6 +128,12 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'paderborn', name: 'Paderborn', state: 'Nordrhein-Westfalen', companyCount: 2 },
   { slug: 'recklinghausen', name: 'Recklinghausen', state: 'Nordrhein-Westfalen', companyCount: 1 },
   { slug: 'jena', name: 'Jena', state: 'Thüringen', companyCount: 1 },
+  // 2026-05-31 Thüringen sourcing (catalog-firm-sourcing): 13 firms sourced via Outscraper,
+  // 6 real crane firms kept (B.i.V/Schwerlast Weise/Peter Lorenz/Schöttker/Nitzsche/MSB),
+  // 7 Baumaschinen/Stapler dealers deactivated. companyCount = active company_regions matches.
+  { slug: 'weimar', name: 'Weimar', state: 'Thüringen', companyCount: 1 },
+  { slug: 'gotha', name: 'Gotha', state: 'Thüringen', companyCount: 2 },
+  { slug: 'gera', name: 'Gera', state: 'Thüringen', companyCount: 2 },
   // 2026-04-29 expansion. Kassel/Marburg/Osnabrück after company_regions audit;
   // Kassel + Osnabrück promoted from _extraCitiesDE (deferred 2026-04-20 was outdated
   // after today's bulk-fix), Marburg fully new. Coverage: Kassel 4 covered types + 1 warning
