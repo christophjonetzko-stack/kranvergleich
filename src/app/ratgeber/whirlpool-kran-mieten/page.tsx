@@ -8,9 +8,12 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Whirlpool mit Kran heben: Kosten & Anbieter 2026 | Garten & Dachterrasse',
+  // `absolute` bypasses the layout template (`%s | KranVergleich.de`): the old title
+  // base (80 ch) + suffix (19) = 99 ch → truncated/rewritten in SERP (page ranks well,
+  // GSC 2026-06). 48 ch, keyword-front + cost hook (matches og:title).
+  title: { absolute: 'Whirlpool mit Kran heben: Kosten & Anbieter 2026' },
   description:
-    'Whirlpool über Haus oder auf Dachterrasse heben: Mobilkran 35–50t ab 450€, bei Penthouse-Lage Autokran ab 1.200€. Wann Sie wirklich einen Kran brauchen, und wann nicht.',
+    'Whirlpool über Haus oder auf Dachterrasse heben: Mobilkran 35–50t ab 450€, bei Penthouse-Lage Autokran ab 1.200€. Wann Sie wirklich einen Kran brauchen.',
   alternates: alternatesFor('/ratgeber/whirlpool-kran-mieten'),
   openGraph: {
     title: 'Whirlpool mit Kran heben: Kosten & Anbieter 2026',
