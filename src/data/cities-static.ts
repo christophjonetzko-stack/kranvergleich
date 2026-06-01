@@ -134,6 +134,15 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'weimar', name: 'Weimar', state: 'Thüringen', companyCount: 1 },
   { slug: 'gotha', name: 'Gotha', state: 'Thüringen', companyCount: 2 },
   { slug: 'gera', name: 'Gera', state: 'Thüringen', companyCount: 2 },
+  // 2026-06-01 Sachsen/Sachsen-Anhalt sourcing (catalog-firm-sourcing): 21 firms imported,
+  // 16 crane firms kept + tonnage, 5 dealers deactivated; existing firms mapped to new
+  // cities. Halle (240k) had NO page before. companyCount = active company_regions matches.
+  { slug: 'zwickau', name: 'Zwickau', state: 'Sachsen', companyCount: 2 },
+  { slug: 'plauen', name: 'Plauen', state: 'Sachsen', companyCount: 4 },
+  { slug: 'goerlitz', name: 'Görlitz', state: 'Sachsen', companyCount: 3 },
+  { slug: 'halle', name: 'Halle (Saale)', state: 'Sachsen-Anhalt', companyCount: 1 },
+  { slug: 'dessau', name: 'Dessau-Roßlau', state: 'Sachsen-Anhalt', companyCount: 3 },
+  { slug: 'halberstadt', name: 'Halberstadt', state: 'Sachsen-Anhalt', companyCount: 1 },
   // 2026-04-29 expansion. Kassel/Marburg/Osnabrück after company_regions audit;
   // Kassel + Osnabrück promoted from _extraCitiesDE (deferred 2026-04-20 was outdated
   // after today's bulk-fix), Marburg fully new. Coverage: Kassel 4 covered types + 1 warning
