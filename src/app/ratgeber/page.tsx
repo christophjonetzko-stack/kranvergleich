@@ -4,7 +4,7 @@ import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const metadata: Metadata = {
-  title: 'Ratgeber. Kran mieten: Tipps, Kosten & Vergleiche',
+  title: { absolute: 'Kran-Ratgeber: Tipps, Kosten & Vergleiche' },
   description:
     `Ratgeber rund um Kranvermietung: Welchen Kran brauche ich? Minikran vs. Autokran, Kranführerschein, 7 Tipps für Bauunternehmer. Kostenlos auf ${BRAND_NAME}.`,
   alternates: alternatesFor('/ratgeber'),

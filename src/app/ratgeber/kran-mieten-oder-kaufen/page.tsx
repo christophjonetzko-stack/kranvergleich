@@ -8,7 +8,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran mieten oder kaufen? Wann sich was lohnt. Vergleich 2026',
+  title: { absolute: 'Kran mieten oder kaufen? Was sich wann lohnt' },
   description: `Kran mieten oder kaufen? Faustregel: unter 100 Einsatztagen pro Jahr ist Mieten günstiger. Anschaffungskosten ab 50.000€ (Minikran) bis 1.000.000€ (Autokran), plus Wartung, Lagerung, Versicherung. Wann lohnt sich Kauf, wann Gebraucht-Kauf, wann Miete, alle Faktoren.`,
   alternates: alternatesFor('/ratgeber/kran-mieten-oder-kaufen'),
   openGraph: {

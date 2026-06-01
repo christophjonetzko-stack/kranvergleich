@@ -9,7 +9,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Bootskran mieten: Yacht & Segelboot heben. Kosten & Anbieter 2026',
+  title: { absolute: 'Bootskran mieten: Yacht & Boot heben, Kosten 2026' },
   description:
     'Yacht oder Segelboot kranen: Mobilkran 50t ab 600€/Einsatz, Autokran 100t für schwere Boote ab 1.200€. Kosten nach Bootslänge, Krantraverse, Saison-Vorlauf und Anbieter im Vergleich.',
   alternates: alternatesFor('/ratgeber/bootskran-mieten'),

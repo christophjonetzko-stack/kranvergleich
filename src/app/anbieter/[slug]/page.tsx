@@ -607,6 +607,17 @@ export default async function CompanyPage({
         </section>
       )}
 
+      {/* Claim CTA for the firm owner — discreet, only when not yet premium.
+          Carries the slug so /path4 opens Checkout for this firm directly. */}
+      {!company.is_premium && (
+        <p className="mt-10 pt-6 border-t text-[13px] text-gray-400 text-center">
+          Ist das Ihr Betrieb?{' '}
+          <Link href={`/path4?firma=${slug}`} className="text-blue-600 hover:underline">
+            Verifiziert und hervorgehoben erscheinen
+          </Link>
+        </p>
+      )}
+
       {/* Schema.org */}
       <script
         type="application/ld+json"

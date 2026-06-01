@@ -13,7 +13,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran mieten in der Nähe: Anbieter im Umkreis vergleichen',
+  title: { absolute: 'Kran mieten in der Nähe: Anbieter im Umkreis' },
   description:
     'Kran mieten in der Nähe: Anbieter im Umkreis vergleichen, kostenlos 3 Angebote anfordern. 8 Krantypen, regionale Anfahrt, Tagesmiete ab 150€.',
   alternates: alternatesFor('/kran-mieten-in-der-naehe'),

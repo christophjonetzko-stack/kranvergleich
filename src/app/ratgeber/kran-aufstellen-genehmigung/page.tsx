@@ -7,7 +7,7 @@ import { BRAND_NAME } from '@/lib/country'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran aufstellen: Genehmigung, Vorschriften & Tipps (2026)',
+  title: { absolute: 'Kran aufstellen: Genehmigung & Vorschriften 2026' },
   description:
     'Kran aufstellen Genehmigung: Wann brauchen Sie eine? Autokran Genehmigung auf öffentlicher Straße, Kran aufstellen ohne Genehmigung auf Privatgelände. Alle Vorschriften, Kosten & Ansprechpartner.',
   alternates: { canonical: '/ratgeber/kran-aufstellen-genehmigung' },

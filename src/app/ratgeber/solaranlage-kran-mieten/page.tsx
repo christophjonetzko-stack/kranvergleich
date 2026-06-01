@@ -8,7 +8,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Solaranlage montieren: Welcher Kran für PV-Module? Kosten & Planung 2026',
+  title: { absolute: 'Solaranlage: Welcher Kran für PV-Module? Kosten' },
   description:
     'PV-Module aufs Dach heben: Dachdeckerkran ab 200€/Tag für Standard-Einfamilienhäuser, Autokran für große Anlagen. Kosten pro kWp, Zeitplanung und Spezialausrüstung im Überblick.',
   alternates: alternatesFor('/ratgeber/solaranlage-kran-mieten'),

@@ -8,7 +8,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran mieten als Privatperson \u2014 Was ist m\u00F6glich? (2026)',
+  title: { absolute: 'Kran mieten als Privatperson: Was ist möglich?' },
   description:
     'Kran mieten als Privatperson? Ja \u2014 Minikran ab 250\u20AC/Tag und Anh\u00E4ngerkran ab 150\u20AC/Tag ohne F\u00FChrerschein. Was Sie wissen m\u00FCssen: Kosten, Versicherung, Tipps.',
   alternates: { canonical: '/ratgeber/kran-mieten-privatperson' },

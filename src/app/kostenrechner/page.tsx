@@ -35,7 +35,7 @@ const PRICE_TABLE_ORDER = [
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kostenrechner. Wie viel kostet ein Kran für mein Projekt?',
+  title: { absolute: 'Kran-Kostenrechner: Was kostet ein Kran? 2026' },
   description:
     'Kran-Kostenrechner: In 4 Schritten erfahren Sie, welchen Kran Sie brauchen und was er kostet. Minikran, Autokran, Baukran, unverbindliche Preisschätzung mit Anbietervergleich.',
   alternates: alternatesFor('/kostenrechner'),

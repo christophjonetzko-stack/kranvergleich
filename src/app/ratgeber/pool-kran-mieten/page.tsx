@@ -8,7 +8,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Pool mit Kran über Haus heben: Kosten & Anbieter 2026 | GFK-Pool',
+  title: { absolute: 'Pool mit Kran heben: Kosten & Anbieter 2026' },
   description:
     'GFK-Pool oder Fertigpool in den Garten heben: Mobilkran 50t ab 700€, bei großer Auslage Autokran ab 1.200€. Krangröße ergibt sich aus Reichweite, nicht nur aus Pool-Gewicht.',
   alternates: alternatesFor('/ratgeber/pool-kran-mieten'),

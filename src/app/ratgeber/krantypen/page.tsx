@@ -9,7 +9,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Krantypen im Vergleich: 8 Typen, Kosten & Einsatzgebiete 2026',
+  title: { absolute: 'Krantypen im Vergleich: 8 Typen & Kosten 2026' },
   description:
     'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze. Welcher Kran passt zu Ihrem Projekt? Entscheidungshilfe & Links zu Anbietern.',
   alternates: alternatesFor('/ratgeber/krantypen'),

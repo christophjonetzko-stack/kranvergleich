@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
 
 export const metadata: Metadata = {
-  title: 'Kran mieten: 7 Tipps für Bauunternehmer. Geld & Zeit sparen',
+  title: { absolute: 'Kran mieten: 7 Tipps für Bauunternehmer' },
   description:
     'Kran mieten leicht gemacht: 7 Praxis-Tipps für Bauunternehmer. So sparen Sie bei der Kranmiete, vermeiden Fehler und finden den richtigen Anbieter.',
   alternates: { canonical: '/ratgeber/kran-mieten-tipps' },
