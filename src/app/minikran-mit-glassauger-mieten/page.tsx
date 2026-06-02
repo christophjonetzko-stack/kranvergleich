@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { FAQSection } from '@/components/faq-section'
 import { InlineSammelanfrageForm } from '@/components/inline-sammelanfrage-form'
 import { PageEventTracker } from '@/components/page-event-tracker'
@@ -58,6 +59,61 @@ const glassaugerFAQs = [
   },
 ]
 
+// Schematic load curve (Tragkraft vs Ausladung). Example values labelled as
+// "Richtwert", not a specific model's chart. SVG text stays readable for Google.
+function CapacityReachChart() {
+  const yTicks = [
+    { label: '8 t', y: 40 }, { label: '6 t', y: 115 }, { label: '4 t', y: 190 },
+    { label: '2 t', y: 265 }, { label: '0', y: 340 },
+  ]
+  const xTicks = [
+    { label: '2 m', x: 70 }, { label: '4 m', x: 158 }, { label: '6 m', x: 247 },
+    { label: '8 m', x: 335 }, { label: '10 m', x: 423 }, { label: '12 m', x: 512 }, { label: '14 m', x: 600 },
+  ]
+  return (
+    <figure className="my-8 rounded-lg border border-gray-200 bg-white p-4">
+      <figcaption className="text-[15px] font-semibold text-gray-900 mb-3">
+        Warum die Tragkraft am Einbauort zählt
+      </figcaption>
+      <svg
+        viewBox="0 0 640 380"
+        role="img"
+        aria-label="Diagramm: Die Tragkraft eines Minikrans sinkt mit zunehmender Ausladung. Ein großer Spinnenkran mit 8 t hält 700 kg auf 8 m Reichweite, ein kleiner Minikran mit 1,5 t nicht."
+        className="w-full h-auto"
+      >
+        <line x1="70" y1="40" x2="70" y2="340" stroke="#d1d5db" strokeWidth="1" />
+        <line x1="70" y1="340" x2="600" y2="340" stroke="#d1d5db" strokeWidth="1" />
+        {yTicks.map((t) => (
+          <g key={t.label}>
+            <text x="60" y={t.y + 4} textAnchor="end" fontSize="11" fill="#9ca3af">{t.label}</text>
+            <line x1="70" y1={t.y} x2="600" y2={t.y} stroke="#f3f4f6" strokeWidth="1" />
+          </g>
+        ))}
+        {xTicks.map((t) => (
+          <text key={t.label} x={t.x} y="356" textAnchor="middle" fontSize="11" fill="#9ca3af">{t.label}</text>
+        ))}
+        <line x1="70" y1="314" x2="600" y2="314" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5 4" />
+        <text x="600" y="309" textAnchor="end" fontSize="11" fill="#dc2626">Bedarf: 700-kg-Scheibe</text>
+        <line x1="335" y1="40" x2="335" y2="340" stroke="#9ca3af" strokeWidth="1" strokeDasharray="4 4" />
+        <text x="340" y="52" fontSize="11" fill="#6b7280">Reichweite 8 m</text>
+        <polyline fill="none" stroke="#2563eb" strokeWidth="2.5" points="70,40 158,171 247,246 335,284 423,303 512,314 600,321" />
+        <polyline fill="none" stroke="#9ca3af" strokeWidth="2.5" points="70,284 114,303 158,314 203,321 247,327 335,333" />
+        <circle cx="335" cy="284" r="4" fill="#16a34a" />
+        <circle cx="335" cy="333" r="4" fill="#dc2626" />
+        <g fontSize="12">
+          <line x1="80" y1="26" x2="104" y2="26" stroke="#2563eb" strokeWidth="2.5" />
+          <text x="110" y="30" fill="#374151">Großer Spinnenkran (8 t)</text>
+          <line x1="300" y1="26" x2="324" y2="26" stroke="#9ca3af" strokeWidth="2.5" />
+          <text x="330" y="30" fill="#374151">Kleiner Minikran (1,5 t)</text>
+        </g>
+      </svg>
+      <p className="text-[11px] text-gray-400 mt-2">
+        Schematischer Verlauf (Richtwert, je nach Modell). Die Tragkraft am Mast ist nicht gleich der Tragkraft an der Ausladung: Bei 8 m Reichweite hält der große Spinnenkran die 700-kg-Scheibe, der kleine Minikran nicht.
+      </p>
+    </figure>
+  )
+}
+
 const priceRows: Array<{ leistung: string; richtwert: string }> = [
   { leistung: 'Minikran, Selbstfahrer (kleine Klasse)', richtwert: '250–500 €/Tag' },
   { leistung: 'Stärkerer Spinnenkran (ab ~3,5 t, meist mit Bediener)', richtwert: '650–800 €/Arbeitstag' },
@@ -92,6 +148,23 @@ export default async function MinikranGlassaugerPage() {
       >
         Anbieter mit Glassauger anfragen
       </Link>
+
+      {/* Hero image */}
+      <figure className="mb-6">
+        <div className="relative w-full aspect-[16/9] overflow-hidden rounded-lg border border-gray-200">
+          <Image
+            src="/images/minikran-glassauger-fenstermontage.webp"
+            alt="Spinnenkran hebt mit Vakuum-Glassauger eine große Glasscheibe über ein Hausdach in einen Innenhof"
+            fill
+            sizes="(min-width: 1024px) 1024px, 100vw"
+            className="object-cover"
+            priority
+          />
+        </div>
+        <figcaption className="text-[12px] text-gray-400 mt-2">
+          Spinnenkran mit Vakuum-Glassauger hebt eine große Glasscheibe über das Hausdach in den Innenhof.
+        </figcaption>
+      </figure>
 
       {/* Kurzantwort (AEO) */}
       <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-5 max-w-3xl">
@@ -154,6 +227,7 @@ export default async function MinikranGlassaugerPage() {
           Einbauort und Zugang zur Aufstellfläche. Mit diesen Angaben findet der Vermieter das passende
           Modell beim ersten Anlauf.
         </p>
+        <CapacityReachChart />
       </section>
 
       {/* Kosten */}
