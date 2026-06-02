@@ -5,7 +5,12 @@ import { RevealablePhone } from '@/components/track'
 
 interface CompanyCardProps {
   company: CompanyWithCranes
+  /** Toggles this firm in/out of the inquiry selection. */
   onRequestQuote?: (companyId: string) => void
+  /** Whether this firm is currently part of the inquiry selection (opt-out flow:
+   *  suitable firms start pre-selected; the button then reads "Ausgewählt" and a
+   *  click removes them). */
+  selected?: boolean
   /** Fallback reference price label when company has no own price, e.g. "ab 250€/Tag. Richtwert" */
   referencePrice?: string | null
   /** Distance in km from user's PLZ (if provided) */
@@ -43,7 +48,7 @@ function getColorClass(name: string): string {
   return INITIALS_COLORS[Math.abs(hash) % INITIALS_COLORS.length]
 }
 
-export function CompanyCard({ company, onRequestQuote, referencePrice, distanceKm, cityContext, typeContext }: CompanyCardProps) {
+export function CompanyCard({ company, onRequestQuote, selected = false, referencePrice, distanceKm, cityContext, typeContext }: CompanyCardProps) {
   const initials = getInitials(company.name)
   const colorClass = getColorClass(company.name)
 
@@ -170,9 +175,10 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
         {onRequestQuote && canInquire ? (
           <button
             onClick={() => onRequestQuote(company.id)}
-            className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[12px] font-medium rounded-md transition-colors"
+            aria-pressed={selected}
+            className={`px-3.5 py-1.5 text-[12px] font-medium rounded-md transition-colors text-white ${selected ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
-            Angebot anfragen
+            {selected ? '✓ Ausgewählt' : 'Angebot anfragen'}
           </button>
         ) : company.phone ? (
           <RevealablePhone
@@ -198,9 +204,10 @@ export function CompanyCard({ company, onRequestQuote, referencePrice, distanceK
         {onRequestQuote && canInquire ? (
           <button
             onClick={() => onRequestQuote(company.id)}
-            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-medium rounded-md transition-colors"
+            aria-pressed={selected}
+            className={`px-3 py-1.5 text-white text-[11px] font-medium rounded-md transition-colors ${selected ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
-            Anfragen
+            {selected ? '✓ Gewählt' : 'Anfragen'}
           </button>
         ) : company.phone ? (
           <RevealablePhone

@@ -209,8 +209,16 @@ export function CompanyListWithForm({
   const inquireAllCount = Math.min(filtered.length, MAX_INQUIRE_ALL)
   const inquireAllIsAll = filtered.length <= MAX_INQUIRE_ALL
 
-  const addCompany = (id: string) => {
-    setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
+  // Toggle a firm in/out of the selection. Adding is capped at MAX_INQUIRE_ALL
+  // (mirrors the server cap); deselecting is always allowed.
+  const toggleCompany = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id)
+        ? prev.filter((i) => i !== id)
+        : prev.length >= MAX_INQUIRE_ALL
+          ? prev
+          : [...prev, id],
+    )
   }
 
   const removeCompany = (id: string) => {
@@ -220,6 +228,19 @@ export function CompanyListWithForm({
   const clearSelection = () => setSelectedIds([])
 
   const selectedCompanies = companies.filter((c) => selectedIds.includes(c.id))
+
+  // Opt-out default (P0): on city listings, pre-select the suitable firms (capped
+  // at MAX_INQUIRE_ALL) so an inquiry defaults to a competitive multi-firm request
+  // instead of a risky single-firm one. The user deselects anyone before submit.
+  // Mount-only: later sort/filter changes must not re-seed and clobber the user's
+  // manual deselects. DSGVO: this pre-selects recipients (UX) only; the separate
+  // consent checkbox in InquiryBar stays unchecked + required.
+  useEffect(() => {
+    if (cityName && companies.length > 0) {
+      setSelectedIds(filtered.slice(0, MAX_INQUIRE_ALL).map((c) => c.id))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Reset the "from inquire-all CTA" flag when the dialog closes, so a later
   // reopen via the sticky pill is correctly classified as the legacy per-firm
@@ -257,26 +278,30 @@ export function CompanyListWithForm({
           opens lists every firm explicitly and lets the user deselect any
           before submit, so the flow stays DSGVO-explicit-consent. */}
       {cityName && filtered.length >= 2 && (
-        <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-blue-200 bg-blue-50/60 px-5 py-4">
-          <div className="min-w-0">
-            <p className="text-[15px] font-semibold text-gray-900 mb-0.5">
-              {inquireAllIsAll
-                ? `Anfrage an alle ${filtered.length} Anbieter in ${cityName} senden`
-                : `Anfrage an ${inquireAllCount} Anbieter in ${cityName} senden`}
-            </p>
-            <p className="text-[13px] text-gray-600">
-              Ein Formular, eine Anfrage. Sie erhalten individuelle Angebote von{' '}
-              {inquireAllIsAll ? `allen ${filtered.length}` : `${inquireAllCount}`} Anbietern in {cityName}. Kostenlos &amp; unverbindlich.
-            </p>
+        <>
+          <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-blue-200 bg-blue-50/60 px-5 py-4">
+            <div className="min-w-0">
+              <p className="text-[15px] font-semibold text-gray-900 mb-0.5">
+                {inquireAllIsAll
+                  ? `Anfrage an alle ${filtered.length} Anbieter in ${cityName} senden`
+                  : `Anfrage an ${inquireAllCount} Anbieter in ${cityName} senden`}
+              </p>
+              <p className="text-[13px] text-gray-600">
+                Je mehr Anbieter Sie anfragen, desto höher Ihre Chance auf eine schnelle Antwort und ein gutes Angebot. Die passenden Betriebe sind bereits vorausgewählt; entfernen Sie einfach, wen Sie nicht anfragen möchten. Kostenlos und unverbindlich.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleInquireAll}
+              className="shrink-0 inline-flex items-center justify-center text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md px-4 py-2.5 transition-colors w-full sm:w-auto"
+            >
+              Jetzt anfragen
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={handleInquireAll}
-            className="shrink-0 inline-flex items-center justify-center text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md px-4 py-2.5 transition-colors w-full sm:w-auto"
-          >
-            Jetzt anfragen 
-          </button>
-        </div>
+          <p className="text-[11px] text-gray-400 mb-4">
+            Hinweis: Gelistete Betriebe zahlen eine Vermittlungsgebühr. Die Reihenfolge richtet sich nach Eignung (Entfernung, Bewertung), nicht nach Bezahlung.
+          </p>
+        </>
       )}
       {/* Filter & sort bar */}
       {companies.length > 1 && (
@@ -365,7 +390,8 @@ export function CompanyListWithForm({
           <CompanyCard
             key={company.id}
             company={company}
-            onRequestQuote={addCompany}
+            onRequestQuote={toggleCompany}
+            selected={selectedIds.includes(company.id)}
             referencePrice={referencePrice}
             distanceKm={distanceMap.get(company.id)}
             cityContext={cityContext}

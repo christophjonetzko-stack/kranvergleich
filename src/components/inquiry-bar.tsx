@@ -320,7 +320,7 @@ export function InquiryBar({
                     className="mt-0.5 shrink-0"
                   />
                   <span className="text-xs text-gray-500 leading-relaxed">
-                    Ich stimme der Verarbeitung meiner Daten gemäß der <a href="/datenschutz" className="underline hover:text-gray-700" target="_blank" onClick={(e) => e.stopPropagation()}>Datenschutzerklärung</a> zu. Meine Daten werden an die ausgewählten Anbieter weitergeleitet. *
+                    Ich stimme der Verarbeitung meiner Daten gemäß der <a href="/datenschutz" className="underline hover:text-gray-700" target="_blank" onClick={(e) => e.stopPropagation()}>Datenschutzerklärung</a> zu. Meine Daten (Name, E-Mail, Telefon, Projektbeschreibung) werden an die {count} ausgewählten Anbieter weitergeleitet. *
                   </span>
                 </label>
 
