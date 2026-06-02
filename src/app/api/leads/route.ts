@@ -366,6 +366,13 @@ export async function POST(request: Request) {
       ? `${(capacityHintKg / 1000).toFixed(1).replace(/\.0$/, '')} t`
       : `${Math.round(capacityHintKg)} kg`
 
+    // Glass-handling hint: the customer mentions glass / pane / window lifting or
+    // a vacuum lifter (Glassauger / Saugnapf). Used to flag selected firms without
+    // a documented Glassauger so the owner can add glass-capable specialists
+    // (surfaced by lead fd252b30, Werres — a 700 kg pane needing a vacuum lifter).
+    const GLASS_RE = /\b(glas|verglas|scheibe|fenster|saugnapf|saugkn(?:ö|oe|o)pf|glassauger|vakuumheb)/i
+    const needsGlass = GLASS_RE.test(projectDescription)
+
     // Fit-check (D of the A+B+C+D auto-recovery sprint). Compare the extracted
     // capacity_hint_kg against each auto-matched firm's company_cranes.max_
     // capacity_kg for the matched crane_type_id. A firm is "undersized" when
@@ -383,6 +390,11 @@ export async function POST(request: Request) {
     const FIT_SAFETY_MARGIN = 1.2
     const undersizedFirms: Array<{ name: string; max_capacity_kg: number }> = []
     let unverifiedFirmCount = 0
+    // Glass fit (listing flow): selected firms with no documented Glassauger when
+    // the project needs one. Soft signal — has_glass_sucker coverage is sparse, so
+    // a "no glass" firm may simply be undocumented; never auto-dropped, only flagged.
+    const noGlassFirms: string[] = []
+    let glassCapableCount = 0
     if (capacityHintKg > 0 && autoSelectedMatches && body.crane_type_id) {
       const requiredCapacityKg = capacityHintKg * FIT_SAFETY_MARGIN
       for (const m of autoSelectedMatches) {
@@ -400,8 +412,9 @@ export async function POST(request: Request) {
         }
       }
     }
-    const fitCheckRan = capacityHintKg > 0 && (autoSelectedMatches?.length ?? 0) > 0
-    const hasUndersizedMatches = undersizedFirms.length > 0
+    // fitCheckRan / hasUndersizedMatches / glassMismatch are finalised after the
+    // listing-flow fit-check in the defensive-filter block below, so the
+    // auto-select and listing paths feed the same fit signals.
 
     // entry_path: client sends the first URL of the session from sessionStorage
     // (see SessionEntryRecorder). Validate against the same regex /api/beacon
@@ -438,9 +451,11 @@ export async function POST(request: Request) {
       const sb = getServiceSupabase()
       const { data: lookup } = await sb
         .from('companies')
-        .select('id, name, email, is_active, is_relevant')
+        .select('id, name, email, is_active, is_relevant, company_cranes(crane_type_id, max_capacity_kg, has_glass_sucker)')
         .in('id', companyIds)
       const validIds = new Set<string>()
+      type KeptFirm = { name: string; company_cranes: Array<{ crane_type_id: string; max_capacity_kg: number | null; has_glass_sucker: boolean | null }> }
+      const keptForFit: KeptFirm[] = []
       for (const c of lookup ?? []) {
         if (!c.is_active || !c.is_relevant) {
           droppedIrrelevant.push({ id: c.id, name: c.name, is_active: c.is_active, is_relevant: c.is_relevant })
@@ -450,13 +465,45 @@ export async function POST(request: Request) {
           droppedTestFlagged.push({ id: c.id, name: c.name })
           continue
         }
-        if (c.email && c.email.trim() !== '???') validIds.add(c.id)
-        else droppedNoEmail.push({ id: c.id, name: c.name })
+        if (c.email && c.email.trim() !== '???') {
+          validIds.add(c.id)
+          keptForFit.push({ name: c.name, company_cranes: c.company_cranes ?? [] })
+        } else droppedNoEmail.push({ id: c.id, name: c.name })
       }
       if (droppedNoEmail.length > 0 || droppedIrrelevant.length > 0 || droppedTestFlagged.length > 0) {
         companyIds = companyIds.filter((id) => validIds.has(id))
       }
+      // Listing-flow fit-check (B). The auto-select path already evaluated its
+      // matches above; this covers the normal listing / InquiryBar path (explicit
+      // company_ids), which previously got NO fit-check at all (leads Werres,
+      // Maurer). Conservative, positive-evidence only: NULL capacity = unverified
+      // (never undersized), glass-less firm may just be undocumented. Warn the
+      // owner, never auto-drop (coverage too sparse to be reliable).
+      if (!autoSelectedMatches && body.crane_type_id && (capacityHintKg > 0 || needsGlass)) {
+        const requiredCapacityKg = capacityHintKg * FIT_SAFETY_MARGIN
+        for (const f of keptForFit) {
+          const maxCapKg = f.company_cranes
+            .filter((cc) => cc.crane_type_id === body.crane_type_id)
+            .reduce<number | null>((acc, cc) => {
+              if (cc.max_capacity_kg == null) return acc
+              return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
+            }, null)
+          if (capacityHintKg > 0) {
+            if (maxCapKg == null) unverifiedFirmCount += 1
+            else if (maxCapKg < requiredCapacityKg) undersizedFirms.push({ name: f.name, max_capacity_kg: maxCapKg })
+          }
+          if (needsGlass) {
+            if (f.company_cranes.some((cc) => cc.has_glass_sucker === true)) glassCapableCount += 1
+            else noGlassFirms.push(f.name)
+          }
+        }
+      }
     }
+
+    const fitCheckRan = (capacityHintKg > 0 || needsGlass) &&
+      ((autoSelectedMatches?.length ?? 0) > 0 || companyIds.length > 0)
+    const hasUndersizedMatches = undersizedFirms.length > 0
+    const glassMismatch = needsGlass && noGlassFirms.length > 0
 
     // UTM attribution (mig 027). Clip every value to 120 chars so a forged
     // URL can't bloat the column. NULL on absence, that's the expected
@@ -858,8 +905,20 @@ export async function POST(request: Request) {
                   .map((f) => `<li><strong>${escapeHtml(f.name)}</strong>, max ${(f.max_capacity_kg / 1000).toFixed(1).replace(/\.0$/, '')} t</li>`)
                   .join('')}
               </ul>
-              ${unverifiedFirmCount > 0 ? `<br>Weitere <strong>${unverifiedFirmCount}</strong> Anbieter ohne Capacity-Daten im Katalog (1,1% Coverage), nicht prüfbar, ggf. auch zu klein.<br>` : ''}
+              ${unverifiedFirmCount > 0 ? `<br>Weitere <strong>${unverifiedFirmCount}</strong> Anbieter ohne Capacity-Daten im Katalog, nicht prüfbar, ggf. auch zu klein.<br>` : ''}
               <br>Empfehlung: Lead manuell prüfen vor Versand, bei Spec-Mismatch Opt-in-Mail an den Kunden mit Alternativvorschlägen (Greb/Kohlhaas-Pattern).
+            </div>
+          </div>`
+        : ''
+      // Glass-fit banner (B). Fires when the project text implies glass/pane work
+      // and at least one selected firm has no documented Glassauger. Soft signal
+      // (has_glass_sucker coverage is partial), so it informs rather than blocks.
+      const glassBanner = glassMismatch
+        ? `<div style="background:#fffbeb;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">🟡 Glas-Bedarf erkannt</div>
+            <div style="font-size:13px;color:#78350f;line-height:1.5;">
+              Der Projekttext deutet auf Glas-/Scheibenmontage hin (Glassauger/Vakuumheber nötig). Dokumentierter Glassauger bei <strong>${glassCapableCount}</strong> von <strong>${glassCapableCount + noGlassFirms.length}</strong> ausgewählten Anbietern.${noGlassFirms.length > 0 ? ` Ohne dokumentierten Glassauger: ${noGlassFirms.map((n) => escapeHtml(n)).join(', ')} (Daten evtl. unvollständig).` : ''}<br><br>
+              Bei Bedarf glas-fähige Spezialisten ergänzen (z. B. Uplifter, Baumo) via Opt-in-Mail.
             </div>
           </div>`
         : ''
@@ -870,6 +929,7 @@ export async function POST(request: Request) {
         : '')
         + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}), ` : '')
         + (hasUndersizedMatches ? `FIT-MISMATCH (${undersizedFirms.length}), ` : '')
+        + (glassMismatch ? `🟡 GLAS (${glassCapableCount}/${glassCapableCount + noGlassFirms.length}), ` : '')
         + (aiInferredCraneType ? '🤖 AI-Krantyp, ' : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
@@ -879,6 +939,7 @@ export async function POST(request: Request) {
           ${alertBanner}
           ${specBanner}
           ${fitCheckBanner}
+          ${glassBanner}
           ${aiInferredBanner}
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
