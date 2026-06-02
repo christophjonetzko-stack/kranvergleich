@@ -85,6 +85,7 @@ export function CompanySection({
         typeContext={typeContext}
         initialProjectDescription={initialProjectDescription}
         totalCount={totalCount}
+        cityCoords={{ lat: centerLat, lng: centerLng }}
       />
 
       {mapCompanies.length > 0 && (

@@ -83,6 +83,11 @@ interface CompanyListWithFormProps {
    *  filter counter show "X von Y angezeigt" instead of just "48 Anbieter"
    *  next to a header that already advertises the higher total. */
   totalCount?: number
+  /** Page-city coordinates (city×type pages). When present, the opt-out
+   *  pre-selection picks the firms NEAREST the city instead of the top-rated,
+   *  so far region-tagged firms (e.g. a Bavaria branch on a Hamburg page) don't
+   *  land in the default selection. */
+  cityCoords?: { lat: number; lng: number }
 }
 
 export function CompanyListWithForm({
@@ -98,6 +103,7 @@ export function CompanyListWithForm({
   typeContext,
   initialProjectDescription,
   totalCount,
+  cityCoords,
 }: CompanyListWithFormProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
@@ -300,9 +306,21 @@ export function CompanyListWithForm({
   // manual deselects. DSGVO: this pre-selects recipients (UX) only; the separate
   // consent checkbox in InquiryBar stays unchecked + required.
   useEffect(() => {
-    if (cityName && companies.length > 0) {
-      setSelectedIds(filtered.slice(0, MAX_INQUIRE_ALL).map((c) => c.id))
+    if (!cityName || companies.length === 0) return
+    // Distance-aware default: pre-select the firms NEAREST the page city, not
+    // the top-rated ones. Stops nationally-region-tagged firms hundreds of km
+    // away (e.g. a Bavaria branch on a Hamburg page) from landing in the default
+    // selection and being mailed a lead they'd never serve. Firms without coords
+    // sort last. Falls back to the filtered order when no city coords are passed.
+    let pool = filtered
+    if (cityCoords) {
+      pool = [...companies].sort((a, b) => {
+        const da = a.lat != null && a.lng != null ? haversineKm(cityCoords.lat, cityCoords.lng, a.lat, a.lng) : Infinity
+        const db = b.lat != null && b.lng != null ? haversineKm(cityCoords.lat, cityCoords.lng, b.lat, b.lng) : Infinity
+        return da - db
+      })
     }
+    setSelectedIds(pool.slice(0, MAX_INQUIRE_ALL).map((c) => c.id))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
