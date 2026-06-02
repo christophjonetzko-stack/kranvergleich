@@ -23,6 +23,12 @@ import { PLZ_REGEX } from '@/lib/country'
 
 const PAGE_SIZE = 20
 
+// Mirrors MAX_COMPANY_IDS in /api/leads (route.ts): the server caps a single
+// inquiry at 10 firms (Resend rate-limit + cost). Cap the "Anfrage an alle"
+// pre-selection to the same number so the CTA copy and the modal never promise
+// more firms than actually get contacted (silent truncation otherwise).
+const MAX_INQUIRE_ALL = 10
+
 type SortOption = 'rating' | 'reviews' | 'name' | 'distance'
 
 // Haversine distance in km between two lat/lng points
@@ -198,6 +204,10 @@ export function CompanyListWithForm({
 
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
+  // "Anfrage an alle" reaches at most MAX_INQUIRE_ALL firms (server cap), so the
+  // copy must not claim "alle N" when more than that match.
+  const inquireAllCount = Math.min(filtered.length, MAX_INQUIRE_ALL)
+  const inquireAllIsAll = filtered.length <= MAX_INQUIRE_ALL
 
   const addCompany = (id: string) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
@@ -223,7 +233,7 @@ export function CompanyListWithForm({
   // all `filtered` companies, opens the form modal directly, and tags the
   // submission so analytics can distinguish it from per-firm sammelanfrage.
   const handleInquireAll = () => {
-    const ids = filtered.map((c) => c.id)
+    const ids = filtered.slice(0, MAX_INQUIRE_ALL).map((c) => c.id)
     setSelectedIds(ids)
     setInquiryFromAllCta(true)
     setInquiryOpen(true)
@@ -250,11 +260,13 @@ export function CompanyListWithForm({
         <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-blue-200 bg-blue-50/60 px-5 py-4">
           <div className="min-w-0">
             <p className="text-[15px] font-semibold text-gray-900 mb-0.5">
-              Anfrage an alle {filtered.length} Anbieter in {cityName} senden
+              {inquireAllIsAll
+                ? `Anfrage an alle ${filtered.length} Anbieter in ${cityName} senden`
+                : `Anfrage an ${inquireAllCount} Anbieter in ${cityName} senden`}
             </p>
             <p className="text-[13px] text-gray-600">
-              Ein Formular, eine Anfrage. Sie erhalten individuelle Angebote von allen{' '}
-              {filtered.length} Anbietern. Kostenlos &amp; unverbindlich.
+              Ein Formular, eine Anfrage. Sie erhalten individuelle Angebote von{' '}
+              {inquireAllIsAll ? `allen ${filtered.length}` : `${inquireAllCount}`} Anbietern in {cityName}. Kostenlos &amp; unverbindlich.
             </p>
           </div>
           <button
