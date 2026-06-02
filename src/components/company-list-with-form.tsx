@@ -42,6 +42,21 @@ function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): nu
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
+// Format kg as a compact tonne string ("1600" -> "1,6", "16000" -> "16").
+function fmtTons(kg: number): string {
+  return (kg / 1000).toFixed(1).replace(/\.0$/, '').replace('.', ',')
+}
+
+type Requirements = {
+  capacity_kg: number // 0 = not stated
+  needs_glass: boolean
+  needs_operator: boolean
+  reasoning: string
+}
+type FitVerdict = { rank: number; fit: 'good' | 'neutral' | 'weak'; note: string }
+// Capacity safety margin, mirrors FIT_SAFETY_MARGIN in /api/leads.
+const FIT_MARGIN = 1.2
+
 interface CompanyListWithFormProps {
   companies: CompanyWithCranes[]
   craneTypeId?: string
@@ -99,6 +114,12 @@ export function CompanyListWithForm({
   // intermediate sticky-pill click).
   const [inquiryOpen, setInquiryOpen] = useState(false)
   const [inquiryFromAllCta, setInquiryFromAllCta] = useState(false)
+  // AI fit-matcher ("A"): the customer describes what they want to lift; we
+  // extract requirements (capacity, glass) and re-rank the firm list by fit.
+  const [projectInput, setProjectInput] = useState(initialProjectDescription ?? '')
+  const [requirements, setRequirements] = useState<Requirements | null>(null)
+  const [matching, setMatching] = useState(false)
+  const [matchError, setMatchError] = useState<string | null>(null)
 
   // Lookup PLZ  coordinates via /api/cities
   const lookupPlz = useCallback(async (plz: string) => {
@@ -141,6 +162,40 @@ export function CompanyListWithForm({
     }
     return map
   }, [companies, userCoords])
+
+  // Fit verdict per company for the requested crane type, derived from the
+  // AI-extracted requirements + the firm's own company_cranes data (already in
+  // props). Positive-evidence only: a too-small declared capacity is "weak";
+  // a documented Glassauger when glass is needed is "good"; NULL data stays
+  // "neutral" (never penalised — coverage is partial). Glass never downgrades
+  // to "weak" (a firm without the flag may simply be undocumented).
+  const fitMap = useMemo(() => {
+    const map = new Map<string, FitVerdict>()
+    if (!requirements || !craneTypeId) return map
+    const req = requirements.capacity_kg > 0 ? requirements.capacity_kg : null
+    for (const c of companies) {
+      const maxCap = c.company_cranes
+        .filter((cc) => cc.crane_type_id === craneTypeId)
+        .reduce<number | null>((acc, cc) => {
+          if (cc.max_capacity_kg == null) return acc
+          return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
+        }, null)
+      const hasGlass = c.company_cranes.some((cc) => cc.has_glass_sucker === true)
+      let fit: FitVerdict['fit'] = 'neutral'
+      const notes: string[] = []
+      if (req != null && maxCap != null) {
+        if (maxCap < req * FIT_MARGIN) { fit = 'weak'; notes.push(`max ${fmtTons(maxCap)} t`) }
+        else { fit = 'good'; notes.push(`bis ${fmtTons(maxCap)} t`) }
+      }
+      if (requirements.needs_glass && hasGlass) {
+        if (fit !== 'weak') fit = 'good'
+        notes.push('Glassauger')
+      }
+      const rank = fit === 'good' ? 0 : fit === 'weak' ? 2 : 1
+      map.set(c.id, { rank, fit, note: notes.join(' · ') })
+    }
+    return map
+  }, [companies, requirements, craneTypeId])
 
   // Unique states for filter dropdown
   const states = useMemo(() => {
@@ -194,8 +249,15 @@ export function CompanyListWithForm({
         break
     }
 
+    // When the AI matcher has run, fit takes priority over the chosen sort:
+    // good firms float to the top, too-small ones sink. Array.sort is stable,
+    // so the sortBy order is preserved within each fit group.
+    if (requirements && fitMap.size > 0) {
+      list.sort((a, b) => (fitMap.get(a.id)?.rank ?? 1) - (fitMap.get(b.id)?.rank ?? 1))
+    }
+
     return list
-  }, [companies, sortBy, filterState, filterMinRating, filterCraneType, distanceMap])
+  }, [companies, sortBy, filterState, filterMinRating, filterCraneType, distanceMap, requirements, fitMap])
 
   // Notify parent when filtered list changes (for map sync)
   useEffect(() => {
@@ -208,6 +270,8 @@ export function CompanyListWithForm({
   // copy must not claim "alle N" when more than that match.
   const inquireAllCount = Math.min(filtered.length, MAX_INQUIRE_ALL)
   const inquireAllIsAll = filtered.length <= MAX_INQUIRE_ALL
+  const goodFitCount = requirements ? [...fitMap.values()].filter((v) => v.fit === 'good').length : 0
+  const weakFitCount = requirements ? [...fitMap.values()].filter((v) => v.fit === 'weak').length : 0
 
   // Toggle a firm in/out of the selection. Adding is capped at MAX_INQUIRE_ALL
   // (mirrors the server cap); deselecting is always allowed.
@@ -242,6 +306,18 @@ export function CompanyListWithForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // After the AI matcher runs, re-seed the pre-selection to the best-fit firms
+  // (top MAX_INQUIRE_ALL, excluding the ones flagged too small). Deliberate
+  // re-seed on a user action, so it may override the mount default. Runs only
+  // when `requirements` changes (filtered/fitMap are already current by then).
+  useEffect(() => {
+    if (!requirements || !cityName) return
+    const ordered = filtered.filter((c) => fitMap.get(c.id)?.fit !== 'weak')
+    setSelectedIds(ordered.slice(0, MAX_INQUIRE_ALL).map((c) => c.id))
+    setVisibleCount(PAGE_SIZE)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requirements])
+
   // Reset the "from inquire-all CTA" flag when the dialog closes, so a later
   // reopen via the sticky pill is correctly classified as the legacy per-firm
   // flow, not as an inquire-all submission.
@@ -261,6 +337,37 @@ export function CompanyListWithForm({
     trackPageEvent('listing_inquire_all_clicked', { matched_count: ids.length })
   }
 
+  // AI matcher: send the free-text need to /api/ai-helper (requirements mode),
+  // store the parsed requirements; fitMap + filtered + the re-select effect
+  // below react to it. Pure enhancement — failure leaves the manual flow intact.
+  const handleMatch = async () => {
+    const desc = projectInput.trim()
+    if (desc.length < 8) {
+      setMatchError('Bitte beschreiben Sie kurz, was Sie heben möchten (z.B. „700 kg Glasscheibe, 8 m“).')
+      return
+    }
+    setMatching(true)
+    setMatchError(null)
+    try {
+      const res = await fetch('/api/ai-helper', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'requirements', description: desc }),
+      })
+      if (!res.ok) throw new Error('match failed')
+      const data = (await res.json()) as Requirements
+      setRequirements(data)
+      trackPageEvent('listing_ai_match', {
+        has_capacity: data.capacity_kg != null,
+        needs_glass: !!data.needs_glass,
+      })
+    } catch {
+      setMatchError('Analyse momentan nicht verfügbar. Bitte wählen Sie die Anbieter manuell aus.')
+    } finally {
+      setMatching(false)
+    }
+  }
+
   // Reset pagination when filters change
   const handleFilterChange = (setter: (v: string) => void, value: string) => {
     setter(value)
@@ -272,6 +379,46 @@ export function CompanyListWithForm({
       <Suspense fallback={null}>
         <PlzFromUrl onPlz={handlePlzFromUrl} />
       </Suspense>
+      {/* AI fit-matcher: free-text need → requirements → re-rank + pre-select the
+          best-fit firms. Discovery action (black CTA per the colour convention).
+          City listings only. Pure enhancement; manual selection still works. */}
+      {cityName && companies.length >= 2 && (
+        <div className="mb-3 rounded-lg border border-gray-200 bg-white px-5 py-4">
+          <label htmlFor="cl-need" className="block text-[14px] font-semibold text-gray-900 mb-1">
+            Was möchten Sie heben?
+          </label>
+          <p className="text-[12px] text-gray-500 mb-2">
+            Kurz beschreiben — wir sortieren die passenden Anbieter nach oben und wählen sie vor. Optional.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              id="cl-need"
+              type="text"
+              value={projectInput}
+              onChange={(e) => setProjectInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleMatch() } }}
+              placeholder="z.B. 700 kg Glasscheibe, 8 m über ein Haus, mit Bediener"
+              className="flex-1 text-[14px] text-gray-700 border border-gray-200 rounded-md px-3 py-2 placeholder:text-gray-400"
+            />
+            <button
+              type="button"
+              onClick={handleMatch}
+              disabled={matching}
+              className="shrink-0 inline-flex items-center justify-center text-[14px] font-semibold text-white bg-gray-900 hover:bg-black rounded-md px-4 py-2 transition-colors disabled:opacity-60"
+            >
+              {matching ? 'Analysiere…' : 'Passende Anbieter finden'}
+            </button>
+          </div>
+          {matchError && <p className="text-[12px] text-red-600 mt-2">{matchError}</p>}
+          {requirements && !matchError && (
+            <p className="text-[12px] text-gray-600 mt-2">
+              Erkannt:{requirements.capacity_kg > 0 ? ` ca. ${fmtTons(requirements.capacity_kg)} t` : ' Gewicht offen'}{requirements.needs_glass ? ' · Glassauger nötig' : ''}.{' '}
+              {goodFitCount > 0 ? `${goodFitCount} besonders passende Anbieter oben.` : 'Anbieter nach Eignung sortiert.'}
+              {weakFitCount > 0 ? ` ${weakFitCount} evtl. zu klein – nach unten sortiert.` : ''}
+            </p>
+          )}
+        </div>
+      )}
       {/* Primary CTA, 1-click sammelanfrage to all currently-visible firms.
           City-listings only (`cityName` set), type pages have too many firms
           country-wide for a single broadcast to make sense. The modal that
@@ -392,6 +539,8 @@ export function CompanyListWithForm({
             company={company}
             onRequestQuote={toggleCompany}
             selected={selectedIds.includes(company.id)}
+            fit={fitMap.get(company.id)?.fit}
+            fitNote={fitMap.get(company.id)?.note}
             referencePrice={referencePrice}
             distanceKm={distanceMap.get(company.id)}
             cityContext={cityContext}

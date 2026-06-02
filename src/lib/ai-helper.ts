@@ -549,6 +549,81 @@ export async function runCategorize(description: string): Promise<CategorizeResu
   return block.input as CategorizeResult
 }
 
+// === REQUIREMENTS MODE ===
+//
+// Listing-page matcher (lead-flow rebuild "A"). The customer types what they
+// want to lift in a free field on a city×type listing; this extracts the
+// structured lifting requirements so the client can re-rank the firm list by
+// fit (capacity + glass-sucker), using company_cranes data it already holds.
+// Haiku 4.5 with cached system prompt; ~$0.001-0.005 per call, only when the
+// customer actually uses the field.
+
+const REQUIREMENTS_SYSTEM = `Sie extrahieren aus einer kurzen Projektbeschreibung die technischen Anforderungen an einen Kraneinsatz. Ziel: die Liste der Anbieter nach Eignung sortieren.
+
+Geben Sie zurück:
+- capacity_kg: das Gewicht der schwersten Last in KILOGRAMM (1 t = 1000 kg). 0 wenn nicht erkennbar. Nehmen Sie das schwerste genannte Einzelgewicht, nicht die Summe.
+- needs_glass: true, wenn Glas/Scheiben/Fenster gehoben werden ODER ein Glassauger/Vakuumheber/Saugnapf erwähnt ist.
+- needs_operator: true, wenn ein Bediener/Kranführer gewünscht ist ("mit Bediener", "mit Fahrer"). Sonst false.
+- reasoning: ein kurzer deutscher Satz (max 20 Wörter), nur für Logs.
+
+Regeln:
+- Rechnen Sie Tonnen in kg um (z.B. "1,5 t" -> 1500).
+- Bei Spannen das obere Ende nehmen (z.B. "500-700 kg" -> 700).
+- Erfinden Sie keine Zahl; wenn kein Gewicht genannt ist, capacity_kg=0.
+- Antworten Sie IMMER über das Tool record_requirements. Kein freier Text.`
+
+const REQUIREMENTS_TOOL = {
+  name: 'record_requirements',
+  description: 'Records the structured lifting requirements extracted from a project description.',
+  input_schema: {
+    type: 'object' as const,
+    properties: {
+      capacity_kg: {
+        type: 'number' as const,
+        description: 'Heaviest single load in kilograms. 0 if no weight is stated.',
+      },
+      needs_glass: {
+        type: 'boolean' as const,
+        description: 'true if glass/pane/window lifting or a vacuum lifter (Glassauger) is implied.',
+      },
+      needs_operator: {
+        type: 'boolean' as const,
+        description: 'true if an operator/driver is wanted, false otherwise.',
+      },
+      reasoning: {
+        type: 'string' as const,
+        description: 'One short German sentence (max 20 words) for ops logs only.',
+      },
+    },
+    required: ['capacity_kg', 'needs_glass', 'needs_operator', 'reasoning'],
+  },
+}
+
+export type RequirementsResult = {
+  capacity_kg: number // 0 = not stated
+  needs_glass: boolean
+  needs_operator: boolean
+  reasoning: string
+}
+
+export async function runRequirements(description: string): Promise<RequirementsResult> {
+  const payload = {
+    model: MODEL,
+    max_tokens: 300,
+    system: [
+      { type: 'text', text: REQUIREMENTS_SYSTEM, cache_control: { type: 'ephemeral' } },
+    ],
+    tools: [REQUIREMENTS_TOOL],
+    tool_choice: { type: 'tool', name: 'record_requirements' },
+    messages: [{ role: 'user', content: `Projektbeschreibung:\n"""\n${description}\n"""` }],
+  }
+
+  const res = await callAnthropic(payload)
+  const block = res.content?.find((b: { type: string }) => b.type === 'tool_use')
+  if (!block) throw new Error('requirements: no tool_use in response')
+  return block.input as RequirementsResult
+}
+
 // === Anthropic API call ===
 
 interface AnthropicResponse {

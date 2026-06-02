@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { runCoach, runBerater, runSubtypeCheck, type BeraterMessage } from '@/lib/ai-helper'
+import { runCoach, runBerater, runSubtypeCheck, runRequirements, type BeraterMessage } from '@/lib/ai-helper'
 
 // Rate limit per IP, same shape as /api/leads (5/min). Coach gets called on
 // every typing pause so we want a slightly higher ceiling than the lead form.
@@ -75,6 +75,16 @@ export async function POST(request: Request) {
         heightMeters,
         projectDetails,
       })
+      return NextResponse.json(result)
+    }
+
+    if (body.mode === 'requirements') {
+      const description = String(body.description ?? '').slice(0, MAX_DESCRIPTION_LEN)
+      // Nothing useful to extract from a near-empty field — skip the AI call.
+      if (description.trim().length < 8) {
+        return NextResponse.json({ capacity_kg: 0, needs_glass: false, needs_operator: false, reasoning: '' })
+      }
+      const result = await runRequirements(description)
       return NextResponse.json(result)
     }
 

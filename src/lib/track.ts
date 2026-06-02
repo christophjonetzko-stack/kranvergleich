@@ -35,6 +35,7 @@ export type PageEventType =
   | 'listing_cta_to_preise_clicked'
   | 'listing_inquire_all_clicked'
   | 'listing_inquire_all_submitted'
+  | 'listing_ai_match'
 
 export function trackPageEvent(
   eventType: PageEventType,

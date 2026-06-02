@@ -11,6 +11,12 @@ interface CompanyCardProps {
    *  suitable firms start pre-selected; the button then reads "Ausgewählt" and a
    *  click removes them). */
   selected?: boolean
+  /** Fit verdict from the AI matcher (capacity/glass vs. the customer's need).
+   *  'good' = positively suitable, 'weak' = declared capacity likely too small,
+   *  'neutral'/undefined = no signal (not shown). */
+  fit?: 'good' | 'neutral' | 'weak'
+  /** Short German fit note, e.g. "bis 16 t · Glassauger" or "max 1,5 t". */
+  fitNote?: string
   /** Fallback reference price label when company has no own price, e.g. "ab 250€/Tag. Richtwert" */
   referencePrice?: string | null
   /** Distance in km from user's PLZ (if provided) */
@@ -48,7 +54,7 @@ function getColorClass(name: string): string {
   return INITIALS_COLORS[Math.abs(hash) % INITIALS_COLORS.length]
 }
 
-export function CompanyCard({ company, onRequestQuote, selected = false, referencePrice, distanceKm, cityContext, typeContext }: CompanyCardProps) {
+export function CompanyCard({ company, onRequestQuote, selected = false, fit, fitNote, referencePrice, distanceKm, cityContext, typeContext }: CompanyCardProps) {
   const initials = getInitials(company.name)
   const colorClass = getColorClass(company.name)
 
@@ -102,6 +108,16 @@ export function CompanyCard({ company, onRequestQuote, selected = false, referen
 
         {/* Line 3: Rating + crane types */}
         <div className="flex items-center gap-2 flex-wrap">
+          {fit === 'good' && (
+            <span className="text-[12px] bg-green-50 text-green-700 px-2 py-0.5 rounded font-medium">
+              ✓ Passt{fitNote ? ` · ${fitNote}` : ''}
+            </span>
+          )}
+          {fit === 'weak' && (
+            <span className="text-[12px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-medium">
+              Tragkraft prüfen{fitNote ? ` · ${fitNote}` : ''}
+            </span>
+          )}
           {company.google_rating != null && (
             <span className="text-[13px]">
               <span className="text-amber-500">&#9733;</span>{' '}
