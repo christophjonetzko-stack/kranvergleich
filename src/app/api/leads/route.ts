@@ -872,7 +872,7 @@ export async function POST(request: Request) {
           </div>`
         : ''
       // AI-inferred crane type banner, fires when /api/leads received
-      // crane_type_id=NULL and runCategorize (Haiku 4.5) classified the
+      // crane_type_id=NULL and runCategorize (Sonnet 4.6) classified the
       // project_description with confidence ≥ 0.8. Surfaces the AI's
       // reasoning so owner can sanity-check before any firm dispatch
       // happens. Independent banner alongside spec/validation/noFirms.
@@ -880,7 +880,7 @@ export async function POST(request: Request) {
         ? `<div style="background:#eff6ff;border:2px solid #2563eb;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
             <div style="font-size:15px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">🤖 Krantyp via AI klassifiziert</div>
             <div style="font-size:13px;color:#1e3a8a;line-height:1.5;">
-              Der Kunde hat keinen Krantyp gewählt, aber die Projektbeschreibung war konkret genug. Claude Haiku hat klassifiziert:<br>
+              Der Kunde hat keinen Krantyp gewählt, aber die Projektbeschreibung war konkret genug. Claude hat klassifiziert:<br>
               <strong>Begründung:</strong> ${escapeHtml(aiCategorizeReasoning ?? '')}<br><br>
               Anbieter wurden auf dieser Basis automatisch ausgewählt. Falls die Klassifizierung falsch aussieht. Lead manuell zurückrouten via opt-in-Mail (Greb-Pattern).
             </div>

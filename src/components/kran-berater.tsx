@@ -25,8 +25,9 @@ const AVATAR_SRC = '/images/kran-berater-avatar.png'
  * city  CTA "Anbieter zeigen" routes to the listing page with the project
  * description pre-filled into the inquiry form via ?project=…
  *
- * Backed by /api/ai-helper mode=berater (Claude Haiku 4.5, ~$0.005-0.02 per
- * session, max 10 messages per session). Conversation history persists in
+ * Backed by /api/ai-helper mode=berater (Claude Sonnet 4.6, for better
+ * multi-turn reasoning + crane-selection comfort; max 10 messages per
+ * session). Conversation history persists in
  * localStorage so a refresh doesn't wipe context.
  */
 

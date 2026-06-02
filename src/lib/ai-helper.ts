@@ -11,10 +11,12 @@
  *              optional redirect target (`/<type>-mieten[/<city>]?project=…`)
  *              once enough context is captured.
  *
- * Both modes call Claude Haiku 4.5 via plain fetch (no SDK, keeps deps
- * minimal). Both put the long stable system prompt + tool definition into
- * a single `cache_control: ephemeral` block so subsequent calls within the
- * 5-minute window read from cache (~10× cheaper input).
+ * All modes call the Anthropic API via plain fetch (no SDK, keeps deps minimal)
+ * and put the long stable system prompt + tool definition into a single
+ * `cache_control: ephemeral` block so subsequent calls within the 5-minute
+ * window read from cache (~10× cheaper input). Model tier per mode: coach +
+ * subtype-check use Haiku 4.5 (MODEL_FAST); berater, categorize + requirements
+ * use Sonnet 4.6 (MODEL_SMART) for better reasoning + lead-quality.
  */
 
 import { craneTypes as craneTypesList } from '@/data/crane-types'
@@ -22,7 +24,13 @@ import { COUNTRY, PLZ_REGEX } from '@/lib/country'
 import { getServiceSupabase } from '@/lib/supabase'
 
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
-const MODEL = 'claude-haiku-4-5-20251001'
+// Two tiers. FAST (Haiku 4.5) for the simple UX nudges (coach, subtype-check).
+// SMART (Sonnet 4.6) for reasoning + lead-quality tasks (berater chat,
+// requirements matcher, crane-type categorize), where model quality directly
+// affects crane-selection comfort and lead routing. Opus would be overkill for
+// these per-user, real-time calls.
+const MODEL_FAST = 'claude-haiku-4-5-20251001'
+const MODEL_SMART = 'claude-sonnet-4-6'
 
 // crane_type_id (Supabase UUID)  slug. Mirror of CRANE_TYPE_ID_TO_SLUG in
 // mcp-kranvergleich/server_sse.py, both files implement the same
@@ -211,7 +219,7 @@ export async function runCoach(input: {
     : `Beschreibung des Kunden:\n"""\n${input.description}\n"""`
 
   const payload = {
-    model: MODEL,
+    model: MODEL_FAST,
     max_tokens: 600,
     system: [
       { type: 'text', text: COACH_SYSTEM, cache_control: { type: 'ephemeral' } },
@@ -352,7 +360,7 @@ export async function runBerater(messages: BeraterMessage[]): Promise<BeraterRes
   }
 
   const payload = {
-    model: MODEL,
+    model: MODEL_SMART,
     max_tokens: 600,
     system: systemBlocks,
     tools: [BERATER_TOOL],
@@ -443,7 +451,7 @@ export async function runSubtypeCheck(input: {
   const userMsg = `${facts.join('\n')}\n\nProjektbeschreibung des Kunden:\n"""\n${input.projectDetails}\n"""`
 
   const payload = {
-    model: MODEL,
+    model: MODEL_FAST,
     max_tokens: 400,
     system: [
       { type: 'text', text: SUBTYPE_CHECK_SYSTEM, cache_control: { type: 'ephemeral' } },
@@ -469,8 +477,9 @@ export async function runSubtypeCheck(input: {
 // description for an obvious classification ("1.5 t auf 10 m für 60 Tage" 
 // baukran).
 //
-// Pricing: ~$0.001-0.005 per call (Haiku 4.5 with cached system prompt).
-// Latency: ~600-1500 ms. Called inline in /api/leads before auto_select.
+// Model: Sonnet 4.6 (MODEL_SMART) — a misclassification here misroutes the lead,
+// so the stronger model earns its keep. Cached system prompt keeps cost low.
+// Called inline in /api/leads before auto_select (adds ~1s to the submit).
 
 const CATEGORIZE_SYSTEM = `Sie sind ein Klassifikator für Kran-Anfragen auf KranVergleich.de. Gegeben ist eine Projektbeschreibung. Wählen Sie genau EINEN Krantyp aus der Liste und geben Sie Ihre Konfidenz an.
 
@@ -533,7 +542,7 @@ export type CategorizeResult = {
 
 export async function runCategorize(description: string): Promise<CategorizeResult> {
   const payload = {
-    model: MODEL,
+    model: MODEL_SMART,
     max_tokens: 300,
     system: [
       { type: 'text', text: CATEGORIZE_SYSTEM, cache_control: { type: 'ephemeral' } },
@@ -555,8 +564,9 @@ export async function runCategorize(description: string): Promise<CategorizeResu
 // want to lift in a free field on a city×type listing; this extracts the
 // structured lifting requirements so the client can re-rank the firm list by
 // fit (capacity + glass-sucker), using company_cranes data it already holds.
-// Haiku 4.5 with cached system prompt; ~$0.001-0.005 per call, only when the
-// customer actually uses the field.
+// Sonnet 4.6 (MODEL_SMART) with cached system prompt; runs only when the
+// customer actually uses the field. The extraction drives firm fit-ranking, so
+// nuance (e.g. "2 Scheiben je 400 kg" = 400 not 800) is worth the smarter tier.
 
 const REQUIREMENTS_SYSTEM = `Sie extrahieren aus einer kurzen Projektbeschreibung die technischen Anforderungen an einen Kraneinsatz. Ziel: die Liste der Anbieter nach Eignung sortieren.
 
@@ -608,7 +618,7 @@ export type RequirementsResult = {
 
 export async function runRequirements(description: string): Promise<RequirementsResult> {
   const payload = {
-    model: MODEL,
+    model: MODEL_SMART,
     max_tokens: 300,
     system: [
       { type: 'text', text: REQUIREMENTS_SYSTEM, cache_control: { type: 'ephemeral' } },
