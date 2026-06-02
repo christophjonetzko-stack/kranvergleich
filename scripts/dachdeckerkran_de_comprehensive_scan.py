@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Step 4 — comprehensive enrichment of the newly-imported Dachdeckerkran DE
-candidates via Claude Opus 4.7 + adaptive thinking + tool_use.
+candidates via Claude Opus 4.8 + adaptive thinking + tool_use.
 
 Adapted from at_firms_comprehensive_scan.py. Key DE differences:
   - country='DE', filter to newly-imported slugs (loaded from import proposal)
@@ -276,7 +276,7 @@ def call_claude(client: anthropic.Anthropic, firm: dict, corpus: str) -> tuple[d
 
     try:
         response = client.messages.create(
-            model="claude-opus-4-7",
+            model="claude-opus-4-8",
             max_tokens=8000,
             thinking={"type": "adaptive"},
             system=[

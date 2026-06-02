@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Comprehensive AT firm enrichment via Claude API (Opus 4.7 + adaptive thinking + tool_use).
+"""Comprehensive AT firm enrichment via Claude API (Opus 4.8 + adaptive thinking + tool_use).
 
 Replaces keyword-based Phase B. Per firm: deep-crawl homepage + sub-pages
 (produkte/flotte/leistungen/kontakt/impressum/...), concat to ~25k tokens,
-send to Claude Opus 4.7 with a forced tool_use that returns ~22 strict
+send to Claude Opus 4.8 with a forced tool_use that returns ~22 strict
 fields, then UPDATE companies + INSERT company_cranes idempotently.
 
-Model: Opus 4.7 chosen over Sonnet 4.6 because (a) extraction quality is the
+Model: Opus 4.8 chosen over Sonnet 4.6 because (a) extraction quality is the
 whole point — user said "wybierz model który zrobi to dobrze a nie tanio",
 (b) adaptive thinking is well suited for messy JS-heavy crawls where Claude
 needs to reason about contradictions across sub-pages, and (c) the absolute
@@ -15,7 +15,7 @@ cost delta on 106 firms (~$15→$30) is small relative to the data-quality
 upside that drives lead conversion.
 
 Best practices applied (per claude-api skill):
-  - Adaptive thinking: thinking={type:"adaptive"} — Opus 4.7 only supports
+  - Adaptive thinking: thinking={type:"adaptive"} — Opus 4.8 only supports
     adaptive (enabled/budget_tokens returns 400). Claude self-decides
     thinking depth. display defaults to "omitted" — fine, we don't stream.
   - Prompt caching: cache_control on the last system block caches the system
@@ -23,7 +23,7 @@ Best practices applied (per claude-api skill):
     messages, so the cacheable prefix is everything except per-firm content.
     First firm pays cache-write (~1.25× input), every subsequent firm pays
     cache-read (~0.1× input) on the cached portion.
-  - tool_choice="auto" + single tool: with Opus 4.7 + adaptive thinking,
+  - tool_choice="auto" + single tool: with Opus 4.8 + adaptive thinking,
     forced tool_choice is rejected ("Thinking may not be enabled when
     tool_choice forces tool use"). With only one tool defined and a clear
     user instruction "call the extract_firm_data tool", Claude reliably
@@ -36,7 +36,7 @@ Best practices applied (per claude-api skill):
     (mostly fetch latency + Opus thinking, not bandwidth). Parallel adds
     rate-limit risk for marginal speedup.
 
-Cost: ~$0.20–0.40 per firm Opus 4.7 with adaptive thinking
+Cost: ~$0.20–0.40 per firm Opus 4.8 with adaptive thinking
 (~10–25k input + ~2–4k output incl. thinking) = ~$25–40 total for 106
 firms. First firm pays cache-write premium; rest pay cache-read on the
 system+tool prefix.
@@ -308,7 +308,7 @@ def call_claude(client: anthropic.Anthropic, firm: dict, corpus: str) -> tuple[d
 
     try:
         response = client.messages.create(
-            model="claude-opus-4-7",
+            model="claude-opus-4-8",
             max_tokens=8000,
             thinking={"type": "adaptive"},
             system=[
