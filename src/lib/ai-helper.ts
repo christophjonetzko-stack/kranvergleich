@@ -32,9 +32,7 @@ const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
 const MODEL_FAST = 'claude-haiku-4-5-20251001'
 const MODEL_SMART = 'claude-sonnet-4-6'
 
-// crane_type_id (Supabase UUID)  slug. Mirror of CRANE_TYPE_ID_TO_SLUG in
-// mcp-kranvergleich/server_sse.py, both files implement the same
-// availability check; keep them in sync when adding crane types.
+// crane_type_id (Supabase UUID) -> slug, used by the PLZ availability check.
 const CRANE_TYPE_ID_TO_SLUG: Record<string, string> = {
   '9b9c0aa2-3f8c-4cfb-94e2-93a3f4f24d9a': 'minikran',
   '0b61b867-53a6-4cf9-afbb-50c610dc4a2a': 'raupenkran',
@@ -72,9 +70,9 @@ function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): nu
 }
 
 /** For a German PLZ, returns supplier availability per crane type:
- *  { slug  { in_50km, in_100km, nearest_km } }. Same logic as the
- *  check_availability_by_plz tool on the MCP server (both query Supabase,
- *  both Haversine, both fall back companies.lat/lng  firm zip). */
+ *  { slug -> { in_50km, in_100km, nearest_km } }. Queries Supabase
+ *  (company_cranes + companies) directly, Haversine distance, falls back to the
+ *  firm's zip when companies.lat/lng is missing. */
 export async function getAvailabilityByPlz(plz: string): Promise<{
   city: string
   perType: Record<string, { in_50km: number; in_100km: number; nearest_km: number | null }>
