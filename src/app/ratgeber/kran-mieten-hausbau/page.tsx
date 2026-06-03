@@ -8,7 +8,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Kran für Hausbau: Welcher Kran wann?',
+  title: { absolute: 'Kran für den Hausbau: Welcher Typ, welche Kosten? 2026' },
   description:
     'Hausbau-Guide: Welcher Kran für welche Bauphase (Rohbau, Dachstuhl, Dacheindeckung)? Kostenbeispiel Einfamilienhaus, Timing und Genehmigungen.',
   alternates: alternatesFor('/ratgeber/kran-mieten-hausbau'),

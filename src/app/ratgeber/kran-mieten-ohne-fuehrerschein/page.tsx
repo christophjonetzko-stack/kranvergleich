@@ -5,7 +5,7 @@ import { COUNTRY_LABEL, BRAND_NAME } from '@/lib/country'
 import { alternatesFor } from '@/lib/alternates'
 
 export const metadata: Metadata = {
-  title: { absolute: 'Kran mieten ohne Führerschein – Kranschein?' },
+  title: { absolute: 'Kran mieten ohne Führerschein: Wann Kranschein nötig?' },
   description:
     `Brauche ich einen Kranschein? Welche Krane darf man ohne Führerschein selbst bedienen? Minikran, Dachdeckerkran, Anhängerkran, alle Regelungen, Kosten und Ausbildungspflicht zum Kranschein und Kranführerschein in ${COUNTRY_LABEL}.`,
   alternates: alternatesFor('/ratgeber/kran-mieten-ohne-fuehrerschein'),

@@ -10,7 +10,7 @@ import { OG_IMAGE } from '@/lib/og-image'
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Was kostet ein Kran? Mietpreise 2026',
+  title: { absolute: 'Was kostet ein Kran? Mietpreise 2026: 150–5.000 €/Tag' },
   description:
     'Was kostet ein Kran zur Miete? Tagespreise ab 150€ (Anhängerkran) bis 5.000€ (Raupenkran). Komplette Mietpreis-Tabelle aller 8 Krantypen 2026.',
   alternates: alternatesFor('/ratgeber/was-kostet-ein-kran'),
