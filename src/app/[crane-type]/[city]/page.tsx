@@ -220,7 +220,14 @@ export default async function CraneCityPage({
           </nav>
       </div>
 
-      <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
+      <p className="text-[11px] text-gray-300 mb-3">Daten zuletzt geprüft: April 2026</p>
+
+      <p className="text-[13px] text-gray-500 mb-6">
+        Unsicher, ob ein {craneType.name} das Richtige ist?{' '}
+        <Link href="/kostenrechner" className="text-blue-600 font-medium hover:underline">
+          Geführte Kran-Auswahl in 60 Sekunden &rarr;
+        </Link>
+      </p>
 
       <ListingFastAnfrageCTA
         craneTypeSlug={craneType.slug.replace(/-mieten$/, '')}
