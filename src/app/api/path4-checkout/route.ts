@@ -66,11 +66,16 @@ export async function POST(req: Request) {
     })
 
     if (!session.url) {
-      return NextResponse.json({ error: 'session_no_url' }, { status: 502 })
+      return NextResponse.json({ error: 'session_no_url' }, { status: 500 })
     }
     return NextResponse.json({ url: session.url })
   } catch (err) {
-    console.error('[path4-checkout] stripe error', err)
-    return NextResponse.json({ error: 'checkout_failed' }, { status: 502 })
+    // 500 (not 502): Cloudflare masks origin 502s with its own page, hiding the
+    // body. 500 passes through so the reason is visible. `detail` is a short,
+    // non-sensitive Stripe error message (e.g. "No such price", "Invalid API
+    // Key") to aid setup; it never includes secrets.
+    const detail = err instanceof Error ? err.message : String(err)
+    console.error('[path4-checkout] stripe error', detail)
+    return NextResponse.json({ error: 'checkout_failed', detail }, { status: 500 })
   }
 }
