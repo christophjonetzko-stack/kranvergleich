@@ -570,6 +570,7 @@ const REQUIREMENTS_SYSTEM = `Sie extrahieren aus einer kurzen Projektbeschreibun
 
 Geben Sie zurück:
 - capacity_kg: das Gewicht der schwersten Last in KILOGRAMM (1 t = 1000 kg). 0 wenn nicht erkennbar. Nehmen Sie das schwerste genannte Einzelgewicht, nicht die Summe.
+- reach_m: die benötigte Auslage/Reichweite ODER Hubhöhe in METERN (die größere der beiden Distanzen, die der Kran überbrücken muss). 0 wenn nicht erkennbar. NICHT Länge/Maße der Last, NICHT Quadratmeter.
 - needs_glass: true, wenn Glas/Scheiben/Fenster gehoben werden ODER ein Glassauger/Vakuumheber/Saugnapf erwähnt ist.
 - needs_operator: true, wenn ein Bediener/Kranführer gewünscht ist ("mit Bediener", "mit Fahrer"). Sonst false.
 - reasoning: ein kurzer deutscher Satz (max 20 Wörter), nur für Logs.
@@ -590,6 +591,10 @@ const REQUIREMENTS_TOOL = {
         type: 'number' as const,
         description: 'Heaviest single load in kilograms. 0 if no weight is stated.',
       },
+      reach_m: {
+        type: 'number' as const,
+        description: 'Required horizontal reach OR lift height in metres (the larger distance the crane must span). 0 if not stated. NOT the load dimensions, NOT square metres.',
+      },
       needs_glass: {
         type: 'boolean' as const,
         description: 'true if glass/pane/window lifting or a vacuum lifter (Glassauger) is implied.',
@@ -603,12 +608,13 @@ const REQUIREMENTS_TOOL = {
         description: 'One short German sentence (max 20 words) for ops logs only.',
       },
     },
-    required: ['capacity_kg', 'needs_glass', 'needs_operator', 'reasoning'],
+    required: ['capacity_kg', 'reach_m', 'needs_glass', 'needs_operator', 'reasoning'],
   },
 }
 
 export type RequirementsResult = {
   capacity_kg: number // 0 = not stated
+  reach_m: number // 0 = not stated
   needs_glass: boolean
   needs_operator: boolean
   reasoning: string

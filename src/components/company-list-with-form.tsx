@@ -17,7 +17,8 @@ function PlzFromUrl({ onPlz }: { onPlz: (plz: string) => void }) {
 import { CompanyCard } from './company-card'
 import { InquiryBar } from './inquiry-bar'
 import type { CompanyWithCranes } from '@/lib/types'
-import { getCraneTypeNameById } from '@/data/crane-types'
+import { getCraneTypeNameById, getCraneMaxReachById } from '@/data/crane-types'
+import { evalReachFit } from '@/lib/fit'
 import { trackPageEvent } from '@/lib/track'
 import { PLZ_REGEX } from '@/lib/country'
 
@@ -49,6 +50,7 @@ function fmtTons(kg: number): string {
 
 type Requirements = {
   capacity_kg: number // 0 = not stated
+  reach_m: number // 0 = not stated
   needs_glass: boolean
   needs_operator: boolean
   reasoning: string
@@ -179,17 +181,29 @@ export function CompanyListWithForm({
     const map = new Map<string, FitVerdict>()
     if (!requirements || !craneTypeId) return map
     const req = requirements.capacity_kg > 0 ? requirements.capacity_kg : null
+    const reqReach = requirements.reach_m > 0 ? requirements.reach_m : 0
+    const typeReach = getCraneMaxReachById(craneTypeId) ?? 0
     for (const c of companies) {
-      const maxCap = c.company_cranes
-        .filter((cc) => cc.crane_type_id === craneTypeId)
-        .reduce<number | null>((acc, cc) => {
-          if (cc.max_capacity_kg == null) return acc
-          return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
-        }, null)
+      const forType = c.company_cranes.filter((cc) => cc.crane_type_id === craneTypeId)
+      const maxCap = forType.reduce<number | null>((acc, cc) => {
+        if (cc.max_capacity_kg == null) return acc
+        return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
+      }, null)
+      const firmReach = forType.reduce<number | null>((acc, cc) => {
+        if (cc.max_reach_m == null) return acc
+        return acc == null ? cc.max_reach_m : Math.max(acc, cc.max_reach_m)
+      }, null)
       const hasGlass = c.company_cranes.some((cc) => cc.has_glass_sucker === true)
       let fit: FitVerdict['fit'] = 'neutral'
       const notes: string[] = []
-      if (req != null && maxCap != null) {
+      if (reqReach > 0) {
+        // 2D fit (Last × Reichweite) when the customer stated a reach/height.
+        const rf = evalReachFit({ requiredKg: req ?? 0, requiredReachM: reqReach, firmMaxCapKg: maxCap, firmMaxReachM: firmReach, typeMaxReachM: typeReach })
+        if (rf.verdict === 'reach_short') { fit = 'weak'; notes.push(`Reichweite ~${firmReach ?? typeReach} m`) }
+        else if (rf.verdict === 'capacity_risk') { fit = 'weak'; notes.push(`bei ${reqReach} m evtl. zu klein`) }
+        else if (rf.verdict === 'ok' && maxCap != null) { fit = 'good'; notes.push(`bis ${fmtTons(maxCap)} t`) }
+      } else if (req != null && maxCap != null) {
+        // No reach stated → fall back to the at-mast capacity check.
         if (maxCap < req * FIT_MARGIN) { fit = 'weak'; notes.push(`max ${fmtTons(maxCap)} t`) }
         else { fit = 'good'; notes.push(`bis ${fmtTons(maxCap)} t`) }
       }
@@ -430,7 +444,7 @@ export function CompanyListWithForm({
           {matchError && <p className="text-[12px] text-red-600 mt-2">{matchError}</p>}
           {requirements && !matchError && (
             <p className="text-[12px] text-gray-600 mt-2">
-              Erkannt:{requirements.capacity_kg > 0 ? ` ca. ${fmtTons(requirements.capacity_kg)} t` : ' Gewicht offen'}{requirements.needs_glass ? ' · Glassauger nötig' : ''}.{' '}
+              Erkannt:{requirements.capacity_kg > 0 ? ` ca. ${fmtTons(requirements.capacity_kg)} t` : ' Gewicht offen'}{requirements.reach_m > 0 ? ` · ${requirements.reach_m} m Reichweite/Höhe` : ''}{requirements.needs_glass ? ' · Glassauger nötig' : ''}.{' '}
               {goodFitCount > 0 ? `${goodFitCount} besonders passende Anbieter oben.` : 'Anbieter nach Eignung sortiert.'}
               {weakFitCount > 0 ? ` ${weakFitCount} evtl. zu klein – nach unten sortiert.` : ''}
             </p>

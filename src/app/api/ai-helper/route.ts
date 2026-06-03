@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       const description = String(body.description ?? '').slice(0, MAX_DESCRIPTION_LEN)
       // Nothing useful to extract from a near-empty field — skip the AI call.
       if (description.trim().length < 8) {
-        return NextResponse.json({ capacity_kg: 0, needs_glass: false, needs_operator: false, reasoning: '' })
+        return NextResponse.json({ capacity_kg: 0, reach_m: 0, needs_glass: false, needs_operator: false, reasoning: '' })
       }
       const result = await runRequirements(description)
       return NextResponse.json(result)
