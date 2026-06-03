@@ -67,6 +67,37 @@ const STEPS = [
     ] as Option[],
   },
   {
+    id: 'reach',
+    question: 'Wie weit muss der Kran reichen (Auslage zur Last)?',
+    options: [
+      { label: 'Bis 5 Meter', value: '5' },
+      { label: '5–10 Meter', value: '10' },
+      { label: '10–20 Meter', value: '20' },
+      { label: 'Über 20 Meter', value: '40' },
+      { label: 'Ich bin mir nicht sicher', value: 'unsure' },
+    ] as Option[],
+  },
+  {
+    id: 'access',
+    question: 'Wie ist die Zufahrt zur Einsatzstelle?',
+    options: [
+      { label: 'Breit / normal (LKW-tauglich)', value: 'breit' },
+      { label: 'Schmal (unter 3 m)', value: 'schmal' },
+      { label: 'Nur durch Gebäude / Innenhof', value: 'innenhof' },
+      { label: 'Weicher / unebener Untergrund', value: 'gelaende' },
+      { label: 'Ich bin mir nicht sicher', value: 'unsure' },
+    ] as Option[],
+  },
+  {
+    id: 'operator',
+    question: 'Brauchen Sie einen Bediener (Kranführer)?',
+    options: [
+      { label: 'Mit Bediener', value: 'mit' },
+      { label: 'Ohne, selbst bedienen', value: 'ohne' },
+      { label: 'Egal / weiß nicht', value: 'egal' },
+    ] as Option[],
+  },
+  {
     id: 'duration',
     question: 'Wie lange brauchen Sie den Kran?',
     options: [
@@ -222,6 +253,24 @@ function personalizedReason(slug: string, answers: Record<string, string>): stri
   }
 }
 
+// Compose the wizard's structured answers into a short German spec line. Added
+// to the lead's project_description so (a) firms get a complete brief and (b)
+// /api/leads reads the weight + reach via regex for the 2D fit (Last × Reichweite).
+function buildSpecSummary(a: Record<string, string>): string {
+  const W: Record<string, string> = { '1': 'bis 1 t', '5': '1–5 t', '20': '5–20 t', '50': '20–50 t', '100': 'über 50 t' }
+  const H: Record<string, string> = { '10': 'bis 10 m', '20': '10–20 m', '40': '20–40 m', '60': 'über 40 m' }
+  const R: Record<string, string> = { '5': 'bis 5 m', '10': '5–10 m', '20': '10–20 m', '40': 'über 20 m' }
+  const AC: Record<string, string> = { breit: 'breit/normal', schmal: 'schmal (<3 m)', innenhof: 'durch Gebäude/Innenhof', gelaende: 'weicher/unebener Untergrund' }
+  const OP: Record<string, string> = { mit: 'mit Bediener', ohne: 'ohne (selbst)' }
+  const parts: string[] = []
+  if (W[a.weight]) parts.push(`Gewicht ${W[a.weight]}`)
+  if (H[a.height]) parts.push(`Hubhöhe ${H[a.height]}`)
+  if (R[a.reach]) parts.push(`Auslage ${R[a.reach]}`)
+  if (AC[a.access]) parts.push(`Zufahrt ${AC[a.access]}`)
+  if (OP[a.operator]) parts.push(OP[a.operator])
+  return parts.length ? `Angaben aus Kostenrechner: ${parts.join(' · ')}` : ''
+}
+
 // --- Recommendation engine ---
 
 interface Recommendation {
@@ -274,8 +323,14 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
 
   const weight = Number(answers.weight)
   const height = Number(answers.height)
+  const reach = Number(answers.reach)
   const duration = Number(answers.duration)
   const projectType = answers.project_type
+  // Working envelope = the larger of lift height and horizontal reach. A job
+  // needing 11 m reach is type-equivalent to 11 m height for crane selection,
+  // so the decision tree keys off the envelope, not height alone. Reach falls
+  // back to 0 when unanswered ('unsure' → NaN), leaving height-only behaviour.
+  const envelope = Math.max(Number.isFinite(height) ? height : 0, Number.isFinite(reach) ? reach : 0) || height
 
   // Decision tree based on weight, height, duration. project_type is captured
   // for segmentation (DB + future CRM nurture) but does not drive crane choice
@@ -288,30 +343,30 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
   let name = 'Minikran'
   let reason = ''
 
-  if (projectType === 'dachdecker' && weight <= 1 && height <= 20) {
+  if (projectType === 'dachdecker' && weight <= 1 && envelope <= 20) {
     slug = 'dachdeckerkran-mieten'
     name = 'Dachdeckerkran'
     reason = 'Optimal für Dacharbeiten, schneller Aufbau, kein Kranführerschein nötig.'
-  } else if (weight <= 1 && height <= 10) {
+  } else if (weight <= 1 && envelope <= 10) {
     slug = 'anhaengerkran-mieten'
     name = 'Anhängerkran'
     reason = 'Günstigste Option für leichte Lasten, transportierbar mit PKW.'
-  } else if (weight <= 1 && height <= 20) {
+  } else if (weight <= 1 && envelope <= 20) {
     slug = 'minikran-mieten'
     name = 'Minikran'
     reason = 'Kompakt und flexibel, passt durch enge Zufahrten und Türöffnungen.'
-  } else if (weight <= 5 && height <= 20) {
+  } else if (weight <= 5 && envelope <= 20) {
     slug = 'minikran-mieten'
     name = 'Minikran'
     reason = 'Minikrane schaffen bis 3t Traglast und 18m Höhe, ideal für mittlere Projekte.'
-  } else if (weight <= 20 && height <= 40) {
-    // Autokran covers light-to-medium loads at all reachable heights up to 40m;
-    // bumping from height ≤ 30 to ≤ 40 prevents 1–5t jobs at 20–40m falling
-    // through to Mobilkran (physically capable but economically overkill).
+  } else if (weight <= 20 && envelope <= 40) {
+    // Autokran covers light-to-medium loads at all reachable heights/reaches up
+    // to 40m; using the envelope (max of height, reach) prevents 1–5t jobs at
+    // 20–40m falling through to Mobilkran (physically capable but overkill).
     slug = 'autokran-mieten'
     name = 'Autokran'
     reason = 'Autokran, flexibel, schnell einsatzbereit, inkl. Kranführer.'
-  } else if (weight <= 50 && height <= 40) {
+  } else if (weight <= 50 && envelope <= 40) {
     slug = 'mobilkran-mieten'
     name = 'Mobilkran'
     reason = 'Mobilkran für schwere Lasten, hohe Tragkraft, inkl. Kranführer.'
@@ -319,7 +374,7 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     slug = 'raupenkran-mieten'
     name = 'Raupenkran'
     reason = 'Raupenkran für Schwerlast-Projekte, bis 3.000t Tragkraft möglich.'
-  } else if (height > 40) {
+  } else if (envelope > 40) {
     slug = 'baukran-mieten'
     name = 'Baukran'
     reason = 'Turmdrehkran für Großbaustellen, lohnt sich ab mehreren Wochen Einsatz.'
@@ -329,8 +384,8 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     reason = 'Autokran, vielseitig einsetzbar für die meisten Hebeprojekte.'
   }
 
-  // Long duration + height  consider Baukran override
-  if (duration >= 30 && height >= 20 && slug !== 'raupenkran-mieten') {
+  // Long duration + height/reach  consider Baukran override
+  if (duration >= 30 && envelope >= 20 && slug !== 'raupenkran-mieten') {
     slug = 'baukran-mieten'
     name = 'Baukran'
     reason = 'Bei langer Mietdauer und großer Höhe ist ein Turmdrehkran wirtschaftlicher.'
@@ -515,7 +570,11 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
     // email, so prefixing the boilerplate ("Empfehlung Kostenrechner: …") just
     // buries the real project details in noise the firm doesn't need.
     const userDetails = String(form.get('project_details') || '').trim()
-    const projectDescription = userDetails
+    // Append the structured wizard answers (weight/height/reach/access/operator)
+    // so firms get a complete brief and /api/leads can read the weight + reach
+    // for the 2D fit. The user's free text stays first; the spec line follows.
+    const specSummary = buildSpecSummary(answers)
+    const projectDescription = [userDetails, specSummary].filter(Boolean).join('\n')
 
     setLeadSending(true)
     setLeadError(null)
