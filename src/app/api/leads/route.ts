@@ -413,7 +413,7 @@ export async function POST(request: Request) {
     // Coarse warn via lib/fit.ts — owner reviews, never auto-dropped.
     const reachShortFirms: string[] = []
     const capacityRiskFirms: Array<{ name: string; cap_at_reach_kg: number }> = []
-    if (capacityHintKg > 0 && autoSelectedMatches && body.crane_type_id) {
+    if ((capacityHintKg > 0 || reachHintM > 0) && autoSelectedMatches && body.crane_type_id) {
       const requiredCapacityKg = capacityHintKg * FIT_SAFETY_MARGIN
       for (const m of autoSelectedMatches) {
         const cranesForType = (m.company.company_cranes ?? []).filter(
@@ -423,10 +423,18 @@ export async function POST(request: Request) {
           if (cc.max_capacity_kg == null) return acc
           return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
         }, null)
-        if (maxCapKg == null) {
-          unverifiedFirmCount += 1
-        } else if (maxCapKg < requiredCapacityKg) {
-          undersizedFirms.push({ name: m.company.name, max_capacity_kg: maxCapKg })
+        if (capacityHintKg > 0) {
+          if (maxCapKg == null) unverifiedFirmCount += 1
+          else if (maxCapKg < requiredCapacityKg) undersizedFirms.push({ name: m.company.name, max_capacity_kg: maxCapKg })
+        }
+        if (reachHintM > 0) {
+          const firmReach = cranesForType.reduce<number | null>((acc, cc: { max_reach_m: number | null }) => {
+            if (cc.max_reach_m == null) return acc
+            return acc == null ? cc.max_reach_m : Math.max(acc, cc.max_reach_m)
+          }, null)
+          const rf = evalReachFit({ requiredKg: capacityHintKg, requiredReachM: reachHintM, firmMaxCapKg: maxCapKg, firmMaxReachM: firmReach, typeMaxReachM })
+          if (rf.verdict === 'reach_short') reachShortFirms.push(m.company.name)
+          else if (rf.verdict === 'capacity_risk' && rf.capAtReachKg != null) capacityRiskFirms.push({ name: m.company.name, cap_at_reach_kg: rf.capAtReachKg })
         }
       }
     }
