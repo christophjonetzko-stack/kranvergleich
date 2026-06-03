@@ -31,7 +31,21 @@ interface Option {
   value: string
 }
 
-const STEPS = [
+// A wizard step is either a multiple-choice (options) step or a free-text input
+// step (PLZ). `options` undefined → render the text input branch.
+interface Step {
+  id: string
+  question: string
+  options?: Option[]
+  placeholder?: string
+}
+
+const STEPS: Step[] = [
+  {
+    id: 'plz',
+    question: 'Wo soll der Kran zum Einsatz kommen?',
+    placeholder: 'PLZ oder Ort, z.B. 10115 oder Berlin',
+  },
   {
     id: 'project_type',
     question: 'Was steht bei Ihrem nächsten Projekt an?',
@@ -500,6 +514,14 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
   // mobile (form scrolls below fold). Compact form (4 required only) closes
   // visual gap to submit button. Optional fields stay reachable via toggle.
   const [showOptionalFields, setShowOptionalFields] = useState(false)
+  // Free-text value for input-type steps (PLZ). Synced from answers when the
+  // user navigates back to an input step so their entry isn't lost.
+  const [stepInput, setStepInput] = useState('')
+  useEffect(() => {
+    const s = STEPS[currentStep]
+    if (s && !s.options) setStepInput(answers[s.id] ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep])
 
   // Pick up `?dryrun=1` after mount so we don't diverge between SSR and the
   // client during hydration; a prerendered page can't read the URL, and the
@@ -528,6 +550,25 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
     }
   }
 
+  // Advance from a free-text input step (PLZ). Stores the value, pre-fills the
+  // final form's location field so the user doesn't enter the PLZ twice.
+  function handleInputAdvance() {
+    const step = STEPS[currentStep]
+    const value = stepInput.trim()
+    if (value.length < 2) return
+    const newAnswers = { ...answers, [step.id]: value }
+    setAnswers(newAnswers)
+    if (step.id === 'plz') setLocationLive(value)
+    trackPageEvent('calculator_step_completed', { step: currentStep + 1, value: 'input' })
+    if (currentStep < STEPS.length - 1) {
+      setCurrentStep(currentStep + 1)
+    } else {
+      const rec = getRecommendation(newAnswers)
+      setResult(rec)
+      trackPageEvent('calculator_recommendation_shown', { crane_type: rec.slug.replace(/-mieten$/, '') })
+    }
+  }
+
   function handleReset() {
     setCurrentStep(0)
     setAnswers({})
@@ -538,6 +579,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
     setDsgvoConsent(false)
     setProjectDetailsLive('')
     setLocationLive('')
+    setStepInput('')
   }
 
   // Submit Sammelanfrage, /api/leads auto-selects up to 10 nearest firms
@@ -1021,17 +1063,40 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
       </p>
       <h3 className="text-[16px] font-semibold text-gray-900 mb-4">{step.question}</h3>
 
-      <div className="grid gap-2">
-        {step.options.map((opt) => (
+      {step.options ? (
+        <div className="grid gap-2">
+          {step.options.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => handleSelect(opt.value)}
+              className="text-left text-[14px] text-gray-700 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 hover:border-blue-300 rounded-lg px-4 py-3 transition-colors"
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            type="text"
+            value={stepInput}
+            onChange={(e) => setStepInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleInputAdvance() } }}
+            placeholder={step.placeholder}
+            maxLength={80}
+            autoFocus
+            className="flex-1 text-[14px] text-gray-700 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-400"
+          />
           <button
-            key={opt.value}
-            onClick={() => handleSelect(opt.value)}
-            className="text-left text-[14px] text-gray-700 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 hover:border-blue-300 rounded-lg px-4 py-3 transition-colors"
+            type="button"
+            onClick={handleInputAdvance}
+            disabled={stepInput.trim().length < 2}
+            className="shrink-0 inline-flex items-center justify-center text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg px-5 py-3 transition-colors disabled:opacity-50"
           >
-            {opt.label}
+            Weiter
           </button>
-        ))}
-      </div>
+        </div>
+      )}
 
       {currentStep > 0 && (
         <button
