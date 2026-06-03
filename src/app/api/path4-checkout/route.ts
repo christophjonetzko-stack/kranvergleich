@@ -19,11 +19,14 @@ const LAUNCH_END_DEFAULT = '2026-06-25T23:59:59+02:00'
 
 /** Returns the Stripe Price id for the current period, or null if the matching env is unset. */
 function selectPriceId(now: Date): { priceId: string | undefined; isLaunch: boolean } {
-  const launchEnd = new Date(process.env.STRIPE_PATH4_LAUNCH_END || LAUNCH_END_DEFAULT)
+  const launchEnd = new Date((process.env.STRIPE_PATH4_LAUNCH_END || LAUNCH_END_DEFAULT).trim())
   const isLaunch = now.getTime() <= launchEnd.getTime()
-  const priceId = isLaunch
+  // .trim() guards against trailing/leading whitespace pasted into the env var
+  // (a stray space turns the id into "No such price").
+  const priceId = (isLaunch
     ? process.env.STRIPE_PRICE_LAUNCH_99
     : process.env.STRIPE_PRICE_STANDARD_149
+  )?.trim()
   return { priceId, isLaunch }
 }
 
