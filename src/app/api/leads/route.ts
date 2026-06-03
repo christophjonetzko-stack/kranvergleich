@@ -591,6 +591,19 @@ export async function POST(request: Request) {
     }
     const safeMismatchHint = craneTypeMismatchHint ? escapeHtml(craneTypeMismatchHint) : null
 
+    // Long-rental + mobile-crane → Baukran candidate. A 30+ day continuous rental
+    // of an Autokran/Mobilkran is usually far costlier than a Turmdrehkran for
+    // the same multi-week job (our own categorize heuristic: ≥30 Tage → baukran).
+    // The customer picked the type explicitly, so categorize never ran and the
+    // keyword mismatch hint won't catch it (the description rarely says
+    // "Baukran"). Soft owner flag only — surfaced by lead dd22ad37 (Bsoul, 30 Tage
+    // Autokran für Fertigteil-EFH). Owner clarifies Bautage vs Kran-Tage.
+    const LONG_RENTAL_DAYS = 30
+    const baukranCandidate =
+      typeof durationDays === 'number' &&
+      durationDays >= LONG_RENTAL_DAYS &&
+      (craneTypeName === 'Autokran' || craneTypeName === 'Mobilkran')
+
     // Compact "27.04." date for the subject line. date-fns isn't in the stack
     // (verified 2026-05-12) so we format manually. Falls back to null when
     // preferredDate is empty or unparseable; subject builder filters nulls.
@@ -922,6 +935,15 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
+      // Long-rental → Baukran-Kandidat-Banner (soft, informativ).
+      const baukranBanner = baukranCandidate
+        ? `<div style="background:#eff6ff;border:2px solid #2563eb;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">⏳ Lange Mietdauer (${durationDays} Tage) + ${escapeHtml(craneTypeName ?? '')}</div>
+            <div style="font-size:13px;color:#1e3a8a;line-height:1.5;">
+              Bei ${durationDays} Tagen ist ein ${escapeHtml(craneTypeName ?? '')} (Tagesmiete) für ein mehrwöchiges Projekt oft deutlich teurer als ein Turmdrehkran (Baukran). Bitte mit dem Kunden klären: 30 <strong>Bautage</strong> (Kran nur an einzelnen Einsatztagen, dann ${escapeHtml(craneTypeName ?? '')} ok) oder 30 <strong>Kran-Tage</strong> durchgehend? Im zweiten Fall lohnt sich meist ein Baukran-Angebot.
+            </div>
+          </div>`
+        : ''
       const subjectPrefix = (validationFailed
         ? '⏸ LEAD GEHALTEN (Validation), '
         : noFirmsAttached
@@ -931,6 +953,7 @@ export async function POST(request: Request) {
         + (hasUndersizedMatches ? `FIT-MISMATCH (${undersizedFirms.length}), ` : '')
         + (glassMismatch ? `🟡 GLAS (${glassCapableCount}/${glassCapableCount + noGlassFirms.length}), ` : '')
         + (aiInferredCraneType ? '🤖 AI-Krantyp, ' : '')
+        + (baukranCandidate ? `⏳ BAUKRAN? (${durationDays}d), ` : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
@@ -940,6 +963,7 @@ export async function POST(request: Request) {
           ${specBanner}
           ${fitCheckBanner}
           ${glassBanner}
+          ${baukranBanner}
           ${aiInferredBanner}
           <h2>Neue Kranvermietungs-Anfrage</h2>
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
