@@ -96,9 +96,13 @@ export async function markCompanyVerified(
   if (!row) return { ok: false, reason: 'company_not_found' }
   if (!row.tier_purchased_at) return { ok: false, reason: 'not_purchased' }
 
+  // is_verified drives the green "Verifiziert" pill, is_premium the blue
+  // "Anzeige" pill + top sort. A Path 4 customer pays for both, so verifying
+  // sets both. (Refund handling of is_verified is a Christoph decision — see
+  // revokeTier, which currently leaves is_verified untouched.)
   const { error: updErr } = await sb
     .from('companies')
-    .update({ tier_verified_at: new Date().toISOString(), is_premium: true })
+    .update({ tier_verified_at: new Date().toISOString(), is_premium: true, is_verified: true })
     .eq('id', companyId)
   if (updErr) return { ok: false, reason: updErr.message }
   return { ok: true }
