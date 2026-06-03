@@ -8,7 +8,8 @@ import { signLeadResponse } from '@/lib/lead-response-sig'
 import { submitLead, getCompaniesForCraneTypeNearLocation, isUnresolvedPlz, getSiteStats, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
-import { getCraneTypeNameById } from '@/data/crane-types'
+import { getCraneTypeNameById, getCraneMaxReachById } from '@/data/crane-types'
+import { evalReachFit } from '@/lib/fit'
 
 // Validation helpers, added 2026-05-12 (Commit 2). Trust stamps in the
 // firm-notification mail are always-on and hardcoded; the dispatch logic
@@ -366,6 +367,18 @@ export async function POST(request: Request) {
       ? `${(capacityHintKg / 1000).toFixed(1).replace(/\.0$/, '')} t`
       : `${Math.round(capacityHintKg)} kg`
 
+    // Reach/height hint: largest metre value the load must span (Auslage OR
+    // Hubhöhe). Coarse proxy for the 2D fit (Last × Reichweite). `m²`/`qm` are
+    // excluded so "120 m²" doesn't read as 120 m reach. Feeds the owner-side
+    // reach flag (lead Greb: 4 t @ 11 m → 2 t firm was undersized at radius).
+    const REACH_RE = /(\d+(?:[,.]\d+)?)\s*m(?:tr|eter)?\b(?!\s*²|2|q)/gi
+    let reachHintM = 0
+    for (const m of projectDescription.matchAll(REACH_RE)) {
+      const n = parseFloat(m[1].replace(',', '.'))
+      if (Number.isFinite(n) && n <= 120) reachHintM = Math.max(reachHintM, n)
+    }
+    const typeMaxReachM = body.crane_type_id ? (getCraneMaxReachById(body.crane_type_id) ?? 0) : 0
+
     // Glass-handling hint: the customer mentions glass / pane / window lifting or
     // a vacuum lifter (Glassauger / Saugnapf). Used to flag selected firms without
     // a documented Glassauger so the owner can add glass-capable specialists
@@ -395,6 +408,11 @@ export async function POST(request: Request) {
     // a "no glass" firm may simply be undocumented; never auto-dropped, only flagged.
     const noGlassFirms: string[] = []
     let glassCapableCount = 0
+    // Reach fit (2D Last × Reichweite, listing flow): firms that cannot reach the
+    // required distance (hard) or are likely undersized AT that reach (soft).
+    // Coarse warn via lib/fit.ts — owner reviews, never auto-dropped.
+    const reachShortFirms: string[] = []
+    const capacityRiskFirms: Array<{ name: string; cap_at_reach_kg: number }> = []
     if (capacityHintKg > 0 && autoSelectedMatches && body.crane_type_id) {
       const requiredCapacityKg = capacityHintKg * FIT_SAFETY_MARGIN
       for (const m of autoSelectedMatches) {
@@ -451,10 +469,10 @@ export async function POST(request: Request) {
       const sb = getServiceSupabase()
       const { data: lookup } = await sb
         .from('companies')
-        .select('id, name, email, is_active, is_relevant, company_cranes(crane_type_id, max_capacity_kg, has_glass_sucker)')
+        .select('id, name, email, is_active, is_relevant, company_cranes(crane_type_id, max_capacity_kg, max_reach_m, has_glass_sucker)')
         .in('id', companyIds)
       const validIds = new Set<string>()
-      type KeptFirm = { name: string; company_cranes: Array<{ crane_type_id: string; max_capacity_kg: number | null; has_glass_sucker: boolean | null }> }
+      type KeptFirm = { name: string; company_cranes: Array<{ crane_type_id: string; max_capacity_kg: number | null; max_reach_m: number | null; has_glass_sucker: boolean | null }> }
       const keptForFit: KeptFirm[] = []
       for (const c of lookup ?? []) {
         if (!c.is_active || !c.is_relevant) {
@@ -479,18 +497,26 @@ export async function POST(request: Request) {
       // Maurer). Conservative, positive-evidence only: NULL capacity = unverified
       // (never undersized), glass-less firm may just be undocumented. Warn the
       // owner, never auto-drop (coverage too sparse to be reliable).
-      if (!autoSelectedMatches && body.crane_type_id && (capacityHintKg > 0 || needsGlass)) {
+      if (!autoSelectedMatches && body.crane_type_id && (capacityHintKg > 0 || needsGlass || reachHintM > 0)) {
         const requiredCapacityKg = capacityHintKg * FIT_SAFETY_MARGIN
         for (const f of keptForFit) {
-          const maxCapKg = f.company_cranes
-            .filter((cc) => cc.crane_type_id === body.crane_type_id)
-            .reduce<number | null>((acc, cc) => {
-              if (cc.max_capacity_kg == null) return acc
-              return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
-            }, null)
+          const forType = f.company_cranes.filter((cc) => cc.crane_type_id === body.crane_type_id)
+          const maxCapKg = forType.reduce<number | null>((acc, cc) => {
+            if (cc.max_capacity_kg == null) return acc
+            return acc == null ? cc.max_capacity_kg : Math.max(acc, cc.max_capacity_kg)
+          }, null)
           if (capacityHintKg > 0) {
             if (maxCapKg == null) unverifiedFirmCount += 1
             else if (maxCapKg < requiredCapacityKg) undersizedFirms.push({ name: f.name, max_capacity_kg: maxCapKg })
+          }
+          if (reachHintM > 0) {
+            const firmReach = forType.reduce<number | null>((acc, cc) => {
+              if (cc.max_reach_m == null) return acc
+              return acc == null ? cc.max_reach_m : Math.max(acc, cc.max_reach_m)
+            }, null)
+            const rf = evalReachFit({ requiredKg: capacityHintKg, requiredReachM: reachHintM, firmMaxCapKg: maxCapKg, firmMaxReachM: firmReach, typeMaxReachM })
+            if (rf.verdict === 'reach_short') reachShortFirms.push(f.name)
+            else if (rf.verdict === 'capacity_risk' && rf.capAtReachKg != null) capacityRiskFirms.push({ name: f.name, cap_at_reach_kg: rf.capAtReachKg })
           }
           if (needsGlass) {
             if (f.company_cranes.some((cc) => cc.has_glass_sucker === true)) glassCapableCount += 1
@@ -500,10 +526,11 @@ export async function POST(request: Request) {
       }
     }
 
-    const fitCheckRan = (capacityHintKg > 0 || needsGlass) &&
+    const fitCheckRan = (capacityHintKg > 0 || needsGlass || reachHintM > 0) &&
       ((autoSelectedMatches?.length ?? 0) > 0 || companyIds.length > 0)
     const hasUndersizedMatches = undersizedFirms.length > 0
     const glassMismatch = needsGlass && noGlassFirms.length > 0
+    const reachMismatch = reachHintM > 0 && (reachShortFirms.length > 0 || capacityRiskFirms.length > 0)
 
     // UTM attribution (mig 027). Clip every value to 120 chars so a forged
     // URL can't bloat the column. NULL on absence, that's the expected
@@ -935,6 +962,20 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
+      // Reach-fit banner (2D Last × Reichweite). Fires when the project states a
+      // reach/height and ≥1 selected firm can't reach it or is likely undersized
+      // at that reach. Coarse warn (lib/fit.ts, per-type fallback when firm
+      // max_reach_m unknown). Surfaced by lead Greb (4 t @ 11 m → 2 t firm).
+      const reachBanner = reachMismatch
+        ? `<div style="background:#fef2f2;border:2px solid #dc2626;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">📐 Reichweite/Last (Bedarf ${reachHintM} m${capacityHintKg > 0 ? `, ${escapeHtml(capacityHintFormatted)}` : ''})</div>
+            <div style="font-size:13px;color:#7f1d1d;line-height:1.5;">
+              ${reachShortFirms.length > 0 ? `Reichen wahrscheinlich nicht bis ${reachHintM} m: <strong>${reachShortFirms.map((n) => escapeHtml(n)).join(', ')}</strong>.<br>` : ''}
+              ${capacityRiskFirms.length > 0 ? `Bei ${reachHintM} m Auslage evtl. zu klein (geschätzte Tragkraft an der Auslage): ${capacityRiskFirms.map((f) => `${escapeHtml(f.name)} ~${(f.cap_at_reach_kg / 1000).toFixed(1).replace(/\.0$/, '')} t`).join(', ')}.<br>` : ''}
+              <br>Grobe Schätzung (Tragkraft am Mast ≠ an der Auslage; firmenspezifische Reichweite meist noch nicht erfasst). Vor Versand prüfen, ggf. größere Klasse oder Opt-in.
+            </div>
+          </div>`
+        : ''
       // Long-rental → Baukran-Kandidat-Banner (soft, informativ).
       const baukranBanner = baukranCandidate
         ? `<div style="background:#eff6ff;border:2px solid #2563eb;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
@@ -951,6 +992,7 @@ export async function POST(request: Request) {
         : '')
         + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}), ` : '')
         + (hasUndersizedMatches ? `FIT-MISMATCH (${undersizedFirms.length}), ` : '')
+        + (reachMismatch ? `📐 REICHWEITE (${reachShortFirms.length + capacityRiskFirms.length}), ` : '')
         + (glassMismatch ? `🟡 GLAS (${glassCapableCount}/${glassCapableCount + noGlassFirms.length}), ` : '')
         + (aiInferredCraneType ? '🤖 AI-Krantyp, ' : '')
         + (baukranCandidate ? `⏳ BAUKRAN? (${durationDays}d), ` : '')
@@ -962,6 +1004,7 @@ export async function POST(request: Request) {
           ${alertBanner}
           ${specBanner}
           ${fitCheckBanner}
+          ${reachBanner}
           ${glassBanner}
           ${baukranBanner}
           ${aiInferredBanner}
