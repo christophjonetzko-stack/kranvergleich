@@ -430,6 +430,7 @@ export default async function HomePage() {
             '@id': `${BASE_URL}#organization`,
             name: BRAND_NAME,
             url: BASE_URL,
+            logo: `${BASE_URL}/logo.png`,
             description: `Vergleichsportal für Kranvermietung in ${COUNTRY_LABEL}. Über ${anbieterCount} Anbieter für Minikrane, Autokrane und mehr.`,
             contactPoint: {
               '@type': 'ContactPoint',
