@@ -128,14 +128,6 @@ export default async function CraneCityPage({
   // month boundary). Per AEO rules in seo-content-de skill: include "Stand"
   // timestamp so AI engines + Bauunternehmer see the page is current.
   const lastUpdated = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
-  // Manually written city FAQ (from Supabase) takes priority over template FAQ.
-  // Override is city-wide (not crane-type-specific), local info like permits, costs, logistics.
-  const templateFaqs = getFAQsForCraneAndCity(craneType.slug, city.name, craneType.name)
-  const cityOverrideFaqs = (city.city_faq_override ?? []).map(f => ({
-    question: f.question.replace('{craneName}', craneType.name),
-    answer: f.answer.replace(/{craneName}/g, craneType.name),
-  }))
-  const faqs = dedupeFaqs([...cityOverrideFaqs, ...templateFaqs])
   const price = getPriceForCraneType(craneType.slug)
 
   // Cross-links: other crane types in this city
@@ -155,6 +147,23 @@ export default async function CraneCityPage({
     : allCities.filter((c) => c.slug !== city.slug && c.state === city.state).slice(0, 8)
 
   const nearbyCityCounts = await getCompanyCountsPerCity(nearbyCities.map((c) => c.id))
+
+  // Manually written city FAQ (from Supabase) takes priority over template FAQ.
+  // Override is city-wide (not crane-type-specific), local info like permits, costs, logistics.
+  // Assembled here (after nearby cities) so the template can fold the real firm
+  // count and the neighbouring cities into the answers as city-unique facts.
+  const nearbyCityNames = nearbyCities
+    .filter((c) => (nearbyCityCounts.get(c.id) ?? 0) > 0)
+    .map((c) => c.name)
+  const templateFaqs = getFAQsForCraneAndCity(craneType.slug, city.name, craneType.name, {
+    companyCount: companies.length,
+    nearbyCityNames,
+  })
+  const cityOverrideFaqs = (city.city_faq_override ?? []).map(f => ({
+    question: f.question.replace('{craneName}', craneType.name),
+    answer: f.answer.replace(/{craneName}/g, craneType.name),
+  }))
+  const faqs = dedupeFaqs([...cityOverrideFaqs, ...templateFaqs])
 
   return (
     <>

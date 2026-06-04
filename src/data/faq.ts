@@ -252,17 +252,63 @@ const typeFAQs: Record<string, FAQItem[]> = {
 // City FAQs, shown ONLY on /[crane-type]-mieten/[city]
 // UNIQUE per city, never copied from type FAQs
 // ============================================
-function getCityFAQs(craneName: string, cityName: string, priceFrom?: number, priceTo?: number): FAQItem[] {
+// German enumeration: "A", "A und B", "A, B und C".
+function formatList(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? ''
+  return `${items.slice(0, -1).join(', ')} und ${items[items.length - 1]}`
+}
+
+// Per-page context lets the generic city FAQ carry real, city-unique facts
+// (firm count, neighbouring cities, type-aware delivery) instead of being
+// byte-identical boilerplate across ~470 city x type pages. All values come
+// from data already loaded on the page, so there is no extra query and no
+// fabrication. Question strings stay unchanged so city_faq_override (matched by
+// normalized question) still dedupe-replaces them on the ~18 override cities.
+interface CityFAQContext {
+  companyCount?: number
+  nearbyCityNames?: string[]
+  craneSlug?: string
+}
+
+function getCityFAQs(
+  craneName: string,
+  cityName: string,
+  priceFrom?: number,
+  priceTo?: number,
+  ctx: CityFAQContext = {},
+): FAQItem[] {
   const priceStr = priceFrom && priceTo ? `zwischen ca. ${priceFrom}€ und ${priceTo}€ pro Tag (netto)` : 'je nach Anbieter und Tragkraft'
+  const { companyCount, nearbyCityNames, craneSlug } = ctx
+
+  // Real firm count = a city-specific citable fact. Only stated when we have
+  // firms (0-firm pages are noindex). Price stays a Richtwert: <1% of catalog
+  // firms publish day rates (pre-flight check_price_coverage_2026_06_04), so no
+  // real per-city range exists to quote.
+  const countClause = companyCount && companyCount > 0
+    ? `In ${cityName} vergleichen Sie ${companyCount} ${craneName}-Anbieter. `
+    : ''
+
+  // A Baukran (Turmdrehkran) is erected on site over 1–3 days, not "delivered"
+  // in 24–48h like a mobile crane. The generic answer was factually wrong here.
+  const deliveryAnswer = craneSlug === 'baukran-mieten'
+    ? `Ein ${craneName} in ${cityName} wird angeliefert und vor Ort montiert; der Aufbau eines Turmdrehkrans dauert in der Regel 1–3 Tage. Planen Sie Liefer- und Montagetermin daher mit einigen Tagen Vorlauf.`
+    : `Die meisten ${craneName}-Vermieter in ${cityName} können innerhalb von 24–48 Stunden liefern. Bei dringendem Bedarf bieten einige Anbieter auch Same-Day-Lieferung an. Fragen Sie direkt beim Anbieter nach.`
+
+  // Real neighbouring cities with firms (already geocoded + counted on the page)
+  // make this answer unique per page. Generic "Betriebe" not "{craneName}", as
+  // the nearby count is not crane-type-filtered.
+  const nearbyClause = nearbyCityNames && nearbyCityNames.length > 0
+    ? `, darunter auch Betriebe aus ${formatList(nearbyCityNames.slice(0, 3))}`
+    : ''
 
   return [
     {
       question: `Was kostet ein ${craneName} in ${cityName}?`,
-      answer: `Die Tagesmiete für einen ${craneName} in ${cityName} liegt ${priceStr}. Vergleichen Sie Angebote von mehreren Anbietern in ${cityName}, um den besten Preis zu finden.`,
+      answer: `${countClause}Die Tagesmiete für einen ${craneName} in ${cityName} liegt ${priceStr}. Vergleichen Sie Angebote von mehreren Anbietern in ${cityName}, um den besten Preis zu finden.`,
     },
     {
       question: `Wie schnell kann ein ${craneName} in ${cityName} geliefert werden?`,
-      answer: `Die meisten ${craneName}-Vermieter in ${cityName} können innerhalb von 24–48 Stunden liefern. Bei dringendem Bedarf bieten einige Anbieter auch Same-Day-Lieferung an. Fragen Sie direkt beim Anbieter nach.`,
+      answer: deliveryAnswer,
     },
     {
       question: `Brauche ich eine Genehmigung für einen ${craneName} in ${cityName}?`,
@@ -270,7 +316,7 @@ function getCityFAQs(craneName: string, cityName: string, priceFrom?: number, pr
     },
     {
       question: `Wo finde ich ${craneName}-Vermietung in ${cityName}?`,
-      answer: `Auf {BRAND_NAME} finden Sie alle ${craneName}-Vermieter in ${cityName} und Umgebung. Vergleichen Sie Preise und Bewertungen und fragen Sie kostenlos Angebote an, bei einem oder mehreren Anbietern gleichzeitig.`,
+      answer: `Auf {BRAND_NAME} finden Sie alle ${craneName}-Vermieter in ${cityName} und Umgebung${nearbyClause}. Vergleichen Sie Preise und Bewertungen und fragen Sie kostenlos Angebote an, bei einem oder mehreren Anbietern gleichzeitig.`,
     },
   ]
 }
@@ -298,7 +344,12 @@ export function dedupeFaqs(items: FAQItem[]): FAQItem[] {
   return out
 }
 
-export function getFAQsForCraneAndCity(craneSlug: string, cityName: string, craneName?: string): FAQItem[] {
+export function getFAQsForCraneAndCity(
+  craneSlug: string,
+  cityName: string,
+  craneName?: string,
+  ctx: { companyCount?: number; nearbyCityNames?: string[] } = {},
+): FAQItem[] {
   const name = craneName ?? craneSlug.replace('-mieten', '').replace(/^./, c => c.toUpperCase())
 
   // Price data for the city FAQ
@@ -316,5 +367,5 @@ export function getFAQsForCraneAndCity(craneSlug: string, cityName: string, cran
   const [priceFrom, priceTo] = priceMap[craneSlug] ?? [undefined, undefined]
 
   // Return ONLY city-specific FAQs, no typ-FAQs copied
-  return getCityFAQs(name, cityName, priceFrom, priceTo)
+  return getCityFAQs(name, cityName, priceFrom, priceTo, { ...ctx, craneSlug })
 }
