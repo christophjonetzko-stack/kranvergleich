@@ -40,7 +40,6 @@ const _extraCitiesDE: ExtendedCity[] = [
   { name: 'Pforzheim', slug: 'pforzheim', state: 'Baden-Württemberg', nearestSlug: 'karlsruhe' },
   { name: 'Remscheid', slug: 'remscheid', state: 'Nordrhein-Westfalen', nearestSlug: 'wuppertal' },
   { name: 'Salzgitter', slug: 'salzgitter', state: 'Niedersachsen', nearestSlug: 'braunschweig' },
-  { name: 'Schwerin', slug: 'schwerin', state: 'Mecklenburg-Vorpommern', nearestSlug: 'hamburg' },
   { name: 'Siegen', slug: 'siegen', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Solingen', slug: 'solingen', state: 'Nordrhein-Westfalen', nearestSlug: 'wuppertal' },
   { name: 'Trier', slug: 'trier', state: 'Rheinland-Pfalz', nearestSlug: 'mannheim' },
@@ -153,6 +152,8 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'osnabrueck', name: 'Osnabrück',  state: 'Niedersachsen',  companyCount: 14 },
   // 2026-05-18 fix. Heidelberg was stuck in _extraCitiesDE redirect list despite having a Supabase row + 23 firms (created 2026-04-18). GSC flagged the 307s as "Seite mit Weiterleitung". Promote to seoCitiesDE so all /{type}/heidelberg URLs render natively.
   { slug: 'heidelberg', name: 'Heidelberg', state: 'Baden-Württemberg', companyCount: 23 },
+  // 2026-06-06 MV gap-fill. Schwerin promoted from _extraCitiesDE (redirect→hamburg) to a native page: Supabase row created + 3 firms mapped (U&W Ndl. Schwerin, H.N. Krane, Beth) covering all 8 crane types. Closes the biggest DE coverage hole (MV).
+  { slug: 'schwerin', name: 'Schwerin', state: 'Mecklenburg-Vorpommern', companyCount: 3 },
 ]
 
 // AT cities, populated 2026-04-26 after Phase B firm enrichment landed 20
