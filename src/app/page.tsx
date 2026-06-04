@@ -437,6 +437,16 @@ export default async function HomePage() {
               contactType: 'customer service',
               availableLanguage: 'German',
             },
+            // Tie the brand entity to the credentialed founder Person defined on
+            // /ueber-uns (Liebherr pedigree + LinkedIn sameAs). Person already
+            // declares worksFor -> Org; this closes the loop so AI answer engines
+            // attribute the brand's authority to a real, verifiable person.
+            // Referenced by @id (BASE_URL keeps it correct on .de and .at).
+            founder: {
+              '@type': 'Person',
+              '@id': `${BASE_URL}/ueber-uns#christoph`,
+              name: 'Christoph Jonetzko',
+            },
           }),
         }}
       />
