@@ -1200,7 +1200,15 @@ export async function POST(request: Request) {
         customer_confirmation: confirmRes.ok,
       },
     })
-  } catch {
+  } catch (err) {
+    // Log the failure: a silent catch here masked a 3-week AT outage. The
+    // kranvergleich-at deployment was missing LEAD_RESPONSE_SECRET, so
+    // signLeadResponse() threw for every AT lead with matched firms, the lead
+    // + lead_companies rows persisted but sent_at stayed NULL, and the customer
+    // got a 500 with no trace in the logs (lead Stejskal, 2026-05-29, submitted
+    // 3x). Always surface the stack so an env/regression in this path is
+    // visible in Vercel logs instead of looking like a normal lead.
+    console.error('[api/leads] unhandled error, returning 500:', err)
     return NextResponse.json(
       { error: 'Interner Serverfehler. Bitte versuchen Sie es später erneut.' },
       { status: 500 }
