@@ -931,7 +931,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           <p className="text-[14px] font-semibold text-gray-900 mb-1">
             {result.isUncertain
               ? 'Kostenlose Beratung anfordern, wir finden den passenden Krantyp'
-              : 'Erhalten Sie 3 vergleichbare Angebote von geprüften Anbietern in Ihrer Region'}
+              : 'Erhalten Sie vergleichbare Angebote von geprüften Anbietern in Ihrer Region'}
           </p>
           <p className="text-[12px] text-gray-500 mb-3">
             {result.isUncertain
