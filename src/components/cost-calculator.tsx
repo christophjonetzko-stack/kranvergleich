@@ -508,6 +508,12 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
   // specialized crane type than the Q&A picked.
   const [projectDetailsLive, setProjectDetailsLive] = useState('')
   const [locationLive, setLocationLive] = useState('')
+  // Real geo-filtered provider count for the recommended type, fetched read-only
+  // from /api/providers/count (same function + limit as /api/leads auto-select,
+  // so the "N Anbieter" shown == the N actually contacted on submit). null until
+  // the fetch resolves; the form never waits on it.
+  const [providerPreview, setProviderPreview] = useState<{ count: number; radius_km: number | null; unresolved: boolean } | null>(null)
+  const [previewLoading, setPreviewLoading] = useState(false)
   // Hides phone/date/project-details by default, 2026-05-01 audit showed 25
   // recommendations vs 0 submit_attempts despite 101 step_completions in W18.
   // Hypothesis: 7 visible fields below recommendation = too much friction on
@@ -531,6 +537,44 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
     const params = new URLSearchParams(window.location.search)
     setIsDryRunMode(params.get('dryrun') === '1')
   }, [])
+
+  // Fetch the real provider count once the recommendation is shown (not at mount,
+  // not at submit). Uses the wizard's location (answers.plz) + recommended slug.
+  // Neutral on failure / while loading: providerPreview stays null and the form
+  // is never blocked. Skipped for the isUncertain branch (no concrete type).
+  useEffect(() => {
+    if (!result || result.isUncertain || !result.slug) { setProviderPreview(null); return }
+    const loc = (answers.plz || locationLive || '').trim()
+    if (loc.length < 2) { setProviderPreview(null); return }
+    let cancelled = false
+    setPreviewLoading(true)
+    setProviderPreview(null)
+    fetch(`/api/providers/count?type=${encodeURIComponent(result.slug)}&plz=${encodeURIComponent(loc)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (cancelled || !data) return
+        const preview = {
+          count: typeof data.count === 'number' ? data.count : 0,
+          radius_km: typeof data.radius_km === 'number' ? data.radius_km : null,
+          unresolved: data.unresolved === true,
+        }
+        setProviderPreview(preview)
+        // Fire the preview event at the moment the number is shown. Only when the
+        // location geocoded (radius present) — incl. count:0 coverage gaps, which
+        // are analytically meaningful; skipped for unresolved (nothing shown).
+        if (!preview.unresolved) {
+          trackPageEvent('calculator_providers_preview_shown', {
+            crane_type: result.slug.replace(/-mieten$/, ''),
+            provider_count: preview.count,
+            radius_km: preview.radius_km ?? 0,
+          })
+        }
+      })
+      .catch(() => { /* neutral — leave preview null, form unaffected */ })
+      .finally(() => { if (!cancelled) setPreviewLoading(false) })
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result])
 
   function handleSelect(value: string) {
     const step = STEPS[currentStep]
@@ -576,6 +620,8 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
     setLeadSending(false)
     setLeadError(null)
     setLeadSuccess(null)
+    setProviderPreview(null)
+    setPreviewLoading(false)
     setDsgvoConsent(false)
     setProjectDetailsLive('')
     setLocationLive('')
@@ -890,8 +936,27 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           <p className="text-[12px] text-gray-500 mb-3">
             {result.isUncertain
               ? 'Beschreiben Sie kurz Ihr Projekt, unsere Anbieter melden sich mit individuellen Empfehlungen und Angeboten.'
-              : `Ihre Anfrage geht an bis zu 3 passende Anbieter mit ${result.name}-Flotte in einem Umkreis von 50 km. Sie entscheiden, mit wem Sie sprechen.`}
+              : `Ihre Anfrage geht an passende ${result.name}-Anbieter in Ihrer Region. Sie entscheiden, mit wem Sie sprechen.`}
           </p>
+
+          {/* Real geo-filtered provider count — shown BEFORE the form to set an
+              honest expectation (radius from the endpoint, never hardcoded). */}
+          {!result.isUncertain && (
+            <div className="mb-3">
+              {providerPreview && providerPreview.count > 0 ? (
+                <p className="text-[13px] text-gray-800 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                  <strong>{providerPreview.count} Anbieter</strong> in Ihrer Region
+                  {providerPreview.radius_km ? ` (${providerPreview.radius_km} km)` : ''} haben genau diesen Krantyp.
+                </p>
+              ) : providerPreview && !providerPreview.unresolved ? (
+                <p className="text-[12px] text-gray-500">
+                  In Ihrer unmittelbaren Region ist aktuell kein passender {result.name}-Anbieter erfasst — wir leiten Ihre Anfrage an passende Anbieter weiter.
+                </p>
+              ) : previewLoading ? (
+                <p className="text-[12px] text-gray-400">Passende Anbieter in Ihrer Region werden gesucht…</p>
+              ) : null}
+            </div>
+          )}
 
           <form onSubmit={handleSubmitLead} className="space-y-3">
             {/* Honeypot */}
@@ -994,11 +1059,13 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
                 ? 'Wird gesendet…'
                 : result.isUncertain
                   ? 'Kostenlose Beratung anfragen '
-                  : `${result.name}-Angebote jetzt erhalten `}
+                  : 'Angebote anfordern'}
             </button>
 
             <p className="text-[11px] text-center text-gray-500">
-              Kostenlos · unverbindlich · Erste Angebote innerhalb von 24 h
+              {providerPreview && providerPreview.count > 0
+                ? 'Kostenlos & unverbindlich. Preise direkt von den Anbietern.'
+                : 'Kostenlos · unverbindlich · Erste Angebote innerhalb von 24 h'}
             </p>
           </form>
 

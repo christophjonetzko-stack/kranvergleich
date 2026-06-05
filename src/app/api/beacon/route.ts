@@ -21,6 +21,7 @@ const EVENT_TYPES = new Set([
   'calculator_lead_submit_attempt',
   'calculator_lead_submit_success',
   'calculator_form_validation_failed',
+  'calculator_providers_preview_shown',
   'inline_sammelanfrage_submit',
   'scroll_depth_25',
   'scroll_depth_50',
@@ -38,6 +39,7 @@ const EVENT_TYPES = new Set([
   'listing_cta_to_preise_clicked',
   'listing_inquire_all_clicked',
   'listing_inquire_all_submitted',
+  'listing_ai_match',
 ])
 
 // Matches /api/track for consistency. The base is not a secret, the daily
@@ -88,6 +90,9 @@ const CONTEXT_KEY_WHITELIST = new Set([
   'city',                     // string, slug-like
   'matched_count',            // number
   'radius_km',                // number
+  'provider_count',           // number, /api/providers/count preview shown to user
+  'has_capacity',             // boolean, listing_ai_match — AI parsed a capacity requirement
+  'needs_glass',              // boolean, listing_ai_match — AI detected glass-handling need
   'project_details_filled',   // boolean
   'project_details_length',   // number
   // Hero search (added 2026-05-01, pre-decision instrumentation)

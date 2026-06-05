@@ -7,6 +7,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { signLeadResponse } from '@/lib/lead-response-sig'
 import { submitLead, getCompaniesForCraneTypeNearLocation, isUnresolvedPlz, getSiteStats, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
+import { MAX_COMPANY_IDS } from '@/lib/dispatch-config'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById, getCraneMaxReachById } from '@/data/crane-types'
 import { evalReachFit } from '@/lib/fit'
@@ -102,7 +103,6 @@ function getNotificationEmailOrNull(): string | null {
 
 // --- Input sanitization ---
 const MAX_TEXT_LENGTH = 500
-const MAX_COMPANY_IDS = 10
 
 function escapeHtml(str: string): string {
   return str
