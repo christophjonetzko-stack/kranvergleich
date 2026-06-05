@@ -16,18 +16,16 @@ const LAUNCH_PRICE = 99
 const STANDARD_PRICE = 149
 const LAUNCH_END = '25.06.2026'
 
-// INTERIM CTA: until the Stripe Checkout session endpoint is wired (Day 2,
-// post-KYC) the CTA collects interest by email on the contact mailbox already
-// used elsewhere on the site. At launch: swap CTA_HREF to the checkout POST
-// and remove `robots: { index: false }` from generateMetadata below.
+// CTA fallback. The Path4Cta button opens a Stripe Checkout session when the
+// firm arrives with ?firma=<slug> (from its claim CTA or the pilot mail). A
+// generic visitor without a slug has no company to charge, so the button falls
+// back to this contact mailbox and asks which firm to verify.
 const CTA_HREF = `mailto:kontakt@kranvergleich.de?subject=Premium-Listing%20auf%20${DOMAIN}`
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `Premium-Listing für Anbieter, ${BRAND_NAME}`,
     description: `Verifiziert-Siegel und Top-Position in den Anbieterlisten von ${BRAND_NAME}. Einmalige Gebühr, zwölf Monate Laufzeit, kein Abo.`,
-    // Staged pre-launch: keep out of the index until Stripe Checkout is live.
-    robots: { index: false, follow: false },
     alternates: alternatesFor('/path4'),
     openGraph: {
       title: `Premium-Listing für Anbieter, ${BRAND_NAME}`,
