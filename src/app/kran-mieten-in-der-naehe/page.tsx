@@ -61,7 +61,7 @@ const naeheFAQs = [
   {
     question: 'Welcher Krantyp passt zu meinem lokalen Einsatz?',
     answer:
-      'Das hängt von Last und Zufahrt ab, nicht von der Region. Für enge Innenstädte und Innenhöfe: Minikran. Für Dacharbeiten am Einfamilienhaus: Dachdeckerkran. Für Dachstuhlmontage oder Pool und Whirlpool: Autokran 30–50t. Für Industrie- und Hochbau: Mobilkran. Für Großbaustellen über mehrere Monate: Baukran (Turmdrehkran). Unser Kostenrechner führt Sie in 60 Sekunden zum passenden Typ, inklusive Preisspanne.',
+      'Das hängt von Last und Zufahrt ab, nicht von der Region. Für enge Innenstädte und Innenhöfe: Minikran. Für Dacharbeiten am Einfamilienhaus: Dachdeckerkran. Für Dachstuhlmontage oder Pool und Whirlpool: Autokran 30–50t. Für Industrie- und Hochbau: Mobilkran. Für Großbaustellen über mehrere Monate: Baukran (Turmdrehkran). Unser Kostenrechner führt Sie in 2 Minuten zum passenden Typ, inklusive Preisspanne.',
   },
 ]
 
@@ -149,7 +149,7 @@ export default async function KranMietenInDerNaehePage() {
             <h3 className="font-medium text-[15px] text-gray-900 mb-2">Krantyp und Einsatz beschreiben</h3>
             <p className="text-[13px] text-gray-500">
               Welche Last, welche Hubhöhe, welche Mietdauer? Wenn Sie unsicher sind,
-              hilft Ihnen unser Kostenrechner in 60 Sekunden zur richtigen Wahl.
+              hilft Ihnen unser Kostenrechner in 2 Minuten zur richtigen Wahl.
             </p>
           </div>
           <div className="border border-gray-200 rounded-lg p-5">

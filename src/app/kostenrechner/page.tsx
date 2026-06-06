@@ -37,12 +37,12 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: { absolute: 'Kran-Kostenrechner: Was kostet ein Kran? 2026' },
   description:
-    'Kran-Kostenrechner: In 4 Schritten erfahren Sie, welchen Kran Sie brauchen und was er kostet. Minikran, Autokran, Baukran, unverbindliche Preisschätzung mit Anbietervergleich.',
+    'Kran-Kostenrechner: Erfahren Sie, welchen Kran Sie brauchen und was er kostet. Minikran, Autokran, Baukran, unverbindliche Preisschätzung mit Anbietervergleich.',
   alternates: alternatesFor('/kostenrechner'),
   openGraph: {
     title: 'Kostenrechner. Wie viel kostet ein Kran für mein Projekt?',
     description:
-      'Kran-Kostenrechner: In 4 Schritten den passenden Kran finden und Kosten schätzen.',
+      'Kran-Kostenrechner: Den passenden Kran finden und Kosten schätzen.',
     type: 'website',
     url: '/kostenrechner',
       images: [OG_IMAGE],
@@ -88,10 +88,10 @@ export default async function KostenrechnerPage() {
 
       {/* H1 */}
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
-        In 60 Sekunden zum richtigen Kran für Ihr Projekt
+        In 2 Minuten zum richtigen Kran für Ihr Projekt
       </h1>
       <p className="text-[15px] text-gray-500 mb-6">
-        4 Fragen, basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
+        In wenigen Schritten, basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
       </p>
 
       {/* Calculator */}
