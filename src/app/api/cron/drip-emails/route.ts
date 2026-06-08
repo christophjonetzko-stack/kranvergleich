@@ -150,6 +150,9 @@ export async function GET(request: Request) {
       .select('id, email')
       .eq('drip_step', step)
       .lte('created_at', cutoff.toISOString())
+      // Skip subscribers manually flagged (e.g. marketing agencies / spam traps).
+      // NULL context = normal subscriber, must stay included (SQL `<>` drops NULLs).
+      .or('context.is.null,context.neq.agency_excluded')
       .limit(50)
 
     if (!subscribers || subscribers.length === 0) continue
