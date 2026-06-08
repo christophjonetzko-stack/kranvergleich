@@ -40,6 +40,13 @@ const EVENT_TYPES = new Set([
   'listing_inquire_all_clicked',
   'listing_inquire_all_submitted',
   'listing_ai_match',
+  // Subscription / featured analytics (registered KROK 6; emit lands later).
+  // Contexts: subscription_upsell_shown {plan}, subscription_upsell_clicked
+  // {plan}, featured_impression {crane_type, plan}, featured_click {crane_type, plan}.
+  'subscription_upsell_shown',
+  'subscription_upsell_clicked',
+  'featured_impression',
+  'featured_click',
 ])
 
 // Matches /api/track for consistency. The base is not a secret, the daily
@@ -106,6 +113,8 @@ const CONTEXT_KEY_WHITELIST = new Set([
   // Calculator validation failure
   'reason',                   // string , slug-like (dsgvo / location_too_short / server_error)
   'field',                    // string , slug-like (which form field failed)
+  // Subscription / featured analytics (KROK 6)
+  'plan',                     // string , slug-like (basis / premium / pro)
 ])
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/
 

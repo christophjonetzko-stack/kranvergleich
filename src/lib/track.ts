@@ -37,6 +37,12 @@ export type PageEventType =
   | 'listing_inquire_all_clicked'
   | 'listing_inquire_all_submitted'
   | 'listing_ai_match'
+  // Subscription / featured analytics (registered KROK 6; emit lands later —
+  // featured_* in KROK 3, subscription_upsell_* with the upsell UI).
+  | 'subscription_upsell_shown'
+  | 'subscription_upsell_clicked'
+  | 'featured_impression'
+  | 'featured_click'
 
 export function trackPageEvent(
   eventType: PageEventType,
