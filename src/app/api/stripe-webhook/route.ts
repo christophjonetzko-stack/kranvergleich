@@ -2,6 +2,15 @@ import { NextResponse } from 'next/server'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 import { Resend } from 'resend'
 import { recordTierPurchase, revokeTier } from '@/lib/path4'
+import { dbPlanFromPriceId, type DbPlan } from '@/lib/subscription-plans'
+import {
+  mapStripeStatus,
+  upsertSubscription,
+  companyIdBySubscriptionId,
+  companyIdByCustomerId,
+  subscriptionExists,
+  isTrackedSubscription,
+} from '@/lib/subscriptions'
 import { BASE_URL } from '@/lib/country'
 
 // Node runtime required: uses node:crypto and the service-role Supabase client.
@@ -90,6 +99,165 @@ async function notifyNewPurchase(companyName: string, amountCents: number): Prom
   }
 }
 
+// ── Subscription (mode:'subscription') helpers — KROK 7.3 ───────────────────
+// The webhook parses the RAW JSON payload (no Stripe SDK), so every field is
+// read defensively from the account-API-version shape, NOT from SDK 22.x types.
+
+function asNumber(v: unknown): number | undefined {
+  return typeof v === 'number' && Number.isFinite(v) ? v : undefined
+}
+
+function isoFromUnix(sec: number | undefined): string | undefined {
+  return sec === undefined ? undefined : new Date(sec * 1000).toISOString()
+}
+
+function record(v: unknown): Record<string, unknown> | undefined {
+  return v && typeof v === 'object' ? (v as Record<string, unknown>) : undefined
+}
+
+/** DB-enum plan we stamped on the Checkout Session metadata ('premium'|'pro'). */
+function dbPlanFromMetadata(obj: Record<string, unknown>): DbPlan | undefined {
+  const p = asString(record(obj.metadata)?.plan)
+  return p === 'premium' || p === 'pro' ? p : undefined
+}
+
+/**
+ * current_period_end, read defensively: newer API versions moved it from the
+ * subscription top level onto the first subscription item. Verified against a
+ * real payload in 7.5 (`stripe trigger`); both spots are checked here.
+ */
+function subPeriodEnd(sub: Record<string, unknown>): string | undefined {
+  const top = asNumber(sub.current_period_end)
+  if (top !== undefined) return isoFromUnix(top)
+  const item = record(record(sub.items)?.data instanceof Array ? (record(sub.items)!.data as unknown[])[0] : undefined)
+  return isoFromUnix(asNumber(item?.current_period_end))
+}
+
+/** Price id off the first subscription item (used to map back to our plan). */
+function subPriceId(sub: Record<string, unknown>): string | undefined {
+  const data = record(sub.items)?.data
+  const first = record(Array.isArray(data) ? data[0] : undefined)
+  return asString(record(first?.price)?.id)
+}
+
+/**
+ * Subscription reference on an invoice, read defensively: in newer API versions
+ * it moved off the top-level `subscription` onto `parent.subscription_details`.
+ * Confirmed against a real payload in 7.5.
+ */
+function invoiceSubId(inv: Record<string, unknown>): string | undefined {
+  const direct = asString(inv.subscription)
+  if (direct) return direct
+  const sd = record(record(inv.parent)?.subscription_details)
+  return asString(sd?.subscription)
+}
+
+/**
+ * checkout.session.completed with mode:'subscription'. Cements the linkage
+ * (company_id ↔ subscription id ↔ customer id) and the plan. Authoritative
+ * status + current_period_end come from the customer.subscription.* events,
+ * which may even arrive first (handled by the order-independent upsert).
+ */
+async function handleSubscriptionCheckout(
+  session: Record<string, unknown>,
+): Promise<{ ok: boolean; reason?: string }> {
+  const companyId = companyIdFromObject(session)
+  if (!companyId) {
+    console.warn('[stripe-webhook] subscription checkout missing company_id', asString(session.id))
+    return { ok: true } // ack: nothing to map, retrying won't help
+  }
+  // Only mark active once the initial payment actually settled. If not paid yet,
+  // write just the ids/plan and let the subscription.* events drive the status.
+  const paid = asString(session.payment_status) === 'paid'
+  return upsertSubscription({
+    companyId,
+    plan: dbPlanFromMetadata(session),
+    planStatus: paid ? 'active' : undefined,
+    stripeCustomerId: asString(session.customer),
+    stripeSubscriptionId: asString(session.subscription),
+  })
+}
+
+/**
+ * customer.subscription.created / .updated / .deleted. Resolves the firm by
+ * stripe_subscription_id FIRST, then falls back to the metadata.company_id we
+ * stamped at checkout, then upserts by company_id (order-independent).
+ */
+async function handleSubscriptionChange(
+  sub: Record<string, unknown>,
+  opts: { deleted: boolean; guard: boolean },
+): Promise<{ ok: boolean; reason?: string }> {
+  const subId = asString(sub.id)
+  const companyId = (await companyIdBySubscriptionId(subId)) ?? companyIdFromObject(sub)
+  if (!companyId) {
+    console.warn('[stripe-webhook] subscription change unresolved', subId)
+    return { ok: true } // ack: cannot map to a firm
+  }
+
+  // Scope guard (.updated / .deleted): only mutate if this event targets the
+  // firm's currently-tracked sub. An orphaned old sub (after re-subscription)
+  // must not clobber the active row. .created is exempt (opts.guard=false) — it
+  // establishes the tracked sub.
+  if (opts.guard && !(await isTrackedSubscription(companyId, subId))) {
+    console.warn('[stripe-webhook] subscription change for untracked sub, skip', subId)
+    return { ok: true }
+  }
+
+  if (opts.deleted) {
+    return upsertSubscription({ companyId, planStatus: 'canceled', stripeSubscriptionId: subId })
+  }
+
+  const mapped = mapStripeStatus(asString(sub.status))
+  if (mapped === 'skip') {
+    // incomplete / unknown — never grant or write a premium status, and never
+    // INSERT a stray row; a later resolvable event will set the real state.
+    return { ok: true }
+  }
+  const plan = dbPlanFromPriceId(subPriceId(sub)) ?? undefined
+  if (!plan && !(await subscriptionExists(companyId))) {
+    // Unknown price and no row yet: skip rather than INSERT a default-'basis'
+    // row. A later event with a resolvable price will create it correctly.
+    console.warn('[stripe-webhook] subscription change: unknown price, no row yet', subId)
+    return { ok: true }
+  }
+  return upsertSubscription({
+    companyId,
+    plan,
+    planStatus: mapped,
+    stripeCustomerId: asString(sub.customer),
+    stripeSubscriptionId: subId,
+    currentPeriodEnd: subPeriodEnd(sub),
+  })
+}
+
+/**
+ * invoice.payment_failed → plan_status='past_due' (is_premium stays true: the
+ * 036 trigger keeps premium during the dunning grace window). Finds the tracked
+ * row by subscription id, then by customer id; if untracked, ack and skip (a
+ * parallel customer.subscription.updated carries past_due and will correct it).
+ */
+async function handleInvoicePaymentFailed(
+  inv: Record<string, unknown>,
+): Promise<{ ok: boolean; reason?: string }> {
+  const subId = invoiceSubId(inv)
+  const companyId =
+    (await companyIdBySubscriptionId(subId)) ??
+    (await companyIdByCustomerId(asString(inv.customer)))
+  if (!companyId) {
+    console.warn('[stripe-webhook] payment_failed: untracked', subId, asString(inv.customer))
+    return { ok: true }
+  }
+  // Scope guard: only mark past_due if this invoice's subscription is the one the
+  // firm currently tracks. If the invoice carries no subscription ref (matched by
+  // customer only), we can't prove which sub it's for -> skip; the parallel
+  // customer.subscription.updated (which carries the sub id) sets past_due.
+  if (!subId || !(await isTrackedSubscription(companyId, subId))) {
+    console.warn('[stripe-webhook] payment_failed: not tracked sub, skip', subId, asString(inv.customer))
+    return { ok: true }
+  }
+  return upsertSubscription({ companyId, planStatus: 'past_due' })
+}
+
 export async function POST(req: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET
   if (!secret) {
@@ -117,6 +285,20 @@ export async function POST(req: Request) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object
+
+        // Branch by checkout mode. mode:'subscription' is the KROK 7 supply-side
+        // recurring path; everything below is the UNCHANGED Path 4 mode:'payment'
+        // one-shot path.
+        if (asString(session.mode) === 'subscription') {
+          const res = await handleSubscriptionCheckout(session)
+          if (!res.ok) {
+            console.error('[stripe-webhook] subscription checkout failed', res.reason)
+            return NextResponse.json({ error: 'processing failed' }, { status: 500 })
+          }
+          break
+        }
+
+        // ── Path 4 (mode:'payment') — unchanged ──
         const companyId = companyIdFromObject(session)
         const amount = session.amount_total
         if (!companyId || typeof amount !== 'number') {
@@ -151,6 +333,32 @@ export async function POST(req: Request) {
           await revokeTier(companyId, `${event.type} ${asString(obj.id) ?? ''}`)
         }
         console.warn(`[stripe-webhook] ${event.type} — manual review`, asString(obj.id), 'company:', companyId ?? 'unresolved')
+        break
+      }
+
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted': {
+        const sub = event.data.object
+        const res = await handleSubscriptionChange(sub, {
+          deleted: event.type === 'customer.subscription.deleted',
+          // .created ESTABLISHES the tracked sub (no guard); .updated/.deleted
+          // are scoped to the tracked sub.
+          guard: event.type !== 'customer.subscription.created',
+        })
+        if (!res.ok) {
+          console.error('[stripe-webhook] subscription change failed', event.type, res.reason)
+          return NextResponse.json({ error: 'processing failed' }, { status: 500 })
+        }
+        break
+      }
+
+      case 'invoice.payment_failed': {
+        const res = await handleInvoicePaymentFailed(event.data.object)
+        if (!res.ok) {
+          console.error('[stripe-webhook] payment_failed processing error', res.reason)
+          return NextResponse.json({ error: 'processing failed' }, { status: 500 })
+        }
         break
       }
 
