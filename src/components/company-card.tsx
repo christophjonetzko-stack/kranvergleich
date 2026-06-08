@@ -68,13 +68,30 @@ export function CompanyCard({ company, onRequestQuote, selected = false, fit, fi
   const canInquire = !!company.email && company.email.trim() !== '???'
 
   return (
-    <div className="flex items-start gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
-      {/* Initials avatar */}
-      <div
-        className={`w-11 h-11 rounded-lg flex items-center justify-center text-sm font-medium shrink-0 ${colorClass}`}
-      >
-        {initials}
-      </div>
+    <div
+      className={`flex items-start gap-3 p-4 border rounded-lg transition-colors ${
+        company.is_premium
+          ? 'border-blue-200 bg-blue-50/40 hover:border-blue-300'
+          : 'border-gray-200 hover:border-gray-300'
+      }`}
+    >
+      {/* Avatar: premium firms with an uploaded logo show it; everyone else keeps
+          the initials tile (basis renders exactly as before — no premium firm exists yet). */}
+      {company.is_premium && company.logo_url ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={company.logo_url}
+          alt={`${company.name} Logo`}
+          className="w-11 h-11 rounded-lg object-contain bg-white border border-gray-200 shrink-0"
+          loading="lazy"
+        />
+      ) : (
+        <div
+          className={`w-11 h-11 rounded-lg flex items-center justify-center text-sm font-medium shrink-0 ${colorClass}`}
+        >
+          {initials}
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex-1 min-w-0">

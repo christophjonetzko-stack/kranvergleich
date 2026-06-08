@@ -110,6 +110,14 @@ export default async function CompanyPage({
       : 'Das Unternehmen'
   } bedient ${company.city} und Umgebung.`
 
+  // Premium perk: the enriched long-form description. Basis firms (and premium
+  // firms without an enriched text) keep the plain description or the generated
+  // fallback, so existing firms render byte-identically (0 premium firms today).
+  const aboutText =
+    company.is_premium && company.description_enriched
+      ? company.description_enriched
+      : company.description || description
+
   // --- Schema.org enrichments (for AI agents + AEO) ---
   const profileUrl = `${BASE_URL}/anbieter/${slug}`
 
@@ -184,12 +192,22 @@ export default async function CompanyPage({
       {/* Company Header */}
       <div className="mb-8">
         <div className="flex items-start gap-4">
-          {/* Large initials */}
-          <div
-            className={`w-14 h-14 rounded-lg flex items-center justify-center text-lg font-semibold shrink-0 ${colorClass}`}
-          >
-            {initials}
-          </div>
+          {/* Avatar: premium firms with an uploaded logo show it; basis keeps the
+              initials tile (renders exactly as before — no premium firm exists yet). */}
+          {company.is_premium && company.logo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={company.logo_url}
+              alt={`${company.name} Logo`}
+              className="w-14 h-14 rounded-lg object-contain bg-white border border-gray-200 shrink-0"
+            />
+          ) : (
+            <div
+              className={`w-14 h-14 rounded-lg flex items-center justify-center text-lg font-semibold shrink-0 ${colorClass}`}
+            >
+              {initials}
+            </div>
+          )}
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -282,8 +300,12 @@ export default async function CompanyPage({
         {/* About */}
         <section className="border border-gray-200 rounded-lg p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-2">Über das Unternehmen</h2>
-          <p className="text-[14px] text-gray-500 leading-relaxed">
-            {company.description || description}
+          <p
+            className={`text-[14px] text-gray-500 leading-relaxed${
+              company.is_premium && company.description_enriched ? ' whitespace-pre-line' : ''
+            }`}
+          >
+            {aboutText}
           </p>
         </section>
 
@@ -311,6 +333,62 @@ export default async function CompanyPage({
                 )}
               </div>
             )}
+
+            {/* Premium perk: per-machine technical specs. Basis keeps just the
+                crane-type names + the glass/electric chips above (unchanged). */}
+            {company.is_premium &&
+              company.company_cranes.some(
+                (c) =>
+                  c.max_capacity_kg || c.max_height_m || c.max_reach_m || c.has_operator || c.brand || c.model,
+              ) && (
+                <div className="mt-4 border-t border-gray-100 pt-4">
+                  <p className="text-[12px] font-medium text-gray-500 mb-2">Technische Details der Flotte</p>
+                  <div className="space-y-1.5">
+                    {company.company_cranes.map((cr) => {
+                      const specs: string[] = []
+                      if (cr.max_capacity_kg)
+                        specs.push(
+                          `bis ${
+                            cr.max_capacity_kg >= 1000
+                              ? `${(cr.max_capacity_kg / 1000).toLocaleString('de-DE')} t`
+                              : `${cr.max_capacity_kg} kg`
+                          } Tragkraft`,
+                        )
+                      if (cr.max_height_m) specs.push(`${cr.max_height_m.toLocaleString('de-DE')} m Hubhöhe`)
+                      if (cr.max_reach_m) specs.push(`${cr.max_reach_m.toLocaleString('de-DE')} m Ausladung`)
+                      if (cr.has_operator) specs.push('mit Kranführer')
+                      if (cr.has_glass_sucker) specs.push('Glassauger')
+                      if (cr.electric) specs.push('Elektroantrieb')
+                      const label =
+                        [cr.brand, cr.model].filter(Boolean).join(' ') || getCraneTypeNameById(cr.crane_type_id)
+                      if (specs.length === 0 && !cr.brand && !cr.model) return null
+                      return (
+                        <p key={cr.id} className="text-[13px] text-gray-700">
+                          <span className="font-medium">{label}</span>
+                          {specs.length > 0 && <span className="text-gray-500"> — {specs.join(' · ')}</span>}
+                        </p>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+          </section>
+        )}
+
+        {/* Premium perk: brands carried in the fleet. */}
+        {company.is_premium && company.brands_offered && company.brands_offered.length > 0 && (
+          <section className="border border-gray-200 rounded-lg p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Marken im Fuhrpark</h2>
+            <div className="flex flex-wrap gap-2">
+              {company.brands_offered.map((brand) => (
+                <span
+                  key={brand}
+                  className="text-[13px] font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-full px-3 py-1"
+                >
+                  {brand}
+                </span>
+              ))}
+            </div>
           </section>
         )}
 
