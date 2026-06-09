@@ -11,6 +11,7 @@ import { MAX_COMPANY_IDS } from '@/lib/dispatch-config'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById, getCraneMaxReachById } from '@/data/crane-types'
 import { evalReachFit } from '@/lib/fit'
+import { extractAddressPlz } from '@/lib/extract-plz'
 
 // Validation helpers, added 2026-05-12 (Commit 2). Trust stamps in the
 // firm-notification mail are always-on and hardcoded; the dispatch logic
@@ -275,10 +276,50 @@ export async function POST(request: Request) {
     let autoSelectedRadiusKm: number | null = null
     let autoSelectedResolvedLabel: string | null = null
     let autoSelectedMatches: FirmMatch[] | null = null
-    const locationInput: string | null =
+    const locationField: string | null =
       (typeof body.location === 'string' && body.location.trim()) ||
       (typeof body.plz === 'string' && body.plz.trim()) ||
       null
+    // Prefer a postal code stated in the project description over a free-text
+    // city in the "Stadt / PLZ" field. Customers routinely type a nearby big
+    // city there while the real Einsatzort (with PLZ) sits only in the
+    // description — lead Waldemar 2026-06-09: field "Hamburg", description
+    // "23554 Lübeck" → was dispatched to Hamburg. We override only when the
+    // field is NOT already a PLZ and the description yields exactly ONE
+    // resolvable address PLZ. Ambiguous (≥2 PLZ) or field-PLZ-vs-different-text
+    // cases keep the field and raise an owner flag instead of guessing.
+    const plzPrefixRe = COUNTRY === 'AT' ? /^\s*\d{4}\b/ : /^\s*\d{5}\b/
+    const fieldHasPlz = !!(locationField && plzPrefixRe.test(locationField))
+    const descPlzCandidates: string[] = []
+    if (typeof body.project_description === 'string') {
+      for (const cand of extractAddressPlz(body.project_description, COUNTRY === 'AT' ? 'AT' : 'DE')) {
+        if (!descPlzCandidates.includes(cand) && !(await isUnresolvedPlz(cand))) {
+          descPlzCandidates.push(cand)
+        }
+      }
+    }
+    let locationInput: string | null = locationField
+    // Owner-alert payload: set when routing location was auto-corrected from the
+    // description, or when the location signals are ambiguous and need a human.
+    let standortCorrection:
+      | { field: string | null; usedPlz: string | null; ambiguous: string[] }
+      | null = null
+    if (!fieldHasPlz && descPlzCandidates.length === 1) {
+      // Single clear address PLZ in the text beats a free-text city → auto-correct.
+      locationInput = descPlzCandidates[0]
+      standortCorrection = { field: locationField, usedPlz: descPlzCandidates[0], ambiguous: [] }
+    } else if (descPlzCandidates.length >= 2) {
+      // Multiple distinct places in the text → don't guess, route by field + flag.
+      standortCorrection = { field: locationField, usedPlz: null, ambiguous: descPlzCandidates }
+    } else if (
+      fieldHasPlz &&
+      descPlzCandidates.length === 1 &&
+      !(locationField ?? '').includes(descPlzCandidates[0])
+    ) {
+      // User typed a PLZ but the description names a different one → keep the
+      // explicit field PLZ, flag the discrepancy for manual review.
+      standortCorrection = { field: locationField, usedPlz: null, ambiguous: descPlzCandidates }
+    }
     if (
       !validationFailed &&
       companyIds.length === 0 &&
@@ -993,6 +1034,25 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
+      // Standort-Abgleich banner. Fires when dispatch location was auto-corrected
+      // from the project description (field city → Einsatzort PLZ), or when the
+      // location signals are ambiguous. The routing already used the safer value;
+      // this surfaces it so the owner can verify the Einsatzort before firms act.
+      const standortBanner = standortCorrection
+        ? standortCorrection.usedPlz
+          ? `<div style="background:#fffbeb;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+              <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">📍 Einsatzort aus Projekttext übernommen</div>
+              <div style="font-size:13px;color:#78350f;line-height:1.5;">
+                Auto-Select hat nach <strong>${escapeHtml(standortCorrection.usedPlz)}</strong> (PLZ aus der Projektbeschreibung) geroutet, nicht nach dem Formularfeld „Stadt/PLZ": <strong>${escapeHtml(standortCorrection.field ?? '–')}</strong>. Bitte gegenchecken, ob ${escapeHtml(standortCorrection.usedPlz)} der tatsächliche Einsatzort ist.
+              </div>
+            </div>`
+          : `<div style="background:#fffbeb;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+              <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">📍 Standort-Abgleich: bitte prüfen</div>
+              <div style="font-size:13px;color:#78350f;line-height:1.5;">
+                Im Projekttext stehen mehrere bzw. abweichende Postleitzahlen (${escapeHtml(standortCorrection.ambiguous.join(', '))}). Geroutet wurde nach dem Formularfeld „Stadt/PLZ": <strong>${escapeHtml(standortCorrection.field ?? '–')}</strong>. Bitte den tatsächlichen Einsatzort prüfen, ggf. manuell zurückrouten.
+              </div>
+            </div>`
+        : ''
       const subjectPrefix = (validationFailed
         ? '⏸ LEAD GEHALTEN (Validation), '
         : noFirmsAttached
@@ -1004,12 +1064,14 @@ export async function POST(request: Request) {
         + (glassMismatch ? `🟡 GLAS (${glassCapableCount}/${glassCapableCount + noGlassFirms.length}), ` : '')
         + (aiInferredCraneType ? '🤖 AI-Krantyp, ' : '')
         + (baukranCandidate ? `⏳ BAUKRAN? (${durationDays}d), ` : '')
+        + (standortCorrection ? '📍 STANDORT, ' : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
         subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${subjectPrefix}Neue Anfrage: ${safeName}, ${safeCity}`,
         html: `
           ${alertBanner}
+          ${standortBanner}
           ${specBanner}
           ${fitCheckBanner}
           ${reachBanner}
