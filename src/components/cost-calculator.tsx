@@ -774,6 +774,15 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               </>
             )}
           </p>
+          {/* Soft-gate payoff: reveal the precise per-project estimate now that
+              the request is in. Honors the "🔒 mit der Anfrage" promise from the
+              recommendation screen. */}
+          {result.pointEstimate !== null && !result.isUncertain && (
+            <p className="text-[14px] text-gray-800 bg-white border border-green-200 rounded-lg px-3 py-2 mb-3">
+              Ihr genauer Richtwert für dieses Projekt: <strong>~{result.pointEstimate.toLocaleString('de-DE')}€ netto</strong>{' '}
+              <span className="text-gray-500">(zzgl. {TAX_LABEL})</span>
+            </p>
+          )}
           {leadSuccess.customerConfirmationSent && (
             <p className="text-[12px] text-gray-500 mb-3">
               Eine Bestätigung wurde an Ihre E-Mail gesendet, bitte prüfen Sie ggf. auch den Spam-Ordner
@@ -890,18 +899,20 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               <p className="text-[12px] text-gray-400">
                 {result.isUncertain ? 'Kostenbereich' : 'Geschätzte Kosten für Ihr Projekt'}
               </p>
-              {result.pointEstimate !== null && !result.isUncertain ? (
-                <p className="text-lg font-semibold text-gray-900">
-                  ~{result.pointEstimate.toLocaleString('de-DE')}€ netto
-                </p>
-              ) : (
-                <p className="text-lg font-semibold text-gray-900">
-                  {result.priceLow.toLocaleString('de-DE')}–{result.priceHigh.toLocaleString('de-DE')}€
-                </p>
-              )}
+              <p className="text-lg font-semibold text-gray-900">
+                {result.priceLow.toLocaleString('de-DE')}–{result.priceHigh.toLocaleString('de-DE')}€
+              </p>
               {!result.isUncertain && result.priceLow > 0 && result.priceHigh > 0 && (
                 <p className="text-[11px] text-gray-500">
-                  Richtwert-Bandbreite: {result.priceLow.toLocaleString('de-DE')}–{result.priceHigh.toLocaleString('de-DE')}€ ({result.priceUnit})
+                  Richtwert-Bandbreite ({result.priceUnit})
+                </p>
+              )}
+              {/* Soft gate: the wide range is free (AEO + orientation), the precise
+                  per-project point estimate is the carrot for submitting the request.
+                  Revealed on the success screen after the lead is sent. */}
+              {!result.isUncertain && result.pointEstimate !== null && (
+                <p className="text-[11px] font-medium text-blue-700 mt-1">
+                  🔒 Genauen Richtwert für Ihr Projekt mit der Anfrage erhalten
                 </p>
               )}
               <p className="text-[11px] text-gray-400">
@@ -944,9 +955,9 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
           {!result.isUncertain && (
             <div className="mb-3">
               {providerPreview && providerPreview.count > 0 ? (
-                <p className="text-[13px] text-gray-800 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                <p className="text-[13px] text-gray-800 bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
                   <strong>{providerPreview.count} Anbieter</strong> in Ihrer Region
-                  {providerPreview.radius_km ? ` (${providerPreview.radius_km} km)` : ''} haben genau diesen Krantyp.
+                  {providerPreview.radius_km ? ` (${providerPreview.radius_km} km)` : ''} haben genau diesen Kran. Fordern Sie jetzt kostenlos vergleichbare Angebote an.
                 </p>
               ) : providerPreview && !providerPreview.unresolved ? (
                 <p className="text-[12px] text-gray-500">
@@ -1058,8 +1069,10 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               {leadSending
                 ? 'Wird gesendet…'
                 : result.isUncertain
-                  ? 'Kostenlose Beratung anfragen '
-                  : 'Angebote anfordern'}
+                  ? 'Kostenlose Beratung anfragen'
+                  : providerPreview && providerPreview.count > 0
+                    ? `Angebote von ${providerPreview.count} Anbietern anfordern`
+                    : 'Angebote anfordern'}
             </button>
 
             <p className="text-[11px] text-center text-gray-500">
