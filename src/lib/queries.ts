@@ -247,6 +247,49 @@ export async function getOtherCompaniesInCity(
  * Get companies for a crane type in a city.
  * Uses company_regions to match city, and company_cranes to match crane type.
  */
+// --- City-page geo-relevance guards (2026-06-09) --------------------------
+// A firm belongs on a city page only if its HQ is within service reach for the
+// longest-haul crane type it offers. Mirrors the company_regions data cleanup
+// and future-proofs against re-added out-of-range rows. Stable crane_type ids.
+const SHORT_HAUL_TYPE_IDS = new Set([
+  '1a7019bd-7fd3-401a-8713-7f6be6fbd827', // Minikran
+  'ef7ed422-402e-4553-9c01-661df28c66fc', // Anhängerkran
+  '99e6ce74-f707-494e-afc8-31627b3bf41d', // Dachdeckerkran
+])
+const MID_HAUL_TYPE_IDS = new Set([
+  'ab511eea-d464-47b9-8ada-16931dab5078', // Autokran
+  'a556dcad-e379-4ac3-8d72-6eed094900d1', // Ladekran
+])
+const RADIUS_SHORT_KM = 100
+const RADIUS_MID_KM = 200
+const RADIUS_HEAVY_KM = 350
+
+function firmServiceRadiusKm(cranes: { crane_type_id: string }[] | null | undefined): number {
+  const ids = (cranes ?? []).map((c) => c.crane_type_id)
+  // Untagged: lenient (heavy) — mirrors prod "demote only on positive evidence".
+  if (ids.length === 0) return RADIUS_HEAVY_KM
+  if (ids.some((id) => !SHORT_HAUL_TYPE_IDS.has(id) && !MID_HAUL_TYPE_IDS.has(id))) return RADIUS_HEAVY_KM
+  if (ids.some((id) => MID_HAUL_TYPE_IDS.has(id))) return RADIUS_MID_KM
+  return RADIUS_SHORT_KM
+}
+
+// Equirectangular km (same idiom as _computeFirmMatchesFromCoords).
+function equirectKm(aLat: number, aLng: number, bLat: number, bLng: number): number {
+  const dlat = (aLat - bLat) * 111
+  const dlng = (aLng - bLng) * 111 * Math.cos((bLat * Math.PI) / 180)
+  return Math.sqrt(dlat * dlat + dlng * dlng)
+}
+
+// Collapse a multi-branch holding to one entry: a city searcher doesn't need 11
+// Schmidbauer branches, just the nearest. Branch markers strip to a common base;
+// firms with no marker group only with exact-name duplicates.
+function holdingKey(name: string): string {
+  const m = name
+    .toLowerCase()
+    .match(/^(.*?)\s*(?:[–-]\s*)?(?:niederlassung|standort|filiale|zweigstelle|ndl\.?|nl\.?)\b/)
+  return (m ? m[1] : name.toLowerCase()).trim().replace(/[\s,.–-]+$/, '')
+}
+
 export async function getCompaniesForCraneAndCity(
   craneTypeId: string,
   cityId: string
@@ -278,25 +321,44 @@ export async function getCompaniesForCraneAndCity(
     if (data) all.push(...(data as CompanyWithCranes[]))
   }
 
-  // Order across all batches: premium first, then by Google rating (nulls last).
-  all.sort((a, b) => {
+  // Geo-relevance guard: drop firms whose HQ is beyond their service radius for
+  // this city, and collapse multi-branch holdings to the single nearest branch.
+  const { data: cityRow } = await supabase.from('cities').select('lat, lng').eq('id', cityId).single()
+  let geoed = all
+  if (cityRow && cityRow.lat != null && cityRow.lng != null) {
+    const cLat = cityRow.lat as number
+    const cLng = cityRow.lng as number
+    const distOf = (c: CompanyWithCranes) =>
+      c.lat == null || c.lng == null ? Number.POSITIVE_INFINITY : equirectKm(c.lat, c.lng, cLat, cLng)
+    // Radius guard — firms without coords are kept (don't punish unknowns).
+    const within = all.filter(
+      (c) => c.lat == null || c.lng == null || distOf(c) <= firmServiceRadiusKm(c.company_cranes),
+    )
+    // Holding dedup — keep the branch nearest to the city per holding.
+    const bestPerHolding = new Map<string, CompanyWithCranes>()
+    for (const c of within) {
+      const k = holdingKey(c.name)
+      const cur = bestPerHolding.get(k)
+      if (!cur || distOf(c) < distOf(cur)) bestPerHolding.set(k, c)
+    }
+    geoed = [...bestPerHolding.values()]
+  }
+
+  // Order: premium first, then by Google rating (nulls last).
+  geoed.sort((a, b) => {
     if (!!b.is_premium !== !!a.is_premium) return b.is_premium ? 1 : -1
     return (b.google_rating ?? -1) - (a.google_rating ?? -1)
   })
 
-  // Split into selectable (`matching`) vs read-only regional context (`others`).
-  // A firm is `others` ONLY when we have positive evidence it does something
-  // else: it carries crane-type tags AND none of them is this type (e.g. Boels,
-  // tagged Minikran-only, on an Anhängerkran page, lead 788b037b). Firms with
-  // NO crane-type tags stay selectable, ~40% of the catalog (incl. big players
-  // like Schmidbauer, Bracht) has zero tags, and excluding "unknown capability"
-  // firms would wrongly drop them from every type page. We only demote firms
-  // we positively know specialise elsewhere.
-  const matching = all.filter((c) => {
+  // Split into selectable (`matching`) vs read-only regional context (`others`):
+  // a firm is `others` only when it carries crane-type tags AND none is this
+  // type (e.g. Boels, Minikran-only, on an Anhängerkran page). Untagged firms
+  // stay selectable — we demote only on positive evidence of a different speciality.
+  const matching = geoed.filter((c) => {
     const tags = c.company_cranes ?? []
     return tags.length === 0 || tags.some((cc) => cc.crane_type_id === craneTypeId)
   })
-  const others = all.filter((c) => {
+  const others = geoed.filter((c) => {
     const tags = c.company_cranes ?? []
     return tags.length > 0 && !tags.some((cc) => cc.crane_type_id === craneTypeId)
   })
@@ -323,7 +385,7 @@ export async function getCitiesWithMinCompanies(
     selectAllPaginated<{ company_id: string; city_id: string }>(() =>
       supabase.from('company_regions').select('company_id, city_id'),
     ),
-    supabase.from('companies').select('id').eq('is_active', true).eq('is_relevant', true),
+    supabase.from('companies').select('id, name').eq('is_active', true).eq('is_relevant', true),
   ])
 
   let typeFilter: Set<string> | null = null
@@ -338,12 +400,19 @@ export async function getCitiesWithMinCompanies(
   const activeIds = new Set((activeRes.data ?? []).map(c => c.id))
   if (allRegions.length === 0 || activeIds.size === 0) return []
 
+  // Count distinct holdings, not branches, so the sitemap min-3 threshold tracks
+  // the holding-deduped city listing (getCompaniesForCraneAndCity).
+  const holdingById = new Map<string, string>()
+  for (const c of (activeRes.data ?? []) as { id: string; name: string }[]) {
+    holdingById.set(c.id, holdingKey(c.name))
+  }
+
   const cityCounts = new Map<string, Set<string>>()
   for (const r of allRegions) {
     if (!activeIds.has(r.company_id)) continue
     if (typeFilter && !typeFilter.has(r.company_id)) continue
     if (!cityCounts.has(r.city_id)) cityCounts.set(r.city_id, new Set())
-    cityCounts.get(r.city_id)!.add(r.company_id)
+    cityCounts.get(r.city_id)!.add(holdingById.get(r.company_id) ?? r.company_id)
   }
 
   const qualifyingCityIds = [...cityCounts.entries()]
