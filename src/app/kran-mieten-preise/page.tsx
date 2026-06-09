@@ -221,7 +221,7 @@ export default async function KranMietenPreisePage() {
           In 2 Minuten zum richtigen Kran für Ihr Projekt
         </h2>
         <p className="text-[14px] text-gray-500 mb-4">
-          In wenigen Schritten, basierend auf Mietpreisdaten von {anbieterCount}+ Kranverleihern in {COUNTRY_LABEL} erhalten Sie Krantyp-Empfehlung, Kostenrahmen und passende Anbieter in Ihrer Region. Falsche Krantyp-Wahl kostet im Schnitt 2.000–4.000€ extra.
+          In wenigen Schritten erhalten Sie eine Krantyp-Empfehlung, einen Kostenrahmen auf Basis durchschnittlicher Marktpreise und passende Anbieter aus über {anbieterCount} Kranverleihern in {COUNTRY_LABEL}. Ein falsch gewählter Krantyp treibt die Kosten schnell unnötig nach oben.
         </p>
         <CostCalculator page="/kran-mieten-preise" firmCount={anbieterCount} />
       </section>
