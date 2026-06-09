@@ -81,37 +81,6 @@ const STEPS: Step[] = [
     ] as Option[],
   },
   {
-    id: 'reach',
-    question: 'Wie weit muss der Kran reichen (Auslage zur Last)?',
-    options: [
-      { label: 'Bis 5 Meter', value: '5' },
-      { label: '5–10 Meter', value: '10' },
-      { label: '10–20 Meter', value: '20' },
-      { label: 'Über 20 Meter', value: '40' },
-      { label: 'Ich bin mir nicht sicher', value: 'unsure' },
-    ] as Option[],
-  },
-  {
-    id: 'access',
-    question: 'Wie ist die Zufahrt zur Einsatzstelle?',
-    options: [
-      { label: 'Breit / normal (LKW-tauglich)', value: 'breit' },
-      { label: 'Schmal (unter 3 m)', value: 'schmal' },
-      { label: 'Nur durch Gebäude / Innenhof', value: 'innenhof' },
-      { label: 'Weicher / unebener Untergrund', value: 'gelaende' },
-      { label: 'Ich bin mir nicht sicher', value: 'unsure' },
-    ] as Option[],
-  },
-  {
-    id: 'operator',
-    question: 'Brauchen Sie einen Bediener (Kranführer)?',
-    options: [
-      { label: 'Mit Bediener', value: 'mit' },
-      { label: 'Ohne, selbst bedienen', value: 'ohne' },
-      { label: 'Egal / weiß nicht', value: 'egal' },
-    ] as Option[],
-  },
-  {
     id: 'duration',
     question: 'Wie lange brauchen Sie den Kran?',
     options: [
