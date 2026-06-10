@@ -104,6 +104,12 @@ export default async function CompanyPage({
   // treat it the same as NULL so we never submit a form that can't be delivered.
   const canInquire = !!company.email && company.email.trim() !== '???'
 
+  // Website link is a premium feature: ~50% of profile visitors left through it
+  // (198 website_clicks vs ~6 leads / 30d). Exception: when the firm has neither
+  // email nor phone, the website is the only contact path and stays visible.
+  const showWebsite =
+    !!company.website && (company.is_premium || (!canInquire && !company.phone))
+
   const description = `${company.name} ist ein Kranvermieter in ${company.city}, ${company.state}. ${
     craneTypeNames.length > 0
       ? `Das Unternehmen bietet ${craneTypeNames.join(', ')} zur Miete an und`
@@ -270,7 +276,7 @@ export default async function CompanyPage({
                   Telefonnummer anzeigen
                 </RevealablePhone>
               ) : null}
-              {company.website && (
+              {showWebsite && company.website && (
                 <TrackedWebsiteLink
                   firmId={company.id}
                   href={company.website}
@@ -481,7 +487,7 @@ export default async function CompanyPage({
                 Telefonnummer anzeigen
               </RevealablePhone>
             ) : null}
-            {company.website && (
+            {showWebsite && company.website && (
               <TrackedWebsiteLink
                 firmId={company.id}
                 href={company.website}
