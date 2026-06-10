@@ -19,6 +19,7 @@ import { FAQSection } from '@/components/faq-section'
 import { NewsletterPanel } from '@/components/newsletter-panel'
 import { PageEventTracker } from '@/components/page-event-tracker'
 import { ListingFastAnfrageCTA } from '@/components/listing-fast-anfrage-cta'
+import { RueckrufForm } from '@/components/rueckruf-form'
 import { getFAQsForCraneAndCity, dedupeFaqs } from '@/data/faq'
 import { getPriceForCraneType } from '@/data/crane-prices'
 import { craneTypes as craneTypesList } from '@/data/crane-types'
@@ -261,6 +262,18 @@ export default async function CraneCityPage({
             Wir erweitern unser Verzeichnis ständig. Schauen Sie bald wieder vorbei.
           </p>
         </section>
+      )}
+
+      {/* Phone-first escape hatch: callback request with phone + PLZ only.
+          Crane rental is a phone-first trade; part of the demand never fills
+          the full form. Only rendered when the type has inquirable firms. */}
+      {companies.length > 0 && (
+        <RueckrufForm
+          craneTypeId={craneType.id}
+          craneTypeName={craneType.name}
+          craneTypeSlug={craneType.slug}
+          cityName={city.name}
+        />
       )}
 
       {/* Other firms that serve the city but do not offer this crane type.
