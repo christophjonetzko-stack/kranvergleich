@@ -884,7 +884,8 @@ export async function submitLead(formData: {
   city: string
   customer_name: string
   customer_phone: string
-  customer_email: string
+  // NULL on email-less callback leads (Rückruf anfordern, mig 038).
+  customer_email: string | null
   project_description: string
   preferred_date: string | null
   duration_days: number | null

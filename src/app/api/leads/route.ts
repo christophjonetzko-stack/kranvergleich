@@ -175,8 +175,15 @@ export async function POST(request: Request) {
     // accidental dry-runs from the main UI flow.
     const dryRun = body.dry_run === true
 
+    // Callback flow (Rückruf anfordern, 2026-06-10, mig 038): a lead may
+    // arrive with a phone number instead of an email. DSGVO consent is always
+    // required; the contact channel is email OR (callback_request + phone).
+    // The phone is hard-validated below because it is the only way back to
+    // the customer in this flow.
+    const isCallbackRequest = body.callback_request === true
+
     // Validate required fields
-    if (!body.customer_email || !body.dsgvo_consent) {
+    if (!body.dsgvo_consent || (!body.customer_email && !isCallbackRequest)) {
       return NextResponse.json(
         { error: 'E-Mail und DSGVO-Zustimmung sind erforderlich.' },
         { status: 400 }
@@ -186,7 +193,7 @@ export async function POST(request: Request) {
     // Email format check via zod (replaces the prior bespoke regex). Hard
     // 400 here, a malformed address has no MX path forward and the customer
     // typo is the most likely cause; let them retry on the form.
-    if (!emailSchema.safeParse(body.customer_email).success) {
+    if (body.customer_email && !emailSchema.safeParse(body.customer_email).success) {
       return NextResponse.json(
         { error: 'Ungültige E-Mail-Adresse.' },
         { status: 400 }
@@ -200,8 +207,19 @@ export async function POST(request: Request) {
     // believes their data is fine); we save the lead, hold dispatch, alert
     // the owner, and tell the customer "wir prüfen und melden uns" so they
     // don't double-submit. Owner decides retry/contact/skip by hand.
-    const mxCheck = await emailDomainHasMx(body.customer_email)
+    const mxCheck = body.customer_email
+      ? await emailDomainHasMx(body.customer_email)
+      : { ok: true as const, reason: 'callback_no_email' }
     const phoneCheck = validatePhoneE164(body.customer_phone)
+    // Email-less callback lead with a phone that doesn't parse → hard 400.
+    // Unlike the soft-hold path below there is no second channel to recover
+    // through, and the typo is fixable right now on the form.
+    if (isCallbackRequest && !body.customer_email && !phoneCheck.ok) {
+      return NextResponse.json(
+        { error: 'Bitte geben Sie eine gültige Telefonnummer an.' },
+        { status: 400 }
+      )
+    }
     const validationFailed = !mxCheck.ok || !phoneCheck.ok
     const validationReasons: string[] = []
     if (!mxCheck.ok) validationReasons.push(`mx:${mxCheck.reason}`)
@@ -374,8 +392,16 @@ export async function POST(request: Request) {
     const city = truncate(body.city || '')
     const customerName = truncate(body.customer_name || '')
     const customerPhone = truncate(body.customer_phone || '', 30)
-    const customerEmail = truncate(body.customer_email, 254)
-    const projectDescription = truncate(body.project_description || '', 2000)
+    // NULL (not '') when the callback flow arrives without an email — the DB
+    // column is nullable since mig 038 and downstream display code branches
+    // on the null.
+    const customerEmail: string | null = body.customer_email
+      ? truncate(body.customer_email, 254)
+      : null
+    const projectDescription = truncate(
+      body.project_description || (isCallbackRequest ? 'Rückruf angefordert' : ''),
+      2000,
+    )
     const preferredDate = truncate(body.preferred_date || '', 20)
     const durationDays = typeof body.duration_days === 'number' ? Math.min(Math.max(0, Math.round(body.duration_days)), 3650) : null
 
@@ -616,7 +642,13 @@ export async function POST(request: Request) {
 
     // Escape all user input for HTML emails
     const safeName = escapeHtml(customerName) || '–'
-    const safeEmail = escapeHtml(customerEmail)
+    const safeEmail = customerEmail ? escapeHtml(customerEmail) : '–'
+    // Email table cell for firm/owner mails: mailto link when we have an
+    // address, otherwise an explicit callback note so the firm knows the
+    // phone is the only channel.
+    const emailCellHtml = customerEmail
+      ? `<a href="mailto:${safeEmail}">${safeEmail}</a>`
+      : '– <em>(keine E-Mail, Kunde bittet um Rückruf)</em>'
     const safePhone = escapeHtml(customerPhone) || '–'
     const safeCity = escapeHtml(city) || '–'
     const safeDate = escapeHtml(preferredDate) || '–'
@@ -690,7 +722,9 @@ export async function POST(request: Request) {
       return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.`
     })()
     const subjectParts = [craneTypeName || 'Kran', city || null, dateShort].filter((p): p is string => Boolean(p))
-    const firmSubject = `Neue Anfrage: ${subjectParts.join(' · ')}`
+    const firmSubject = isCallbackRequest
+      ? `📞 Rückruf-Anfrage: ${subjectParts.join(' · ')}`
+      : `Neue Anfrage: ${subjectParts.join(' · ')}`
 
     // Dispatch shape for the receiving firm:
     //   - Sammelanfrage: the lead went to >1 supplier in parallel; copy
@@ -792,7 +826,7 @@ export async function POST(request: Request) {
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 ${safeCraneType ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Name</td><td><strong>${safeName}</strong></td></tr>
-                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+                <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">E-Mail</td><td>${emailCellHtml}</td></tr>
                 ${safePhone !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Telefon</td><td>${safePhone}</td></tr>` : ''}
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Stadt</td><td>${safeCity}</td></tr>
                 ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
@@ -870,7 +904,8 @@ export async function POST(request: Request) {
         const result = await sendResendEmail(`company email (${company.name})`, {
           from: FROM_EMAIL,
           to: company.email!,
-          replyTo: customerEmail,
+          // No replyTo on email-less callback leads; the firm calls back.
+          ...(customerEmail ? { replyTo: customerEmail } : {}),
           subject: firmSubject,
           html: buildCompanyEmailHtml(company.name, { accept: acceptUrl, decline: declineUrl }),
         })
@@ -1082,7 +1117,7 @@ export async function POST(request: Request) {
           <table style="border-collapse:collapse;font-family:system-ui;font-size:14px;">
             ${safeCraneType ? `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Krantyp</td><td><strong>${safeCraneType}</strong></td></tr>` : ''}
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Name</td><td><strong>${safeName}</strong></td></tr>
-            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">E-Mail</td><td><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+            <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">E-Mail</td><td>${emailCellHtml}</td></tr>
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Telefon</td><td>${safePhone}</td></tr>
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Stadt</td><td>${safeCity}</td></tr>
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;">Wunschtermin</td><td>${safeDate}</td></tr>
@@ -1096,8 +1131,10 @@ export async function POST(request: Request) {
       ownerNotificationSent = notifRes.ok
     }
 
-    // Send confirmation email to customer
-    const confirmRes = await sendResendEmail('confirmation', {
+    // Send confirmation email to customer. Skipped on email-less callback
+    // leads — the firm's phone call IS the confirmation channel there.
+    let confirmRes: { ok: boolean } = { ok: false }
+    if (customerEmail) confirmRes = await sendResendEmail('confirmation', {
       from: FROM_EMAIL,
       to: customerEmail,
       subject: `Ihre Anfrage bei ${BRAND_NAME}, ${validationFailed ? 'Prüfung läuft' : companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
