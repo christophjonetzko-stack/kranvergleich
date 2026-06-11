@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { FAQSection } from '@/components/faq-section'
 import { TAX_LABEL } from '@/lib/country'
@@ -113,7 +114,7 @@ const faqs = [
   {
     question: 'Dürfen die Zahlen aus dem Report zitiert werden?',
     answer:
-      'Ja. Alle Zahlen und Tabellen dürfen für redaktionelle Zwecke frei verwendet werden. Bedingung ist die Quellenangabe „KranVergleich.de, Kran-Preisreport 2026" mit Link auf diese Seite. Für Rohdaten oder regionale Sonderauswertungen erreichen Sie uns unter christoph@kranvergleich.de.',
+      'Ja. Alle Zahlen, Tabellen und die Grafik dürfen für redaktionelle Zwecke frei verwendet werden. Bedingung ist die Quellenangabe „KranVergleich.de, Kran-Preisreport 2026" mit Link auf diese Seite. Für Rohdaten oder regionale Sonderauswertungen erreichen Sie uns unter christoph@kranvergleich.de.',
   },
   {
     question: 'Wie aktuell sind die Preisangaben?',
@@ -271,6 +272,34 @@ export default function KranPreisreportPage() {
           31. März und dem 7. Juni 2026. Der Anteil zeigt, wie sich das Suchinteresse auf die acht
           Krantypen verteilt.
         </p>
+        {/* Citable key-figures graphic, same asset that goes out with press pitches. */}
+        <figure className="mb-6">
+          <a
+            href="/images/kran-preisreport-2026-grafik.png"
+            target="_blank"
+            rel="noopener"
+            title="Grafik in voller Auflösung öffnen"
+          >
+            <Image
+              src="/images/kran-preisreport-2026-grafik.png"
+              alt="Infografik Kran-Preisreport 2026: 31 Prozent der Suchanfragen rund um Kranmiete sind Preisfragen. Suchnachfrage nach Krantyp: Autokran 34 Prozent, Minikran 19 Prozent, Baukran 17 Prozent."
+              width={1920}
+              height={1080}
+              className="w-full h-auto border border-gray-200 rounded-lg"
+            />
+          </a>
+          <figcaption className="mt-2 text-[12px] text-gray-500">
+            Zentrale Ergebnisse als Grafik, frei verwendbar mit Quellenangabe
+            „KranVergleich.de, Kran-Preisreport 2026".{' '}
+            <a
+              href="/images/kran-preisreport-2026-grafik.png"
+              className="text-blue-600 hover:underline"
+              download
+            >
+              PNG herunterladen (1920×1080)
+            </a>
+          </figcaption>
+        </figure>
         <div className="overflow-x-auto border border-gray-200 rounded-lg">
           <table className="w-full text-[13px]">
             <thead>
@@ -389,8 +418,8 @@ export default function KranPreisreportPage() {
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Daten verwenden und zitieren</h2>
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 text-[14px] text-gray-600 leading-relaxed space-y-3">
           <p>
-            Alle Zahlen und Tabellen dieses Reports dürfen für redaktionelle Zwecke frei verwendet
-            werden. Bedingung ist die Quellenangabe mit Link:{' '}
+            Alle Zahlen, Tabellen und die Grafik dieses Reports dürfen für redaktionelle Zwecke
+            frei verwendet werden. Bedingung ist die Quellenangabe mit Link:{' '}
             <strong className="text-gray-900">„Quelle: KranVergleich.de, Kran-Preisreport 2026"</strong>.
           </p>
           <p>
