@@ -125,13 +125,26 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Lead follow-up (firm reminders + owner digest, lead-flow Pakiet 1) rides
+  // on this cron because Vercel Hobby caps the project at 2 cron jobs. Runs
+  // for BOTH countries — each deployment processes only its own leads via the
+  // country filter inside the module. try/catch so a follow-up failure (e.g.
+  // mig 039 not applied yet) can never break the drip sends below.
+  let followup = { reminders: 0, digestLeads: 0 }
+  try {
+    const { runLeadFollowup } = await import('@/lib/lead-followup')
+    followup = await runLeadFollowup()
+  } catch (err) {
+    console.error('[cron] lead-followup failed (drip continues):', err)
+  }
+
   // The kranvergleich.at deployment shares vercel.json with kranvergleich.de,
   // so this cron fires on both projects. The DRIP_EMAILS templates are written
   // for DE (links, copy, tone) and the newsletter_subscribers table is not yet
   // country-scoped. Skip on AT until AT-localised drip content + a country
   // column on newsletter_subscribers exist (deferred, no AT subscribers yet).
   if (COUNTRY === 'AT') {
-    return NextResponse.json({ skipped: true, reason: 'drip-emails are DE-only until AT content + country scoping land' })
+    return NextResponse.json({ skipped: true, reason: 'drip-emails are DE-only until AT content + country scoping land', followup })
   }
 
   const sb = getServiceSupabase()
@@ -178,5 +191,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ sent: totalSent, timestamp: now.toISOString() })
+  return NextResponse.json({ sent: totalSent, followup, timestamp: now.toISOString() })
 }
