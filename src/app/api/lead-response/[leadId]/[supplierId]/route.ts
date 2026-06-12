@@ -167,7 +167,7 @@ export async function POST(
   // (lead, supplier) pair really shipped together in lead_companies.
   const { data: lcRow, error: lcErr } = await sb
     .from('lead_companies')
-    .select('lead_id, company_id, feedback_notes, companies(name), leads(customer_name, customer_email, customer_phone, city, crane_types(name))')
+    .select('lead_id, company_id, feedback_notes, companies(name), leads(customer_name, customer_email, customer_phone, city, crane_type_id, crane_types(name))')
     .eq('lead_id', leadId)
     .eq('company_id', supplierId)
     .maybeSingle()
@@ -256,6 +256,44 @@ export async function POST(
   const customerCity: string = customer.city || '?'
   const craneType: string = customer.crane_types?.name || '?'
   const actionLabel = action === 'accept' ? 'ANGENOMMEN' : 'ABGELEHNT'
+
+  // C4 (2026-06-12): on decline, surface the 3 nearest same-type firms NOT
+  // already on the lead, so the opt-in-reroute decision takes a minute
+  // instead of a research session. Info only — NEVER auto-dispatched
+  // (opt-in rule, memory feedback_lead_reroute_dsgvo_optin).
+  let candidatesHtml = ''
+  if (action === 'decline') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const leadInfo = (lcRow as any).leads
+      const craneTypeId: string | null = leadInfo?.crane_type_id ?? null
+      const leadCity: string | null = leadInfo?.city ?? null
+      if (craneTypeId && leadCity) {
+        const { getCompaniesForCraneTypeNearLocation } = await import('@/lib/queries')
+        const { data: existing } = await sb
+          .from('lead_companies')
+          .select('company_id')
+          .eq('lead_id', leadId)
+        const existingIds = new Set((existing ?? []).map((r) => r.company_id))
+        const result = await getCompaniesForCraneTypeNearLocation(craneTypeId, leadCity, { limit: 13 })
+        const candidates = (result?.matches ?? [])
+          .filter((m) => !existingIds.has(m.company.id))
+          .slice(0, 3)
+        if (candidates.length > 0) {
+          candidatesHtml = `<p><strong>Kandidaten für Opt-in-Reroute</strong> (gleicher Krantyp, nächstgelegen, NICHT auf dem Lead):</p>
+            <ul>${candidates
+              .map(
+                (m) =>
+                  `<li>${escapeHtml(m.company.name)} (${escapeHtml(m.company.city ?? '?')}, ~${Math.round(m.distance_km)} km${m.company.email ? '' : ', KEINE E-MAIL'})</li>`,
+              )
+              .join('')}</ul>
+            <p style="font-size:12px;color:#9ca3af;">Nur zur Info, KEIN automatischer Versand (Opt-in-Regel: Kunde muss erst zustimmen).</p>`
+        }
+      }
+    } catch (err) {
+      console.error('decline replacement-candidates lookup failed (alert continues):', err)
+    }
+  }
 
   await sendOwnerAlert(
     `${BRAND_NAME} - ${actionLabel} - ${companyName}  ${customerName} (${customerCity}, ${craneType})`,

@@ -1157,12 +1157,28 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
+      // R1 (2026-06-12): the three pre-filter anomaly categories used to go
+      // out as SEPARATE mails on top of this notification — same signal,
+      // 4x inbox noise. Folded into one banner here; content preserved.
+      const droppedTotal = droppedNoEmail.length + droppedIrrelevant.length + droppedTestFlagged.length
+      const droppedBanner = droppedTotal > 0
+        ? `<div style="background:#f3f4f6;border:2px solid #6b7280;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#374151;margin-bottom:6px;">🐛 Lead-Filter: ${droppedTotal} Firma(en) vor Versand entfernt</div>
+            <div style="font-size:13px;color:#374151;line-height:1.5;">
+              ${droppedNoEmail.length > 0 ? `<strong>Ohne E-Mail</strong> (kein Resend-Ziel, kein manuelles Weiterleiten nötig, Aktivierung über Faza-2-Briefkampagne): ${droppedNoEmail.map((c) => escapeHtml(c.name)).join(', ')}.<br>` : ''}
+              ${droppedIrrelevant.length > 0 ? `<strong>Inaktiv/irrelevant</strong> (is_active/is_relevant=false, deutet auf stale UI-State oder geforgten Request): ${droppedIrrelevant.map((c) => `${escapeHtml(c.name)} (active=${c.is_active}, relevant=${c.is_relevant})`).join(', ')}.<br>` : ''}
+              ${droppedTestFlagged.length > 0 ? `<strong>„(TEST)"-markiert</strong> (Namen bereinigen oder Flags senken): ${droppedTestFlagged.map((c) => escapeHtml(c.name)).join(', ')}.<br>` : ''}
+              Häufung dieser Banner = Gate prüfen (Form-Cache / Filter-Regress).
+            </div>
+          </div>`
+        : ''
       const subjectPrefix = (validationFailed
         ? '⏸ LEAD GEHALTEN (Validation), '
         : noFirmsAttached
         ? '🚨 LEAD OHNE ANBIETER, '
         : '')
         + (mxSoft ? '📭 MX-UNGEPRÜFT, ' : '')
+        + (droppedTotal > 0 ? `🐛 FILTER (${droppedTotal}), ` : '')
         + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}), ` : '')
         + (hasUndersizedMatches ? `FIT-MISMATCH (${undersizedFirms.length}), ` : '')
         + (reachMismatch ? `📐 REICHWEITE (${reachShortFirms.length + capacityRiskFirms.length}), ` : '')
@@ -1177,6 +1193,7 @@ export async function POST(request: Request) {
         html: `
           ${alertBanner}
           ${mxSoftBanner}
+          ${droppedBanner}
           ${standortBanner}
           ${specBanner}
           ${fitCheckBanner}
@@ -1233,72 +1250,10 @@ export async function POST(request: Request) {
       `,
     })
 
-    // Anomaly alert: a request reached /api/leads with company_ids pointing at
-    // email-less firms despite the frontend gates and the auto-select filter.
-    // Should be rare (stale client cache, forged body, or a regression in one
-    // of the gates). Logged as an alert so we notice and trace the source.
-    // No manual forwarding needed, those firms are intentionally inert and
-    // get re-activated only by adding an email (Faza 2 cold-letter QR flow).
-    if (droppedNoEmail.length > 0 && ownerEmail) {
-      const droppedNames = droppedNoEmail.map((c) => escapeHtml(c.name)).join(', ')
-      await sendResendEmail('pre-filter dropped firms', {
-        from: FROM_EMAIL,
-        to: ownerEmail,
-        subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedNoEmail.length} E-Mail-lose Firma(en) entfernt`,
-        html: `
-            <h3>Anomalie: Lead enthielt Firmen ohne E-Mail</h3>
-            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen (kein Resend-Ziel). Sie bleiben im Katalog/SEO sichtbar, der Endkunde sieht sie nicht in der Auswahl. Kein manuelles Weiterleiten nötig. Aktivierung läuft über die Faza-2-Briefkampagne.</p>
-            <ul>${droppedNoEmail.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
-            <p>Hinweis: Frontend-Gates (CompanyCard CTA + Profil-Form) sollten diese IDs gar nicht erst weiterreichen. Wenn diese Mail häufiger kommt, prüfen ob Cache/Stale-State oder ein Regress in der Filter-Logik vorliegt.</p>
-            <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
-            <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
-          `,
-      })
-    }
-
-    // Anomaly alert: a request reached /api/leads with company_ids pointing at
-    // firms that are flagged is_active=false (deactivated) or is_relevant=false
-    // (hidden from frontend, e.g. competitor portal misclassified at import).
-    // Frontend list queries filter both flags, so a submission with these IDs
-    // means stale UI state (form loaded before the flag flip) or a forged
-    // request. Surface so we can patch the gate that leaked the ID through.
-    if (droppedIrrelevant.length > 0 && ownerEmail) {
-      await sendResendEmail('pre-filter dropped irrelevant firms', {
-        from: FROM_EMAIL,
-        to: ownerEmail,
-        subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedIrrelevant.length} inaktive/irrelevante Firma(en) entfernt`,
-        html: `
-            <h3>Anomalie: Lead enthielt deaktivierte oder versteckte Firmen</h3>
-            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen, weil sie <code>is_active=false</code> oder <code>is_relevant=false</code> tragen. Beide Flags blenden Firmen aus dem Frontend-Katalog und den Auswahllisten aus, eine Lead-Submission mit diesen IDs deutet auf veralteten UI-Zustand oder eine geforgte Anfrage hin.</p>
-            <ul>${droppedIrrelevant.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id}, is_active=${c.is_active}, is_relevant=${c.is_relevant})</li>`).join('')}</ul>
-            <p>Hinweis: Wenn diese Mail häufiger kommt, prüfen ob die Form ihre Firmenliste cached oder ob ein Code-Pfad die Filter umgeht.</p>
-            <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
-            <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
-          `,
-      })
-    }
-
-    // Anomaly alert: a firm carrying "(TEST)" in its companies.name made it
-    // into a real lead dispatch. The frontend filters would normally hide
-    // anything flagged this way, so a submission means either a test row
-    // leaked into production (mass-import slip), a name was edited to
-    // include the marker but is_active / is_relevant weren't lowered, or
-    // a forged request. Surface so we can clean the row.
-    if (droppedTestFlagged.length > 0 && ownerEmail) {
-      await sendResendEmail('pre-filter dropped test-flagged firms', {
-        from: FROM_EMAIL,
-        to: ownerEmail,
-        subject: `${BRAND_NAME} - 🐛 Lead-Filter hat ${droppedTestFlagged.length} test-markierte Firma(en) entfernt`,
-        html: `
-            <h3>Anomalie: Lead enthielt mit „(TEST)" markierte Firmen</h3>
-            <p>Diese Firmen wurden vom Lead-Routing ausgeschlossen, weil ihr Name den Marker „(TEST)" enthält. In Produktions-Mails sollen solche Einträge nie auftauchen.</p>
-            <ul>${droppedTestFlagged.map((c) => `<li><strong>${escapeHtml(c.name)}</strong> (ID: ${c.id})</li>`).join('')}</ul>
-            <p>Hinweis: Entweder den Namen bereinigen oder is_active=false / is_relevant=false setzen, damit der Datensatz auch frontend-seitig verschwindet.</p>
-            <p>Kundendaten: <strong>${safeName}</strong>, ${safeEmail}, ${safePhone}</p>
-            <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
-          `,
-      })
-    }
+    // Pre-filter anomaly categories (email-less / inactive / test-flagged
+    // firms in company_ids) are reported as the 🐛 FILTER banner inside the
+    // main owner notification since 2026-06-12 (R1) — they used to be three
+    // separate mails carrying the same signal.
 
     // Anomaly alert: the email's domain has no MX records OR the phone
     // number couldn't be parsed to a valid E.164 form. Either way the lead
