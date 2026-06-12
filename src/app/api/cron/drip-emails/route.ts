@@ -130,7 +130,7 @@ export async function GET(request: Request) {
   // for BOTH countries — each deployment processes only its own leads via the
   // country filter inside the module. try/catch so a follow-up failure (e.g.
   // mig 039 not applied yet) can never break the drip sends below.
-  let followup = { reminders: 0, digestLeads: 0 }
+  let followup = { reminders: 0, digestLeads: 0, outcomeMails: 0 }
   try {
     const { runLeadFollowup } = await import('@/lib/lead-followup')
     followup = await runLeadFollowup()

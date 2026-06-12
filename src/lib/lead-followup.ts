@@ -1,6 +1,6 @@
 import { Resend } from 'resend'
 import { getServiceSupabase } from '@/lib/supabase'
-import { signLeadResponse } from '@/lib/lead-response-sig'
+import { signLeadResponse, signLeadOutcome, type LeadOutcomeAction } from '@/lib/lead-response-sig'
 import { COUNTRY, BASE_URL, BRAND_NAME } from '@/lib/country'
 
 /**
@@ -280,14 +280,129 @@ async function runOwnerDigest(resend: Resend): Promise<number> {
   return dead.length
 }
 
-export async function runLeadFollowup(): Promise<{ reminders: number; digestLeads: number }> {
+/**
+ * Customer outcome mail (Pakiet 2, T+7-10d). Legal posture per legal-check
+ * 2026-06-12 (Art. 6(1)(b) DSGVO, outside Werbung per BGH VI ZR 225/17 and
+ * outside §107 TKG-AT): the template must stay STRICTLY operational — no
+ * promo content, no review ask, single mail per lead, and the no_offer
+ * answer must trigger a real rescue (owner alert in /api/lead-outcome).
+ * Do not add marketing copy here without re-running legal-check.
+ */
+const OUTCOME_MIN_AGE_D = 7
+const OUTCOME_MAX_AGE_D = 10
+
+function buildOutcomeUrl(leadId: string, action: LeadOutcomeAction): string {
+  const sig = signLeadOutcome(leadId, action)
+  return `${BASE_URL}/api/lead-outcome/${leadId}?action=${action}&sig=${sig}`
+}
+
+type OutcomeLeadRow = {
+  id: string
+  customer_name: string | null
+  customer_email: string | null
+  city: string | null
+  created_at: string
+  status: string | null
+  is_test: boolean
+  crane_types: { name: string } | null
+  lead_companies: Array<{ sent_at: string | null }>
+}
+
+async function runOutcomeMails(resend: Resend): Promise<number> {
+  const sb = getServiceSupabase()
+  const { data, error } = await sb
+    .from('leads')
+    .select(
+      'id, customer_name, customer_email, city, created_at, status, is_test, outcome_mail_sent_at, crane_types(name), lead_companies(sent_at)',
+    )
+    .eq('country', COUNTRY)
+    .eq('is_test', false)
+    .is('outcome_mail_sent_at', null)
+    .not('customer_email', 'is', null)
+    .gte('created_at', hoursAgoIso(OUTCOME_MAX_AGE_D * 24))
+    .lte('created_at', hoursAgoIso(OUTCOME_MIN_AGE_D * 24))
+
+  if (error) {
+    // Pre-mig-040 the outcome_mail_sent_at column is missing. Log and bail.
+    console.error('[lead-followup] outcome query failed (mig 040 applied?):', error.message)
+    return 0
+  }
+
+  let sent = 0
+  for (const raw of data ?? []) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lead = raw as any as OutcomeLeadRow
+    if (lead.status && !OPEN_LEAD_STATUSES.has(lead.status)) continue
+    if (!lead.customer_email) continue
+    // Only leads that were actually dispatched to firms — for a held /
+    // 0-firm lead the question "Angebote erhalten?" would be absurd.
+    if (!(lead.lead_companies ?? []).some((lc) => lc.sent_at != null)) continue
+
+    const craneType = lead.crane_types?.name ?? 'Kran'
+    const firmCount = (lead.lead_companies ?? []).filter((lc) => lc.sent_at != null).length
+    const safeName = escapeHtml(lead.customer_name || '')
+    const safeCity = escapeHtml(lead.city || '')
+
+    try {
+      const { error: sendErr } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: lead.customer_email,
+        subject: `Ihre Krananfrage${safeCity ? ` (${lead.city})` : ''}: Haben Sie Angebote erhalten?`,
+        html: `
+          <div style="font-family:system-ui;max-width:520px;">
+            <p style="color:#4b5563;font-size:14px;line-height:1.6;">
+              ${safeName ? `Hallo ${safeName},` : 'Hallo,'}
+            </p>
+            <p style="color:#4b5563;font-size:14px;line-height:1.6;">
+              vor einer Woche haben wir Ihre Anfrage (${escapeHtml(craneType)}${safeCity ? `, ${safeCity}` : ''})
+              an ${firmCount} ${firmCount === 1 ? 'Kranbetrieb' : 'Kranbetriebe'} weitergeleitet.
+              Damit wir Ihre Anfrage abschließen oder für Sie nachfassen können, eine kurze Frage,
+              ein Klick genügt:
+            </p>
+            <div style="margin:18px 0;">
+              <a href="${buildOutcomeUrl(lead.id, 'got_offer')}" style="display:inline-block;padding:10px 16px;background:#059669;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;margin:0 8px 8px 0;">&#10003; Ja, Angebot erhalten</a>
+              <a href="${buildOutcomeUrl(lead.id, 'no_offer')}" style="display:inline-block;padding:10px 16px;background:#dc2626;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;margin:0 8px 8px 0;">&#10005; Nein, keine Angebote</a>
+              <a href="${buildOutcomeUrl(lead.id, 'still_open')}" style="display:inline-block;padding:10px 16px;background:#6b7280;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;margin:0 0 8px 0;">Noch offen</a>
+            </div>
+            <p style="color:#4b5563;font-size:13px;line-height:1.6;">
+              Falls keine Angebote angekommen sind, fassen wir bei den Betrieben nach oder
+              schlagen Ihnen passende Alternativen vor.
+            </p>
+            <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin-top:20px;">
+              Dies ist die einzige Nachricht dieser Art zu Ihrer Anfrage, weitere E-Mails folgen nicht.<br>
+              ${BRAND_NAME} · <a href="${BASE_URL}" style="color:#2563eb;">${BASE_URL.replace('https://', '')}</a> ·
+              <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
+            </p>
+          </div>
+        `,
+      })
+      if (sendErr) {
+        console.error(`[lead-followup] outcome send failed (lead ${lead.id}):`, sendErr)
+        continue
+      }
+      const { error: stampErr } = await sb
+        .from('leads')
+        .update({ outcome_mail_sent_at: new Date().toISOString() })
+        .eq('id', lead.id)
+      if (stampErr) console.error('[lead-followup] outcome stamp failed:', stampErr)
+      sent += 1
+      await new Promise((r) => setTimeout(r, 200))
+    } catch (err) {
+      console.error(`[lead-followup] outcome threw (lead ${lead.id}):`, err)
+    }
+  }
+  return sent
+}
+
+export async function runLeadFollowup(): Promise<{ reminders: number; digestLeads: number; outcomeMails: number }> {
   const key = process.env.RESEND_API_KEY
   if (!key) {
     console.error('[lead-followup] RESEND_API_KEY missing, skipped')
-    return { reminders: 0, digestLeads: 0 }
+    return { reminders: 0, digestLeads: 0, outcomeMails: 0 }
   }
   const resend = new Resend(key)
   const reminders = await runFirmReminders(resend)
   const digestLeads = await runOwnerDigest(resend)
-  return { reminders, digestLeads }
+  const outcomeMails = await runOutcomeMails(resend)
+  return { reminders, digestLeads, outcomeMails }
 }

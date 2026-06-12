@@ -39,6 +39,39 @@ export function signLeadResponse(
   return digest.toString('base64url').slice(0, SIG_LENGTH)
 }
 
+/**
+ * Customer-side outcome links (lead-flow Pakiet 2, 2026-06-12). Same secret,
+ * same 128-bit sig shape, distinct payload prefix so a firm-link sig can
+ * never validate as an outcome sig and vice versa.
+ */
+export type LeadOutcomeAction = 'got_offer' | 'no_offer' | 'still_open'
+const OUTCOME_ACTIONS: ReadonlySet<string> = new Set(['got_offer', 'no_offer', 'still_open'])
+
+export function signLeadOutcome(leadId: string, action: LeadOutcomeAction): string {
+  const payload = `outcome:${leadId}:${action}`
+  const digest = createHmac('sha256', getSecret()).update(payload).digest()
+  return digest.toString('base64url').slice(0, SIG_LENGTH)
+}
+
+export function verifyLeadOutcomeSig(
+  leadId: string,
+  action: string,
+  sig: string | null | undefined,
+): action is LeadOutcomeAction {
+  if (!OUTCOME_ACTIONS.has(action)) return false
+  if (typeof sig !== 'string' || sig.length !== SIG_LENGTH) return false
+  let expected: string
+  try {
+    expected = signLeadOutcome(leadId, action as LeadOutcomeAction)
+  } catch {
+    return false
+  }
+  const a = Buffer.from(sig, 'utf8')
+  const b = Buffer.from(expected, 'utf8')
+  if (a.length !== b.length) return false
+  return timingSafeEqual(a, b)
+}
+
 export function verifyLeadResponseSig(
   leadId: string,
   supplierId: string,
