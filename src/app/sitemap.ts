@@ -73,6 +73,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/minikran-mit-glassauger-mieten`, lastModified: toDate(DATE_GLASSAUGER), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/kran-preisreport-2026`, lastModified: toDate(DATE_PREISREPORT), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/kostenrechner`, lastModified: toDate(DATE_KOSTENRECHNER), changeFrequency: 'monthly', priority: 0.8 },
+    // E-E-A-T entity page (Organization.founder target, Person schema). Was
+    // missing from the sitemap entirely (2026-06-12 audit).
+    { url: `${baseUrl}/ueber-uns`, lastModified: toDate('2026-05-11'), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/impressum`, lastModified: toDate(DATE_LEGAL), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${baseUrl}/datenschutz`, lastModified: toDate(DATE_LEGAL), changeFrequency: 'yearly', priority: 0.3 },
   ]
@@ -107,8 +110,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Programmatic city×type pages. Per-type content date wins over the shared
-  // city-data refresh, this spreads the 376 URLs across ~8 distinct dates
-  // instead of one mass-refresh signal.
+  // city-data refresh, this spreads the city×type URLs (465 as of 2026-06)
+  // across ~8 distinct dates instead of one mass-refresh signal.
   const cityPages: MetadataRoute.Sitemap = craneTypes.flatMap((ct) => {
     const typeDate = TYPE_CONTENT_DATES[ct.slug] ?? DATE_CITY_REFRESH
     const effectiveDate = maxIsoDate(typeDate, DATE_CITY_REFRESH)

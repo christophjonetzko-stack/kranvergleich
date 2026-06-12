@@ -17,7 +17,9 @@ export const revalidate = 86400
 export async function generateMetadata(): Promise<Metadata> {
   const { anbieterCount, staedteCount } = await getSiteStats()
   return {
-    title: `Über uns, ${BRAND_NAME}`,
+    // title.absolute: the layout template appends " | KranVergleich.de", which
+    // doubled the brand here ("Über uns, KranVergleich.de | KranVergleich.de").
+    title: { absolute: `Über uns | ${BRAND_NAME}` },
     description: `${BRAND_NAME} ist ${COUNTRY_LABEL}s Vergleichsportal für Kranvermietung. Über ${anbieterCount} Anbieter, 8 Krantypen, ${staedteCount}+ Städte. Kostenlos und unverbindlich.`,
     alternates: alternatesFor('/ueber-uns'),
     openGraph: {
