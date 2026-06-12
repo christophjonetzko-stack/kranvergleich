@@ -93,6 +93,10 @@ const costFAQs = [
     answer: 'Ein 80-Tonnen-Mobilkran kostet ca. 1.000–2.000€ pro Tag inklusive Kranführer. Stundenpreise liegen bei 250–500€/h (Mindestmietdauer 4 Stunden). Wochenmiete: 5.000–10.000€, Monatsmiete: 15.000–25.000€. Der 80-Tonner kommt bei Industriemontagen, Brückenteilen und schweren Stahlbauarbeiten zum Einsatz. Ab dieser Tragklasse fällt häufig Schwertransport zur Baustelle an, je nach Entfernung 300–3.000€ extra.',
   },
   {
+    question: 'Was kostet ein 750-Tonnen-Kran?',
+    answer: 'Ein Kran der 750-Tonnen-Klasse (Mobilkran oder Raupenkran) liegt am oberen Ende der Schwerlast-Spanne: Tagespreise bewegen sich in der Klasse ab 500 Tonnen zwischen 4.000€ und über 10.000€ inklusive Kranführer, ein 750-Tonner am oberen Rand davon. Wochenmiete: 20.000–50.000€, Monatsmiete: 60.000–150.000€. Hinzu kommt der Schwertransport zur Baustelle (1.000–10.000€ je nach Entfernung), solche Krane reisen in mehreren LKW-Ladungen an. Typische Einsätze: Großwindräder, Kraftwerke, Raffinerien und Großbrücken. Preise sind in dieser Klasse immer projektbezogen, lassen Sie sich ein individuelles Angebot erstellen.',
+  },
+  {
     question: 'Was kostet ein PKW-Anhänger mit Kran (Anhängerkran)?',
     answer: 'Ein Anhängerkran (PKW-Anhänger mit Kran) kostet ab 150€ pro Tag. Wochenmiete ab 700€. Tragkraft bis 1.500 kg. Kann mit normaler PKW-Anhängerkupplung transportiert werden, kein Führerschein für den Kran nötig, nur Einweisung.',
   },
@@ -156,7 +160,7 @@ export default async function KranMietenPreisePage() {
         Ob Sie einen Kran mieten oder leihen möchten: hier finden Sie alle Kranmiete Kosten auf einen Blick.
         Alle Preise sind unverbindliche Richtwerte (netto, zzgl. {TAX_LABEL}) basierend auf Marktrecherche Q1 2026.
       </p>
-      <p className="text-[11px] text-gray-300 mb-8">Zuletzt aktualisiert: 20. April 2026 · Marktrecherche Q2/2026 über {anbieterCount}+ Anbieter</p>
+      <p className="text-[11px] text-gray-300 mb-8">Zuletzt aktualisiert: 12. Juni 2026 · Marktrecherche Q2/2026 über {anbieterCount}+ Anbieter</p>
 
       {/* TOC, collapsible on mobile (closed by default), always-visible on
           md+. Audit 2026-05-15 showed the static TOC ate ~350px of mobile
@@ -521,7 +525,7 @@ export default async function KranMietenPreisePage() {
                 <td className="py-2.5 px-4 text-gray-500">Windkraftanlagen, Schwerlastmontage, Raffinerien</td>
               </tr>
               <tr className="bg-amber-50/40">
-                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">500 t+</td>
+                <td className="py-2.5 px-4 font-medium text-gray-900 whitespace-nowrap">500–750 t+</td>
                 <td className="py-2.5 px-4"><Link href="/mobilkran-mieten" className="text-blue-600 hover:underline">Mobilkran</Link> / <Link href="/raupenkran-mieten" className="text-blue-600 hover:underline">Raupenkran</Link></td>
                 <td className="py-2.5 px-4 whitespace-nowrap">4.000–10.000€+</td>
                 <td className="py-2.5 px-4 whitespace-nowrap">20.000–50.000€</td>
