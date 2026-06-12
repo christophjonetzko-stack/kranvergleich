@@ -20,7 +20,7 @@ import { extractAddressPlz } from '@/lib/extract-plz'
 // false stamp.
 const emailSchema = z.string().email()
 
-async function emailDomainHasMx(email: string): Promise<{ ok: boolean; reason?: string }> {
+async function emailDomainHasMx(email: string): Promise<{ ok: boolean; reason?: string; soft?: boolean }> {
   const at = email.lastIndexOf('@')
   if (at < 0 || at === email.length - 1) return { ok: false, reason: 'missing_domain' }
   const domain = email.slice(at + 1).toLowerCase()
@@ -29,12 +29,29 @@ async function emailDomainHasMx(email: string): Promise<{ ok: boolean; reason?: 
     if (!records || records.length === 0) return { ok: false, reason: 'no_mx_records' }
     return { ok: true }
   } catch (err) {
-    const code = (err as NodeJS.ErrnoException)?.code || 'unknown'
-    // ENOTFOUND / ENODATA / SERVFAIL are the dominant "domain has no MX"
-    // signals; anything else (timeout, refused) is also a fail-closed signal
-    // for this gate. Logged so a flaky resolver run is distinguishable from
-    // a genuinely dead domain in the anomaly trail.
-    return { ok: false, reason: `dns_${code.toLowerCase()}` }
+    const code = ((err as NodeJS.ErrnoException)?.code || 'unknown').toUpperCase()
+    // ENOTFOUND / ENODATA are definitive "domain has no MX" answers from the
+    // resolver — hold the lead (typo / dead domain). Everything else
+    // (timeout, SERVFAIL, refused) is a resolver problem, not a verdict on
+    // the domain: previously these fail-closed and held GOOD leads on a
+    // flaky resolver run (2026-06-12 audit, C2). Now: one retry after 1s,
+    // then fail-OPEN with a soft flag the owner mail surfaces.
+    if (code === 'ENOTFOUND' || code === 'ENODATA') {
+      return { ok: false, reason: `dns_${code.toLowerCase()}` }
+    }
+    try {
+      await new Promise((r) => setTimeout(r, 1000))
+      const records = await dns.resolveMx(domain)
+      if (!records || records.length === 0) return { ok: false, reason: 'no_mx_records' }
+      return { ok: true }
+    } catch (err2) {
+      const code2 = ((err2 as NodeJS.ErrnoException)?.code || 'unknown').toUpperCase()
+      if (code2 === 'ENOTFOUND' || code2 === 'ENODATA') {
+        return { ok: false, reason: `dns_${code2.toLowerCase()}` }
+      }
+      console.error(`MX check soft-pass for ${domain}: transient ${code2} after retry`)
+      return { ok: true, soft: true, reason: `dns_${code2.toLowerCase()}_transient` }
+    }
   }
 }
 
@@ -221,6 +238,10 @@ export async function POST(request: Request) {
       )
     }
     const validationFailed = !mxCheck.ok || !phoneCheck.ok
+    // Transient-resolver soft-pass: lead dispatches normally, but the firm
+    // mail's trust stamp drops the Domain-Check claim and the owner mail
+    // carries a note (C2, 2026-06-12).
+    const mxSoft = mxCheck.ok && mxCheck.soft === true
     const validationReasons: string[] = []
     if (!mxCheck.ok) validationReasons.push(`mx:${mxCheck.reason}`)
     if (!phoneCheck.ok) validationReasons.push(`phone:${phoneCheck.reason}`)
@@ -840,7 +861,7 @@ export async function POST(request: Request) {
                 (what we actually do), not buzzwordy ("validated").
               -->
               <p style="margin:8px 0 16px 0;padding:8px 0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;font-size:12px;color:#4b5563;line-height:1.5;">
-                <span style="color:#059669;">&#10003;</span> E-Mail-Adresse geprüft (Format + Domain-Check)
+                <span style="color:#059669;">&#10003;</span> E-Mail-Adresse geprüft (${mxSoft ? 'Format' : 'Format + Domain-Check'})
                 &nbsp;&middot;&nbsp;
                 <span style="color:#059669;">&#10003;</span> Telefonnummer geprüft (libphonenumber)
                 &nbsp;&middot;&nbsp;
@@ -915,6 +936,34 @@ export async function POST(request: Request) {
     }
     if (dryRun) console.log('[leads] dry_run=true, skipped firm emails for', companyIds.length, 'companies')
 
+    // A5 (2026-06-12): one retry pass for failed firm sends. Most Resend
+    // failures here are transient (429 burst, network blip); a single retry
+    // after 2s turns "rote Zeile im Owner-Mail + manueller Forward" into a
+    // delivered mail. Runs before the sent_at update and the owner mail, so
+    // both reflect the post-retry truth. Worst case adds ~2s to the response
+    // only when something already failed.
+    const failedFirstPass = firmResults.filter((r) => !r.ok)
+    if (failedFirstPass.length > 0 && !dryRun) {
+      await new Promise((r) => setTimeout(r, 2000))
+      for (const fr of failedFirstPass) {
+        const company = companiesWithEmail.find((c) => c.id === fr.company_id)
+        if (!company) continue
+        const acceptSig = signLeadResponse(lead.id, company.id, 'accept')
+        const declineSig = signLeadResponse(lead.id, company.id, 'decline')
+        const acceptUrl = `${BASE_URL}/api/lead-response/${lead.id}/${company.id}?action=accept&sig=${acceptSig}`
+        const declineUrl = `${BASE_URL}/api/lead-response/${lead.id}/${company.id}?action=decline&sig=${declineSig}`
+        const retry = await sendResendEmail(`company email retry (${company.name})`, {
+          from: FROM_EMAIL,
+          to: company.email!,
+          ...(customerEmail ? { replyTo: customerEmail } : {}),
+          subject: firmSubject,
+          html: buildCompanyEmailHtml(company.name, { accept: acceptUrl, decline: declineUrl }),
+        })
+        if (retry.ok) fr.ok = true
+        await new Promise((r) => setTimeout(r, 200))
+      }
+    }
+
     // Mark lead_companies.sent_at for successful deliveries. Service role
     // bypasses RLS. One UPDATE with .in() filter handles all successes at once.
     const successCompanyIds = firmResults.filter((r) => r.ok).map((r) => r.company_id)
@@ -926,6 +975,16 @@ export async function POST(request: Request) {
         .eq('lead_id', lead.id)
         .in('company_id', successCompanyIds)
       if (updateErr) console.error('lead_companies.sent_at update error:', updateErr)
+      // Lifecycle (Pakiet 3): a dispatched lead leaves 'new'. Previously
+      // every lead stayed 'new' forever unless a script hand-edited it
+      // (mig 025 documented the roll-up as "by hand"). Guarded to 'new' so
+      // a manually-set status is never overwritten.
+      const { error: statusErr } = await sb
+        .from('leads')
+        .update({ status: 'contacted' })
+        .eq('id', lead.id)
+        .eq('status', 'new')
+      if (statusErr) console.error('leads.status contacted update error:', statusErr)
     }
 
     // Build owner notification's company list with REAL per-firm delivery
@@ -1088,11 +1147,22 @@ export async function POST(request: Request) {
               </div>
             </div>`
         : ''
+      // MX soft-pass note (C2): transient resolver failure, lead dispatched
+      // normally, deliverability of the customer address unverified.
+      const mxSoftBanner = mxSoft
+        ? `<div style="background:#fffbeb;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">📭 MX-Check unbestätigt (${escapeHtml(mxCheck.reason ?? 'dns_transient')})</div>
+            <div style="font-size:13px;color:#78350f;line-height:1.5;">
+              Der DNS-Resolver hat zweimal transient gefehlt (kein definitives „Domain existiert nicht"). Lead wurde NORMAL versendet; die Zustellbarkeit der Kunden-E-Mail ist ungeprüft. Falls Firmen-Antworten bouncen: Kunde ggf. telefonisch erreichen.
+            </div>
+          </div>`
+        : ''
       const subjectPrefix = (validationFailed
         ? '⏸ LEAD GEHALTEN (Validation), '
         : noFirmsAttached
         ? '🚨 LEAD OHNE ANBIETER, '
         : '')
+        + (mxSoft ? '📭 MX-UNGEPRÜFT, ' : '')
         + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}), ` : '')
         + (hasUndersizedMatches ? `FIT-MISMATCH (${undersizedFirms.length}), ` : '')
         + (reachMismatch ? `📐 REICHWEITE (${reachShortFirms.length + capacityRiskFirms.length}), ` : '')
@@ -1106,6 +1176,7 @@ export async function POST(request: Request) {
         subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${subjectPrefix}Neue Anfrage: ${safeName}, ${safeCity}`,
         html: `
           ${alertBanner}
+          ${mxSoftBanner}
           ${standortBanner}
           ${specBanner}
           ${fitCheckBanner}
