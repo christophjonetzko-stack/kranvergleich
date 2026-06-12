@@ -99,6 +99,11 @@ export async function POST(req: NextRequest) {
     .eq('company_id', supplierId)
   if (updateError) console.error('lead_companies refine update failed:', updateError)
 
+  // Lifecycle (Pakiet 3): refine may flip lost→wrong_fit, both count as
+  // closed; re-check whether the whole lead is now lost (idempotent).
+  const { maybeMarkLeadLost } = await import('@/lib/lead-status')
+  await maybeMarkLeadLost(leadId)
+
   // 303 See Other, correct POSTGET redirect that prevents re-submission
   // on browser back-button.
   const thanksUrl = new URL('/lead-response/thanks', BASE_URL)

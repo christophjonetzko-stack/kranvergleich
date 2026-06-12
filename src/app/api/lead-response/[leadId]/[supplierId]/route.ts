@@ -238,6 +238,13 @@ export async function POST(
     .eq('company_id', supplierId)
   if (updateError) console.error('lead_companies rollup failed:', updateError)
 
+  // Lifecycle (Pakiet 3): when this decline closed the last open firm on the
+  // lead, the lead as a whole is lost. No-op on accepts and partial declines.
+  if (action === 'decline') {
+    const { maybeMarkLeadLost } = await import('@/lib/lead-status')
+    await maybeMarkLeadLost(leadId)
+  }
+
   // Owner notification per click. MVP volume is low (5 leads/mo × ~6 firms
   // × 2 clicks max = ~60 mails/mo max). Switch to daily digest if volume
   // outgrows the inbox.
