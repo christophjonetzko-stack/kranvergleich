@@ -71,13 +71,15 @@ export async function generateMetadata({
   // and ran to 63-69 chars, getting truncated and killing CTR. Price moved to
   // description; count alone drives the click. Long crane-type + long city
   // combos (Dachdeckerkran in Frankfurt am Main, etc.) drop the count to fit.
+  // Count only from 3 firms up: ": 1 Anbieter" in a SERP title reads as a
+  // comparison page with nothing to compare (grey-zone pages, 2026-06-12 audit).
   const titleWithCount = `${craneType.name} mieten ${city.name}: ${companies.length} Anbieter`
-  const title = companies.length > 0 && titleWithCount.length <= 41
+  const title = companies.length >= 3 && titleWithCount.length <= 41
     ? titleWithCount
     : `${craneType.name} mieten ${city.name}`
   // Description: ≤155 chars. Synonyms dropped (they crowd the snippet without
   // ranking benefit, meta-desc is not a ranking factor). Trailer compressed.
-  const description = companies.length > 0
+  const description = companies.length >= 3
     ? `${craneType.name} mieten in ${city.name}${priceStr ? `: Kosten ${priceStr}` : ''}. ${companies.length} Anbieter in ${city.name} vergleichen. Bewertungen, Preise & kostenlose Angebote.`
     : `${craneType.name} mieten in ${city.name}${priceStr ? `: ${priceStr}` : ''}. Anbieter vergleichen, Preise & kostenlose Angebote anfragen.`
   const canonical = `/${craneTypeSlug}/${citySlug}`
@@ -186,7 +188,7 @@ export default async function CraneCityPage({
           <h1 className="font-[var(--font-display)] font-extrabold text-neutral-950 leading-[1.0] tracking-[-0.02em] text-[28px] sm:text-[36px] lg:text-[40px] mb-2">
             {craneType.name} mieten {city.name}
             {price && <span className="text-blue-600">, ab {price.dayFrom}€/Tag</span>}
-            {companies.length > 0 && (
+            {companies.length >= 3 && (
               <span className="text-neutral-500 font-normal"> | {companies.length} Anbieter</span>
             )}
           </h1>
@@ -229,8 +231,6 @@ export default async function CraneCityPage({
             <span>·</span><a href="#verwandte" className="hover:text-gray-600">Verwandte Suchen</a>
           </nav>
       </div>
-
-      <p className="text-[11px] text-gray-300 mb-6">Daten zuletzt geprüft: April 2026</p>
 
       <ListingFastAnfrageCTA
         craneTypeSlug={craneType.slug.replace(/-mieten$/, '')}
