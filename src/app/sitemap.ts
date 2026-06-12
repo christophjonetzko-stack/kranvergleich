@@ -92,6 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { slug: 'pool-kran-mieten', priority: 0.8, date: '2026-05-06' },
     { slug: 'whirlpool-kran-mieten', priority: 0.7, date: '2026-05-06' },
     { slug: 'kran-aufstellen-genehmigung', priority: 0.7, date: '2026-05-08' },
+    { slug: 'kranarbeiten-kosten', priority: 0.8, date: '2026-06-12' },
     { slug: 'krantypen', priority: 0.8 },
   ]
   const ratgeberPages: MetadataRoute.Sitemap = ratgeberArticles.map((a) => ({

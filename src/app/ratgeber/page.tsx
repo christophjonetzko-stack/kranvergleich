@@ -79,6 +79,11 @@ const articles = [
     description: 'So sparen Sie bei der Kranmiete Geld und Zeit. Praktische Tipps aus der Baupraxis.',
   },
   {
+    slug: 'kranarbeiten-kosten',
+    title: 'Kranarbeiten: Was kostet ein Kranhub?',
+    description: 'Stundensätze 150–500€/h inkl. Kranführer, ein einzelner Kranhub kostet praktisch 750–1.200€. Warum die Mindestabnahme den Preis bestimmt und wie Sie pro Hub sparen.',
+  },
+  {
     slug: 'kran-aufstellen-genehmigung',
     title: 'Kran aufstellen: Genehmigung & Vorschriften',
     description: 'Welche Genehmigungen brauchen Sie zum Aufstellen eines Krans? Bauamt, Straßensperrung, Statik, alle Vorschriften im Überblick.',
