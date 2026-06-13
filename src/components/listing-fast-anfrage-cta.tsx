@@ -11,29 +11,27 @@ interface ListingFastAnfrageCTAProps {
 }
 
 export function ListingFastAnfrageCTA({ craneTypeSlug, citySlug }: ListingFastAnfrageCTAProps) {
+  // Demoted from a full-width primary box to a quiet secondary line: the city
+  // page now has a single visual primary (the "Was möchten Sie heben?" matcher).
+  // Link target + tracking unchanged so the internal-link/SEO value to
+  // /kran-mieten-preise and the listing_cta_to_preise_clicked signal survive.
   return (
-    <Link
-      href="/kran-mieten-preise"
-      prefetch={false}
-      onClick={() => {
-        trackPageEvent('listing_cta_to_preise_clicked', {
-          crane_type: craneTypeSlug,
-          ...(citySlug ? { city: citySlug } : {}),
-        })
-      }}
-      className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 rounded-lg border border-blue-200 bg-blue-50/50 px-5 py-4 hover:bg-blue-50 hover:border-blue-300 transition-colors"
-    >
-      <div className="min-w-0">
-        <p className="text-[15px] font-semibold text-gray-900 mb-0.5">
-          Kostenrechner: Was kostet Ihr Kran?, in 2 Minuten
-        </p>
-        <p className="text-[13px] text-gray-600">
-          Bedarf eingeben, Tagespreis abschätzen, kostenlos Angebote von passenden Anbietern erhalten.
-        </p>
-      </div>
-      <span className="shrink-0 inline-flex items-center justify-center text-[14px] font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md px-4 py-2.5 transition-colors w-full sm:w-auto">
-        Kostenrechner öffnen 
-      </span>
-    </Link>
+    <p className="mb-6 text-[13px] text-gray-500">
+      Lieber selbst kalkulieren?{' '}
+      <Link
+        href="/kran-mieten-preise"
+        prefetch={false}
+        onClick={() => {
+          trackPageEvent('listing_cta_to_preise_clicked', {
+            crane_type: craneTypeSlug,
+            ...(citySlug ? { city: citySlug } : {}),
+          })
+        }}
+        className="font-medium text-blue-600 hover:underline"
+      >
+        Zum Kostenrechner
+      </Link>
+      {' '}— Tagespreis in 2 Minuten abschätzen.
+    </p>
   )
 }

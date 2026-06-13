@@ -451,37 +451,6 @@ export function CompanyListWithForm({
           )}
         </div>
       )}
-      {/* Primary CTA, 1-click sammelanfrage to all currently-visible firms.
-          City-listings only (`cityName` set), type pages have too many firms
-          country-wide for a single broadcast to make sense. The modal that
-          opens lists every firm explicitly and lets the user deselect any
-          before submit, so the flow stays DSGVO-explicit-consent. */}
-      {cityName && filtered.length >= 2 && (
-        <>
-          <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-blue-200 bg-blue-50/60 px-5 py-4">
-            <div className="min-w-0">
-              <p className="text-[15px] font-semibold text-gray-900 mb-0.5">
-                {inquireAllIsAll
-                  ? `Anfrage an alle ${filtered.length} Anbieter in ${cityName} senden`
-                  : `Anfrage an ${inquireAllCount} Anbieter in ${cityName} senden`}
-              </p>
-              <p className="text-[13px] text-gray-600">
-                Je mehr Anbieter Sie anfragen, desto höher Ihre Chance auf eine schnelle Antwort und ein gutes Angebot. Die passenden Betriebe sind bereits vorausgewählt; entfernen Sie einfach, wen Sie nicht anfragen möchten. Kostenlos und unverbindlich.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleInquireAll}
-              className="shrink-0 inline-flex items-center justify-center text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md px-4 py-2.5 transition-colors w-full sm:w-auto"
-            >
-              Jetzt anfragen
-            </button>
-          </div>
-          <p className="text-[11px] text-gray-400 mb-4">
-            Hinweis: Gelistete Betriebe zahlen eine Vermittlungsgebühr. Die Reihenfolge richtet sich nach Eignung (Entfernung, Bewertung), nicht nach Bezahlung.
-          </p>
-        </>
-      )}
       {/* Filter & sort bar */}
       {companies.length > 1 && (
         <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -560,6 +529,31 @@ export function CompanyListWithForm({
               ? `${filtered.length} von ${totalCount} angezeigt`
               : `${filtered.length} Anbieter`}
           </span>
+        </div>
+      )}
+
+      {/* Ranking transparency (§5b UWG) + 1-click broadcast. The former full-
+          width "Anfrage an alle" box was removed — the sticky bar is now the
+          single send CTA. Two things from that box survive here as a quiet row:
+          (1) the fee/ranking disclosure verbatim, kept next to the ranked list
+              per §5b UWG + BGH Bestattungsvergleich. It stays even while no firm
+              pays yet — deleting it would open a compliance gap the moment Path 4
+              sells, and the ranking-parameter half is required regardless.
+          (2) the broadcast affordance (handleInquireAll: re-selects all + opens
+              the modal + fires listing_inquire_all_clicked), demoted to a text
+              link so it no longer competes as a third primary CTA. */}
+      {cityName && filtered.length >= 2 && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <p className="text-[11px] text-gray-400 max-w-2xl">
+            Hinweis: Gelistete Betriebe zahlen eine Vermittlungsgebühr. Die Reihenfolge richtet sich nach Eignung (Entfernung, Bewertung), nicht nach Bezahlung.
+          </p>
+          <button
+            type="button"
+            onClick={handleInquireAll}
+            className="shrink-0 text-[13px] font-medium text-blue-600 hover:underline"
+          >
+            {inquireAllIsAll ? `Alle ${filtered.length} anfragen` : `${inquireAllCount} Anbieter anfragen`}
+          </button>
         </div>
       )}
 
