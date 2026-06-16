@@ -273,12 +273,15 @@ function firmServiceRadiusKm(cranes: { crane_type_id: string }[] | null | undefi
   return RADIUS_SHORT_KM
 }
 
-// A "heavy" page is any crane type that is neither short- nor mid-haul
-// (Mobilkran, Raupenkran, Baukran ...). Only on these pages does the
-// `national_heavy` flag lift the distance guard — never for light/local types.
-function isHeavyCraneType(craneTypeId: string): boolean {
-  return !SHORT_HAUL_TYPE_IDS.has(craneTypeId) && !MID_HAUL_TYPE_IDS.has(craneTypeId)
-}
+// Crane types on which the `national_heavy` flag lifts the distance guard:
+// nationwide-MOBILE heavy lifts only. Mobilkran + Raupenkran travel across DE for
+// a job. Baukran/MK is assembled on site and stays regional even for a big
+// operator (it is "heavy" for the radius guard, but NOT a bundesweit reach type),
+// so it is intentionally excluded — light/local types never qualify either.
+const NATIONAL_HEAVY_REACH_TYPE_IDS = new Set([
+  '02dc05de-6699-4849-93fb-2b655177bfd9', // Mobilkran
+  '0b61b867-53a6-4cf9-afbb-50c610dc4a2a', // Raupenkran
+])
 
 // Equirectangular km (same idiom as _computeFirmMatchesFromCoords).
 function equirectKm(aLat: number, aLng: number, bLat: number, bLng: number): number {
@@ -331,13 +334,13 @@ export async function getCompaniesForCraneAndCity(
   // national_heavy inject: on a HEAVY-type page a verified nationwide heavy-lift
   // operator belongs here even without a company_regions row for this city, so we
   // fetch flagged firms directly and merge them in (dedup by id). Gated on the
-  // PAGE's crane type (isHeavyCraneType), never the firm alone — light/local types
+  // PAGE's crane type (NATIONAL_HEAVY_REACH_TYPE_IDS), never the firm alone — others
   // are never pulled onto far pages. Only inject a flagged firm that actually
   // offers this crane type, so it lands in `matching` (selectable), mirroring the
   // sitemap counter (getCitiesWithMinCompanies) which counts the same predicate —
   // no company_regions rows needed, listing and sitemap agree by construction.
-  const pageIsHeavy = isHeavyCraneType(craneTypeId)
-  if (pageIsHeavy) {
+  const pageGetsNationalReach = NATIONAL_HEAVY_REACH_TYPE_IDS.has(craneTypeId)
+  if (pageGetsNationalReach) {
     const seen = new Set(all.map((c) => c.id))
     const { data: nh } = await supabase
       .from('companies')
@@ -362,12 +365,12 @@ export async function getCompaniesForCraneAndCity(
       c.lat == null || c.lng == null ? Number.POSITIVE_INFINITY : equirectKm(c.lat, c.lng, cLat, cLng)
     // Radius guard — firms without coords are kept (don't punish unknowns).
     // national_heavy bypass: an injected flagged firm clears the distance guard on
-    // this heavy page (mirrors the inject + the sitemap counter).
+    // a national-reach heavy page (mirrors the inject + the sitemap counter).
     const within = all.filter(
       (c) =>
         c.lat == null ||
         c.lng == null ||
-        (pageIsHeavy && c.national_heavy) ||
+        (pageGetsNationalReach && c.national_heavy) ||
         distOf(c) <= firmServiceRadiusKm(c.company_cranes),
     )
     // Holding dedup — keep the branch nearest to the city per holding.
@@ -461,9 +464,9 @@ export async function getCitiesWithMinCompanies(
   // page a flagged firm that offers this type counts toward EVERY city that already
   // has any matching membership — exactly the cities where the listing injects it.
   // Set-add is idempotent, so a flagged firm already counted via a real region row
-  // isn't double-counted. No flagged firm / non-heavy page → loop is a no-op.
-  const pageIsHeavy = !!craneTypeId && isHeavyCraneType(craneTypeId)
-  if (pageIsHeavy && typeFilter) {
+  // isn't double-counted. No flagged firm / non-reach page → loop is a no-op.
+  const pageGetsNationalReach = NATIONAL_HEAVY_REACH_TYPE_IDS.has(craneTypeId)
+  if (pageGetsNationalReach && typeFilter) {
     const nhHoldings = rows
       .filter((c) => c.national_heavy && typeFilter!.has(c.id))
       .map((c) => holdingById.get(c.id) ?? c.id)
