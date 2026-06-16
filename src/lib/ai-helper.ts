@@ -83,9 +83,6 @@ export async function getAvailabilityByPlz(plz: string): Promise<{
   if (!ref) return null
 
   const sb = getServiceSupabase()
-  const { data: rows } = await sb
-    .from('company_cranes')
-    .select('crane_type_id, company:companies(id,is_active,is_relevant,lat,lng,zip)')
   // Supabase typegen narrows the embedded join to an array even though it's
   // a one-to-one relationship (FK from company_cranes  companies). Treat
   // it as `unknown` and pluck the first element ourselves; runtime always
@@ -94,7 +91,20 @@ export async function getAvailabilityByPlz(plz: string): Promise<{
     crane_type_id: string
     company: null | { id: string; is_active: boolean; is_relevant: boolean; lat: number | null; lng: number | null; zip: string | null } | Array<{ id: string; is_active: boolean; is_relevant: boolean; lat: number | null; lng: number | null; zip: string | null }>
   }
-  const cranes = (rows ?? []) as unknown as RawCrane[]
+  // company_cranes has >2000 rows; PostgREST silently caps a single .select()
+  // at 1000, which dropped the highest-id (newest) firms from the availability
+  // counts. Paginate so freshly-added firms are counted too.
+  const cranes: RawCrane[] = []
+  const PAGE = 1000
+  for (let offset = 0; offset < 100_000; offset += PAGE) {
+    const { data: page } = await sb
+      .from('company_cranes')
+      .select('crane_type_id, company:companies(id,is_active,is_relevant,lat,lng,zip)')
+      .range(offset, offset + PAGE - 1)
+    if (!page || page.length === 0) break
+    cranes.push(...(page as unknown as RawCrane[]))
+    if (page.length < PAGE) break
+  }
 
   const byType = new Map<string, Map<string, number>>()
   for (const r of cranes) {

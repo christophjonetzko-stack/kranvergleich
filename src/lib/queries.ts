@@ -855,10 +855,13 @@ export async function getCompanyCountsPerCity(
 ): Promise<Map<string, number>> {
   if (cityIds.length === 0) return new Map()
 
-  const { data: allRegions } = await supabase
-    .from('company_regions')
-    .select('company_id, city_id')
-    .in('city_id', cityIds)
+  // company_regions has >2700 rows; an unpaginated .in('city_id', …) over a
+  // large city list would silently truncate at PostgREST's 1000-row cap and
+  // undercount cities. Paginate. (Today's callers pass ≤15 cities, but this
+  // keeps the function correct if a larger list is ever passed.)
+  const allRegions = await selectAllPaginated<{ company_id: string; city_id: string }>(
+    () => supabase.from('company_regions').select('company_id, city_id').in('city_id', cityIds),
+  )
 
   const counts = new Map<string, number>()
   if (!allRegions) return counts
