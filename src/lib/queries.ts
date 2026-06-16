@@ -273,6 +273,13 @@ function firmServiceRadiusKm(cranes: { crane_type_id: string }[] | null | undefi
   return RADIUS_SHORT_KM
 }
 
+// A "heavy" page is any crane type that is neither short- nor mid-haul
+// (Mobilkran, Raupenkran, Baukran ...). Only on these pages does the
+// `national_heavy` flag lift the distance guard — never for light/local types.
+function isHeavyCraneType(craneTypeId: string): boolean {
+  return !SHORT_HAUL_TYPE_IDS.has(craneTypeId) && !MID_HAUL_TYPE_IDS.has(craneTypeId)
+}
+
 // Equirectangular km (same idiom as _computeFirmMatchesFromCoords).
 function equirectKm(aLat: number, aLng: number, bLat: number, bLng: number): number {
   const dlat = (aLat - bLat) * 111
@@ -321,6 +328,29 @@ export async function getCompaniesForCraneAndCity(
     if (data) all.push(...(data as CompanyWithCranes[]))
   }
 
+  // national_heavy inject: on a HEAVY-type page a verified nationwide heavy-lift
+  // operator belongs here even without a company_regions row for this city, so we
+  // fetch flagged firms directly and merge them in (dedup by id). Gated on the
+  // PAGE's crane type (isHeavyCraneType), never the firm alone — light/local types
+  // are never pulled onto far pages. Only inject a flagged firm that actually
+  // offers this crane type, so it lands in `matching` (selectable), mirroring the
+  // sitemap counter (getCitiesWithMinCompanies) which counts the same predicate —
+  // no company_regions rows needed, listing and sitemap agree by construction.
+  const pageIsHeavy = isHeavyCraneType(craneTypeId)
+  if (pageIsHeavy) {
+    const seen = new Set(all.map((c) => c.id))
+    const { data: nh } = await supabase
+      .from('companies')
+      .select(`*, company_cranes (*)`)
+      .eq('is_active', true)
+      .eq('is_relevant', true)
+      .eq('national_heavy', true)
+    for (const c of (nh ?? []) as CompanyWithCranes[]) {
+      if (seen.has(c.id)) continue
+      if ((c.company_cranes ?? []).some((cc) => cc.crane_type_id === craneTypeId)) all.push(c)
+    }
+  }
+
   // Geo-relevance guard: drop firms whose HQ is beyond their service radius for
   // this city, and collapse multi-branch holdings to the single nearest branch.
   const { data: cityRow } = await supabase.from('cities').select('lat, lng').eq('id', cityId).single()
@@ -331,8 +361,14 @@ export async function getCompaniesForCraneAndCity(
     const distOf = (c: CompanyWithCranes) =>
       c.lat == null || c.lng == null ? Number.POSITIVE_INFINITY : equirectKm(c.lat, c.lng, cLat, cLng)
     // Radius guard — firms without coords are kept (don't punish unknowns).
+    // national_heavy bypass: an injected flagged firm clears the distance guard on
+    // this heavy page (mirrors the inject + the sitemap counter).
     const within = all.filter(
-      (c) => c.lat == null || c.lng == null || distOf(c) <= firmServiceRadiusKm(c.company_cranes),
+      (c) =>
+        c.lat == null ||
+        c.lng == null ||
+        (pageIsHeavy && c.national_heavy) ||
+        distOf(c) <= firmServiceRadiusKm(c.company_cranes),
     )
     // Holding dedup — keep the branch nearest to the city per holding.
     const bestPerHolding = new Map<string, CompanyWithCranes>()
@@ -385,7 +421,11 @@ export async function getCitiesWithMinCompanies(
     selectAllPaginated<{ company_id: string; city_id: string }>(() =>
       supabase.from('company_regions').select('company_id, city_id'),
     ),
-    supabase.from('companies').select('id, name').eq('is_active', true).eq('is_relevant', true),
+    supabase
+      .from('companies')
+      .select('id, name, national_heavy')
+      .eq('is_active', true)
+      .eq('is_relevant', true),
   ])
 
   let typeFilter: Set<string> | null = null
@@ -400,10 +440,12 @@ export async function getCitiesWithMinCompanies(
   const activeIds = new Set((activeRes.data ?? []).map(c => c.id))
   if (allRegions.length === 0 || activeIds.size === 0) return []
 
+  const rows = (activeRes.data ?? []) as { id: string; name: string; national_heavy: boolean }[]
+
   // Count distinct holdings, not branches, so the sitemap min-3 threshold tracks
   // the holding-deduped city listing (getCompaniesForCraneAndCity).
   const holdingById = new Map<string, string>()
-  for (const c of (activeRes.data ?? []) as { id: string; name: string }[]) {
+  for (const c of rows) {
     holdingById.set(c.id, holdingKey(c.name))
   }
 
@@ -413,6 +455,21 @@ export async function getCitiesWithMinCompanies(
     if (typeFilter && !typeFilter.has(r.company_id)) continue
     if (!cityCounts.has(r.city_id)) cityCounts.set(r.city_id, new Set())
     cityCounts.get(r.city_id)!.add(holdingById.get(r.company_id) ?? r.company_id)
+  }
+
+  // national_heavy inject (mirror of getCompaniesForCraneAndCity): on a HEAVY-type
+  // page a flagged firm that offers this type counts toward EVERY city that already
+  // has any matching membership — exactly the cities where the listing injects it.
+  // Set-add is idempotent, so a flagged firm already counted via a real region row
+  // isn't double-counted. No flagged firm / non-heavy page → loop is a no-op.
+  const pageIsHeavy = !!craneTypeId && isHeavyCraneType(craneTypeId)
+  if (pageIsHeavy && typeFilter) {
+    const nhHoldings = rows
+      .filter((c) => c.national_heavy && typeFilter!.has(c.id))
+      .map((c) => holdingById.get(c.id) ?? c.id)
+    if (nhHoldings.length) {
+      for (const set of cityCounts.values()) for (const h of nhHoldings) set.add(h)
+    }
   }
 
   const qualifyingCityIds = [...cityCounts.entries()]

@@ -64,6 +64,10 @@ export interface Company {
   price_month_to: number | null
   price_note: string | null
   service_radius_km: number | null
+  // When true, the city-page distance geo-guard is lifted for this firm's HEAVY
+  // crane types only — a verified nationwide heavy-lift operator shows on far
+  // big-city Großgeräte pages. See queries.ts (listing guard + sitemap counter).
+  national_heavy: boolean
   service_regions: string[] | null
   opening_hours: string | null
   description_enriched: string | null
