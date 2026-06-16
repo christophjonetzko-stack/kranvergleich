@@ -42,7 +42,6 @@ const _extraCitiesDE: ExtendedCity[] = [
   { name: 'Salzgitter', slug: 'salzgitter', state: 'Niedersachsen', nearestSlug: 'braunschweig' },
   { name: 'Siegen', slug: 'siegen', state: 'Nordrhein-Westfalen', nearestSlug: 'dortmund' },
   { name: 'Solingen', slug: 'solingen', state: 'Nordrhein-Westfalen', nearestSlug: 'wuppertal' },
-  { name: 'Trier', slug: 'trier', state: 'Rheinland-Pfalz', nearestSlug: 'mannheim' },
   { name: 'Wolfsburg', slug: 'wolfsburg', state: 'Niedersachsen', nearestSlug: 'braunschweig' },
 ]
 
@@ -154,6 +153,8 @@ const seoCitiesDE: CityInfo[] = [
   { slug: 'heidelberg', name: 'Heidelberg', state: 'Baden-Württemberg', companyCount: 23 },
   // 2026-06-06 MV gap-fill. Schwerin promoted from _extraCitiesDE (redirect→hamburg) to a native page: Supabase row created + 3 firms mapped (U&W Ndl. Schwerin, H.N. Krane, Beth) covering all 8 crane types. Closes the biggest DE coverage hole (MV).
   { slug: 'schwerin', name: 'Schwerin', state: 'Mecklenburg-Vorpommern', companyCount: 3 },
+  // 2026-06-16 RLP gap-fill. Trier promoted from _extraCitiesDE (redirect→mannheim) to a native page after inbound request from Steil Kranarbeiten (GF Daniel Gödert, HQ Trier). Supabase row created (pop 111528, 49.7537/6.6393) + 60 firms / 51 distinct holdings mapped via geo-reach (short 80 / mid 120 / heavy 150 km, firm-enrichment defaults). All 8 crane types covered (Steil anchors every type at HQ). Dense Saar-Lor-Lux crane cluster → higher count than typical city, but every mapped firm passes the prod geo guard (100/200/350).
+  { slug: 'trier', name: 'Trier', state: 'Rheinland-Pfalz', companyCount: 51 },
 ]
 
 // AT cities, populated 2026-04-26 after Phase B firm enrichment landed 20
