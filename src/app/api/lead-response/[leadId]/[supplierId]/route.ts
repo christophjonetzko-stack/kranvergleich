@@ -190,6 +190,31 @@ export async function POST(
     return NextResponse.json({ error: 'pair_not_found' }, { status: 403 })
   }
 
+  // Idempotency: a double-click on the confirm button (Boels, lead
+  // 73d65729, 2026-06-17 — two POSTs 1.9s apart) otherwise inserts a second
+  // lead_responses row AND fires a second owner alert. If this firm already
+  // registered the SAME action for this lead, short-circuit to the thanks
+  // page with no new write or mail. A genuine change of mind uses a
+  // different action (decline -> accept) and is still recorded.
+  // (Sub-second simultaneous double-fires could still race past this; a
+  // partial unique index would be the hard guarantee, deferred.)
+  const { data: priorSame } = await sb
+    .from('lead_responses')
+    .select('id')
+    .eq('lead_id', leadId)
+    .eq('supplier_id', supplierId)
+    .eq('action', action)
+    .limit(1)
+    .maybeSingle()
+  if (priorSame) {
+    const thanksUrl = new URL('/lead-response/thanks', BASE_URL)
+    thanksUrl.searchParams.set('action', action)
+    thanksUrl.searchParams.set('lead', leadId)
+    thanksUrl.searchParams.set('supplier', supplierId)
+    thanksUrl.searchParams.set('sig', sig as string)
+    return NextResponse.redirect(thanksUrl.toString(), 302)
+  }
+
   const ip = getIp(req)
   const userAgent = req.headers.get('user-agent')
 
