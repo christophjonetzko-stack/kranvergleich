@@ -897,6 +897,7 @@ export async function POST(request: Request) {
                 Gründer, ${BRAND_NAME}<br>
                 <a href="mailto:${safeFounderEmail}" style="color:#2563eb;">${safeFounderEmail}</a>
               </p>
+              <p style="font-size:11px;color:#9ca3af;margin:16px 0 0 0;">Referenz: ${lead.id}<br>Bei Rückfragen zu dieser Anfrage bitte diese Referenz angeben.</p>
             </div>
           `
 
