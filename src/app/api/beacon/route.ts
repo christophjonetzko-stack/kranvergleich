@@ -40,6 +40,11 @@ const EVENT_TYPES = new Set([
   'listing_inquire_all_clicked',
   'listing_inquire_all_submitted',
   'listing_ai_match',
+  // Lead-submit instrumentation (2026-06-20 tool audit, DB CHECK mig 043).
+  'leadform_view',
+  'leadform_submit',
+  'rueckruf_view',
+  'rueckruf_submit',
   // Subscription / featured analytics (registered KROK 6; emit lands later).
   // Contexts: subscription_upsell_shown {plan}, subscription_upsell_clicked
   // {plan}, featured_impression {crane_type, plan}, featured_click {crane_type, plan}.

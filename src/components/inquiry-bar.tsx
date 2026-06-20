@@ -140,9 +140,14 @@ export function InquiryBar({
       })
 
       if (!response.ok) throw new Error('Fehler beim Senden')
-      if (triggeredFromInquireAll) {
-        trackPageEvent('listing_inquire_all_submitted', { matched_count: selectedCompanies.length })
-      }
+      // Fire on EVERY successful listing submit, not only the "Alle anfragen"
+      // CTA path. The old gate on triggeredFromInquireAll meant manual-selection
+      // submits emitted nothing, so the event read 0 despite real city×type
+      // leads (2026-06-20 audit, #3). The trigger is kept as context.
+      trackPageEvent('listing_inquire_all_submitted', {
+        matched_count: selectedCompanies.length,
+        triggered_from: triggeredFromInquireAll ? 'inquire_all' : 'manual',
+      })
       setIsSubmitted(true)
     } catch {
       setError('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')

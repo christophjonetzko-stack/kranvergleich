@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CompanyWithCranes } from '@/lib/types'
 import { getSessionEntryPath } from './session-entry-recorder'
 import { getStoredUtm } from '@/lib/utm'
+import { trackPageEvent } from '@/lib/track'
 import { craneTypes, getCraneTypeIdBySlug } from '@/data/crane-types'
 import { CITY_OR_PLZ_PLACEHOLDER } from '@/lib/country'
 
@@ -64,6 +65,18 @@ export function LeadForm({
   // AI-categorizes it from the description (a forced manual pick mis-tagged the
   // 650 t Stejskal lead as Minikran, 2026-06-04).
   const craneTypeRequired = selectedCompanies.length === 0
+
+  // View denominator for the LeadForm conversion rate (2026-06-20 audit). Fires
+  // once per mount. `preselected` splits the profile/listing path (a firm was
+  // pre-chosen) from the inline auto-select path. Bot UA is filtered server-side
+  // in /api/beacon.
+  useEffect(() => {
+    trackPageEvent('leadform_view', {
+      crane_type: craneTypeName ?? craneTypeId ?? 'unknown',
+      preselected: initialSelected.length > 0,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const toggleCompany = (companyId: string) => {
     setSelectedCompanies((prev) =>
@@ -141,6 +154,13 @@ export function LeadForm({
         const data = await response.json().catch(() => ({}))
         throw new Error(data.error || 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
       }
+      // Universal submit signal for EVERY LeadForm success (profile + inline),
+      // independent of whether the parent passes onSubmitted. Numerator for the
+      // leadform_view -> leadform_submit conversion rate.
+      trackPageEvent('leadform_submit', {
+        crane_type: craneTypeName ?? resolvedCraneTypeId ?? 'unknown',
+        selected_count: selectedCompanies.length,
+      })
       setIsSubmitted(true)
       onSubmitted?.()
     } catch (err) {

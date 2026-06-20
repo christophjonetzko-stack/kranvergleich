@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { trackPageEvent } from '@/lib/track'
 
@@ -21,6 +21,13 @@ export function RueckrufForm({ craneTypeId, craneTypeName, craneTypeSlug, cityNa
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [contactedCount, setContactedCount] = useState<number | null>(null)
+
+  // View denominator for the Rückruf conversion rate (2026-06-20 audit). Fires
+  // once per mount; bot UA is filtered server-side in /api/beacon.
+  useEffect(() => {
+    trackPageEvent('rueckruf_view', { crane_type: craneTypeSlug })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -52,7 +59,7 @@ export function RueckrufForm({ craneTypeId, craneTypeName, craneTypeSlug, cityNa
         setStatus('error')
         return
       }
-      trackPageEvent('inline_sammelanfrage_submit', { crane_type: craneTypeSlug })
+      trackPageEvent('rueckruf_submit', { crane_type: craneTypeSlug })
       setContactedCount(
         data && Array.isArray(data.matched_companies) ? data.matched_companies.length : null,
       )
