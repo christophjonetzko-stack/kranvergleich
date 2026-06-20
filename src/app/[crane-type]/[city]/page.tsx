@@ -408,6 +408,28 @@ export default async function CraneCityPage({
         {' '}mit Tages-, Wochen- und Monatspreisen im Vergleich.
       </p>
 
+      {/* Ratgeber & Tools — contextual links to the cost calculator, the Preisreport
+          link-magnet (otherwise internally orphaned) and two decision-stage Ratgeber.
+          Siblings/types/nearby cities are already cross-linked above; these were the
+          missing targets, added on every city×type page (highest-volume surface). */}
+      <div className="mb-10">
+        <h2 className="text-sm font-semibold text-gray-900 mb-3">Ratgeber &amp; Tools</h2>
+        <div className="flex flex-wrap gap-1.5">
+          <Link href="/kostenrechner" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">
+            {craneType.name}-Kosten berechnen
+          </Link>
+          <Link href="/kran-preisreport-2026" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">
+            Kran-Preisreport 2026
+          </Link>
+          <Link href="/ratgeber/was-kostet-ein-kran" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">
+            Was kostet ein Kran?
+          </Link>
+          <Link href="/ratgeber/welchen-kran-brauche-ich" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">
+            Welchen Kran brauche ich?
+          </Link>
+        </div>
+      </div>
+
       {/* Structured data */}
       <script
         type="application/ld+json"
