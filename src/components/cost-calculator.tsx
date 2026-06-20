@@ -743,13 +743,16 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
               </>
             )}
           </p>
-          {/* Soft-gate payoff: reveal the precise per-project estimate now that
-              the request is in. Honors the "🔒 mit der Anfrage" promise from the
-              recommendation screen. */}
-          {result.pointEstimate !== null && !result.isUncertain && (
-            <p className="text-[14px] text-gray-800 bg-white border border-green-200 rounded-lg px-3 py-2 mb-3">
-              Ihr genauer Richtwert für dieses Projekt: <strong>~{result.pointEstimate.toLocaleString('de-DE')}€ netto</strong>{' '}
-              <span className="text-gray-500">(zzgl. {TAX_LABEL})</span>
+          {/* No fake per-project point price (2026-06-20): a precise figure can't be given
+              up front, it depends on the real cost drivers. We keep the range as orientation
+              and point to the Preistreiber ratgeber; the anbieter give the belastbare Indikation. */}
+          {!result.isUncertain && (
+            <p className="text-[13px] text-gray-700 bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3">
+              Einen belastbaren Preis nennt Ihnen der Anbieter, sobald die Eckdaten feststehen, denn er
+              hängt von Anfahrt, Zufahrt, Hub-Geometrie und einer möglichen Straßensperrung ab.{' '}
+              <a href="/ratgeber/was-kostet-ein-kran#preistreiber" className="text-blue-600 hover:underline">
+                Die 5 Preistreiber im Überblick
+              </a>
             </p>
           )}
           {leadSuccess.customerConfirmationSent && (
@@ -876,18 +879,10 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
                   Richtwert-Bandbreite ({result.priceUnit})
                 </p>
               )}
-              {/* Soft gate: the wide range is free (AEO + orientation), the precise
-                  per-project point estimate is the carrot for submitting the request.
-                  Revealed on the success screen after the lead is sent. */}
-              {!result.isUncertain && result.pointEstimate !== null && (
-                <p className="text-[11px] font-medium text-blue-700 mt-1">
-                  🔒 Genauen Richtwert für Ihr Projekt mit der Anfrage erhalten
-                </p>
-              )}
               <p className="text-[11px] text-gray-400">
                 {result.isUncertain
                   ? `Pro ${result.priceUnit}, abhängig vom Krantyp.`
-                  : `Abhängig von Region, Verfügbarkeit und Zusatzleistungen. Netto, zzgl. ${TAX_LABEL}`}
+                  : `Richtwert, kein Festpreis. Der genaue Preis hängt von Anfahrt, Zufahrt, Hub-Geometrie und einer möglichen Straßensperrung ab. Netto, zzgl. ${TAX_LABEL}`}
               </p>
             </div>
             {!result.isUncertain && (
