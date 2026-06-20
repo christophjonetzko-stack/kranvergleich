@@ -371,7 +371,7 @@ export default async function CompanyPage({
                       return (
                         <p key={cr.id} className="text-[13px] text-gray-700">
                           <span className="font-medium">{label}</span>
-                          {specs.length > 0 && <span className="text-gray-500"> — {specs.join(' · ')}</span>}
+                          {specs.length > 0 && <span className="text-gray-500"> - {specs.join(' · ')}</span>}
                         </p>
                       )
                     })}
