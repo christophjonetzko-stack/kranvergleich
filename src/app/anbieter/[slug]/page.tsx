@@ -464,6 +464,15 @@ export default async function CompanyPage({
           </section>
         )}
 
+        {/* Why no flat price — links to the Preistreiber ratgeber section (2026-06-20) */}
+        <p className="text-[12px] text-gray-500 px-1">
+          Warum gibt es keinen festen Preis? Was ein Kraneinsatz kostet, hängt von Anfahrt, Zufahrt,
+          Hub-Geometrie und einer möglichen Straßensperrung ab, nicht von einer Pauschale.{' '}
+          <a href="/ratgeber/was-kostet-ein-kran#preistreiber" className="text-blue-600 hover:underline">
+            Die 5 Preistreiber im Überblick
+          </a>
+        </p>
+
         {/* Contact */}
         <section className="border border-gray-200 rounded-lg p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-3">Kontakt</h2>
