@@ -442,7 +442,11 @@ export default async function CompanyPage({
             )}
             <p className="text-[11px] text-gray-400 mt-1">Alle Preise Richtwerte, netto. Verbindliches Angebot auf Anfrage.</p>
           </section>
-        ) : fleetCraneTypes.length > 0 && (
+        ) : fleetCraneTypes.length > 0 && company.slug !== 'steil-kranarbeiten-gmbh-und-co-kg' && (
+          // PREVIEW (2026-06-20): Orientierungspreise (market-average reference) hidden for Steil
+          // only, to validate the supplier-friendly "Preistreiber statt Pauschale" layout before
+          // rolling out to all profiles. Profiles are noindex → zero SEO cost. Remove this slug
+          // gate to apply platform-wide.
           <section className="border border-gray-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Orientierungspreise</h2>
             <p className="text-[13px] text-gray-500 mb-3">
