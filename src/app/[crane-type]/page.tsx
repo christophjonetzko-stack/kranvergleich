@@ -636,6 +636,24 @@ export default async function CraneTypePage({
         </section>
       )}
 
+      {/* Ratgeber & Tools — contextual links to the cost calculator, the Preisreport
+          link-magnet and the Ratgeber hub. Sibling crane types (Alternativen) and
+          city pages are already cross-linked above; these were the missing targets. */}
+      <div className="mb-10">
+        <h2 className="text-sm font-semibold text-gray-900 mb-3">Ratgeber &amp; Tools</h2>
+        <div className="flex flex-wrap gap-1.5">
+          <Link href="/kostenrechner" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">
+            {craneType.name}-Kosten berechnen
+          </Link>
+          <Link href="/kran-preisreport-2026" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">
+            Kran-Preisreport 2026
+          </Link>
+          <Link href="/ratgeber" className="text-[12px] bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-3 py-1 transition-colors">
+            Alle Ratgeber
+          </Link>
+        </div>
+      </div>
+
       {/* BreadcrumbList structured data */}
       <script
         type="application/ld+json"

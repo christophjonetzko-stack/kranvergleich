@@ -310,6 +310,10 @@ export default async function HomePage() {
         <p className="text-[12px] text-gray-400 mt-3">
           Alle Preise netto zzgl. {TAX_LABEL} Richtwerte, verbindliche Angebote erhalten Sie direkt von den Anbietern.{' '}
           <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Ausführliche Preisliste</Link>
+          {' · '}
+          <Link href="/kran-preisreport-2026" className="text-blue-600 hover:underline">Kran-Preisreport 2026</Link>
+          {' · '}
+          <Link href="/ratgeber" className="text-blue-600 hover:underline">Ratgeber</Link>
         </p>
       </section>
 

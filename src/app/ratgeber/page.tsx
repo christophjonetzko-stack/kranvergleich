@@ -178,8 +178,10 @@ export default function RatgeberIndexPage() {
       <div className="mt-10 text-[14px] text-gray-500">
         <p>
           Sie haben eine konkrete Frage? Schauen Sie auch in unsere{' '}
-          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Preisübersicht</Link> oder
-          vergleichen Sie direkt{' '}
+          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Preisübersicht</Link>,
+          {' '}werfen Sie einen Blick in den{' '}
+          <Link href="/kran-preisreport-2026" className="text-blue-600 hover:underline">Kran-Preisreport 2026</Link>
+          {' '}oder vergleichen Sie direkt{' '}
           <Link href="/" className="text-blue-600 hover:underline">Anbieter in Ihrer Stadt</Link>.
         </p>
       </div>
