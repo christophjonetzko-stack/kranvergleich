@@ -89,9 +89,8 @@ export default async function CompanyPage({
     .map((c) => getCraneTypeNameById(c.crane_type_id))
     .filter((name, i, arr) => arr.indexOf(name) === i)
 
-  // Reference prices for crane types in this company's fleet (fallback when no own prices)
-  const craneTypeIds = company.company_cranes.map((c) => c.crane_type_id)
-  const fleetCraneTypes = allCraneTypes.filter((ct) => craneTypeIds.includes(ct.id))
+  // Market-average reference prices (Orientierungspreise) removed 2026-06-20 —
+  // see the pricing section below.
 
   // DSGVO: only show generic business emails, not personal ones (jan.kowalski@firma.de = personal data)
   const genericPrefixes = ['info', 'kontakt', 'contact', 'office', 'mail', 'post', 'anfrage', 'service', 'vermietung', 'kran', 'buero', 'zentrale']
@@ -398,8 +397,11 @@ export default async function CompanyPage({
           </section>
         )}
 
-        {/* Pricing, own prices or reference prices from crane types */}
-        {company.price_day_from ? (
+        {/* Pricing — own prices only. Market-average reference prices removed 2026-06-20:
+            profiles are noindex (zero SEO value) and the generic ranges drew the
+            "viel zu individuell für eine Pauschale" criticism from a verified operator.
+            Price orientation lives on the indexed money pages (/kran-mieten-preise) instead. */}
+        {company.price_day_from && (
           <section className="border border-gray-200 rounded-lg p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Preise</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -441,30 +443,6 @@ export default async function CompanyPage({
               <p className="text-[12px] text-gray-500 mt-2">{company.price_note}</p>
             )}
             <p className="text-[11px] text-gray-400 mt-1">Alle Preise Richtwerte, netto. Verbindliches Angebot auf Anfrage.</p>
-          </section>
-        ) : fleetCraneTypes.length > 0 && company.slug !== 'steil-kranarbeiten-gmbh-und-co-kg' && (
-          // PREVIEW (2026-06-20): Orientierungspreise (market-average reference) hidden for Steil
-          // only, to validate the supplier-friendly "Preistreiber statt Pauschale" layout before
-          // rolling out to all profiles. Profiles are noindex → zero SEO cost. Remove this slug
-          // gate to apply platform-wide.
-          <section className="border border-gray-200 rounded-lg p-5">
-            <h2 className="text-sm font-semibold text-gray-900 mb-3">Orientierungspreise</h2>
-            <p className="text-[13px] text-gray-500 mb-3">
-              Geschätzte Tagespreise für die Krantypen dieser Firma, basierend auf dem Marktdurchschnitt 2026:
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {fleetCraneTypes.map((ct) => (
-                <div key={ct.id} className="flex items-center justify-between bg-amber-50 border border-amber-100 rounded-md px-3 py-2">
-                  <span className="text-[13px] font-medium text-gray-900">{ct.name}</span>
-                  <span className="text-[13px] text-amber-700 font-medium">
-                    {ct.price_day_from?.toLocaleString('de-DE')}€ – {ct.price_day_to?.toLocaleString('de-DE')}€/Tag
-                  </span>
-                </div>
-              ))}
-            </div>
-            <p className="text-[11px] text-amber-600 mt-2">
-              ⓘ Richtwerte (netto), keine Preise des Anbieters. Verbindliche Preise direkt beim Anbieter anfragen.
-            </p>
           </section>
         )}
 
