@@ -339,12 +339,11 @@ export default async function CompanyPage({
               </div>
             )}
 
-            {/* Premium perk: per-machine technical specs. Basis keeps just the
-                crane-type names + the glass/electric chips above (unchanged). */}
-            {company.is_premium &&
-              company.company_cranes.some(
-                (c) =>
-                  c.max_capacity_kg || c.max_height_m || c.max_reach_m || c.has_operator || c.brand || c.model,
+            {/* Per-machine technical specs (Tragkraft/Höhe/Ausladung/Kranführer) — shown for
+                ALL firms (2026-06-20: ungated from Premium; helps fit-judgment and cuts
+                wrong-fit leads). Brand/model stays a Premium detail (Marken im Fuhrpark below). */}
+            {company.company_cranes.some(
+                (c) => c.max_capacity_kg || c.max_height_m || c.max_reach_m || c.has_operator,
               ) && (
                 <div className="mt-4 border-t border-gray-100 pt-4">
                   <p className="text-[12px] font-medium text-gray-500 mb-2">Technische Details der Flotte</p>
@@ -364,9 +363,11 @@ export default async function CompanyPage({
                       if (cr.has_operator) specs.push('mit Kranführer')
                       if (cr.has_glass_sucker) specs.push('Glassauger')
                       if (cr.electric) specs.push('Elektroantrieb')
-                      const label =
-                        [cr.brand, cr.model].filter(Boolean).join(' ') || getCraneTypeNameById(cr.crane_type_id)
-                      if (specs.length === 0 && !cr.brand && !cr.model) return null
+                      // Brand/model stays a Premium detail; Basis shows the crane-type name.
+                      const label = company.is_premium
+                        ? [cr.brand, cr.model].filter(Boolean).join(' ') || getCraneTypeNameById(cr.crane_type_id)
+                        : getCraneTypeNameById(cr.crane_type_id)
+                      if (specs.length === 0 && !(company.is_premium && (cr.brand || cr.model))) return null
                       return (
                         <p key={cr.id} className="text-[13px] text-gray-700">
                           <span className="font-medium">{label}</span>
@@ -517,6 +518,9 @@ export default async function CompanyPage({
           }
           if (company.service_radius_km) {
             badges.push({ icon: 'radius', label: `Einsatzradius: ${company.service_radius_km} km`, color: 'bg-purple-50 text-purple-700 border-purple-200' })
+          }
+          if (company.national_heavy) {
+            badges.push({ icon: 'radius', label: 'Bundesweit für Großgeräte', color: 'bg-amber-50 text-amber-700 border-amber-200' })
           }
           if (!badges.length) return null
           return (
