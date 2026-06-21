@@ -736,7 +736,14 @@ async function _computeFirmMatchesFromCoords(
   limit: number,
 ): Promise<{ matches: FirmMatch[]; radius_used_km: number }> {
   const minMatches = 3
-  const tryRadii: number[] = [50, 100, 150]
+  // Search radius is type-aware: short-haul equipment (Minikran, Anhängerkran,
+  // Dachdeckerkran) is local — nobody hauls a Minikran 150 km, so a tighter cap
+  // stops a Graz Minikran job being routed to firms in Linz/Wels (lead
+  // b71b1420, 2026-06-21). Mid/heavy types (mobile/crawler cranes that travel
+  // for a job) keep the wider tiers unchanged.
+  const tryRadii: number[] = SHORT_HAUL_TYPE_IDS.has(craneTypeId)
+    ? [40, 80, 120]
+    : [50, 100, 150]
 
   const { data: craneData } = await supabase
     .from('company_cranes')
@@ -789,8 +796,24 @@ async function _computeFirmMatchesFromCoords(
   })
   withDist.sort((a, b) => a.distance_km - b.distance_km)
 
+  // Dedup by recipient email before radius selection: multi-branch operators
+  // (e.g. Felbermayr's 8 AT branches all share office@felbermayr.cc) would
+  // otherwise consume several dispatch slots and hit one inbox with identical
+  // leads (lead b71b1420 went to 5 Felbermayr branches). The list is already
+  // distance-sorted, so the first kept per email is the nearest branch. Firms
+  // without an email are already filtered out upstream, but keep any here so a
+  // missing email never silently drops a firm.
+  const seenEmails = new Set<string>()
+  const deduped = withDist.filter((m) => {
+    const email = (m.company.email ?? '').trim().toLowerCase()
+    if (!email) return true
+    if (seenEmails.has(email)) return false
+    seenEmails.add(email)
+    return true
+  })
+
   for (const r of tryRadii) {
-    const filtered = withDist.filter(
+    const filtered = deduped.filter(
       (m) => m.distance_km <= r && m.distance_km !== Number.POSITIVE_INFINITY,
     )
     const isLastRadius = r === tryRadii[tryRadii.length - 1]
