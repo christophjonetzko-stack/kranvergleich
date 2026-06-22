@@ -451,7 +451,7 @@ export default async function CompanyPage({
         <p className="text-[12px] text-gray-500 px-1">
           Warum gibt es keinen festen Preis? Was ein Kraneinsatz kostet, hängt von Anfahrt, Zufahrt,
           Hub-Geometrie und einer möglichen Straßensperrung ab, nicht von einer Pauschale.{' '}
-          <a href="/ratgeber/was-kostet-ein-kran#preistreiber" className="text-blue-600 hover:underline">
+          <a href="/ratgeber/kranpreise-praxis" className="text-blue-600 hover:underline">
             Die 5 Preistreiber im Überblick
           </a>
         </p>

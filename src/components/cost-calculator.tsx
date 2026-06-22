@@ -750,7 +750,7 @@ export function CostCalculator({ page = '/kostenrechner', firmCount }: CostCalcu
             <p className="text-[13px] text-gray-700 bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3">
               Einen belastbaren Preis nennt Ihnen der Anbieter, sobald die Eckdaten feststehen, denn er
               hängt von Anfahrt, Zufahrt, Hub-Geometrie und einer möglichen Straßensperrung ab.{' '}
-              <a href="/ratgeber/was-kostet-ein-kran#preistreiber" className="text-blue-600 hover:underline">
+              <a href="/ratgeber/kranpreise-praxis" className="text-blue-600 hover:underline">
                 Die 5 Preistreiber im Überblick
               </a>
             </p>

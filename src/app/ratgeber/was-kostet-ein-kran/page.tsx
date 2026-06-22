@@ -238,7 +238,7 @@ export default async function WasKostetEinKranPage() {
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
         <p className="text-[13px] font-medium text-gray-900 mb-2">Weiterführende Inhalte</p>
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
-          <li><a href="#preistreiber" className="text-[13px] text-blue-600 hover:underline">Die 5 echten Preistreiber</a></li>
+          <li><a href="#preistreiber" className="text-[13px] text-blue-600 hover:underline">Warum kein Pauschalpreis: die 5 Preistreiber</a></li>
           <li><a href="#kaufpreise" className="text-[13px] text-blue-600 hover:underline">Was kostet ein Kran zum Kauf?</a></li>
           <li><a href="#laufende-kosten" className="text-[13px] text-blue-600 hover:underline">Versteckte Kosten beim Kranbesitz</a></li>
           <li><a href="#break-even" className="text-[13px] text-blue-600 hover:underline">Break-even: Ab wann lohnt sich der Kauf?</a></li>
@@ -251,69 +251,25 @@ export default async function WasKostetEinKranPage() {
 
       <div className="space-y-10 text-[14px] text-gray-600 leading-relaxed">
 
-        {/* Preistreiber — warum es keinen Pauschalpreis gibt (Kranbetrieb-Input 2026-06-20, generalisiert) */}
+        {/* Preistreiber — teaser, full treatment moved to /ratgeber/kranpreise-praxis (2026-06-22)
+            to keep this price-page and the driver content cleanly separated (no on-page contradiction,
+            no duplicate content). Profile + calculator links point to the dedicated page. */}
         <section id="preistreiber" className="scroll-mt-20">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            Die 5 echten Preistreiber beim Kranmieten
+            Warum es keinen Pauschalpreis gibt: die 5 Preistreiber
           </h2>
           <p className="mb-4">
             Warum kostet derselbe Kran an einem Tag wenige Hundert Euro und am nächsten ein Vielfaches?
-            Weil der Kran selbst oft der kleinere Posten ist. Den Preis macht, was drumherum passiert.
-            Bei manchen Einsätzen kostet allein die Straßensperrung das Zwei- bis Dreifache des Kraneinsatzes.
-            Wer die folgenden fünf Faktoren kennt, kann eine Hausnummer besser einordnen und bekommt vom
-            Anbieter schneller eine belastbare Zahl (Stand 2026).
+            Weil der Kran selbst oft der kleinere Posten ist. Den Preis machen fünf Faktoren: die Anfahrt,
+            die Zufahrt samt Genehmigungen, die Hub-Geometrie aus Gewicht, Höhe, Ausladung und Störkante,
+            der nötige Ballast samt Spezialausrüstung sowie eine mögliche Straßensperrung, die allein schon
+            das Zwei- bis Dreifache des eigentlichen Kraneinsatzes kosten kann. Die Richtwerte oben sind
+            daher eine grobe Orientierung, kein verbindliches Angebot.
           </p>
-
-          <h3 className="text-[15px] font-semibold text-gray-900 mb-2 mt-5">1. Anfahrt und Entfernung</h3>
-          <p className="mb-4">
-            Jeder Kran muss zur Baustelle und wieder zurück. Je weiter der Weg, desto mehr Fahrzeit,
-            Kraftstoff und Arbeitszeit stecken im Angebot, bevor der erste Hub passiert. Ein Betrieb aus
-            der Nachbarstadt ist deshalb fast immer günstiger als einer, der über zwei Bundesländer anreist.
-            Bei sehr großen Geräten relativiert sich das, weil diese ohnehin überregional fahren.
-          </p>
-
-          <h3 className="text-[15px] font-semibold text-gray-900 mb-2 mt-5">2. Zufahrt und Genehmigungen</h3>
-          <p className="mb-4">
-            Bevor gehoben wird, muss der Kran an seinen Standplatz kommen. Eine breite, befestigte Zufahrt
-            ist der Idealfall. Geht es durch einen engen Innenhof, über weichen Boden oder dicht an Bebauung
-            vorbei, wird es aufwendiger, manchmal braucht es ein kleineres Gerät oder Lastverteilplatten.
-            Hinzu kommen Genehmigungen. Wer öffentlichen Grund nutzt oder eine Fläche absperrt, braucht
-            häufig eine Erlaubnis der Stadt, die Zeit und Gebühren kostet.
-          </p>
-
-          <h3 className="text-[15px] font-semibold text-gray-900 mb-2 mt-5">3. Hub-Geometrie: Gewicht, Höhe, Ausladung, Störkante</h3>
-          <p className="mb-4">
-            Hier entscheidet sich, welche Krangröße Sie überhaupt brauchen. Drei Werte zählen: das Gewicht
-            der Last, die Höhe, auf die sie soll, und die Ausladung, also wie weit der Kran horizontal über
-            seinen Standplatz hinausreichen muss. Je größer die Ausladung, desto weniger kann ein Kran tragen;
-            an der Spitze seines Auslegers hebt selbst ein großer Kran nur noch einen Bruchteil seiner
-            Maximallast. Steht eine Störkante im Weg, etwa ein Dachvorsprung oder eine Leitung, muss der Kran
-            höher oder weiter ausladen und fällt eine Nummer größer aus.
-          </p>
-
-          <h3 className="text-[15px] font-semibold text-gray-900 mb-2 mt-5">4. Zusatzballast und Spezialausrüstung</h3>
-          <p className="mb-4">
-            Schwere oder weite Hübe verlangen mehr Gegengewicht. Zusätzlicher Ballast muss oft separat
-            antransportiert werden, teils mit einem eigenen Lkw. Dazu kommt Sonderausrüstung je nach Aufgabe:
-            ein Personenkorb, wenn Menschen mit nach oben sollen, Spreizen oder Traversen für sperrige Lasten.
-            Jedes dieser Teile ist ein eigener Posten auf der Rechnung.
-          </p>
-
-          <h3 className="text-[15px] font-semibold text-gray-900 mb-2 mt-5">5. Straßensperrung und Verkehrssicherung</h3>
-          <p className="mb-4">
-            Diesen Faktor unterschätzen Bauherren am häufigsten. Steht der Kran auf der Straße oder schwenkt
-            die Last über den Verkehr, muss der Bereich gesichert werden, mit Absperrung, Beschilderung und
-            teils einer behördlich angeordneten Vollsperrung. Diese Sperrung kann das Zwei- bis Dreifache des
-            reinen Kraneinsatzes kosten. Wer früh klärt, ob der Kran auf privatem Grund oder im öffentlichen
-            Raum steht, vermeidet hier die größte Überraschung.
-          </p>
-
-          <h3 className="text-[15px] font-semibold text-gray-900 mb-2 mt-5">Was das für Ihre Anfrage bedeutet</h3>
           <p>
-            Eine seriöse Zahl kommt nicht aus einer Tabelle, sondern erst, wenn diese fünf Punkte auf dem
-            Tisch liegen. Nennen Sie bei der Anfrage Einsatzort, Last, Höhe und Ausladung sowie die Lage vor
-            Ort, also Zufahrt und eine mögliche Sperrung. Dann gibt Ihnen ein Anbieter rasch eine belastbare
-            Indikation, statt eines Pauschalpreises, der ohnehin nicht passt.
+            <Link href="/ratgeber/kranpreise-praxis" className="text-blue-600 hover:underline">
+              Die 5 Preistreiber aus der Praxis im Detail
+            </Link>
           </p>
         </section>
 

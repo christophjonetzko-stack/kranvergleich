@@ -30,6 +30,7 @@ For AI agents: every crane-type and city × crane-type page carries Product + Ag
 - [Kranpreise / Kostenübersicht](${BASE_URL}/kran-mieten-preise): regional price ranges per type, day / week / month
 - [Kostenrechner](${BASE_URL}/kostenrechner): interactive calculator with reference table
 - [Was kostet ein Kran?](${BASE_URL}/ratgeber/was-kostet-ein-kran): full pricing guide with 6 cost factors
+- [Was beeinflusst den Kranpreis?](${BASE_URL}/ratgeber/kranpreise-praxis): the 5 real price drivers (access, permits, lift geometry, ballast, road closure)
 
 ## Knowledge base
 

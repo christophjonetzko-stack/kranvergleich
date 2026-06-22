@@ -24,6 +24,11 @@ const articles = [
     description: 'Komplette Preisübersicht aller 8 Krantypen: Minikran ab 250€/Tag bis Raupenkran ab 800€/Tag. Tag-, Wochen- und Monatspreise im Vergleich.',
   },
   {
+    slug: 'kranpreise-praxis',
+    title: 'Was beeinflusst den Kranpreis? Die 5 Preistreiber',
+    description: 'Was einen Kraneinsatz wirklich teuer oder günstig macht: Anfahrt, Zufahrt, Hub-Geometrie, Ballast und Straßensperrung. Fünf Faktoren aus der Praxis statt Pauschalpreis.',
+  },
+  {
     slug: 'welchen-kran-brauche-ich',
     title: 'Welchen Kran brauche ich?',
     description: '8 typische Baustellen-Szenarien mit Empfehlung, plus Minikran vs. Autokran im direkten Vergleich. Vergleichstabelle aller 8 Krantypen.',
