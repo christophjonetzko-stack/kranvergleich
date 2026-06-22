@@ -219,6 +219,29 @@ export default function KranPreisreportPage() {
         </ol>
       </section>
 
+      {/* Signature insight: the Straßensperrung cost driver (Kranbetrieb-Input 2026-06, generalisiert).
+          Qualitative, citable, links to the dedicated 5-Preistreiber page. No fabricated price. */}
+      <section className="mb-10 border border-amber-200 bg-amber-50 rounded-lg p-5">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Der unterschätzte Kostentreiber: die Straßensperrung
+        </h2>
+        <p className="text-[14px] text-gray-700 leading-relaxed">
+          Der Mietpreis des Krans ist oft nicht der größte Posten. Steht der Kran auf öffentlichem
+          Grund oder schwenkt die Last über den Verkehr, kommt eine Verkehrssicherung hinzu, im
+          Extremfall eine behördlich angeordnete Vollsperrung. Bei manchen Einsätzen kostet allein
+          diese Sperrung das{' '}
+          <strong className="text-gray-900">Zwei- bis Dreifache des eigentlichen Kraneinsatzes</strong>.
+          Wer früh klärt, ob der Kran auf privatem oder öffentlichem Grund steht, vermeidet die
+          größte Überraschung auf der Rechnung.
+        </p>
+        <p className="text-[13px] text-gray-600 mt-3">
+          Mehr dazu:{' '}
+          <Link href="/ratgeber/kranpreise-praxis" className="text-blue-600 hover:underline">
+            die fünf echten Preistreiber beim Kranmieten
+          </Link>.
+        </p>
+      </section>
+
       {/* Price table, single source of truth: cranePrices. */}
       <section id="preise" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
