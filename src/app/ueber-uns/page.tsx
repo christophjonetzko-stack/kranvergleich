@@ -54,8 +54,8 @@ export default async function UeberUnsPage() {
           experience, not market-leadership claim about us. */}
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 leading-tight mb-4">
         Die deutsche Kranvermietung ist die digital am wenigsten erschlossene
-        B2B-Branche. 33 von 713 Vermietern haben keine E-Mail-Adresse. Preise
-        gibt es nur auf Anfrage. Das ändere ich.
+        B2B-Branche. 48 von über 700 Vermietern haben keine E-Mail-Adresse.
+        Preise gibt es nur auf Anfrage. Das ändere ich.
       </h1>
 
       {/* Mid-page CTA banner, second waitlist exposure between hook and
@@ -75,7 +75,7 @@ export default async function UeberUnsPage() {
       <p className="text-[15px] sm:text-base text-gray-700 leading-relaxed mb-10">
         Ich bin Christoph Jonetzko. Nach 4 Jahren bei Liebherr Ehingen und
         28 Jahren im Baumaschinen-Handel mache ich die deutsche Kranvermietung
-        transparent: 713 geprüfte Vermieter, ein Vergleich in unter 3 Minuten.
+        transparent: über 700 geprüfte Vermieter, ein Vergleich in unter 3 Minuten.
       </p>
 
       <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
@@ -129,8 +129,9 @@ export default async function UeberUnsPage() {
           </h2>
           <ul className="space-y-2.5 list-disc pl-5 marker:text-gray-300">
             <li>
-              33 von 713 Vermietern in meinem Katalog haben keine E-Mail-Adresse
-              veröffentlicht. Anfragen laufen dort über Telefon oder gar nicht.
+              48 von über 700 Vermietern in meinem Katalog haben keine
+              E-Mail-Adresse veröffentlicht. Anfragen laufen dort über Telefon
+              oder gar nicht.
             </li>
             <li>
               Tagessätze reichen von 230 € für einen Minikran bis 1.500 € für
@@ -153,12 +154,48 @@ export default async function UeberUnsPage() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Meine Datenbank</h2>
           <p>
-            Meine Datenbank umfasst 713 manuell geprüfte Kranvermieter in
+            Meine Datenbank umfasst über 700 manuell geprüfte Kranvermieter in
             Deutschland und Österreich (Stand: {lastUpdatedLabel}).
             Die Daten stammen aus öffentlich zugänglichen Quellen; ich pflege
             sie manuell und aktualisiere sie regelmäßig. Sichtbar sind echte
             Google-Bewertungen, Kontaktdaten und, wo der Vermieter sie
             veröffentlicht, Preisinformationen.
+          </p>
+        </section>
+
+        {/* Analysen & Presse — kuratorische Map zu den wichtigsten Assets
+            (Priestley 7-11-4, eigene Plattform als zentrale Anlaufstelle).
+            Live-Preisreport + Ratgeber + externer Presse-Pickup. Externe Links
+            target=_blank rel=noopener; interne via next/link. */}
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Analysen und Ratgeber</h2>
+          <ul className="space-y-2.5 list-disc pl-5 marker:text-gray-300">
+            <li>
+              <Link href="/kran-preisreport-2026" className="text-blue-700 hover:underline font-medium">Kran-Preisreport 2026</Link>: Mietpreise über alle acht Krantypen, von 150 € bis 5.000 € am Tag, ausgewertet über mehr als 700 Anbieter.
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/pulse/33-von-713-kranverleihern-deutschland-und-%C3%B6sterreich-haben-jonetzko-jjgwe/" target="_blank" rel="noopener" className="text-blue-700 hover:underline">33 von 713 Kranverleihern in Deutschland und Österreich</a> (LinkedIn-Artikel): wie viele Betriebe online überhaupt erreichbar sind.
+            </li>
+            <li>
+              <Link href="/ratgeber/was-kostet-ein-kran" className="text-blue-700 hover:underline">Was kostet ein Kran?</Link> Mietpreise aller acht Krantypen pro Tag, Woche und Monat.
+            </li>
+            <li>
+              <Link href="/ratgeber/kranpreise-praxis" className="text-blue-700 hover:underline">Welcher Kran für welche Baustelle?</Link> Die fünf echten Preistreiber, von der Anfahrt bis zur Straßensperrung.
+            </li>
+            <li>
+              <Link href="/ratgeber/kran-mieten-oder-kaufen" className="text-blue-700 hover:underline">Kran mieten oder kaufen?</Link> Ab wann sich ein eigener Kran rechnet, mit Break-even pro Typ.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">In der Presse</h2>
+          <p>
+            Das Dachdecker-Handwerk (DDH) griff im Juni 2026 die Mietpreis-Auswertung
+            aus meinem Kran-Preisreport 2026 auf, unter anderem die regionale
+            Anbieterdichte mit 146 Kranvermietern in Nordrhein-Westfalen gegenüber
+            nur vier im Saarland.{' '}
+            <a href="https://www.ddh.de/kran-preisreport-2026-16062026" target="_blank" rel="noopener" className="text-blue-700 hover:underline">Zum Beitrag</a>
           </p>
         </section>
 
