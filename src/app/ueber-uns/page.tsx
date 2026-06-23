@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getSiteStats } from '@/lib/queries'
+import { getSiteStats, getFounderStats } from '@/lib/queries'
 import { alternatesFor } from '@/lib/alternates'
 import { COUNTRY_LABEL, BRAND_NAME, BASE_URL, DATA_LAST_VERIFIED_ISO } from '@/lib/country'
 import { OG_IMAGE } from '@/lib/og-image'
@@ -33,10 +33,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function UeberUnsPage() {
-  // Catalog count is hardcoded inline (713 total DE+AT, matches LinkedIn
-  // Post #1 and is consistent across all prose). getSiteStats() still runs
-  // in generateMetadata() for the title/description per-domain count, but
-  // we don't need it in the component body anymore.
+  // Catalog numbers are pulled live from the DB so the prose never drifts
+  // (replaces the old hardcoded 713; 2026-06-23). totalCount = active+relevant
+  // across DE+AT, ohneEmailCount = firms without a deliverable address.
+  const { totalCount, ohneEmailCount } = await getFounderStats()
   const lastUpdatedLabel = new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
 
   return (
@@ -54,8 +54,8 @@ export default async function UeberUnsPage() {
           experience, not market-leadership claim about us. */}
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 leading-tight mb-4">
         Die deutsche Kranvermietung ist die digital am wenigsten erschlossene
-        B2B-Branche. 48 von über 700 Vermietern haben keine E-Mail-Adresse.
-        Preise gibt es nur auf Anfrage. Das ändere ich.
+        B2B-Branche. {ohneEmailCount} von {totalCount} Vermietern haben keine
+        E-Mail-Adresse. Preise gibt es nur auf Anfrage. Das ändere ich.
       </h1>
 
       {/* Mid-page CTA banner, second waitlist exposure between hook and
@@ -75,7 +75,7 @@ export default async function UeberUnsPage() {
       <p className="text-[15px] sm:text-base text-gray-700 leading-relaxed mb-10">
         Ich bin Christoph Jonetzko. Nach 4 Jahren bei Liebherr Ehingen und
         28 Jahren im Baumaschinen-Handel mache ich die deutsche Kranvermietung
-        transparent: über 700 geprüfte Vermieter, ein Vergleich in unter 3 Minuten.
+        transparent: {totalCount} geprüfte Vermieter, ein Vergleich in unter 3 Minuten.
       </p>
 
       <div className="space-y-6 text-[14px] text-gray-500 leading-relaxed">
@@ -122,16 +122,16 @@ export default async function UeberUnsPage() {
         {/* Drei Beobachtungen, insights AFTER bio establishes credibility
             (reviewer #4 final flow: bio first as identity, then insights as
             evidence of POV). Verb-led bullets, no judgment adjectives.
-            33/713 mirrors LinkedIn Post #1 stat-tile. */}
+            Email-less stat now live via getFounderStats (was 33/713). */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
             Drei Beobachtungen aus 28 Jahren in der Branche
           </h2>
           <ul className="space-y-2.5 list-disc pl-5 marker:text-gray-300">
             <li>
-              48 von über 700 Vermietern in meinem Katalog haben keine
-              E-Mail-Adresse veröffentlicht. Anfragen laufen dort über Telefon
-              oder gar nicht.
+              {ohneEmailCount} von {totalCount} Vermietern in meinem Katalog
+              haben keine E-Mail-Adresse veröffentlicht. Anfragen laufen dort
+              über Telefon oder gar nicht.
             </li>
             <li>
               Tagessätze reichen von 230 € für einen Minikran bis 1.500 € für
@@ -148,13 +148,13 @@ export default async function UeberUnsPage() {
 
         {/* Meine Datenbank, moved before "Was als Nächstes kommt: Kran-Preisindex 2026" per reviewer #4
             flow (data context  mission). Stand inline in first sentence
-            (was separate sentence). 713 hardcoded (matches LinkedIn Post #1
-            and prose elsewhere on page). "Manuell geprüft" inline anchors
+            (was separate sentence). Count now live via getFounderStats (was
+            713 hardcoded). "Manuell geprüft" inline anchors
             "geprüft" claim from the pitch one-liner. */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Meine Datenbank</h2>
           <p>
-            Meine Datenbank umfasst über 700 manuell geprüfte Kranvermieter in
+            Meine Datenbank umfasst {totalCount} manuell geprüfte Kranvermieter in
             Deutschland und Österreich (Stand: {lastUpdatedLabel}).
             Die Daten stammen aus öffentlich zugänglichen Quellen; ich pflege
             sie manuell und aktualisiere sie regelmäßig. Sichtbar sind echte

@@ -141,6 +141,24 @@ export async function getSiteStats(): Promise<{
   }
 }
 
+// Live DACH-wide catalog counts for the founder page (/ueber-uns), so the prose
+// numbers never drift from the database (the "713/660 stale-number" problem,
+// 2026-06-23). Counts active+relevant firms across DE AND AT, because the
+// founder page speaks of "Deutschland und Österreich", unlike getSiteStats
+// which is COUNTRY-scoped for the per-domain homepage. "Ohne E-Mail" mirrors the
+// lead-routing email filter (null or '???' = no deliverable address). Paginated
+// because the companies table is past the PostgREST 1000-row truncation risk.
+export async function getFounderStats(): Promise<{ totalCount: number; ohneEmailCount: number }> {
+  const rows = await selectAllPaginated<{ email: string | null }>(() =>
+    supabase.from('companies').select('email').eq('is_active', true).eq('is_relevant', true),
+  )
+  const ohneEmailCount = rows.filter((r) => {
+    const e = (r.email ?? '').trim()
+    return e === '' || e === '???'
+  }).length
+  return { totalCount: rows.length, ohneEmailCount }
+}
+
 // ============================================
 // CRANE TYPES
 // ============================================
