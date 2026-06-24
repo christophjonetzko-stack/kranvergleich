@@ -720,6 +720,27 @@ export async function POST(request: Request) {
     const glassMismatch = needsGlass && noGlassFirms.length > 0
     const reachMismatch = reachHintM > 0 && (reachShortFirms.length > 0 || capacityRiskFirms.length > 0)
 
+    // SPEC CHECK gating. highSpecAlert fires on the bare literal "X t" in the
+    // description, but the per-firm fit-check above already compared that
+    // requirement against each matched firm's company_cranes.max_capacity_kg
+    // for the requested crane_type_id. When the fit-check positively confirmed
+    // every matched firm carries a crane of that type with a KNOWN capacity at
+    // or above the requirement (no undersized, no unverified/NULL rows), the
+    // literal is a false alarm and we suppress the banner + subject prefix.
+    // Example: lead Föhrenbacher 2026-06-24 — "70 t Raupenkran" routed to Heilig,
+    // whose TR 100 crawler (100 t) covers it; the old purely-literal alert fired
+    // anyway. Requires crane_type_id (the comparison loop's gate); without it
+    // capacity was never evaluated, so we keep the alert. The FIT-MISMATCH
+    // signal stays independent — undersized firms are still flagged separately.
+    const specCapacityConfirmed =
+      highSpecAlert &&
+      fitCheckRan &&
+      capacityHintKg > 0 &&
+      !!body.crane_type_id &&
+      undersizedFirms.length === 0 &&
+      unverifiedFirmCount === 0
+    const showSpecCheck = highSpecAlert && !specCapacityConfirmed
+
     // UTM attribution (mig 027). Clip every value to 120 chars so a forged
     // URL can't bloat the column. NULL on absence, that's the expected
     // case for organic / direct entry.
@@ -1138,11 +1159,11 @@ export async function POST(request: Request) {
       // Additive to the validationFailed / noFirmsAttached prefixes above 
       // a high-spec lead can land on top of either. Independent banner so the
       // owner sees both signals at once without one overriding the other.
-      const specBanner = highSpecAlert
+      const specBanner = showSpecCheck
         ? `<div style="background:#fef3c7;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
             <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">🟡 SPEC CHECK: Tragkraft ${escapeHtml(capacityHintFormatted)} erwähnt</div>
             <div style="font-size:13px;color:#78350f;line-height:1.5;">
-              Im Projekttext nennt der Kunde eine Tragkraft von <strong>${escapeHtml(capacityHintFormatted)}</strong>. Viele Baukran-Firmen im Katalog führen ausschließlich Schnellmontagekrane (max ~2 t), bitte prüfen, ob die zugewiesenen Anbieter diese Spezifikation tatsächlich erfüllen können.<br><br>
+              Im Projekttext nennt der Kunde eine Tragkraft von <strong>${escapeHtml(capacityHintFormatted)}</strong>. Für mindestens einen zugewiesenen Anbieter ist die Tragkraft des passenden Krantyps im Katalog nicht hinterlegt oder liegt unter dem Bedarf, bitte prüfen, ob die Anbieter diese Spezifikation tatsächlich erfüllen können. (Anbieter, deren erfasste Tragkraft den Bedarf nachweislich deckt, lösen diese Warnung nicht mehr aus.)<br><br>
               Bei Spec-Mismatch: Opt-in-Mail an den Kunden mit Alternativvorschlägen schicken (Greb-Pattern, <code>scripts/send_optin_greb.py</code> als Template).
             </div>
           </div>`
@@ -1272,7 +1293,7 @@ export async function POST(request: Request) {
         : '')
         + (mxSoft ? '📭 MX-UNGEPRÜFT, ' : '')
         + (droppedTotal > 0 ? `🐛 FILTER (${droppedTotal}), ` : '')
-        + (highSpecAlert ? `🟡 SPEC CHECK (${capacityHintFormatted}), ` : '')
+        + (showSpecCheck ? `🟡 SPEC CHECK (${capacityHintFormatted}), ` : '')
         + (hasUndersizedMatches ? `FIT-MISMATCH (${undersizedFirms.length}), ` : '')
         + (reachMismatch ? `📐 REICHWEITE (${reachShortFirms.length + capacityRiskFirms.length}), ` : '')
         + (glassMismatch ? `🟡 GLAS (${glassCapableCount}/${glassCapableCount + noGlassFirms.length}), ` : '')
