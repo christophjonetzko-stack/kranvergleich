@@ -1385,33 +1385,46 @@ export async function POST(request: Request) {
     // Send confirmation email to customer. Skipped on email-less callback
     // leads — the firm's phone call IS the confirmation channel there.
     let confirmRes: { ok: boolean } = { ok: false }
-    if (customerEmail) confirmRes = await sendResendEmail('confirmation', {
-      from: FROM_EMAIL,
-      to: customerEmail,
-      subject: `Ihre Anfrage bei ${BRAND_NAME}, ${validationFailed ? 'Prüfung läuft' : companyCount > 0 ? `${companyCount} Anbieter kontaktiert` : 'Bestätigung'}`,
-      html: `
-        <div style="font-family:system-ui;max-width:520px;">
-          <h2 style="font-size:18px;">Vielen Dank für Ihre Anfrage!</h2>
-          <p style="color:#4b5563;font-size:14px;line-height:1.6;">
-            ${safeName !== '–' ? `Hallo ${safeName},` : 'Hallo,'}<br><br>
-            ${validationFailed
-              ? 'Wir prüfen Ihre Anfrage und melden uns innerhalb von 24 Stunden bei Ihnen. Bitte nicht erneut einsenden, damit wir Doppel-Einträge vermeiden.'
-              : companyCount > 0
-              ? `Ihre Anfrage wurde an <strong>${companyCount} Anbieter</strong> weitergeleitet. Die Unternehmen werden sich in Kürze bei Ihnen melden.`
-              : 'Wir haben Ihre Anfrage erhalten und melden uns in Kürze bei Ihnen.'}
-          </p>
-          <table style="border-collapse:collapse;font-size:13px;margin:16px 0;">
-            ${safeCity !== '–' ? `<tr><td style="padding:3px 10px 3px 0;color:#6b7280;">Stadt</td><td>${safeCity}</td></tr>` : ''}
-            ${safeDate !== '–' ? `<tr><td style="padding:3px 10px 3px 0;color:#6b7280;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
-            ${durationDays ? `<tr><td style="padding:3px 10px 3px 0;color:#6b7280;">Mietdauer</td><td>${durationDays} Tage</td></tr>` : ''}
-          </table>
-          <p style="font-size:13px;color:#9ca3af;margin-top:24px;">
-            ${BRAND_NAME}. Kranvermietung in ${COUNTRY_LABEL} vergleichen<br>
-            <a href="${BASE_URL}" style="color:#2563eb;">${DOMAIN}</a>
-          </p>
+    if (customerEmail) {
+      // Confirmation = the customer's first warm touchpoint (Priestley 7-11-4).
+      // Not a dead-end autoresponder: founder voice (Liebherr) + an explicit
+      // reply invitation that collects the signal-back AND raises lead quality,
+      // plus one onward content link. Honest under-promise on timing (our own
+      // lead-flow data shows firms answer slowly/partially, so we do NOT claim
+      // "most reply in 1-2 days"). replyTo is the monitored inbox, not the
+      // send-only `send.` subdomain — otherwise "antworten Sie einfach" bounces.
+      const greetingName = safeName !== '–' ? safeName : ''
+      const intro = validationFailed
+        ? 'danke. Wir prüfen Ihre Anfrage und melden uns innerhalb von 24 Stunden bei Ihnen. Bitte nicht erneut einsenden, damit wir Doppel-Einträge vermeiden.'
+        : companyCount > 0
+        ? `danke. Ihre Anfrage ist raus. Ich habe sie an <strong>${companyCount} passende Kranbetriebe</strong>${safeCity !== '–' ? ` in der Region ${safeCity}` : ''} weitergeleitet. Erste Rückmeldungen kommen oft innerhalb von ein bis zwei Werktagen, manchmal schneller, manchmal dauert es etwas länger.`
+        : 'danke. Wir haben Ihre Anfrage erhalten und melden uns in Kürze bei Ihnen.'
+      const overviewParts = [safeCity !== '–' ? safeCity : null, durationDays ? `${durationDays} Tage` : null, safeCraneType].filter(Boolean)
+      const overview = overviewParts.length > 0
+        ? `<p style="font-size:13px;color:#374151;margin:14px 0;"><strong>Ihre Anfrage:</strong> ${overviewParts.join(' · ')}</p>`
+        : ''
+      // P.S. links the live DE Kran-Preisreport only; AT has no such page yet.
+      const preisreportPs = COUNTRY === 'DE'
+        ? `<p style="font-size:13px;color:#4b5563;line-height:1.6;margin:16px 0 0 0;">P.S. Aktuelle Marktpreise nach Krantyp: <a href="${BASE_URL}/kran-preisreport-2026" style="color:#2563eb;">Kran-Preisreport 2026</a>.</p>`
+        : ''
+      confirmRes = await sendResendEmail('confirmation', {
+        from: FROM_EMAIL,
+        to: customerEmail,
+        replyTo: founderEmail,
+        subject: `Ihre Anfrage bei ${BRAND_NAME}${validationFailed ? ' — Prüfung läuft' : companyCount > 0 ? ' — Anbieter informiert' : ' — Eingang bestätigt'}`,
+        html: `
+        <div style="font-family:system-ui;max-width:520px;color:#1a1a1a;">
+          <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:0;">${greetingName ? `Hallo ${greetingName},` : 'Hallo,'}</p>
+          <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:10px 0;">${intro}</p>
+          ${overview}
+          <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:14px 0;">Kurz zu mir: Ich habe vier Jahre lang bei Liebherr in Ehingen Mobilkrane mitgebaut. Wenn bei den Angeboten etwas unklar ist, etwa Traglast, Ausladung oder Rüstzeit, antworten Sie einfach auf diese Mail, ich helfe beim Einordnen.</p>
+          <p style="color:#1a1a1a;font-size:14px;line-height:1.6;margin:16px 0 0 0;">Beste Grüße<br>Christoph Jonetzko · ${BRAND_NAME}</p>
+          ${preisreportPs}
+          <p style="font-size:12px;color:#9ca3af;margin-top:22px;"><a href="${BASE_URL}" style="color:#9ca3af;">${DOMAIN}</a> · Kranvermietung in ${COUNTRY_LABEL} vergleichen</p>
         </div>
       `,
-    })
+      })
+    }
 
     // Pre-filter anomaly categories (email-less / inactive / test-flagged
     // firms in company_ids) are reported as the 🐛 FILTER banner inside the
