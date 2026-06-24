@@ -409,6 +409,98 @@ export async function POST(request: Request) {
       )
     }
 
+    // === Lead-routing correctness (2026-06-24, lead Lowind 1c1aedc3) ========
+    // A "broad" Sammelanfrage from a listing / type hub sends an ADVISORY
+    // company_ids set preselected by PAGE context, not by the customer's
+    // Einsatzort. The bare type hub (/<typ>-mieten) anchors that preselect to
+    // Germany's geographic centroid, so the customer's PLZ is ignored and far /
+    // scattered firms get mailed (Lowind: PLZ "31620" → 6 firms 190-600 km away
+    // + a same-inbox H.N. Krane duplicate). The listing form (InquiryBar) puts
+    // the Einsatzort in `body.city`, not `body.location`, so resolve from city
+    // here. Deliberate /anbieter single-firm picks are exempt (proximity is
+    // irrelevant when the customer chose the firm).
+    const isDeliberateFirmPick =
+      typeof body.entry_path === 'string' && body.entry_path.startsWith('/anbieter')
+    const routeLocation: string | null =
+      locationInput || (typeof body.city === 'string' && body.city.trim()) || null
+    let rerouted = false
+    if (
+      !validationFailed &&
+      !isDeliberateFirmPick &&
+      body.auto_select_nearest !== true &&
+      companyIds.length > 0 &&
+      typeof body.crane_type_id === 'string' &&
+      routeLocation
+    ) {
+      try {
+        const near = await getCompaniesForCraneTypeNearLocation(body.crane_type_id, routeLocation, {
+          limit: MAX_COMPANY_IDS,
+        })
+        if (near && near.matches.length > 0) {
+          // Einsatzort resolved. Re-route ONLY when (a) it's a multi-firm broad
+          // request (≥2 — a single explicit firm is treated as a deliberate pick
+          // and never silently overridden) AND (b) NONE of the preselected firms
+          // sits within the type-aware radius (the selection was page noise, not a
+          // local match). If at least one IS local the selection is honored
+          // (covers deliberate local multi-picks on city×type pages).
+          const nearIds = new Set(near.matches.map((m) => m.company.id))
+          if (companyIds.length >= 2 && !companyIds.some((id) => nearIds.has(id))) {
+            companyIds = near.matches.map((m) => m.company.id)
+            autoSelectedRadiusKm = near.radius_used_km
+            autoSelectedResolvedLabel = near.resolved_label
+            autoSelectedMatches = near.matches
+            standortCorrection = standortCorrection ?? {
+              field: routeLocation,
+              usedPlz: near.resolved_label,
+              ambiguous: [],
+            }
+            rerouted = true
+          }
+        } else if (await isUnresolvedPlz(routeLocation)) {
+          // Einsatzort is a PLZ-shaped token that maps to no place (foreign / typo,
+          // e.g. "31620" — Steimbke is 31634). Do NOT spray the page-preselected
+          // far firms; ask the customer to fix the PLZ (same guard as the
+          // auto-select path above). A corrected PLZ then routes locally.
+          return NextResponse.json(
+            {
+              error:
+                `Wir konnten „${routeLocation}“ keinem Ort in ${COUNTRY_LABEL} zuordnen. ` +
+                `Bitte prüfen Sie Ihre Postleitzahl. Hinweis: Wir vermitteln aktuell ausschließlich ` +
+                `Kranbetriebe in Deutschland und Österreich.`,
+              code: 'location_unresolved',
+            },
+            { status: 422 },
+          )
+        }
+        // else: a city-name that didn't match, or a genuine coverage gap (PLZ
+        // resolved but no firm of that type nearby) → keep the explicit selection.
+      } catch (err) {
+        console.error('broad-inquiry re-route failed:', err)
+        // leave companyIds untouched on any lookup error
+      }
+    }
+
+    // Email-dedup invariant (#1): multi-branch operators share one inbox
+    // (H.N. Krane's two catalog rows both use info@hn-krane.de). The coords /
+    // auto-select path already dedups in _computeFirmMatchesFromCoords; this
+    // covers the explicit-company_ids path so one firm never gets two identical
+    // mails or consumes two dispatch slots.
+    if (companyIds.length > 1 && body.auto_select_nearest !== true && !rerouted) {
+      const sbDedup = getServiceSupabase()
+      const { data: emailRows } = await sbDedup.from('companies').select('id, email').in('id', companyIds)
+      if (emailRows) {
+        const emailById = new Map(emailRows.map((r) => [r.id, (r.email ?? '').trim().toLowerCase()]))
+        const seenEmails = new Set<string>()
+        companyIds = companyIds.filter((id) => {
+          const e = emailById.get(id) ?? ''
+          if (!e) return true
+          if (seenEmails.has(e)) return false
+          seenEmails.add(e)
+          return true
+        })
+      }
+    }
+
     // Truncate text fields
     const city = truncate(body.city || '')
     const customerName = truncate(body.customer_name || '')
