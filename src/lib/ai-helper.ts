@@ -648,6 +648,101 @@ export async function runRequirements(description: string): Promise<Requirements
   return block.input as RequirementsResult
 }
 
+// === QUALIFY MODE ===
+//
+// Lead qualification (2026-06-24). Called inline from /api/leads when building
+// the owner notification: scores ONE incoming lead by value + seriousness so the
+// owner can prioritise (a Lowind-style 18-month B2B contract should not look like
+// a one-line private inquiry). ADVISORY ONLY — the result is shown to the owner,
+// no automated decision is taken about the customer (DSGVO Art. 22). Model: Haiku
+// 4.5 (MODEL_FAST) with a cached system prompt; the call is best-effort on the
+// owner-mail path, so the caller wraps it in a timeout + try/catch.
+//
+// Data minimisation: the caller passes the project text + non-PII facts only
+// (crane type, duration, channel, presence-of-contact booleans). NEVER the
+// customer's name / e-mail / phone, none of which the value assessment needs.
+
+const QUALIFY_SYSTEM = `Sie sind ein Lead-Qualifizierer für KranVergleich.de (Kranvermittlung Deutschland/Österreich). Bewerten Sie EINE eingehende Anfrage nach Wert und Seriosität, damit der Betreiber priorisieren kann. Sie treffen KEINE Entscheidung über den Kunden, nur eine Einschätzung zur Priorisierung.
+
+Bewerten Sie VOR ALLEM das Projekt selbst (Kranbedarf, Umfang, gewerblicher Kontext). Fehlende Kontaktdaten oder der Eingangs-Kanal sind nur SCHWACHE Signale und dürfen eine ansonsten ernsthafte Anfrage nicht abwerten.
+
+Stufen (tier):
+- high_value: klarer gewerblicher Auftrag mit hohem Wert — lange Mietdauer (Wochen/Monate) ODER Großgerät/Schwerlast ODER professioneller B2B-Kontext (Firma, Bauprojekt, Industrie, Windpark, Generalunternehmer) mit konkreten Angaben. Beispiel: „LKW mit Ladekran inkl. Fahrer, 18 Monate, Windpark".
+- solid: ernsthafte Anfrage mit genug Information für ein Angebot, gewerblich ODER privat. Ein konkretes Privatprojekt (Pool/Whirlpool über das Haus heben, Gartenhaus, Baum, Fertiggarage) mit grobem Gewicht, Höhe oder Termin ist solid.
+- thin: vage oder sehr klein, kaum verwertbare Information, aber ein ECHTES Kran-Anliegen (z. B. „brauche einen Kran" ohne Details).
+- spam_risk: NUR bei Werbung, externen Links, Unsinn, Wettbewerber-Ausspähung oder eindeutig themenfremdem Text ohne echten Kranbedarf. Eine knappe, aber echte Anfrage ist thin, NICHT spam_risk.
+
+Heuristiken:
+- Mietdauer >= 30 Tage oder „Monate" mit gewerblichem Kontext -> eher high_value.
+- Firma / Branche / Bauprojekt / Industrie genannt -> is_b2b=true.
+- Werbetext / Link / Unsinn / themenfremd -> spam_risk.
+
+Bewerten Sie nüchtern. Im Zweifel zwischen thin und solid wählen Sie solid; high_value nur bei klarem gewerblichem Hochwert-Kontext. Antworten Sie IMMER über das Tool record_lead_quality. Die rationale ist GENAU EIN deutscher Satz mit maximal 20 Wörtern.`
+
+const QUALIFY_TOOL = {
+  name: 'record_lead_quality',
+  description: 'Records the qualification of an incoming crane rental lead for owner prioritisation.',
+  input_schema: {
+    type: 'object' as const,
+    properties: {
+      tier: {
+        type: 'string' as const,
+        enum: ['high_value', 'solid', 'thin', 'spam_risk'],
+        description: 'Value/seriousness tier of the lead.',
+      },
+      is_b2b: {
+        type: 'boolean' as const,
+        description: 'true when the inquiry comes from a business/commercial context (company, construction project, industry), false for private.',
+      },
+      rationale: {
+        type: 'string' as const,
+        description: 'One short German sentence (max 25 words, Sie-Form) explaining the tier, shown to the owner for prioritisation.',
+      },
+    },
+    required: ['tier', 'is_b2b', 'rationale'],
+  },
+}
+
+export type LeadQualificationResult = {
+  tier: 'high_value' | 'solid' | 'thin' | 'spam_risk'
+  is_b2b: boolean
+  rationale: string
+}
+
+export async function runQualifyLead(input: {
+  projectDescription: string
+  craneTypeName?: string | null
+  durationDays?: number | null
+  hasEmail: boolean
+  hasPhone: boolean
+  entryPath?: string | null
+}): Promise<LeadQualificationResult> {
+  const contact = [input.hasEmail ? 'E-Mail' : null, input.hasPhone ? 'Telefon' : null].filter(Boolean).join(' + ') || 'keine'
+  const facts = [
+    `Krantyp: ${input.craneTypeName || 'nicht angegeben'}`,
+    `Mietdauer: ${input.durationDays ? `${input.durationDays} Tage` : 'nicht angegeben'}`,
+    `Kontaktdaten vorhanden: ${contact}`,
+    `Kanal: ${input.entryPath || 'unbekannt'}`,
+  ]
+  const userMsg = `${facts.join('\n')}\n\nProjektbeschreibung des Kunden:\n"""\n${input.projectDescription}\n"""`
+
+  const payload = {
+    model: MODEL_FAST,
+    max_tokens: 350,
+    system: [
+      { type: 'text', text: QUALIFY_SYSTEM, cache_control: { type: 'ephemeral' } },
+    ],
+    tools: [QUALIFY_TOOL],
+    tool_choice: { type: 'tool', name: 'record_lead_quality' },
+    messages: [{ role: 'user', content: userMsg }],
+  }
+
+  const res = await callAnthropic(payload)
+  const block = res.content?.find((b: { type: string }) => b.type === 'tool_use')
+  if (!block) throw new Error('qualify: no tool_use in response')
+  return block.input as LeadQualificationResult
+}
+
 // === Anthropic API call ===
 
 interface AnthropicResponse {

@@ -1139,6 +1139,54 @@ export async function POST(request: Request) {
     const ownerEmail = getNotificationEmailOrNull()
     let ownerNotificationSent = false
     if (ownerEmail) {
+      // Lead qualification (advisory, 2026-06-24). One Haiku call scores the
+      // lead's value/seriousness so the owner can prioritise (a Lowind-style
+      // 18-month B2B contract should not read like a one-line private inquiry).
+      // ADVISORY ONLY — shown in the notification, no automated action is taken
+      // on the customer from it (DSGVO Art. 22). Best-effort: a 6s timeout or any
+      // failure just omits the badge, the mail still sends. Data-minimised: only
+      // the project text + non-PII facts go to the model, never the customer's
+      // name / e-mail / phone.
+      let leadQuality: import('@/lib/ai-helper').LeadQualificationResult | null = null
+      if (projectDescription.trim().length >= 8) {
+        try {
+          const { runQualifyLead } = await import('@/lib/ai-helper')
+          leadQuality = await Promise.race([
+            runQualifyLead({
+              projectDescription,
+              craneTypeName,
+              durationDays,
+              hasEmail: !!customerEmail,
+              hasPhone: !!(customerPhone && customerPhone.trim()),
+              entryPath,
+            }),
+            new Promise<null>((resolve) => setTimeout(() => resolve(null), 6000)),
+          ])
+        } catch (err) {
+          console.error('lead qualification skipped:', err)
+        }
+      }
+      const QUAL_STYLE: Record<string, { bg: string; border: string; color: string; label: string }> = {
+        high_value: { bg: '#ecfdf5', border: '#059669', color: '#065f46', label: '🐋 Hochwertiger Lead' },
+        solid: { bg: '#eff6ff', border: '#2563eb', color: '#1e3a8a', label: '🟢 Solider Lead' },
+        thin: { bg: '#f9fafb', border: '#9ca3af', color: '#374151', label: '🔍 Dünner Lead' },
+        spam_risk: { bg: '#fef2f2', border: '#dc2626', color: '#7f1d1d', label: '⚠️ Spam-/Test-Risiko' },
+      }
+      const qualBanner = leadQuality
+        ? (() => {
+            const s = QUAL_STYLE[leadQuality.tier] ?? QUAL_STYLE.solid
+            return `<div style="background:${s.bg};border:2px solid ${s.border};border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:${s.color};margin-bottom:6px;">${s.label}${leadQuality.is_b2b ? ' · B2B' : ''}</div>
+            <div style="font-size:13px;color:${s.color};line-height:1.5;">${escapeHtml(leadQuality.rationale)}<br><br><span style="font-size:11px;opacity:0.75;">Automatische Einschätzung (Claude), nur zur Priorisierung. Die Anbieter-Zuteilung erfolgt unabhängig davon.</span></div>
+          </div>`
+          })()
+        : ''
+      const qualPrefix =
+        leadQuality?.tier === 'high_value'
+          ? '🐋 HIGH-VALUE, '
+          : leadQuality?.tier === 'spam_risk'
+          ? '⚠️ SPAM-RISIKO, '
+          : ''
       const alertBanner = validationFailed
         ? `<div style="background:#fef3c7;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
             <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">⏸ Lead gehalten. Validation fehlgeschlagen</div>
@@ -1303,9 +1351,10 @@ export async function POST(request: Request) {
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
         to: ownerEmail,
-        subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${subjectPrefix}Neue Anfrage: ${safeName}, ${safeCity}`,
+        subject: `${BRAND_NAME} - ${dryRun ? '[DRY-RUN] ' : ''}${qualPrefix}${subjectPrefix}Neue Anfrage: ${safeName}, ${safeCity}`,
         html: `
           ${alertBanner}
+          ${qualBanner}
           ${mxSoftBanner}
           ${droppedBanner}
           ${standortBanner}
