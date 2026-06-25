@@ -5,7 +5,7 @@ import { Resend, type CreateEmailOptions } from 'resend'
 import { z } from 'zod'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { signLeadResponse } from '@/lib/lead-response-sig'
-import { submitLead, getCompaniesForCraneTypeNearLocation, isUnresolvedPlz, getSiteStats, type FirmMatch } from '@/lib/queries'
+import { submitLead, getCompaniesForCraneTypeNearLocation, isUnresolvedPlz, getFounderStats, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { MAX_COMPANY_IDS } from '@/lib/dispatch-config'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
@@ -855,6 +855,16 @@ export async function POST(request: Request) {
       if (Number.isNaN(d.getTime())) return null
       return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.`
     })()
+    // Full German date (DD.MM.YYYY) for the body/table — a Bauunternehmer expects
+    // "06.07.2026", not the ISO "2026-07-06". Falls back to the raw value when
+    // unparseable so a non-standard date string is still shown.
+    const dateGerman = (() => {
+      if (!preferredDate) return null
+      const d = new Date(preferredDate)
+      if (Number.isNaN(d.getTime())) return preferredDate
+      return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`
+    })()
+    const safeDateGerman = dateGerman ? escapeHtml(dateGerman) : null
     const subjectParts = [craneTypeName || 'Kran', city || null, dateShort].filter((p): p is string => Boolean(p))
     const firmSubject = isCallbackRequest
       ? `📞 Rückruf-Anfrage: ${subjectParts.join(' · ')}`
@@ -874,8 +884,13 @@ export async function POST(request: Request) {
     //, mig 017-021 dropped 79 firms on 2026-05-06). Memory
     // feedback_dach_geographic_precision: claim only what the catalog covers
     // (currently DE + AT, zero CH; "DACH" overshoot is a credibility-killer).
-    const siteStats = await getSiteStats().catch(() => ({ anbieterCount: 0 }))
-    const anbieterCount = siteStats.anbieterCount
+    // DACH-wide total (DE + AT) for the "Über KranVergleich.de" pitch. The firm
+    // email claims coverage in "16 deutschen und 9 österreichischen Bundesländern",
+    // so it must use the DACH total, NOT getSiteStats.anbieterCount (country-scoped,
+    // DE-only on the .de deploy → would understate the DACH claim). getFounderStats
+    // is the single source of truth (same dynamic count as /ueber-uns, 2026-06-23).
+    // Best-effort: 0 falls back to the count-less sentence variant.
+    const anbieterCount = (await getFounderStats().catch(() => ({ totalCount: 0 }))).totalCount
 
     // Founder signature, env-driven so the name can be rotated without a
     // code change once the team grows. Fallbacks keep the mail well-formed
@@ -941,7 +956,7 @@ export async function POST(request: Request) {
     // puts the firm's action, "Sie wurden ausgewählt", first, and demotes
     // the portal name to attribution.
     const headlineCity = safeCity !== '–' ? safeCity : null
-    const headlineDate = safeDate !== '–' ? safeDate : null
+    const headlineDate = safeDateGerman
     const headlineBits = [safeCraneType || 'Kran', headlineCity, headlineDate].filter(Boolean)
     const headline = `Kundenanfrage: ${headlineBits.join(' · ')}`
     const buildCompanyEmailHtml = (
@@ -963,7 +978,7 @@ export async function POST(request: Request) {
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">E-Mail</td><td>${emailCellHtml}</td></tr>
                 ${safePhone !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Telefon</td><td>${safePhone}</td></tr>` : ''}
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Stadt</td><td>${safeCity}</td></tr>
-                ${safeDate !== '–' ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDate}</td></tr>` : ''}
+                ${safeDateGerman ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Wunschtermin</td><td>${safeDateGerman}</td></tr>` : ''}
                 ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} ${durationDays === 1 ? 'Tag' : 'Tage'}</td></tr>` : ''}
               </table>
               <!--
@@ -1001,7 +1016,9 @@ export async function POST(request: Request) {
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;">
                 <strong style="color:#1a1a1a;">Über ${BRAND_NAME}</strong><br>
-                ${BRAND_NAME} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage prüfen wir manuell, bevor sie an Sie geht. Keine Bots, keine Massenmails. ${anbieterCount > 0 ? `Über ${anbieterCount} geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind bereits gelistet.` : `Geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind bereits gelistet.`}
+                ${founderName === 'Christoph Jonetzko'
+                  ? `Hinter ${BRAND_NAME} steht kein anonymes Portal. Vier Jahre habe ich bei Liebherr in Ehingen Mobilkrane mitgebaut und weiß, worauf es bei Tragkraft und Ausladung ankommt. Jede Anfrage wird vor dem Versand geprüft (E-Mail, Telefon, Einwilligung), keine Bots, keine Massenmails.`
+                  : `${BRAND_NAME} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage wird vor dem Versand geprüft (E-Mail, Telefon, Einwilligung), keine Bots, keine Massenmails.`} ${anbieterCount > 0 ? `Über ${anbieterCount} geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind gelistet.` : `Geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind gelistet.`} Die Weiterleitung dieser Anfrage ist für Sie kostenfrei.
               </p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:14px;color:#374151;line-height:1.55;margin:0;">
