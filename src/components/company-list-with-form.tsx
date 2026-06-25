@@ -383,6 +383,20 @@ export function CompanyListWithForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requirements])
 
+  // type_hub fanout (Phase 1 #2): bare type-hub pages (no cityName) get no mount
+  // pre-selection — there's no page city to anchor "nearest". Once the user types
+  // a PLZ (userCoords set) and hasn't selected anyone yet, seed the nearest
+  // suitable firms so the inquiry defaults to a competitive multi-firm request
+  // instead of a single one. The empty-selection guard leaves city pages (already
+  // seeded on mount) and any manual pick untouched — a deliberate single pick then
+  // gets the #1 nudge, not a silent override. §4 covers it; the firms appear in
+  // the consent list before the box is ticked (legal-check 2026-06-25, DSGVO PASS).
+  useEffect(() => {
+    if (!userCoords || cityName || selectedIds.length > 0) return
+    setSelectedIds(nearestPool.slice(0, MAX_INQUIRE_ALL).map((c) => c.id))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userCoords])
+
   // Reset the "from inquire-all CTA" flag when the dialog closes, so a later
   // reopen via the sticky pill is correctly classified as the legacy per-firm
   // flow, not as an inquire-all submission.
