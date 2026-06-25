@@ -394,15 +394,140 @@ async function runOutcomeMails(resend: Resend): Promise<number> {
   return sent
 }
 
-export async function runLeadFollowup(): Promise<{ reminders: number; digestLeads: number; outcomeMails: number }> {
+/**
+ * Customer single-firm opt-in mail (fanout-fulfillment #4, 2026-06-25). A lead
+ * that went out to exactly ONE firm and got no reaction after 24-48h is asked —
+ * once — whether we may forward it to more nearby firms (Greb pattern; single-
+ * firm leads convert ~2x worse, fanout audit 2026-06-25). The customer's "Ja"
+ * lands in the founder inbox (replyTo) and is handled manually.
+ *
+ * Legal: same posture as the outcome mail — Art. 6(1)(b) DSGVO, NOT Werbung
+ * (service about the customer's OWN open request; BGH VI ZR 225/17), outside
+ * §107 TKG-AT (legal-check 2026-06-25). STRICTLY operational, one mail per lead.
+ * Do not add promo content here without re-running legal-check.
+ */
+const OPTIN_MIN_AGE_H = 24
+const OPTIN_MAX_AGE_H = 48
+
+type OptinLeadRow = {
+  id: string
+  customer_name: string | null
+  customer_email: string | null
+  city: string | null
+  preferred_date: string | null
+  status: string | null
+  crane_types: { name: string } | null
+  lead_companies: Array<{ sent_at: string | null; feedback_received_at: string | null }>
+}
+
+async function runSingleFirmOptin(resend: Resend): Promise<number> {
+  const sb = getServiceSupabase()
+  const todayIso = new Date().toISOString().slice(0, 10)
+  const { data, error } = await sb
+    .from('leads')
+    .select(
+      'id, customer_name, customer_email, city, preferred_date, status, is_test, customer_optin_sent_at, crane_types(name), lead_companies(sent_at, feedback_received_at)',
+    )
+    .eq('country', COUNTRY)
+    .eq('is_test', false)
+    .is('customer_optin_sent_at', null)
+    .not('customer_email', 'is', null)
+    .gte('created_at', hoursAgoIso(OPTIN_MAX_AGE_H))
+    .lte('created_at', hoursAgoIso(OPTIN_MIN_AGE_H))
+
+  if (error) {
+    // Pre-mig-044 the customer_optin_sent_at column is missing. Log and bail;
+    // the rest of the cron (and the drip sends) must never be affected.
+    console.error('[lead-followup] optin query failed (mig 044 applied?):', error.message)
+    return 0
+  }
+
+  const founderEmail = process.env.KRANVERGLEICH_FOUNDER_EMAIL || 'christoph@kranvergleich.de'
+  let sent = 0
+  for (const raw of data ?? []) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lead = raw as any as OptinLeadRow
+    if (lead.status && !OPEN_LEAD_STATUSES.has(lead.status)) continue
+    if (!lead.customer_email) continue
+    const dispatched = (lead.lead_companies ?? []).filter((lc) => lc.sent_at != null)
+    // EXACTLY one firm contacted — multi-firm silent leads are the firm-reminder
+    // / owner-digest territory, not a broadening prompt to the customer.
+    if (dispatched.length !== 1) continue
+    // Any firm reaction at all → broadening is not the bottleneck, skip.
+    if ((lead.lead_companies ?? []).some((lc) => lc.feedback_received_at != null)) continue
+    // Wunschtermin already passed → forwarding is pointless, skip.
+    if (lead.preferred_date && lead.preferred_date < todayIso) continue
+
+    const craneType = lead.crane_types?.name ?? 'Kran'
+    const safeName = escapeHtml(lead.customer_name || '')
+    const safeCity = escapeHtml(lead.city || '')
+    const greeting = safeName ? `Guten Tag ${safeName},` : 'Guten Tag,'
+    const cityPhrase = safeCity ? ` in ${safeCity}` : ''
+
+    try {
+      const { error: sendErr } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: lead.customer_email,
+        replyTo: founderEmail,
+        subject: `Ihr ${craneType}-Einsatz${lead.city ? ` in ${lead.city}` : ''} - soll ich weitere Betriebe anfragen?`,
+        html: `
+          <div style="font-family:system-ui;max-width:520px;color:#222;">
+            <p style="font-size:14px;line-height:1.6;">${greeting}</p>
+            <p style="font-size:14px;line-height:1.6;">
+              vielen Dank für Ihre Anfrage über ${BRAND_NAME} für Ihren ${escapeHtml(craneType)}-Einsatz${cityPhrase}.
+            </p>
+            <p style="font-size:14px;line-height:1.6;">
+              Mir ist aufgefallen, dass sich der von Ihnen gewählte Betrieb bisher noch nicht bei Ihnen
+              gemeldet hat. Genau deshalb behalte ich jede Anfrage persönlich im Blick, damit Sie nicht
+              länger warten müssen.
+            </p>
+            <p style="font-size:14px;line-height:1.6;">
+              Soll ich Ihre Anfrage direkt an weitere passende Kranbetriebe in Ihrer Nähe weiterleiten?
+              Dann erhalten Sie in der Regel innerhalb von ein bis zwei Werktagen mehrere Angebote und
+              können in Ruhe vergleichen.<br>
+              Ein kurzes <strong>„Ja"</strong> als Antwort genügt. Ich kümmere mich dann sofort darum.
+            </p>
+            <p style="font-size:14px;line-height:1.6;">
+              Mit freundlichen Grüßen<br>Christoph Jonetzko<br>Gründer, ${BRAND_NAME}<br>
+              <a href="mailto:${founderEmail}" style="color:#2563eb;">${founderEmail}</a>
+            </p>
+            <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin-top:20px;">
+              Falls sich Ihr Einsatz bereits erledigt hat, können Sie diese Nachricht einfach ignorieren.
+              Dies ist die einzige Nachricht dieser Art zu Ihrer Anfrage.<br>
+              ${BRAND_NAME} · <a href="${BASE_URL}" style="color:#2563eb;">${BASE_URL.replace('https://', '')}</a> ·
+              <a href="${BASE_URL}/datenschutz" style="color:#9ca3af;">Datenschutz</a>
+            </p>
+          </div>
+        `,
+      })
+      if (sendErr) {
+        console.error(`[lead-followup] optin send failed (lead ${lead.id}):`, sendErr)
+        continue
+      }
+      const { error: stampErr } = await sb
+        .from('leads')
+        .update({ customer_optin_sent_at: new Date().toISOString() })
+        .eq('id', lead.id)
+      if (stampErr) console.error('[lead-followup] optin stamp failed:', stampErr)
+      sent += 1
+      await new Promise((r) => setTimeout(r, 200))
+    } catch (err) {
+      console.error(`[lead-followup] optin threw (lead ${lead.id}):`, err)
+    }
+  }
+  return sent
+}
+
+export async function runLeadFollowup(): Promise<{ reminders: number; digestLeads: number; outcomeMails: number; optinMails: number }> {
   const key = process.env.RESEND_API_KEY
   if (!key) {
     console.error('[lead-followup] RESEND_API_KEY missing, skipped')
-    return { reminders: 0, digestLeads: 0, outcomeMails: 0 }
+    return { reminders: 0, digestLeads: 0, outcomeMails: 0, optinMails: 0 }
   }
   const resend = new Resend(key)
   const reminders = await runFirmReminders(resend)
   const digestLeads = await runOwnerDigest(resend)
   const outcomeMails = await runOutcomeMails(resend)
-  return { reminders, digestLeads, outcomeMails }
+  const optinMails = await runSingleFirmOptin(resend)
+  return { reminders, digestLeads, outcomeMails, optinMails }
 }
