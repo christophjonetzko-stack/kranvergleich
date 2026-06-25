@@ -313,6 +313,39 @@ export function CompanyListWithForm({
 
   const selectedCompanies = companies.filter((c) => selectedIds.includes(c.id))
 
+  // Nearest-firm pool for the single-firm fanout nudge. Prefers the PLZ the user
+  // typed (userCoords), else the page city (cityCoords). Distance-sorted so the
+  // "in der Nähe" copy stays truthful; falls back to the filtered order only when
+  // no coords are known (then addNearbyCount is forced to 0 → nudge hidden).
+  const nearestPool = useMemo(() => {
+    const coords = userCoords ?? cityCoords
+    if (!coords) return filtered
+    return [...companies].sort((a, b) => {
+      const da = a.lat != null && a.lng != null ? haversineKm(coords.lat, coords.lng, a.lat, a.lng) : Infinity
+      const db = b.lat != null && b.lng != null ? haversineKm(coords.lat, coords.lng, b.lat, b.lng) : Infinity
+      return da - db
+    })
+  }, [companies, filtered, userCoords, cityCoords])
+
+  // How many firms the "+ N weitere" top-up would add. 0 = no nudge (no coords
+  // for an honest "in der Nähe", or the selection is already at the server cap).
+  const addNearbyCount = useMemo(() => {
+    if (!(userCoords ?? cityCoords)) return 0
+    const additions = nearestPool.filter((c) => !selectedIds.includes(c.id)).length
+    return Math.max(0, Math.min(MAX_INQUIRE_ALL - selectedIds.length, additions))
+  }, [nearestPool, selectedIds, userCoords, cityCoords])
+
+  // One-click top-up from the single-firm nudge: keep the user's chosen firm(s)
+  // and add the nearest suitable ones up to MAX_INQUIRE_ALL. The recipients then
+  // show in InquiryBar's "Anfrage an:" list + consent count before the DSGVO box
+  // is ticked → consent scoped (legal-check 2026-06-25, DSGVO PASS; §4 covers).
+  const handleAddNearby = () => {
+    setSelectedIds((prev) => {
+      const additions = nearestPool.map((c) => c.id).filter((id) => !prev.includes(id))
+      return [...prev, ...additions].slice(0, MAX_INQUIRE_ALL)
+    })
+  }
+
   // Opt-out default (P0): on city listings, pre-select the suitable firms (capped
   // at MAX_INQUIRE_ALL) so an inquiry defaults to a competitive multi-firm request
   // instead of a risky single-firm one. The user deselects anyone before submit.
@@ -607,6 +640,8 @@ export function CompanyListWithForm({
         open={inquiryOpen}
         onOpenChange={handleInquiryOpenChange}
         triggeredFromInquireAll={inquiryFromAllCta}
+        onAddNearby={handleAddNearby}
+        addNearbyCount={addNearbyCount}
       />
     </div>
   )

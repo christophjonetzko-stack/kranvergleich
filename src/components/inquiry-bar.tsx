@@ -50,6 +50,15 @@ interface InquiryBarProps {
    *  all-firms CTA. Causes the form-submit event to fire as
    *  `listing_inquire_all_submitted` instead of (just) the per-firm signal. */
   triggeredFromInquireAll?: boolean
+  /** Tops up the selection to the nearest suitable firms. Surfaced as a one-
+   *  click nudge when the user is about to send to a single firm — multi-firm
+   *  inquiries convert ~2x better (fanout audit 2026-06-25). The added firms
+   *  appear in the recipient list + consent count before the user ticks the
+   *  DSGVO box, so consent stays scoped (legal-check 2026-06-25, DSGVO PASS). */
+  onAddNearby?: () => void
+  /** How many firms the onAddNearby top-up would add. The nudge only renders
+   *  when this is > 0 (coords known and more nearby firms exist). */
+  addNearbyCount?: number
 }
 
 export function InquiryBar({
@@ -65,6 +74,8 @@ export function InquiryBar({
   open: controlledOpen,
   onOpenChange,
   triggeredFromInquireAll,
+  onAddNearby,
+  addNearbyCount,
 }: InquiryBarProps) {
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = controlledOpen !== undefined
@@ -263,6 +274,27 @@ export function InquiryBar({
                   ))}
                 </div>
               </div>
+
+              {/* Single-firm fanout nudge. Shown only when the user is about to
+                  send to exactly one firm and nearer suitable firms exist. §4
+                  covers the broadening AND the added firms land in the recipient
+                  list + consent count above before the box is ticked, so consent
+                  stays scoped (legal-check 2026-06-25). Dismissable: the user can
+                  ignore it and send to one. */}
+              {count === 1 && (addNearbyCount ?? 0) > 0 && onAddNearby && (
+                <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3">
+                  <p className="text-[13px] text-amber-900 leading-relaxed">
+                    Sie fragen nur einen Anbieter an. Mehrere Angebote bringen schneller eine Rückmeldung und einen besseren Vergleich.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={onAddNearby}
+                    className="mt-2 inline-flex items-center gap-1 text-[13px] font-semibold text-blue-700 hover:underline"
+                  >
+                    + {addNearbyCount} weitere Anbieter in der Nähe hinzufügen
+                  </button>
+                </div>
+              )}
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
