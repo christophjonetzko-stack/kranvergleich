@@ -290,6 +290,11 @@ async function runOwnerDigest(resend: Resend): Promise<number> {
  */
 const OUTCOME_MIN_AGE_D = 7
 const OUTCOME_MAX_AGE_D = 10
+// SQL prefilter only. The real eligibility gate is days-since-LAST-dispatch
+// (max sent_at), applied in JS below — a reroute / manual top-up restarts the
+// clock, so created_at alone would fire too early. Kept wide enough to still
+// catch a lead created weeks ago but only rerouted recently.
+const OUTCOME_SCAN_MAX_AGE_D = 45
 
 function buildOutcomeUrl(leadId: string, action: LeadOutcomeAction): string {
   const sig = signLeadOutcome(leadId, action)
@@ -319,7 +324,10 @@ async function runOutcomeMails(resend: Resend): Promise<number> {
     .eq('is_test', false)
     .is('outcome_mail_sent_at', null)
     .not('customer_email', 'is', null)
-    .gte('created_at', hoursAgoIso(OUTCOME_MAX_AGE_D * 24))
+    // Wide created_at prefilter; precise timing is gated on last dispatch below.
+    // The upper bound stays valid because last dispatch >= created_at, so an
+    // eligible lead was always created at least OUTCOME_MIN_AGE_D ago.
+    .gte('created_at', hoursAgoIso(OUTCOME_SCAN_MAX_AGE_D * 24))
     .lte('created_at', hoursAgoIso(OUTCOME_MIN_AGE_D * 24))
 
   if (error) {
@@ -334,9 +342,20 @@ async function runOutcomeMails(resend: Resend): Promise<number> {
     const lead = raw as any as OutcomeLeadRow
     if (lead.status && !OPEN_LEAD_STATUSES.has(lead.status)) continue
     if (!lead.customer_email) continue
-    // Only leads that were actually dispatched to firms — for a held /
-    // 0-firm lead the question "Angebote erhalten?" would be absurd.
-    if (!(lead.lead_companies ?? []).some((lc) => lc.sent_at != null)) continue
+    // Gate on the LAST dispatch, not lead creation. A reroute / manual top-up
+    // (Greb pattern) adds a fresh lead_companies.sent_at, which must restart the
+    // "Angebote erhalten?" clock — otherwise the mail fires while just-contacted
+    // firms have had no time to quote (lead Meier b5116539: created 18.06,
+    // rerouted to 10 firms 25.06; the old created_at gate fired ~created+7 =
+    // 25.06, the same day the fresh firms got the lead). Also covers the held /
+    // 0-firm case: no sent_at => skip (the question would be absurd).
+    const sentTimes = (lead.lead_companies ?? [])
+      .map((lc) => lc.sent_at)
+      .filter((s): s is string => s != null)
+      .map((s) => new Date(s).getTime())
+    if (sentTimes.length === 0) continue
+    const daysSinceLastDispatch = (Date.now() - Math.max(...sentTimes)) / 86400000
+    if (daysSinceLastDispatch < OUTCOME_MIN_AGE_D || daysSinceLastDispatch > OUTCOME_MAX_AGE_D) continue
 
     const craneType = lead.crane_types?.name ?? 'Kran'
     const firmCount = (lead.lead_companies ?? []).filter((lc) => lc.sent_at != null).length
