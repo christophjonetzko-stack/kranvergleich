@@ -705,7 +705,7 @@ type CityRow = { p: string; n: string; s: string; la: number; ln: number }
  *  resolving to the wrong place, e.g. "Frankfurt" resolves to Frankfurt am
  *  Main (many PLZ) instead of Frankfurt (Oder) (few PLZ). */
 let _citiesJsonCache: CityRow[] | null = null
-async function getCitiesJson(): Promise<CityRow[]> {
+export async function getCitiesJson(): Promise<CityRow[]> {
   if (_citiesJsonCache) return _citiesJsonCache
   // Build-time COUNTRY decides which dataset; the other file is never bundled
   // because Next.js tree-shakes the unreached branch.

@@ -5,13 +5,14 @@ import { Resend, type CreateEmailOptions } from 'resend'
 import { z } from 'zod'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { signLeadResponse } from '@/lib/lead-response-sig'
-import { submitLead, getCompaniesForCraneTypeNearLocation, isUnresolvedPlz, getFounderStats, type FirmMatch } from '@/lib/queries'
+import { submitLead, getCompaniesForCraneTypeNearLocation, isUnresolvedPlz, getFounderStats, getCitiesJson, type FirmMatch } from '@/lib/queries'
 import { getServiceSupabase } from '@/lib/supabase'
 import { MAX_COMPANY_IDS } from '@/lib/dispatch-config'
 import { COUNTRY, BASE_URL, DOMAIN, BRAND_NAME, COUNTRY_LABEL } from '@/lib/country'
 import { getCraneTypeNameById, getCraneMaxReachById } from '@/data/crane-types'
 import { evalReachFit } from '@/lib/fit'
 import { extractAddressPlz } from '@/lib/extract-plz'
+import { extractEinsatzortCity } from '@/lib/extract-einsatzort'
 
 // Validation helpers, added 2026-05-12 (Commit 2). Trust stamps in the
 // firm-notification mail are always-on and hardcoded; the dispatch logic
@@ -495,6 +496,10 @@ export async function POST(request: Request) {
     // case. A no-op when the crane type is unknown (AI low confidence) so we
     // never broaden blindly.
     let includedNearby = false
+    // Anchor of the broaden, surfaced to the owner digest. The chosen firm's
+    // city was the old (wrong) anchor; we now prefer the real Einsatzort.
+    let extensionAnchor: { label: string; source: 'plz' | 'einsatzort-city' | 'chosen-firm' } | null = null
+    let extensionAnchorAmbiguous: string[] | null = null
     if (
       !validationFailed &&
       body.include_nearby === true &&
@@ -505,9 +510,41 @@ export async function POST(request: Request) {
       body.city.trim()
     ) {
       try {
-        const near = await getCompaniesForCraneTypeNearLocation(body.crane_type_id, body.city, {
+        // Anchor priority: the real Einsatzort beats the chosen firm's city.
+        // (1) a PLZ from the field / description (locationInput, already
+        // resolved above), (2) a city NAMED in the project description, else
+        // (3) fall back to the chosen firm's city. Lead Codur 2026-06-26: pick
+        // in Zülpich but job "…in Aachen auf der Jülicherstraße 202" — anchoring
+        // at the chosen firm's city broadened toward Köln, away from Aachen.
+        let anchorInput = body.city
+        let anchorSource: 'plz' | 'einsatzort-city' | 'chosen-firm' = 'chosen-firm'
+        if (locationInput) {
+          anchorInput = locationInput
+          anchorSource = 'plz'
+        } else if (typeof body.project_description === 'string' && body.project_description.trim()) {
+          const ext = extractEinsatzortCity(body.project_description, await getCitiesJson())
+          if (ext && 'city' in ext) {
+            anchorInput = ext.city
+            anchorSource = 'einsatzort-city'
+          } else if (ext && 'ambiguous' in ext) {
+            // Several places named — don't guess. Keep the chosen-firm anchor
+            // and flag for the owner (manual top-up, as with lead Codur).
+            extensionAnchorAmbiguous = ext.ambiguous
+          }
+        }
+        let near = await getCompaniesForCraneTypeNearLocation(body.crane_type_id, anchorInput, {
           limit: MAX_COMPANY_IDS,
         })
+        // Floor: if the Einsatzort anchor resolves nowhere / has no firm of this
+        // type within the cap, fall back to the chosen firm's city so the opt-in
+        // still broadens (preserves the pre-fix behavior).
+        if ((!near || near.matches.length === 0) && anchorSource !== 'chosen-firm') {
+          anchorSource = 'chosen-firm'
+          anchorInput = body.city
+          near = await getCompaniesForCraneTypeNearLocation(body.crane_type_id, anchorInput, {
+            limit: MAX_COMPANY_IDS,
+          })
+        }
         if (near && near.matches.length > 0) {
           // Keep the picked firm first; append nearest matches not already on
           // the list. The email-dedup pass below collapses shared inboxes.
@@ -519,7 +556,10 @@ export async function POST(request: Request) {
             seen.add(m.company.id)
             includedNearby = true
           }
-          if (includedNearby) autoSelectedRadiusKm = autoSelectedRadiusKm ?? near.radius_used_km
+          if (includedNearby) {
+            autoSelectedRadiusKm = autoSelectedRadiusKm ?? near.radius_used_km
+            extensionAnchor = { label: near.resolved_label, source: anchorSource }
+          }
         }
       } catch (err) {
         console.error('include_nearby broaden failed:', err)
@@ -1379,11 +1419,18 @@ export async function POST(request: Request) {
       // Customer opted in to broaden a deliberate single-firm pick to nearby
       // firms (fanout #3). Honest signal so the owner can tell an opt-in
       // multi-dispatch apart from an auto-select one.
+      const extensionAnchorText =
+        extensionAnchor && extensionAnchor.source !== 'chosen-firm'
+          ? `Anker: Einsatzort <strong>${escapeHtml(extensionAnchor.label)}</strong> (aus ${extensionAnchor.source === 'plz' ? 'der PLZ' : 'dem Projekttext'}), nicht der Standort des gewählten Betriebs.`
+          : 'Anker: Standort des gewählten Betriebs.'
+      const extensionAmbiguousText = extensionAnchorAmbiguous
+        ? ` <strong>Hinweis:</strong> Der Projekttext nennt mehrere Orte (${escapeHtml(extensionAnchorAmbiguous.join(', '))}). Um nicht falsch zu routen, wurde am Standort des gewählten Betriebs geankert — bitte den tatsächlichen Einsatzort prüfen und ggf. lokale Anbieter manuell nachrouten.`
+        : ''
       const includeNearbyBanner = includedNearby
         ? `<div style="background:#eff6ff;border:2px solid #2563eb;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
             <div style="font-size:15px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">➕ Kunde hat Erweiterung gewählt</div>
             <div style="font-size:13px;color:#1e3a8a;line-height:1.5;">
-              Der Kunde hat zunächst einen Anbieter ausgewählt und per Opt-in zugestimmt, die Anfrage auch an weitere passende Betriebe in der Nähe zu senden. Versendet wurde daher zusätzlich an die nächstgelegenen passenden Anbieter (Anker: Standort des gewählten Betriebs).
+              Der Kunde hat zunächst einen Anbieter ausgewählt und per Opt-in zugestimmt, die Anfrage auch an weitere passende Betriebe in der Nähe zu senden. Versendet wurde daher zusätzlich an die nächstgelegenen passenden Anbieter. ${extensionAnchorText}${extensionAmbiguousText}
             </div>
           </div>`
         : ''
