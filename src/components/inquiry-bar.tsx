@@ -189,6 +189,27 @@ export function InquiryBar({
           clicks on content beneath; the card itself opts back in. */}
       {count > 0 && (
         <div className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 sm:left-auto sm:max-w-md sm:px-6 sm:pb-6 pointer-events-none animate-in slide-in-from-bottom fade-in duration-300">
+          {/* Single-firm fanout nudge on the sticky bar — surfaced the moment the
+              selection narrows to one firm, BEFORE the modal opens, so the user
+              sees it while still picking (lead Hellmuth d78ac84a: deselected to a
+              single local firm, only saw the in-modal nudge). Same action, copy
+              tone and legal basis as the in-modal nudge: §4 covers the broadening,
+              the added firms land in the consent count before the DSGVO box is
+              ticked, dismissable (no dark pattern, legal-check 2026-06-25). */}
+          {count === 1 && (addNearbyCount ?? 0) > 0 && onAddNearby && (
+            <div className="pointer-events-auto mb-2 rounded-xl bg-amber-50 ring-1 ring-amber-300 shadow-lg px-4 py-2.5">
+              <p className="text-[12px] text-amber-900 leading-snug">
+                Nur ein Anbieter gewählt. Mehrere Angebote bringen schneller eine Rückmeldung und einen besseren Vergleich.
+              </p>
+              <button
+                type="button"
+                onClick={onAddNearby}
+                className="mt-1 inline-flex items-center gap-1 text-[13px] font-semibold text-blue-700 hover:underline"
+              >
+                + {addNearbyCount} weitere Anbieter in der Nähe hinzufügen
+              </button>
+            </div>
+          )}
           <div className="pointer-events-auto bg-blue-600 rounded-2xl shadow-2xl ring-1 ring-blue-700/30 px-4 py-3.5 sm:px-5 sm:py-4">
             <div className="flex items-center gap-3 sm:gap-4">
               {/* Count + label */}
