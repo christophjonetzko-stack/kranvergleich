@@ -1029,16 +1029,19 @@ export async function POST(request: Request) {
                 ${durationDays ? `<tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Mietdauer</td><td>${durationDays} ${durationDays === 1 ? 'Tag' : 'Tage'}</td></tr>` : ''}
               </table>
               <!--
-                Trust stamp row, always rendered, never prop-gated. Dispatch
-                logic (the MX + phone gates in /api/leads, plus the documented
-                DSGVO consent column on leads) guarantees every dispatched
-                lead has all three checks passed. Stamp wording is concrete
-                (what we actually do), not buzzwordy ("validated").
+                Trust stamp row. E-Mail + DSGVO checks pass on every dispatched
+                lead, so those stamps are always rendered. The phone, however,
+                is OPTIONAL (validatePhoneE164 only checks a number that was
+                actually given); claiming "Telefonnummer geprüft" on a lead
+                without a phone is a false statement (UWG §5) — and contradicts
+                the omitted Telefon row above. So the phone stamp is gated on a
+                phone actually being present (lead Kaya a4b2153b, 2026-06-26).
+                Stamp wording is concrete (what we actually do), not buzzwordy.
               -->
               <p style="margin:8px 0 16px 0;padding:8px 0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;font-size:12px;color:#4b5563;line-height:1.5;">
                 <span style="color:#059669;">&#10003;</span> E-Mail-Adresse geprüft (${mxSoft ? 'Format' : 'Format + Domain-Check'})
-                &nbsp;&middot;&nbsp;
-                <span style="color:#059669;">&#10003;</span> Telefonnummer geprüft (libphonenumber)
+                ${safePhone !== '–' ? `&nbsp;&middot;&nbsp;
+                <span style="color:#059669;">&#10003;</span> Telefonnummer geprüft (libphonenumber)` : ''}
                 &nbsp;&middot;&nbsp;
                 <span style="color:#059669;">&#10003;</span> DSGVO-konforme Einwilligung dokumentiert
               </p>
@@ -1064,8 +1067,8 @@ export async function POST(request: Request) {
               <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;">
                 <strong style="color:#1a1a1a;">Über ${BRAND_NAME}</strong><br>
                 ${founderName === 'Christoph Jonetzko'
-                  ? `Hinter ${BRAND_NAME} steht kein anonymes Portal. Vier Jahre habe ich bei Liebherr in Ehingen Mobilkrane mitgebaut und weiß, worauf es bei Tragkraft und Ausladung ankommt. Jede Anfrage wird vor dem Versand geprüft (E-Mail, Telefon, Einwilligung), keine Bots, keine Massenmails.`
-                  : `${BRAND_NAME} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage wird vor dem Versand geprüft (E-Mail, Telefon, Einwilligung), keine Bots, keine Massenmails.`} ${anbieterCount > 0 ? `Über ${anbieterCount} geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind gelistet.` : `Geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind gelistet.`} Die Weiterleitung dieser Anfrage ist für Sie kostenfrei.
+                  ? `Hinter ${BRAND_NAME} steht kein anonymes Portal. Vier Jahre habe ich bei Liebherr in Ehingen Mobilkrane mitgebaut und weiß, worauf es bei Tragkraft und Ausladung ankommt. Jede Anfrage wird vor dem Versand geprüft (${safePhone !== '–' ? 'E-Mail, Telefon, Einwilligung' : 'E-Mail, Einwilligung'}), keine Bots, keine Massenmails.`
+                  : `${BRAND_NAME} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage wird vor dem Versand geprüft (${safePhone !== '–' ? 'E-Mail, Telefon, Einwilligung' : 'E-Mail, Einwilligung'}), keine Bots, keine Massenmails.`} ${anbieterCount > 0 ? `Über ${anbieterCount} geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind gelistet.` : `Geprüfte Kranfirmen aus 16 deutschen und 9 österreichischen Bundesländern sind gelistet.`} Die Weiterleitung dieser Anfrage ist für Sie kostenfrei.
               </p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:14px;color:#374151;line-height:1.55;margin:0;">
