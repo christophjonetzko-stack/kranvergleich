@@ -480,6 +480,53 @@ export async function POST(request: Request) {
       }
     }
 
+    // Profile single-pick broaden (fanout #3, 2026-06-26): the customer chose
+    // exactly one firm on a profile AND ticked "auch an weitere passende Anbieter
+    // in der Nähe". Union the deliberate pick with the nearest suitable firms,
+    // anchored at the chosen firm's city (already in body.city via the profile
+    // LeadForm cityName), capped at MAX_COMPANY_IDS. Opt-in only (default off) →
+    // DSGVO PASS, §4 + scoped consent (feedback_lead_reroute_dsgvo_optin).
+    //
+    // Gated on the SUBMISSION shape — a single explicit pick that opted in — NOT
+    // on entry_path: a real profile pick can carry entry_path '/' when the
+    // session started on the homepage and the user navigated to the profile
+    // (lead Kaya a4b2153b). The opt-in flag is only ever sent by the profile
+    // LeadForm for a one-firm selection, so this is exactly the deliberate-pick
+    // case. A no-op when the crane type is unknown (AI low confidence) so we
+    // never broaden blindly.
+    let includedNearby = false
+    if (
+      !validationFailed &&
+      body.include_nearby === true &&
+      body.auto_select_nearest !== true &&
+      companyIds.length === 1 &&
+      typeof body.crane_type_id === 'string' &&
+      typeof body.city === 'string' &&
+      body.city.trim()
+    ) {
+      try {
+        const near = await getCompaniesForCraneTypeNearLocation(body.crane_type_id, body.city, {
+          limit: MAX_COMPANY_IDS,
+        })
+        if (near && near.matches.length > 0) {
+          // Keep the picked firm first; append nearest matches not already on
+          // the list. The email-dedup pass below collapses shared inboxes.
+          const seen = new Set(companyIds)
+          for (const m of near.matches) {
+            if (companyIds.length >= MAX_COMPANY_IDS) break
+            if (seen.has(m.company.id)) continue
+            companyIds.push(m.company.id)
+            seen.add(m.company.id)
+            includedNearby = true
+          }
+          if (includedNearby) autoSelectedRadiusKm = autoSelectedRadiusKm ?? near.radius_used_km
+        }
+      } catch (err) {
+        console.error('include_nearby broaden failed:', err)
+        // leave companyIds = the deliberate pick on any error
+      }
+    }
+
     // Email-dedup invariant (#1): multi-branch operators share one inbox
     // (H.N. Krane's two catalog rows both use info@hn-krane.de). The coords /
     // auto-select path already dedups in _computeFirmMatchesFromCoords; this
@@ -1326,6 +1373,17 @@ export async function POST(request: Request) {
               </div>
             </div>`
         : ''
+      // Customer opted in to broaden a deliberate single-firm pick to nearby
+      // firms (fanout #3). Honest signal so the owner can tell an opt-in
+      // multi-dispatch apart from an auto-select one.
+      const includeNearbyBanner = includedNearby
+        ? `<div style="background:#eff6ff;border:2px solid #2563eb;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">➕ Kunde hat Erweiterung gewählt</div>
+            <div style="font-size:13px;color:#1e3a8a;line-height:1.5;">
+              Der Kunde hat zunächst einen Anbieter ausgewählt und per Opt-in zugestimmt, die Anfrage auch an weitere passende Betriebe in der Nähe zu senden. Versendet wurde daher zusätzlich an die nächstgelegenen passenden Anbieter (Anker: Standort des gewählten Betriebs).
+            </div>
+          </div>`
+        : ''
       // MX soft-pass note (C2): transient resolver failure, lead dispatched
       // normally, deliverability of the customer address unverified.
       const mxSoftBanner = mxSoft
@@ -1364,6 +1422,7 @@ export async function POST(request: Request) {
         + (glassMismatch ? `🟡 GLAS (${glassCapableCount}/${glassCapableCount + noGlassFirms.length}), ` : '')
         + (aiInferredCraneType ? '🤖 AI-Krantyp, ' : '')
         + (baukranCandidate ? `⏳ BAUKRAN? (${durationDays}d), ` : '')
+        + (includedNearby ? '➕ ERWEITERT, ' : '')
         + (standortCorrection ? '📍 STANDORT, ' : '')
       const notifRes = await sendResendEmail('notification', {
         from: FROM_EMAIL,
@@ -1375,6 +1434,7 @@ export async function POST(request: Request) {
           ${mxSoftBanner}
           ${droppedBanner}
           ${standortBanner}
+          ${includeNearbyBanner}
           ${specBanner}
           ${fitCheckBanner}
           ${reachBanner}

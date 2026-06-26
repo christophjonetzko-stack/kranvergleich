@@ -48,6 +48,12 @@ export function LeadForm({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Opt-in (default OFF) to broaden a deliberate single-firm pick on a profile
+  // page to nearby suitable firms — multi-firm inquiries convert ~2x better
+  // (fanout audit 2026-06-25). The broadening is resolved server-side, anchored
+  // at the chosen firm's city (DSGVO: explicit opt-in, §4 + scoped consent,
+  // memory feedback_lead_reroute_dsgvo_optin).
+  const [includeNearby, setIncludeNearby] = useState(false)
   // When the page that mounts LeadForm already knows the crane type (listing
   // pages with type in the URL, /anbieter/[slug] profile pages, etc.), the
   // craneTypeId prop is set and the user doesn't see a type field. When the
@@ -65,6 +71,12 @@ export function LeadForm({
   // AI-categorizes it from the description (a forced manual pick mis-tagged the
   // 650 t Stejskal lead as Minikran, 2026-06-04).
   const craneTypeRequired = selectedCompanies.length === 0
+
+  // Show the "also contact nearby firms" opt-in only for a deliberate single-
+  // firm pick: the /anbieter profile mounts LeadForm with exactly one firm
+  // pre-selected. Hidden on the inline auto-select path (no pre-selection) and
+  // once the user has chosen more than one firm (broadening is then moot).
+  const showBroaden = initialSelected.length === 1 && selectedCompanies.length === 1
 
   // View denominator for the LeadForm conversion rate (2026-06-20 audit). Fires
   // once per mount. `preselected` splits the profile/listing path (a firm was
@@ -137,6 +149,10 @@ export function LeadForm({
           dsgvo_consent: dsgvoConsent,
           company_ids: selectedCompanies,
           auto_select_nearest: noFirmsPreSelected,
+          // Profile single-pick broaden opt-in. Resolved server-side, anchored
+          // at the chosen firm's city; the backend additionally gates it on the
+          // /anbieter entry path so it never fires outside a deliberate pick.
+          include_nearby: showBroaden && includeNearby,
           location: noFirmsPreSelected ? cityInput : undefined,
           website_url: formData.get('website_url') || '',
           entry_path: getSessionEntryPath(),
@@ -178,7 +194,9 @@ export function LeadForm({
             Anfrage erfolgreich gesendet!
           </h3>
           <p className="text-green-700">
-            {selectedCompanies.length > 0
+            {showBroaden && includeNearby
+              ? 'Ihre Anfrage wurde an den gewählten Anbieter und weitere passende Betriebe in Ihrer Nähe weitergeleitet.'
+              : selectedCompanies.length > 0
               ? `Ihre Anfrage wurde an ${selectedCompanies.length} Anbieter weitergeleitet.`
               : 'Wir melden uns in Kürze bei Ihnen.'}
           </p>
@@ -306,6 +324,20 @@ export function LeadForm({
               placeholder="Was soll gehoben werden? Gewicht, Höhe, Zufahrt…"
             />
           </div>
+
+          {showBroaden && (
+            <label className="flex gap-2 cursor-pointer">
+              <Checkbox
+                id="include-nearby"
+                checked={includeNearby}
+                onCheckedChange={(checked) => setIncludeNearby(checked === true)}
+                className="mt-0.5 shrink-0"
+              />
+              <span className="text-xs text-muted-foreground leading-relaxed">
+                Meine Anfrage zusätzlich an weitere passende Anbieter in der Nähe senden. So erhalte ich schneller mehrere Angebote zum Vergleich.
+              </span>
+            </label>
+          )}
 
           <label className="flex gap-2 cursor-pointer">
             <Checkbox
