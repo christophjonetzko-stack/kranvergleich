@@ -739,6 +739,23 @@ function normalizeCityName(s: string): { withAe: string; diacriticStripped: stri
   return { withAe, diacriticStripped }
 }
 
+// Freemail / ISP mailbox hosts (DE + AT). Two unrelated SMEs both contacting
+// the portal from an @gmx.de address are NOT the same operator, so domain-dedup
+// (below) must skip these and fall back to exact-email dedup. Only a firm's OWN
+// domain (bkl.de, felbermayr.cc) is a reliable "same operator" signal.
+const FREEMAIL_DOMAINS = new Set<string>([
+  // DE freemail
+  'gmx.de', 'gmx.net', 'gmx.com', 'web.de', 't-online.de', 'freenet.de',
+  'mail.de', 'posteo.de', 'gmail.com', 'googlemail.com',
+  'yahoo.de', 'yahoo.com', 'outlook.de', 'outlook.com', 'hotmail.de',
+  'hotmail.com', 'live.de', 'live.com', 'aol.com', 'aol.de',
+  'icloud.com', 'me.com', 'mac.com',
+  // AT freemail / ISP
+  'gmx.at', 'a1.net', 'aon.at', 'chello.at', 'kabsi.at', 'utanet.at',
+  'inode.at', 'liwest.at', 'drei.at', 'magenta.at', 'tele2.at', 'yahoo.at',
+  'outlook.at', 'hotmail.at', 'live.at',
+])
+
 /** Core: given reference coordinates, rank active firms offering craneTypeId
  *  by distance and expand radius (50  100  150 km hard cap) until ≥3 matches.
  *  Beyond 150 km we return 0 matches so /api/leads fires the 🚨 LEAD OHNE
@@ -814,18 +831,31 @@ async function _computeFirmMatchesFromCoords(
   })
   withDist.sort((a, b) => a.distance_km - b.distance_km)
 
-  // Dedup by recipient email before radius selection: multi-branch operators
-  // (e.g. Felbermayr's 8 AT branches all share office@felbermayr.cc) would
-  // otherwise consume several dispatch slots and hit one inbox with identical
-  // leads (lead b71b1420 went to 5 Felbermayr branches). The list is already
-  // distance-sorted, so the first kept per email is the nearest branch. Firms
-  // without an email are already filtered out upstream, but keep any here so a
-  // missing email never silently drops a firm.
+  // Collapse multi-branch operators down to their NEAREST branch before radius
+  // selection. Two levels:
+  //   (1) Identical inbox — branches sharing one mailbox (e.g. Felbermayr's 8 AT
+  //       branches all on office@felbermayr.cc) would consume several dispatch
+  //       slots and hit one inbox with the same lead (lead b71b1420 went to 5
+  //       Felbermayr branches).
+  //   (2) Same own-domain — branches with PER-BRANCH mailboxes on one corporate
+  //       domain (BKL: nuernberg@bkl.de + info@bkl.de) are one operator; the
+  //       customer should see the brand once. Freemail/ISP hosts are excluded
+  //       (see FREEMAIL_DOMAINS) so two unrelated @gmx.de firms are NOT merged.
+  // The list is already distance-sorted, so the first kept per key is the
+  // nearest branch. Firms without an email are kept (filtered upstream anyway)
+  // so a missing email never silently drops a firm.
   const seenEmails = new Set<string>()
+  const seenDomains = new Set<string>()
   const deduped = withDist.filter((m) => {
     const email = (m.company.email ?? '').trim().toLowerCase()
     if (!email) return true
     if (seenEmails.has(email)) return false
+    const at = email.lastIndexOf('@')
+    const domain = at >= 0 ? email.slice(at + 1) : ''
+    if (domain && !FREEMAIL_DOMAINS.has(domain)) {
+      if (seenDomains.has(domain)) return false
+      seenDomains.add(domain)
+    }
     seenEmails.add(email)
     return true
   })
