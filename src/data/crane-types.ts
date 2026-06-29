@@ -23,7 +23,7 @@ export const craneTypes: CraneTypeInfo[] = [
   { slug: 'raupenkran-mieten', name: 'Raupenkran', namePlural: 'Raupenkrane', desc: 'Schweres Gelände, große Traglasten', image: '/images/crane-types/raupenkran.webp', synonyms: ['Kettenkran', 'Crawler Crane', 'Gleiskettenkran', 'Raupen-Minikran', 'mobiler Raupenkran'], maxReachM: 90 },
   { slug: 'anhaengerkran-mieten', name: 'Anhängerkran', namePlural: 'Anhängerkrane', desc: 'Günstig & leicht transportierbar', image: '/images/crane-types/anhaengerkran.webp', synonyms: ['PKW-Anhänger mit Kran', 'Trailerkran', 'Mobilanhängerkran', 'Kleinkran'], maxReachM: 10 },
   { slug: 'mobilkran-mieten', name: 'Mobilkran', namePlural: 'Mobilkrane', desc: 'Hohe Traglasten, schnell einsatzbereit', image: '/images/crane-types/mobilkran.webp', synonyms: ['Schwerlastkran', 'Teleskopkran', 'Telekran', 'Mobilbaukran', 'mobiler Kran', 'Hebekran'], maxReachM: 70 },
-  { slug: 'baukran-mieten', name: 'Baukran', namePlural: 'Baukrane', desc: 'Turmdrehkran für Großbaustellen', image: '/images/crane-types/baukran.webp', synonyms: ['Turmdrehkran', 'Baustellenkran', 'Schnellbaukran', 'Hochbaukran', 'Mobilbaukran'], maxReachM: 55 },
+  { slug: 'baukran-mieten', name: 'Baukran', namePlural: 'Baukrane', desc: 'Turmdrehkran für Großbaustellen', image: '/images/crane-types/baukran.webp', synonyms: ['Turmdrehkran', 'Baustellenkran', 'Schnellbaukran', 'Hochbaukran', 'Mobilbaukran', 'Faltkran'], maxReachM: 55 },
   { slug: 'ladekran-mieten', name: 'Ladekran', namePlural: 'Ladekrane', desc: 'LKW-montiert, für Be- & Entladearbeiten', image: '/images/crane-types/ladekran.webp', synonyms: ['Knickarmkran', 'Hiab-Kran', 'LKW-Ladekran', 'Lastkran'], maxReachM: 20 },
 ]
 

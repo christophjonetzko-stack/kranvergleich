@@ -38,6 +38,18 @@ const faqs = [
     question: 'Wer beantragt die Genehmigung, ich oder der Kranvermieter?',
     answer: `Rechtlich ist der Auftraggeber (Bauherr) verantwortlich. In der Praxis helfen viele Kranvermieter bei der Antragstellung oder übernehmen sie komplett. Fragen Sie bei der Buchung danach, auf ${BRAND_NAME} können Sie dies direkt in Ihrer Anfrage angeben.`,
   },
+  {
+    question: 'Brauche ich eine Genehmigung, wenn der Kran über das Nachbargrundstück schwenkt?',
+    answer: 'Schwenkt der Ausleger über fremdes Grundstück, kann der Nachbar das grundsätzlich untersagen (§ 1004 BGB), denn sein Eigentum reicht in den Luftraum (§ 905 BGB). Holen Sie eine schriftliche Zustimmung ein oder kündigen Sie den Einsatz über das Nachbarrechtsgesetz Ihres Bundeslandes rechtzeitig an. Nur sehr hohe, lastfreie Schwenks muss der Nachbar oft dulden.',
+  },
+  {
+    question: 'Wie lange darf ein Baukran stehen bleiben?',
+    answer: 'Auf dem eigenen Grundstück gibt es keine feste Grenze; ein Baukran begleitet den Rohbau oft monatelang und ist durch die Baugenehmigung gedeckt. Auf öffentlichem Grund gilt nur der Zeitraum der Sondernutzungserlaubnis. Laute Arbeiten sind im Wohngebiet meist nur montags bis samstags von 7 bis 20 Uhr erlaubt.',
+  },
+  {
+    question: 'Ab welcher Höhe muss ein Kran beleuchtet werden?',
+    answer: 'Auf der Straße muss ein Kran bei Dunkelheit unabhängig von der Höhe beleuchtet und abgesichert sein (§ 17 StVO). Als Luftfahrthindernis braucht er ab etwa 100 Metern über Grund eine rot-weiße Kennzeichnung und nachts ein Hindernisfeuer, in Flughafennähe schon früher. Die meisten Mietkrane bleiben darunter.',
+  },
 ]
 
 export default async function KranGenehmigungPage() {
@@ -61,7 +73,7 @@ export default async function KranGenehmigungPage() {
         der Straße? Und wann können Sie einen Kran ohne Genehmigung aufstellen? Alle Regelungen,
         Kosten und Ansprechpartner im Überblick.
       </p>
-      <p className="text-[11px] text-gray-300 mb-8">Stand: April 2026</p>
+      <p className="text-[11px] text-gray-300 mb-8">Stand: Juni 2026</p>
 
       {/* TOC */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
@@ -71,6 +83,9 @@ export default async function KranGenehmigungPage() {
           <li><a href="#ohne-genehmigung" className="text-[13px] text-blue-600 hover:underline">Kran aufstellen ohne Genehmigung</a></li>
           <li><a href="#autokran" className="text-[13px] text-blue-600 hover:underline">Autokran Genehmigung</a></li>
           <li><a href="#baukran" className="text-[13px] text-blue-600 hover:underline">Baukran (Turmdrehkran) Genehmigung</a></li>
+          <li><a href="#ueberschwenk" className="text-[13px] text-blue-600 hover:underline">Überschwenkgenehmigung</a></li>
+          <li><a href="#standdauer" className="text-[13px] text-blue-600 hover:underline">Wie lange darf ein Kran stehen?</a></li>
+          <li><a href="#beleuchtung" className="text-[13px] text-blue-600 hover:underline">Beleuchtung &amp; Kennzeichnung</a></li>
           <li><a href="#dokumente" className="text-[13px] text-blue-600 hover:underline">Welche Dokumente brauchen Sie?</a></li>
           <li><a href="#kosten" className="text-[13px] text-blue-600 hover:underline">Was kostet die Genehmigung?</a></li>
           <li><a href="#ansprechpartner" className="text-[13px] text-blue-600 hover:underline">Ansprechpartner & Behörden</a></li>
@@ -204,9 +219,105 @@ export default async function KranGenehmigungPage() {
           </ul>
           <div className="mt-4">
             <Link href="/baukran-mieten" className="text-[13px] text-blue-600 hover:underline">
-              Baukran-Anbieter vergleichen, inkl. Montage und Prüfung 
+              Baukran-Anbieter vergleichen, inkl. Montage und Prüfung
             </Link>
           </div>
+        </section>
+
+        {/* Überschwenkgenehmigung */}
+        <section id="ueberschwenk" className="scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Überschwenkgenehmigung: Wenn der Kran über das Nachbargrundstück schwenkt</h2>
+          <p className="mb-3">
+            Sobald der Ausleger Ihres Krans über ein fremdes Grundstück schwenkt, reicht Ihre eigene
+            Erlaubnis nicht mehr. Das Eigentum des Nachbarn endet nicht an der Hecke, sondern reicht
+            nach oben in den Luftraum (§ 905 BGB). Der Nachbar kann das Überschwenken deshalb
+            grundsätzlich untersagen (§ 1004 BGB).
+          </p>
+          <p className="mb-3">
+            Eine Ausnahme gilt für große Höhen. Schwenkt der leere Ausleger so hoch über das
+            Grundstück, dass der Nachbar dadurch keinen Nachteil hat, muss er es meist dulden. Wo
+            genau die Grenze liegt, ist Auslegungssache und im Streitfall Sache des Gerichts. Sicher
+            planbar wird der Einsatz erst mit einer schriftlichen Zustimmung.
+          </p>
+          <p className="mb-3">
+            Dafür gibt es zwei Wege. Am einfachsten holen Sie die schriftliche Zustimmung des
+            Nachbarn ein, am besten mit Zeitraum und Schwenkbereich. Verweigert er sie, hilft oft das
+            Nachbarrecht: Die meisten Bundesländer regeln im Nachbarrechtsgesetz ein Hammerschlags-
+            und Leiterrecht, das den Nachbarn verpflichtet, kurze Arbeiten zu dulden, wenn Sie den
+            Einsatz rechtzeitig ankündigen und mögliche Schäden ersetzen.
+          </p>
+          {/* TODO Aus-der-Praxis-Zitat (Klarname + Firma + Link) hier einsetzen, sobald
+              schriftliche Veroeffentlichungs-Zustimmung vorliegt. Siehe memory feedback-expert-quote-consent. */}
+          <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 mt-4">
+            <p className="text-[13px] text-amber-800">
+              <strong>Tipp:</strong> Bei einem Baukran, der monatelang steht und regelmäßig über
+              fremdes Land schwenkt, halten Sie die Zustimmung immer schriftlich fest. Bei einem
+              Autokran, der für wenige Stunden hebt, genügt oft ein kurzes Gespräch mit dem Nachbarn,
+              bevor der Kran anrückt.
+            </p>
+          </div>
+          <div className="mt-4">
+            <Link href="/baukran-mieten" className="text-[13px] text-blue-600 hover:underline">
+              Baukran-Anbieter vergleichen
+            </Link>
+          </div>
+        </section>
+
+        {/* Standdauer */}
+        <section id="standdauer" className="scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Wie lange darf ein Kran stehen?</h2>
+          <p className="mb-3">
+            Eine feste Höchstdauer schreibt das Gesetz nicht vor. Wie lange der Kran bleiben darf,
+            hängt davon ab, wo er steht.
+          </p>
+          <p className="mb-3">
+            Auf Ihrem eigenen Grundstück darf ein Kran so lange stehen, wie Sie ihn brauchen,
+            vorausgesetzt, er steht standsicher und schwenkt nicht ungenehmigt über Nachbarland. Ein
+            Baukran begleitet den Rohbau oft über Monate. Das ist üblich und durch die Baugenehmigung
+            gedeckt.
+          </p>
+          <p className="mb-3">
+            Auf öffentlichem Grund gilt nur der Zeitraum, den die Sondernutzungserlaubnis nennt.
+            Steht der Autokran länger auf der Straße als genehmigt, wird daraus schnell eine
+            Ordnungswidrigkeit. Brauchen Sie mehr Zeit, beantragen Sie die Verlängerung vor Ablauf.
+          </p>
+          <p>
+            Unabhängig vom Standort begrenzt der Lärmschutz die Arbeitszeit: In Wohngebieten sind
+            laute Kranarbeiten in der Regel nur montags bis samstags von 7 bis 20 Uhr erlaubt,
+            sonntags und feiertags nicht. Stehen bleiben darf der Kran über Nacht. Gehoben und bewegt
+            wird aber erst wieder am nächsten Werktag.
+          </p>
+        </section>
+
+        {/* Beleuchtung */}
+        <section id="beleuchtung" className="scroll-mt-20">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">Kranbeleuchtung und Kennzeichnung: ab welcher Höhe?</h2>
+          <p className="mb-3">
+            Ob ein Kran beleuchtet sein muss, hängt nicht an einer einzigen Höhengrenze, sondern an
+            zwei Regelwerken.
+          </p>
+          <p className="mb-3">
+            Auf der Straße zählt die Verkehrssicherheit. Steht ein Autokran bei Dämmerung oder
+            Dunkelheit auf oder an der Fahrbahn, muss er unabhängig von seiner Höhe beleuchtet
+            (§ 17 StVO) und als Verkehrshindernis abgesichert sein (§ 32 StVO). In der Praxis
+            übernehmen das Warnleuchten an der Absperrung und die Beleuchtung der Halteverbotszone.
+            Den Aufbau klärt der Verkehrszeichenplan, den Ihr Kranvermieter meist mitliefert.
+          </p>
+          <p className="mb-3">
+            In der Luft zählt die Höhe. Ragt ein Kran als Hindernis in den Luftraum, braucht er eine
+            Kennzeichnung für die Luftfahrt. Maßgeblich ist die Allgemeine Verwaltungsvorschrift zur
+            Kennzeichnung von Luftfahrthindernissen (AVV). Als Faustregel gilt eine Höhe ab etwa
+            100 Metern über Grund: rot-weiße oder orange-weiße Tageskennzeichnung und nachts ein
+            Hindernisfeuer. In der Nähe von Flughäfen oder im Bauschutzbereich greift die Pflicht
+            schon früher. Zuständig ist die Luftfahrtbehörde des Landes; die Abstimmung übernimmt bei
+            hohen Baukranen in der Regel der Aufsteller.
+          </p>
+          <p>
+            Für die meisten Mietkrane ist der zweite Fall selten. Ein Minikran, ein Dachdeckerkran
+            oder ein normaler Autokran bleibt weit unter der Luftfahrt-Grenze. Erst hohe
+            Turmdrehkrane auf großen Baustellen erreichen Höhen, ab denen die Kennzeichnung Pflicht
+            wird.
+          </p>
         </section>
 
         {/* Dokumente */}

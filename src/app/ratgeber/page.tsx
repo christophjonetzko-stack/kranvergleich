@@ -24,6 +24,16 @@ const articles = [
     description: 'Komplette Preisübersicht aller 8 Krantypen: Minikran ab 250€/Tag bis Raupenkran ab 800€/Tag. Tag-, Wochen- und Monatspreise im Vergleich.',
   },
   {
+    slug: 'kran-kurzfristig-mieten',
+    title: 'Kran kurzfristig mieten: heute, am Wochenende, im Notfall',
+    description: 'Kran am selben Tag oder im Notfall: Welcher Krantyp kurzfristig verfügbar ist, welche Eil-, Nacht- und Wochenendzuschläge anfallen und wie Sie in 24 Stunden ein Angebot bekommen.',
+  },
+  {
+    slug: 'kran-renovierung-sanierung',
+    title: 'Kran für Renovierung & Sanierung: welcher Kran, welche Kosten?',
+    description: 'Dachstuhl, Wärmepumpe aufs Dach oder Lasten über das Haus: Welcher Kran bei Renovierung und Sanierung passt, was er kostet und worauf Sie im Bestand achten.',
+  },
+  {
     slug: 'kranpreise-praxis',
     title: 'Was beeinflusst den Kranpreis? Die 5 Preistreiber',
     description: 'Was einen Kraneinsatz wirklich teuer oder günstig macht: Anfahrt, Zufahrt, Hub-Geometrie, Ballast und Straßensperrung. Fünf Faktoren aus der Praxis statt Pauschalpreis.',

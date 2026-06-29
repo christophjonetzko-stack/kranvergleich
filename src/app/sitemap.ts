@@ -95,6 +95,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { slug: 'kranarbeiten-kosten', priority: 0.8, date: '2026-06-12' },
     { slug: 'kranpreise-praxis', priority: 0.7, date: '2026-06-22' },
     { slug: 'krantypen', priority: 0.8 },
+    { slug: 'kran-kurzfristig-mieten', priority: 0.7, date: '2026-06-29' },
+    { slug: 'kran-renovierung-sanierung', priority: 0.7, date: '2026-06-29' },
   ]
   const ratgeberPages: MetadataRoute.Sitemap = ratgeberArticles.map((a) => ({
     url: `${baseUrl}/ratgeber/${a.slug}`,
