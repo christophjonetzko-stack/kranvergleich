@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { isAdminRequest } from '@/lib/admin-auth'
 import { AdminLoginForm } from '@/components/admin-login-form'
 import { getLeadDetail, type FirmStatus, type LeadHealth } from '@/lib/lead-overview'
+import { LeadActions } from '@/components/lead-actions'
 
 export const dynamic = 'force-dynamic'
 
@@ -128,10 +129,16 @@ export default async function AdminLeadDetailPage({
         </section>
       )}
 
+      {/* Aktionen (Faza 2a) */}
+      <section className="mt-4 rounded-lg border border-gray-200 p-4">
+        <h2 className="mb-3 text-[12px] font-semibold uppercase tracking-wide text-gray-400">Aktionen</h2>
+        <LeadActions leadId={lead.id} status={lead.status} firms={lead.firms} />
+      </section>
+
       <p className="mt-4 text-[12px] text-gray-400">
         Lead-ID: {lead.id} · erstellt {new Date(lead.createdAt).toISOString().slice(0, 10)} (vor {lead.ageDays} T) · entry_path {lead.entryPath ?? '–'}
       </p>
-      <p className="mt-1 text-[12px] text-gray-400">Read-only (Faza 1). Aktionen (WON/LOST, Dispatch, Nachfassen) folgen in Faza 2.</p>
+      <p className="mt-1 text-[12px] text-gray-400">Dispatch / Nachfassen / Kunden-Mail folgen in Faza 2b.</p>
     </div>
   )
 }
