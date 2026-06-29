@@ -4,6 +4,7 @@ import { isAdminRequest } from '@/lib/admin-auth'
 import { AdminLoginForm } from '@/components/admin-login-form'
 import { getLeadDetail, type FirmStatus, type LeadHealth } from '@/lib/lead-overview'
 import { LeadActions } from '@/components/lead-actions'
+import { LeadMailActions } from '@/components/lead-mail-actions'
 
 export const dynamic = 'force-dynamic'
 
@@ -133,12 +134,20 @@ export default async function AdminLeadDetailPage({
       <section className="mt-4 rounded-lg border border-gray-200 p-4">
         <h2 className="mb-3 text-[12px] font-semibold uppercase tracking-wide text-gray-400">Aktionen</h2>
         <LeadActions leadId={lead.id} status={lead.status} firms={lead.firms} />
+        <LeadMailActions
+          leadId={lead.id}
+          customerEmail={lead.customerEmail}
+          craneType={lead.craneType}
+          city={lead.city}
+          acceptedFirms={lead.firms.filter((f) => f.response === 'accept').map((f) => ({ companyId: f.companyId, name: f.name }))}
+          acceptedCount={lead.counts.accepted}
+        />
       </section>
 
       <p className="mt-4 text-[12px] text-gray-400">
         Lead-ID: {lead.id} · erstellt {new Date(lead.createdAt).toISOString().slice(0, 10)} (vor {lead.ageDays} T) · entry_path {lead.entryPath ?? '–'}
       </p>
-      <p className="mt-1 text-[12px] text-gray-400">Dispatch / Nachfassen / Kunden-Mail folgen in Faza 2b.</p>
+      <p className="mt-1 text-[12px] text-gray-400">Top-up dispatch folgt in Faza 2b-ii.</p>
     </div>
   )
 }
