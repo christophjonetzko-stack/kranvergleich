@@ -5,6 +5,9 @@ import { AdminLoginForm } from '@/components/admin-login-form'
 import { getLeadDetail, type FirmStatus, type LeadHealth } from '@/lib/lead-overview'
 import { LeadActions } from '@/components/lead-actions'
 import { LeadMailActions } from '@/components/lead-mail-actions'
+import { LeadTopupActions } from '@/components/lead-topup-actions'
+import { isOptinRequired } from '@/lib/lead-actions'
+import { getTopupCandidates } from '@/lib/lead-coverage'
 
 export const dynamic = 'force-dynamic'
 
@@ -57,6 +60,8 @@ export default async function AdminLeadDetailPage({
 
   const b = BADGE[lead.health]
   const phone = lead.customerPhone && lead.customerPhone.trim() ? lead.customerPhone : null
+  const topupCandidates = await getTopupCandidates(lead.id)
+  const optinReq = isOptinRequired(lead.entryPath)
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
@@ -142,12 +147,13 @@ export default async function AdminLeadDetailPage({
           acceptedFirms={lead.firms.filter((f) => f.response === 'accept').map((f) => ({ companyId: f.companyId, name: f.name }))}
           acceptedCount={lead.counts.accepted}
         />
+        <LeadTopupActions leadId={lead.id} candidates={topupCandidates} optinRequired={optinReq} />
       </section>
 
       <p className="mt-4 text-[12px] text-gray-400">
         Lead-ID: {lead.id} · erstellt {new Date(lead.createdAt).toISOString().slice(0, 10)} (vor {lead.ageDays} T) · entry_path {lead.entryPath ?? '–'}
       </p>
-      <p className="mt-1 text-[12px] text-gray-400">Top-up dispatch folgt in Faza 2b-ii.</p>
+      <p className="mt-1 text-[12px] text-gray-400">Aktionen: WON/LOST · Nachfassen · Kunden-Mail · Top-up dispatch (alle via Panel).</p>
     </div>
   )
 }
