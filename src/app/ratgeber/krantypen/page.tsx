@@ -155,6 +155,31 @@ const faqs = [
     q: 'Brauche ich einen Kranführer?',
     a: 'Autokrane, Mobilkrane, Raupenkrane und Baukrane (Turmdrehkrane) dürfen ausschließlich von zertifizierten Kranführern bedient werden, bei Miete ist der Kranführer entweder im Tagespreis enthalten (Autokran, Mobilkran, Raupenkran) oder separat buchbar (Baukran). Minikrane, Dachdeckerkrane, Anhängerkrane und Ladekrane können Sie nach einer kurzen Einweisung (30–60 Minuten, DGUV Vorschrift 52) selbst bedienen, ein Kranführerschein ist nicht nötig.',
   },
+  {
+    q: 'Was ist ein Kranwagen?',
+    a: 'Kranwagen ist ein anderes Wort für Autokran: ein Kran auf einem Lkw-Fahrgestell, der auf eigener Achse zur Baustelle fährt und dort über Stützen hebt. Je nach Klasse hebt er von wenigen Tonnen bis über 500 Tonnen. Der Kranführer ist bei der Miete meist im Tagespreis enthalten.',
+  },
+  {
+    q: 'Was ist ein Faltkran?',
+    a: 'Der Begriff Faltkran wird je nach Einsatzbereich für verschiedene Krane verwendet, die sich für den Transport kompakt zusammenfalten lassen. Am häufigsten ist damit ein selbsterrichtender Baukran gemeint, auch Schnellmontagekran genannt: Er kommt zusammengeklappt auf einem Anhänger oder Lkw an und richtet sich auf der Baustelle automatisch auf, ohne Großmontage. So eignet er sich für kleinere und mittlere Bauvorhaben, bei denen sich ein klassischer Turmdrehkran nicht lohnt.',
+  },
+  {
+    q: 'Was ist ein Spinnenkran?',
+    a: 'Spinnenkran ist die umgangssprachliche Bezeichnung für einen Minikran auf ausfahrbaren Stützbeinen (englisch Spider Crane). Die Beine stehen wie bei einer Spinne ab und geben dem kompakten Kran sicheren Stand, auch auf engem oder unebenem Untergrund. Eingesetzt wird er bei Glasmontage, in Innenräumen und auf schwer zugänglichen Baustellen.',
+  },
+]
+
+const synonymRows = [
+  { term: 'Kranwagen, Fahrzeugkran, Lkw-Kran', type: 'Autokran', href: '/autokran-mieten' },
+  { term: 'Turmdrehkran, Baustellenkran, Hochbaukran', type: 'Baukran', href: '/baukran-mieten' },
+  { term: 'Faltkran, Schnellbaukran, Schnellmontagekran, Mobilbaukran', type: 'Baukran (selbsterrichtend)', href: '/baukran-mieten' },
+  { term: 'Spinnenkran, Spider Crane, Glasmontagekran', type: 'Minikran', href: '/minikran-mieten' },
+  { term: 'Kleinkran, kleiner Kran', type: 'Minikran oder Anhängerkran', href: '/minikran-mieten' },
+  { term: 'Teleskopkran, Telekran', type: 'Mobilkran', href: '/mobilkran-mieten' },
+  { term: 'Schwerlastkran', type: 'Mobilkran oder Raupenkran', href: '/mobilkran-mieten' },
+  { term: 'Kettenkran, Crawler Crane, Gleiskettenkran', type: 'Raupenkran', href: '/raupenkran-mieten' },
+  { term: 'Knickarmkran, Hiab-Kran, Lastkran', type: 'Ladekran', href: '/ladekran-mieten' },
+  { term: 'Dachkran, Ziegelkran, Schrägaufzug', type: 'Dachdeckerkran', href: '/dachdeckerkran-mieten' },
 ]
 
 export default async function KrantypenPage() {
@@ -179,7 +204,7 @@ export default async function KrantypenPage() {
         In diesem Vergleich finden Sie alle 8 üblichen Krantypen mit Tragkraft,
         Tagespreisen, typischen Einsätzen sowie Vor- und Nachteilen.
       </p>
-      <p className="text-[11px] text-gray-300 mb-6">Stand: April 2026 · Preise netto, Richtwerte</p>
+      <p className="text-[11px] text-gray-300 mb-6">Stand: Juni 2026 · Preise netto, Richtwerte</p>
 
       {/* Table of Contents */}
       <nav className="mb-8 border border-gray-200 rounded-lg p-4">
@@ -187,6 +212,7 @@ export default async function KrantypenPage() {
         <ul className="flex flex-wrap gap-x-4 gap-y-1">
           <li><a href="#vergleich" className="text-[13px] text-blue-600 hover:underline">Vergleichstabelle (alle 8 Typen)</a></li>
           <li><a href="#details" className="text-[13px] text-blue-600 hover:underline">Krantypen im Detail</a></li>
+          <li><a href="#synonyme" className="text-[13px] text-blue-600 hover:underline">Begriffsklärung (Synonyme)</a></li>
           <li><a href="#faq" className="text-[13px] text-blue-600 hover:underline">Häufige Fragen</a></li>
         </ul>
       </nav>
@@ -293,6 +319,38 @@ export default async function KrantypenPage() {
         </div>
       </section>
 
+      {/* Synonyme / Begriffsklärung */}
+      <section id="synonyme" className="mb-12 scroll-mt-20">
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          Krantyp-Synonyme: Welcher Begriff meint welchen Kran?
+        </h2>
+        <p className="text-[14px] text-gray-500 mb-4 max-w-3xl">
+          Rund um Krane kursieren viele Namen für dasselbe Gerät. Wer „Kranwagen" sucht, meint
+          meist einen Autokran; „Turmdrehkran" und „Faltkran" sind Bauformen des Baukrans. Diese
+          Übersicht ordnet die gängigen Begriffe dem passenden Krantyp zu.
+        </p>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="bg-gray-50 border-b text-left">
+                <th className="py-3 px-3 font-medium text-gray-900">Begriff</th>
+                <th className="py-3 px-3 font-medium text-gray-900">Das ist ein …</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 align-top">
+              {synonymRows.map((row, i) => (
+                <tr key={row.type + i} className={`border-b last:border-0 ${i % 2 === 1 ? 'bg-gray-50/50' : ''}`}>
+                  <td className="py-3 px-3">{row.term}</td>
+                  <td className="py-3 px-3">
+                    <Link href={row.href} className="text-blue-600 hover:underline font-medium">{row.type}</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section id="faq" className="mb-12 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -361,7 +419,7 @@ export default async function KrantypenPage() {
             description: 'Alle 8 Krantypen im direkten Vergleich: Tragkraft, Kosten pro Tag, Vor- und Nachteile, typische Einsätze.',
             author: { '@type': 'Organization', name: BRAND_NAME, url: BASE_URL },
             datePublished: '2026-04-09',
-            dateModified: '2026-04-11',
+            dateModified: '2026-06-29',
           }),
         }}
       />
