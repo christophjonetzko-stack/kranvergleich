@@ -452,6 +452,11 @@ export default function KranPreisreportPage() {
               christoph@kranvergleich.de
             </a>, Antwort in der Regel innerhalb von 24 Stunden.
           </p>
+          <p>
+            Eine vertiefte Auswertung der Nachfrageseite, also wonach 2026 gesucht wird und wie sich die
+            Nachfrage regional entwickelt, finden Sie im{' '}
+            <Link href="/nachfrage-report" className="text-blue-600 hover:underline">Nachfrage-Report 2026</Link>.
+          </p>
         </div>
       </section>
 

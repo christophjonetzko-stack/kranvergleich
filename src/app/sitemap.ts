@@ -30,6 +30,7 @@ const DATE_PRICES = '2026-05-15' // +hero CTA above fold + TOC collapsible on mo
 const DATE_NAEHE = '2026-05-21' // initial publish, geo-intent landing for "kran mieten in der nähe"
 const DATE_GLASSAUGER = '2026-06-02' // initial publish, commercial landing for "minikran mit glassauger mieten"
 const DATE_PREISREPORT = '2026-06-10' // initial publish, citable data report (link magnet)
+const DATE_NACHFRAGE = '2026-07-01' // initial publish, demand-side data report (link magnet #2)
 const DATE_RATGEBER = '2026-03-01'
 const DATE_LEGAL = '2026-01-01'
 
@@ -72,6 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/kran-mieten-in-der-naehe`, lastModified: toDate(DATE_NAEHE), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/minikran-mit-glassauger-mieten`, lastModified: toDate(DATE_GLASSAUGER), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/kran-preisreport-2026`, lastModified: toDate(DATE_PREISREPORT), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/nachfrage-report`, lastModified: toDate(DATE_NACHFRAGE), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/kostenrechner`, lastModified: toDate(DATE_KOSTENRECHNER), changeFrequency: 'monthly', priority: 0.8 },
     // E-E-A-T entity page (Organization.founder target, Person schema). Was
     // missing from the sitemap entirely (2026-06-12 audit).
