@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
 
     if (existing) {
       if (existing.status === 'pending' && existing.confirm_token) {
-        await sendReportConfirmEmail(email, existing.confirm_token)
+        const mail = await sendReportConfirmEmail(email, existing.confirm_token)
+        if (!mail.ok) console.error('report-subscribe: confirmation re-send failed:', mail.error)
       }
       return ok()
     }
@@ -66,7 +67,8 @@ export async function POST(req: NextRequest) {
       return ok()
     }
 
-    await sendReportConfirmEmail(email, confirm_token)
+    const mail = await sendReportConfirmEmail(email, confirm_token)
+    if (!mail.ok) console.error('report-subscribe: confirmation mail failed:', mail.error)
     return ok()
   } catch {
     return NextResponse.json(
