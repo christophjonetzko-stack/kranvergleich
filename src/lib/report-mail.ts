@@ -26,7 +26,7 @@ export async function sendReportConfirmEmail(
   const html = `
     <div style="font-family:system-ui;max-width:520px;color:#111;line-height:1.6;">
       <p style="font-size:15px;color:#1a1a1a;">Guten Tag,</p>
-      <p style="font-size:14px;color:#4b5563;">vielen Dank für Ihr Interesse am Nachfrage-Report von ${esc(BRAND_NAME)}. Bitte bestätigen Sie mit einem Klick, dass Sie die nächste Ausgabe erhalten möchten:</p>
+      <p style="font-size:14px;color:#4b5563;">vielen Dank für Ihr Interesse am Nachfrage-Report von ${esc(BRAND_NAME)}. Er erscheint einmal pro Quartal, kostenlos und ohne Werbung. Bitte bestätigen Sie mit einem Klick, dass Sie die nächste Ausgabe erhalten möchten:</p>
       <div style="margin:24px 0;">
         <a href="${confirmUrl}" style="display:inline-block;padding:12px 20px;background:#2563eb;color:#ffffff;text-decoration:none;border-radius:8px;font-size:14px;font-weight:500;">Anmeldung bestätigen</a>
       </div>
