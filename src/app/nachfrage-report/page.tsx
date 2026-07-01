@@ -132,8 +132,8 @@ export default function NachfrageReportPage() {
       {/* Byline (author = authority). */}
       <p className="text-[13px] text-gray-500 mb-6 leading-relaxed">
         Ein Report von <strong className="text-gray-700">Christoph Jonetzko</strong>. Vier Jahre lang hat
-        er im Liebherr-Werk Ehingen Mobil- und Raupenkrane mitgebaut, heute ist er Gründer von
-        KranVergleich.de. · Stand: {STAND} · <a href="#methodik" className="text-blue-600 hover:underline">Methodik</a>
+        er im Liebherr-Werk Ehingen Mobilkrane gebaut, von der LTM 1230 bis zur LTM 1650, heute ist er
+        Gründer von KranVergleich.de. · Stand: {STAND} · <a href="#methodik" className="text-blue-600 hover:underline">Methodik</a>
       </p>
 
       {/* §1 — Kurzantwort (AEO). */}
@@ -144,7 +144,8 @@ export default function NachfrageReportPage() {
             <li>
               <strong className="text-gray-900">Der Preis ist die häufigste Frage.</strong> 27,6 % aller
               Such-Impressionen entfallen auf Anfragen mit Preisbezug, sie lösen aber 68 % aller Klicks
-              aus. Wer Kosten transparent macht, gewinnt überproportional an Aufmerksamkeit.
+              aus. Wer die Preisfrage ernst nimmt und ehrlich einordnet, trifft die Nachfrage dort, wo
+              sie am größten ist.
             </li>
             <li>
               <strong className="text-gray-900">Autokran führt in der Suche, Minikran im Interesse vor Ort.</strong>{' '}
@@ -271,7 +272,7 @@ export default function NachfrageReportPage() {
       {/* §4 — Preis-Transparenz. */}
       <section id="preis-transparenz" className="mb-10 scroll-mt-20">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">
-          Preis-Transparenz: Die Nachfrage dreht sich um Kosten
+          Die Preisfrage: am häufigsten gestellt, am schwersten zu beantworten
         </h2>
         <p className="text-[14px] text-gray-600 mb-4 leading-relaxed">
           Anfragen mit Preisbezug machen 27,6 % der Such-Impressionen aus, lösen aber 68 % aller Klicks
@@ -285,13 +286,14 @@ export default function NachfrageReportPage() {
           ))}
         </ul>
         <p className="text-[14px] text-gray-600 mb-2 leading-relaxed">
-          Wer so sucht, will keine Imagebroschüre, sondern eine Zahl. In einer Branche, in der die meisten
-          Anbieter keine Preise veröffentlichen, ist genau das die Lücke. Wer von Anfang an mehrere Anbieter
-          nebeneinander anfragt, kommt schneller zu einer belastbaren Preisorientierung als beim
-          Einzelkontakt. Mehr dazu in den{' '}
-          <Link href="/ratgeber/kranpreise-praxis" className="text-blue-600 hover:underline">fünf echten Preistreibern</Link>{' '}
-          und der{' '}
-          <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">kompletten Preisliste</Link>.
+          Wer so sucht, will eine Orientierung. Nur lässt sich ein seriöser Kranpreis vorab kaum als
+          Pauschale nennen. Er hängt an Anfahrt, Zufahrt, Hubgeometrie, Ballast und nötigen
+          Genehmigungen, und jede Baustelle ist anders. Eine Preistabelle täuscht hier eine Genauigkeit
+          vor, die es nicht gibt. Die eigentliche Lücke ist deshalb nicht die fehlende Preisliste,
+          sondern die fehlende ehrliche Einordnung, was einen Einsatz teuer oder günstig macht, und die
+          Möglichkeit, schnell mehrere Anbieter zu vergleichen. Welche Faktoren einen Einsatz teuer oder
+          günstig machen, zeigen die{' '}
+          <Link href="/ratgeber/kranpreise-praxis" className="text-blue-600 hover:underline">fünf echten Preistreiber</Link>.
         </p>
         <ReportChart
           src="/images/nachfrage-report-2026-d3-ratio.webp"
@@ -354,9 +356,10 @@ export default function NachfrageReportPage() {
           <p>
             <strong className="text-gray-900">Für Vermieter:</strong> Die Nachfrage ist dort am größten, wo
             der Preis sichtbar wird. Jeder Einsatz ist anders, Tragkraft, Hubhöhe, Mietdauer, Anfahrt und
-            nötige Genehmigungen verschieben den Preis spürbar. Eine transparente Spanne gibt dem Suchenden
-            eine Orientierung und trifft die häufigste Frage. Der Minikran verdient dabei mehr
-            Aufmerksamkeit, als sein Suchvolumen vermuten lässt.
+            nötige Genehmigungen verschieben den Preis spürbar. Wer schnell und nachvollziehbar auf eine
+            Anfrage reagiert und offen erklärt, was den Preis bestimmt, trifft die am häufigsten gestellte
+            Frage besser als jede Pauschale. Der Minikran verdient dabei mehr Aufmerksamkeit, als sein
+            Suchvolumen vermuten lässt.
           </p>
           <p>
             <strong className="text-gray-900">Für Bauunternehmen und Einkäufer:</strong> Mit Ihrer
@@ -376,7 +379,7 @@ export default function NachfrageReportPage() {
             Über die Plattform finden Bauunternehmen, Handwerksbetriebe und Privatkunden über 740
             Kranvermieter in mehr als 100 Städten und können kostenlos und unverbindlich Angebote anfragen.
             Gegründet wurde KranVergleich.de von Christoph Jonetzko, der zuvor vier Jahre im Liebherr-Werk
-            Ehingen an einigen der größten Mobil- und Raupenkrane der Welt mitgebaut hat.
+            Ehingen Mobilkrane der Baureihe LTM 1230 bis 1650 mitgebaut hat.
           </p>
           <p>
             Diesen Report stellen wir frei zur Verfügung. Zahlen, Diagramme und Auszüge dürfen mit
