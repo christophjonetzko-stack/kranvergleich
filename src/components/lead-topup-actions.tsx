@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-type Candidate = { companyId: string; name: string; email: string; distanceKm: number }
+type Candidate = { companyId: string; name: string; email: string; distanceKm: number; nationalHeavy?: boolean }
 
 export function LeadTopupActions({
   leadId,
@@ -18,8 +18,11 @@ export function LeadTopupActions({
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // Pre-check the nearest 6 (fanout sweet spot); admin adjusts.
-  const [selected, setSelected] = useState<Set<string>>(() => new Set(candidates.slice(0, 6).map((c) => c.companyId)))
+  // Pre-check the nearest 6 local candidates (fanout sweet spot); injected
+  // national-heavy firms start unchecked — the human opts them in.
+  const [selected, setSelected] = useState<Set<string>>(
+    () => new Set(candidates.filter((c) => !c.nationalHeavy).slice(0, 6).map((c) => c.companyId)),
+  )
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -90,7 +93,10 @@ export function LeadTopupActions({
               <label key={c.companyId} className="flex items-center gap-2 rounded px-1 py-1 text-[13px] hover:bg-white">
                 <input type="checkbox" checked={selected.has(c.companyId)} onChange={() => toggle(c.companyId)} />
                 <span className="w-12 shrink-0 text-gray-400">{c.distanceKm}km</span>
-                <span className="flex-1">{c.name}</span>
+                <span className="flex-1">
+                  {c.name}
+                  {c.nationalHeavy ? <span className="ml-1 rounded bg-indigo-100 px-1 text-[11px] text-indigo-700">bundesweit</span> : null}
+                </span>
                 <span className="text-[12px] text-gray-400">{c.email}</span>
               </label>
             ))}

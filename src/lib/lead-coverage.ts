@@ -1,4 +1,5 @@
 import { getServiceSupabase } from '@/lib/supabase'
+import { SHORT_HAUL_TYPE_IDS, NATIONAL_HEAVY_REACH_TYPE_IDS } from '@/lib/queries'
 
 /**
  * Top-up candidate finder for the panel (Faza 2b-ii). Given a lead, returns
@@ -6,6 +7,12 @@ import { getServiceSupabase } from '@/lib/supabase'
  * relevant + have an email, are NOT already on the lead, deduped by inbox and
  * sorted by distance. The admin picks via checkboxes — no auto-radius cut, a
  * human decides who to add. Read-only.
+ *
+ * Radius mirrors the production dispatch ladder caps in queries.ts
+ * (_computeFirmMatchesFromCoords): short-haul types 120 km, mid/heavy 150 km.
+ * On Mobilkran/Raupenkran leads, `national_heavy` firms are additionally
+ * offered regardless of distance (same INJECT rule as the city pages) — the
+ * distance column lets the human judge; they never crowd out local candidates.
  */
 
 export interface TopupCandidate {
@@ -13,6 +20,7 @@ export interface TopupCandidate {
   name: string
   email: string
   distanceKm: number
+  nationalHeavy?: boolean
 }
 
 interface CityRow {
@@ -22,7 +30,8 @@ interface CityRow {
   ln: number
 }
 
-const MAX_KM = 120
+const MAX_KM_SHORT_HAUL = 120
+const MAX_KM_DEFAULT = 150
 const MAX_CANDIDATES = 12
 
 function normalize(s: string): string {
@@ -89,23 +98,39 @@ export async function getTopupCandidates(leadId: string): Promise<TopupCandidate
 
   const { data: comps } = await sb
     .from('companies')
-    .select('id, name, email, lat, lng, is_active, is_relevant')
+    .select('id, name, email, lat, lng, is_active, is_relevant, national_heavy')
     .in('id', offerIds)
 
+  const maxKm = SHORT_HAUL_TYPE_IDS.has(lead.crane_type_id as string) ? MAX_KM_SHORT_HAUL : MAX_KM_DEFAULT
+  const injectNationalHeavy = NATIONAL_HEAVY_REACH_TYPE_IDS.has(lead.crane_type_id as string)
+
   const seenEmail = new Set<string>()
-  const out: TopupCandidate[] = []
+  const local: TopupCandidate[] = []
+  const injected: TopupCandidate[] = []
   for (const c of comps ?? []) {
     if (!c.is_active || !c.is_relevant) continue
     const email = ((c.email as string | null) ?? '').trim()
     if (!email || email === '???') continue
     if (c.lat == null || c.lng == null) continue
     const d = distKm(c.lat as number, c.lng as number, ref.la, ref.ln)
-    if (d > MAX_KM) continue
+    const isNationalReach = injectNationalHeavy && c.national_heavy === true
+    if (d > maxKm && !isNationalReach) continue
     const key = email.toLowerCase()
     if (seenEmail.has(key)) continue
     seenEmail.add(key)
-    out.push({ companyId: c.id as string, name: c.name as string, email, distanceKm: d })
+    const cand: TopupCandidate = {
+      companyId: c.id as string,
+      name: c.name as string,
+      email,
+      distanceKm: d,
+      ...(isNationalReach && d > maxKm ? { nationalHeavy: true } : {}),
+    }
+    if (cand.nationalHeavy) injected.push(cand)
+    else local.push(cand)
   }
-  out.sort((a, b) => a.distanceKm - b.distanceKm)
-  return out.slice(0, MAX_CANDIDATES)
+  local.sort((a, b) => a.distanceKm - b.distanceKm)
+  injected.sort((a, b) => a.distanceKm - b.distanceKm)
+  // Cap applies to local candidates; injected national-heavy firms are always
+  // appended so a Raupenkran lead still shows the bundesweit operators.
+  return [...local.slice(0, MAX_CANDIDATES), ...injected]
 }

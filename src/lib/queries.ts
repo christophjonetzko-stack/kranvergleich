@@ -269,7 +269,7 @@ export async function getOtherCompaniesInCity(
 // A firm belongs on a city page only if its HQ is within service reach for the
 // longest-haul crane type it offers. Mirrors the company_regions data cleanup
 // and future-proofs against re-added out-of-range rows. Stable crane_type ids.
-const SHORT_HAUL_TYPE_IDS = new Set([
+export const SHORT_HAUL_TYPE_IDS = new Set([
   '1a7019bd-7fd3-401a-8713-7f6be6fbd827', // Minikran
   'ef7ed422-402e-4553-9c01-661df28c66fc', // Anhängerkran
   '99e6ce74-f707-494e-afc8-31627b3bf41d', // Dachdeckerkran
@@ -296,7 +296,7 @@ function firmServiceRadiusKm(cranes: { crane_type_id: string }[] | null | undefi
 // a job. Baukran/MK is assembled on site and stays regional even for a big
 // operator (it is "heavy" for the radius guard, but NOT a bundesweit reach type),
 // so it is intentionally excluded — light/local types never qualify either.
-const NATIONAL_HEAVY_REACH_TYPE_IDS = new Set([
+export const NATIONAL_HEAVY_REACH_TYPE_IDS = new Set([
   '02dc05de-6699-4849-93fb-2b655177bfd9', // Mobilkran
   '0b61b867-53a6-4cf9-afbb-50c610dc4a2a', // Raupenkran
 ])
