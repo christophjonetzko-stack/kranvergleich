@@ -49,6 +49,8 @@ export interface LeadOverview {
   health: LeadHealth
   hint: string
   customerOutcome: CustomerOutcome
+  // Advisory Haiku badge (mig 046); null pre-migration or when skipped.
+  qualificationTier: string | null
 }
 
 export interface LeadDetail extends LeadOverview {
@@ -62,6 +64,8 @@ export interface LeadDetail extends LeadOverview {
   winningCompanyName: string | null
   optinSentAt: string | null
   outcomeMailSentAt: string | null
+  qualificationB2b: boolean | null
+  qualificationNote: string | null
   firms: FirmStatus[]
 }
 
@@ -135,6 +139,9 @@ interface RawLead {
   project_description: string | null
   feedback_notes: string | null
   winning_company_id: string | null
+  qualification_tier?: string | null
+  qualification_b2b?: boolean | null
+  qualification_note?: string | null
 }
 
 function buildOverview(l: RawLead, firms: FirmStatus[], craneName: string): LeadOverview {
@@ -163,6 +170,7 @@ function buildOverview(l: RawLead, firms: FirmStatus[], craneName: string): Lead
     health,
     hint,
     customerOutcome: outcome,
+    qualificationTier: l.qualification_tier ?? null,
   }
 }
 
@@ -221,19 +229,28 @@ async function fetchFirmsByLead(
   return byLead
 }
 
+// Selecting a non-existent column fails the whole PostgREST query, so the
+// qualification column (mig 046) is fetched with a legacy fallback — the panel
+// must not break if this code deploys before the migration is applied.
+const LIST_COLS =
+  'id, created_at, customer_name, city, country, status, crane_type_id, preferred_date, feedback_notes'
+
 export async function getLeadsOverview(): Promise<LeadOverview[]> {
   const sb = getServiceSupabase()
-  const { data: leads, error } = await sb
-    .from('leads')
-    .select(
-      'id, created_at, customer_name, city, country, status, crane_type_id, preferred_date, feedback_notes',
-    )
-    .eq('is_test', false)
-    .order('created_at', { ascending: false })
-    .limit(300)
-  if (error || !leads) {
-    console.error('[lead-overview] leads fetch failed:', error)
-    return []
+  const run = (cols: string) =>
+    sb.from('leads').select(cols).eq('is_test', false).order('created_at', { ascending: false }).limit(300)
+
+  let leads: RawLead[] | null = null
+  const withQual = await run(`${LIST_COLS}, qualification_tier`)
+  if (!withQual.error && withQual.data) {
+    leads = withQual.data as unknown as RawLead[]
+  } else {
+    const legacy = await run(LIST_COLS)
+    if (legacy.error || !legacy.data) {
+      console.error('[lead-overview] leads fetch failed:', legacy.error ?? withQual.error)
+      return []
+    }
+    leads = legacy.data as unknown as RawLead[]
   }
 
   const craneTypes = await fetchCraneTypes(sb)
@@ -250,17 +267,22 @@ export async function getLeadsOverview(): Promise<LeadOverview[]> {
   return out
 }
 
+const DETAIL_COLS =
+  'id, created_at, customer_name, customer_email, customer_phone, city, country, status, crane_type_id, preferred_date, duration_days, entry_path, project_description, feedback_notes, winning_company_id, customer_optin_sent_at, outcome_mail_sent_at'
+
 export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
   const sb = getServiceSupabase()
-  const { data: rows, error } = await sb
-    .from('leads')
-    .select(
-      'id, created_at, customer_name, customer_email, customer_phone, city, country, status, crane_type_id, preferred_date, duration_days, entry_path, project_description, feedback_notes, winning_company_id, customer_optin_sent_at, outcome_mail_sent_at',
-    )
-    .eq('id', id)
-    .limit(1)
+  const run = (cols: string) => sb.from('leads').select(cols).eq('id', id).limit(1)
+
+  // Same pre-mig-046 fallback as the list query.
+  let { data: rows, error } = await run(
+    `${DETAIL_COLS}, qualification_tier, qualification_b2b, qualification_note`,
+  )
+  if (error || !rows || rows.length === 0) {
+    ;({ data: rows, error } = await run(DETAIL_COLS))
+  }
   if (error || !rows || rows.length === 0) return null
-  const l = rows[0] as RawLead & {
+  const l = rows[0] as unknown as RawLead & {
     customer_email: string | null
     customer_phone: string | null
     duration_days: number | null
@@ -292,6 +314,8 @@ export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
     winningCompanyName: winning?.name ?? null,
     optinSentAt: l.customer_optin_sent_at,
     outcomeMailSentAt: l.outcome_mail_sent_at,
+    qualificationB2b: l.qualification_b2b ?? null,
+    qualificationNote: l.qualification_note ?? null,
     firms,
   }
 }

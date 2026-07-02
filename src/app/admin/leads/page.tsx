@@ -37,7 +37,11 @@ function deadlineCell(l: LeadOverview): { text: string; cls: string } {
   return { text: label + suffix, cls: urgent ? 'text-red-600 font-medium' : 'text-gray-600' }
 }
 
-type Search = { f?: string; c?: string }
+type Search = { f?: string; c?: string; q?: string }
+
+// Qualification badge (mig 046): only the two signal tiers get an icon —
+// high_value and spam_risk. solid/thin would just add noise to every row.
+const QUAL_ICON: Record<string, string> = { high_value: '🐋', spam_risk: '⚠️' }
 
 export default async function AdminLeadsPage({
   searchParams,
@@ -51,6 +55,7 @@ export default async function AdminLeadsPage({
   const sp = await searchParams
   const f = sp.f ?? 'open'
   const c = sp.c ?? 'all'
+  const q = (sp.q ?? '').trim()
 
   const all = await getLeadsOverview()
 
@@ -68,12 +73,23 @@ export default async function AdminLeadsPage({
   else if (f === 'open') rows = rows.filter(isOpen)
   else if (f === 'won') rows = rows.filter((l) => l.health === 'won')
   else if (f === 'lost') rows = rows.filter((l) => l.health === 'lost')
+  if (q) {
+    const needle = q.toLowerCase()
+    rows = rows.filter(
+      (l) =>
+        l.customerName.toLowerCase().includes(needle) ||
+        (l.city ?? '').toLowerCase().includes(needle) ||
+        l.craneType.toLowerCase().includes(needle) ||
+        l.id.toLowerCase().startsWith(needle),
+    )
+  }
 
   const qs = (next: Partial<Search>) => {
-    const m = { f, c, ...next }
+    const m = { f, c, q, ...next }
     const p = new URLSearchParams()
     if (m.f && m.f !== 'open') p.set('f', m.f)
     if (m.c && m.c !== 'all') p.set('c', m.c)
+    if (m.q) p.set('q', m.q)
     const s = p.toString()
     return s ? `?${s}` : ''
   }
@@ -105,6 +121,20 @@ export default async function AdminLeadsPage({
         <Link href={`/admin/leads${qs({ c: 'all' })}`} className={chip(c === 'all')}>DE+AT</Link>
         <Link href={`/admin/leads${qs({ c: 'DE' })}`} className={chip(c === 'DE')}>DE</Link>
         <Link href={`/admin/leads${qs({ c: 'AT' })}`} className={chip(c === 'AT')}>AT</Link>
+        {/* GET form: server component, no client JS needed. f/c ride along as hidden inputs. */}
+        <form method="get" action="/admin/leads" className="ml-auto flex items-center gap-1">
+          {f !== 'open' && <input type="hidden" name="f" value={f} />}
+          {c !== 'all' && <input type="hidden" name="c" value={c} />}
+          <input
+            type="search"
+            name="q"
+            defaultValue={q}
+            placeholder="Suche: Kunde, Ort, Krantyp, Lead-ID…"
+            className="w-56 rounded-full border border-gray-200 px-3 py-1 text-[13px]"
+          />
+          <button type="submit" className={chip(false)}>Suchen</button>
+          {q && <Link href={`/admin/leads${qs({ q: '' })}`} className="text-[12px] text-gray-400 hover:underline">zurücksetzen</Link>}
+        </form>
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -135,7 +165,7 @@ export default async function AdminLeadsPage({
                   </td>
                   <td className="px-3 py-2">
                     <Link href={`/admin/leads/${l.id}`} className="font-medium text-gray-900 hover:text-blue-600">
-                      {l.customerName}
+                      {l.qualificationTier && QUAL_ICON[l.qualificationTier] ? `${QUAL_ICON[l.qualificationTier]} ` : ''}{l.customerName}
                     </Link>
                     <span className="text-gray-400"> · {l.city ?? '–'}{l.country === 'AT' ? ' (AT)' : ''}</span>
                   </td>

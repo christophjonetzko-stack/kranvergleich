@@ -41,6 +41,14 @@ function ts(iso: string | null): string {
   return TS_FMT.format(t).replace(',', '')
 }
 
+// Advisory Haiku badge (mig 046) — mirrors the owner-mail labels.
+const QUAL_LABEL: Record<string, string> = {
+  high_value: '🐋 Hochwertiger Lead',
+  solid: '🟢 Solider Lead',
+  thin: '🔍 Dünner Lead',
+  spam_risk: '⚠️ Spam-/Test-Risiko',
+}
+
 function firmBadge(f: FirmStatus): { label: string; cls: string } {
   if (f.response === 'accept') return { label: '✅ ANGENOMMEN', cls: 'text-emerald-700' }
   if (f.response === 'decline') return { label: '❌ ABGELEHNT', cls: 'text-gray-500' }
@@ -84,6 +92,14 @@ export default async function AdminLeadDetailPage({
         <span className={`rounded px-2 py-1 text-[13px] font-medium ${b.cls}`}>{b.label}</span>
       </div>
       <p className="mt-1 text-[13px] text-gray-500">{lead.hint}</p>
+      {lead.qualificationTier && (
+        <p className="mt-1 text-[13px] text-gray-600">
+          {QUAL_LABEL[lead.qualificationTier] ?? lead.qualificationTier}
+          {lead.qualificationB2b ? ' · B2B' : ''}
+          {lead.qualificationNote ? <span className="text-gray-400"> — {lead.qualificationNote}</span> : null}
+          <span className="text-[11px] text-gray-400"> (automatische Einschätzung, nur Priorisierung)</span>
+        </p>
+      )}
 
       {/* Kunde */}
       <section className="mt-5 rounded-lg border border-gray-200 p-4">

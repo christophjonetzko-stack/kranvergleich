@@ -1273,6 +1273,20 @@ export async function POST(request: Request) {
           console.error('lead qualification skipped:', err)
         }
       }
+      // Persist the advisory badge (mig 046) so /admin/leads can show it.
+      // Best-effort: pre-migration the columns don't exist — log and continue,
+      // the owner mail still carries the banner either way.
+      if (leadQuality && !dryRun) {
+        const { error: qualErr } = await getServiceSupabase()
+          .from('leads')
+          .update({
+            qualification_tier: leadQuality.tier,
+            qualification_b2b: leadQuality.is_b2b,
+            qualification_note: leadQuality.rationale.slice(0, 300),
+          })
+          .eq('id', lead.id)
+        if (qualErr) console.error('lead qualification persist skipped (pre-mig-046?):', qualErr.message)
+      }
       const QUAL_STYLE: Record<string, { bg: string; border: string; color: string; label: string }> = {
         high_value: { bg: '#ecfdf5', border: '#059669', color: '#065f46', label: '🐋 Hochwertiger Lead' },
         solid: { bg: '#eff6ff', border: '#2563eb', color: '#1e3a8a', label: '🟢 Solider Lead' },
