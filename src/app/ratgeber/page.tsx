@@ -196,6 +196,8 @@ export default function RatgeberIndexPage() {
           <Link href="/kran-mieten-preise" className="text-blue-600 hover:underline">Preisübersicht</Link>,
           {' '}werfen Sie einen Blick in den{' '}
           <Link href="/kran-preisreport-2026" className="text-blue-600 hover:underline">Kran-Preisreport 2026</Link>
+          {' '}und den{' '}
+          <Link href="/nachfrage-report" className="text-blue-600 hover:underline">Nachfrage-Report 2026</Link>
           {' '}oder vergleichen Sie direkt{' '}
           <Link href="/" className="text-blue-600 hover:underline">Anbieter in Ihrer Stadt</Link>.
         </p>

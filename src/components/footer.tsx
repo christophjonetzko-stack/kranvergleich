@@ -72,6 +72,7 @@ export function Footer() {
                 { href: '/preisliste', label: 'Preisliste 2026' },
                 { href: '/kran-mieten-in-der-naehe', label: 'Kran in der Nähe' },
                 { href: '/kran-preisreport-2026', label: 'Preisreport 2026' },
+                { href: '/nachfrage-report', label: 'Nachfrage-Report 2026' },
                 { href: '/ratgeber', label: 'Ratgeber' },
               ].map((l) => (
                 <li key={l.href}>
