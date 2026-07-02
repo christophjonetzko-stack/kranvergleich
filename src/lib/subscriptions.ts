@@ -141,3 +141,25 @@ export async function subscriptionExists(companyId: string): Promise<boolean> {
     .maybeSingle()
   return !!data
 }
+
+const LIVE_STATUSES: PlanStatus[] = ['active', 'trialing', 'past_due']
+
+/**
+ * True if the firm currently tracks a LIVE subscription: a row with a
+ * stripe_subscription_id and plan_status in active/trialing/past_due. past_due
+ * counts as live (dunning grace — consistent with the 036 trigger keeping
+ * is_premium during past_due); 'canceled' does NOT, so a churned firm may
+ * re-subscribe. Used by the checkout re-subscription guard (8a-2) to prevent a
+ * second checkout orphaning the first sub (036: company_id UNIQUE). Read-only —
+ * never writes is_premium (that is the 036 trigger's job).
+ */
+export async function hasActiveSubscription(companyId: string): Promise<boolean> {
+  const sb = getServiceSupabase()
+  const { data } = await sb
+    .from('subscriptions')
+    .select('stripe_subscription_id, plan_status')
+    .eq('company_id', companyId)
+    .maybeSingle()
+  if (!data) return false
+  return !!data.stripe_subscription_id && LIVE_STATUSES.includes(data.plan_status as PlanStatus)
+}
