@@ -24,6 +24,7 @@ export interface FirmStatus {
   respondedAt: string | null
   declineReason: string | null
   feedbackOutcome: string | null
+  reminderSentAt: string | null
 }
 
 export interface LeadCounts {
@@ -59,6 +60,8 @@ export interface LeadDetail extends LeadOverview {
   feedbackNotes: string | null
   winningCompanyId: string | null
   winningCompanyName: string | null
+  optinSentAt: string | null
+  outcomeMailSentAt: string | null
   firms: FirmStatus[]
 }
 
@@ -177,7 +180,7 @@ async function fetchFirmsByLead(
   const [{ data: lcs }, { data: responses }] = await Promise.all([
     sb
       .from('lead_companies')
-      .select('lead_id, company_id, sent_at, feedback_outcome, companies(name, email)')
+      .select('lead_id, company_id, sent_at, reminder_sent_at, feedback_outcome, companies(name, email)')
       .in('lead_id', leadIds),
     sb.from('lead_responses').select('lead_id, supplier_id, action, responded_at, reason').in('lead_id', leadIds),
   ])
@@ -209,6 +212,7 @@ async function fetchFirmsByLead(
       respondedAt: resp?.respondedAt ?? null,
       declineReason: resp?.action === 'decline' ? (resp.reason ?? null) : null,
       feedbackOutcome: lc.feedback_outcome ?? null,
+      reminderSentAt: (lc.reminder_sent_at as string | null) ?? null,
     }
     const arr = byLead.get(lc.lead_id) ?? []
     arr.push(row)
@@ -251,7 +255,7 @@ export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
   const { data: rows, error } = await sb
     .from('leads')
     .select(
-      'id, created_at, customer_name, customer_email, customer_phone, city, country, status, crane_type_id, preferred_date, duration_days, entry_path, project_description, feedback_notes, winning_company_id',
+      'id, created_at, customer_name, customer_email, customer_phone, city, country, status, crane_type_id, preferred_date, duration_days, entry_path, project_description, feedback_notes, winning_company_id, customer_optin_sent_at, outcome_mail_sent_at',
     )
     .eq('id', id)
     .limit(1)
@@ -263,6 +267,8 @@ export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
     entry_path: string | null
     project_description: string | null
     winning_company_id: string | null
+    customer_optin_sent_at: string | null
+    outcome_mail_sent_at: string | null
   }
 
   const craneTypes = await fetchCraneTypes(sb)
@@ -284,6 +290,8 @@ export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
     feedbackNotes: l.feedback_notes,
     winningCompanyId: l.winning_company_id,
     winningCompanyName: winning?.name ?? null,
+    optinSentAt: l.customer_optin_sent_at,
+    outcomeMailSentAt: l.outcome_mail_sent_at,
     firms,
   }
 }

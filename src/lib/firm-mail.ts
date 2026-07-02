@@ -32,6 +32,9 @@ export interface FirmLeadMailData {
   leadId: string
   craneType: string
   displayCity: string
+  // Lead origin country: AT leads get kranvergleich.at links + brand (the
+  // sender mailbox stays on the verified send.kranvergleich.de subdomain).
+  country?: 'DE' | 'AT'
   customerName: string | null
   customerEmail: string | null
   customerPhone: string | null
@@ -52,8 +55,10 @@ export function firmLeadSubject(d: FirmLeadMailData): string {
 }
 
 export function buildFirmLeadHtml(firmId: string, firmName: string, d: FirmLeadMailData): string {
-  const acc = `${BASE_URL}/api/lead-response/${d.leadId}/${firmId}?action=accept&sig=${signLeadResponse(d.leadId, firmId, 'accept')}`
-  const dec = `${BASE_URL}/api/lead-response/${d.leadId}/${firmId}?action=decline&sig=${signLeadResponse(d.leadId, firmId, 'decline')}`
+  const base = d.country === 'AT' ? 'https://kranvergleich.at' : BASE_URL
+  const brand = d.country === 'AT' ? 'KranVergleich.at' : BRAND_NAME
+  const acc = `${base}/api/lead-response/${d.leadId}/${firmId}?action=accept&sig=${signLeadResponse(d.leadId, firmId, 'accept')}`
+  const dec = `${base}/api/lead-response/${d.leadId}/${firmId}?action=decline&sig=${signLeadResponse(d.leadId, firmId, 'decline')}`
 
   const sn = esc(d.customerName ?? '–')
   const se = d.customerEmail ? esc(d.customerEmail) : '–'
@@ -85,7 +90,7 @@ export function buildFirmLeadHtml(firmId: string, firmName: string, d: FirmLeadM
             <div style="font-family:system-ui;max-width:560px;">
               <h2 style="font-size:18px;color:#1a1a1a;">${head}</h2>
               <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:0 0 6px 0;">Sehr geehrtes Team von <strong>${esc(firmName)}</strong>,</p>
-              <p style="color:#4b5563;font-size:14px;line-height:1.6;">ein Kunde sucht über ${BRAND_NAME} ein Angebot für sein Projekt:</p>
+              <p style="color:#4b5563;font-size:14px;line-height:1.6;">ein Kunde sucht über ${brand} ein Angebot für sein Projekt:</p>
               ${descb}
               <table style="border-collapse:collapse;font-size:14px;margin:16px 0;width:100%;">
                 <tr><td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;">Krantyp</td><td><strong>${sct}</strong></td></tr>
@@ -108,9 +113,9 @@ export function buildFirmLeadHtml(firmId: string, firmName: string, d: FirmLeadM
               </div>
               ${sam}
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
-              <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;"><strong style="color:#1a1a1a;">Über ${BRAND_NAME}</strong><br>${BRAND_NAME} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage prüfen wir manuell, bevor sie an Sie geht. Keine Bots, keine Massenmails. ${al}</p>
+              <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;"><strong style="color:#1a1a1a;">Über ${brand}</strong><br>${brand} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage prüfen wir manuell, bevor sie an Sie geht. Keine Bots, keine Massenmails. ${al}</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
-              <p style="font-size:14px;color:#374151;line-height:1.55;margin:0;">Mit freundlichen Grüßen<br><strong>${esc(FOUNDER_NAME)}</strong><br>Gründer, ${BRAND_NAME}<br><a href="mailto:${esc(FOUNDER_EMAIL)}" style="color:#2563eb;">${esc(FOUNDER_EMAIL)}</a></p>
+              <p style="font-size:14px;color:#374151;line-height:1.55;margin:0;">Mit freundlichen Grüßen<br><strong>${esc(FOUNDER_NAME)}</strong><br>Gründer, ${brand}<br><a href="mailto:${esc(FOUNDER_EMAIL)}" style="color:#2563eb;">${esc(FOUNDER_EMAIL)}</a></p>
               <p style="font-size:11px;color:#9ca3af;margin:16px 0 0 0;">Referenz: ${d.leadId}<br>Bei Rückfragen zu dieser Anfrage bitte diese Referenz angeben.</p>
             </div>`
 }

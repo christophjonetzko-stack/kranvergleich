@@ -25,11 +25,20 @@ const BADGE: Record<LeadHealth, { label: string; cls: string }> = {
   lost: { label: '❌ Lost', cls: 'bg-gray-100 text-gray-500' },
 }
 
+// Owner-facing timestamps in local German time (UTC rendered 1-2h off).
+const TS_FMT = new Intl.DateTimeFormat('de-DE', {
+  timeZone: 'Europe/Berlin',
+  day: '2-digit',
+  month: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
 function ts(iso: string | null): string {
   if (!iso) return '–'
-  const d = new Date(iso)
-  const p = (n: number) => String(n).padStart(2, '0')
-  return `${p(d.getUTCDate())}.${p(d.getUTCMonth() + 1)}. ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`
+  const t = new Date(iso)
+  if (Number.isNaN(t.getTime())) return '–'
+  return TS_FMT.format(t).replace(',', '')
 }
 
 function firmBadge(f: FirmStatus): { label: string; cls: string } {
@@ -121,6 +130,9 @@ export default async function AdminLeadDetailPage({
                     </td>
                     <td className="py-2 pr-3 whitespace-nowrap text-gray-500">
                       {f.response ? ts(f.respondedAt) : `gesendet ${ts(f.sentAt)}`}
+                      {!f.response && f.reminderSentAt ? (
+                        <span className="block text-[11px] text-gray-400">erinnert {ts(f.reminderSentAt)}</span>
+                      ) : null}
                     </td>
                   </tr>
                 )
@@ -161,6 +173,9 @@ export default async function AdminLeadDetailPage({
 
       <p className="mt-4 text-[12px] text-gray-400">
         Lead-ID: {lead.id} · erstellt {new Date(lead.createdAt).toISOString().slice(0, 10)} (vor {lead.ageDays} T) · entry_path {lead.entryPath ?? '–'}
+      </p>
+      <p className="mt-1 text-[12px] text-gray-400">
+        Automatik: Opt-in-Mail {lead.optinSentAt ? ts(lead.optinSentAt) : '–'} · Outcome-Mail {lead.outcomeMailSentAt ? ts(lead.outcomeMailSentAt) : '–'} · Firm-Reminder: siehe Firmenliste
       </p>
       <p className="mt-1 text-[12px] text-gray-400">Aktionen: WON/LOST · Nachfassen · Kunden-Mail · Top-up dispatch (alle via Panel).</p>
     </div>

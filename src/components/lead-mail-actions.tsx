@@ -64,6 +64,8 @@ export function LeadMailActions({
   const [error, setError] = useState<string | null>(null)
 
   const [firmId, setFirmId] = useState<string>(acceptedFirms[0]?.companyId ?? '')
+  // Set after the server rejects with already_sent; the next click re-sends with force.
+  const [forceResend, setForceResend] = useState(false)
 
   const initial = useMemo(() => buildTemplate('geduld', craneType, city, acceptedCount), [craneType, city, acceptedCount])
   const [tpl, setTpl] = useState<TemplateKey>('geduld')
@@ -90,11 +92,17 @@ export function LeadMailActions({
       })
       if (res.ok) {
         setMode(null)
+        setForceResend(false)
         router.refresh()
         return
       }
       const data = (await res.json().catch(() => ({}))) as { error?: string }
-      setError(data.error ?? 'Fehler')
+      if (data.error === 'already_sent') {
+        setForceResend(true)
+        setError('Diese Firma wurde laut Verlauf schon nachgefasst. Erneut „Senden" klicken, um trotzdem zu senden.')
+      } else {
+        setError(data.error ?? 'Fehler')
+      }
     } catch {
       setError('Netzwerkfehler')
     } finally {
@@ -108,7 +116,10 @@ export function LeadMailActions({
       return
     }
     const name = acceptedFirms.find((f) => f.companyId === firmId)?.name ?? firmId
-    post({ action: 'nachfassen', leadId, firmId }, `Nachfass-Mail an „${name}" senden?`)
+    post(
+      { action: 'nachfassen', leadId, firmId, ...(forceResend ? { force: true } : {}) },
+      forceResend ? `Wirklich ERNEUT an „${name}" nachfassen?` : `Nachfass-Mail an „${name}" senden?`,
+    )
   }
 
   function sendMail() {
@@ -142,7 +153,7 @@ export function LeadMailActions({
       {mode === 'nachfassen' && (
         <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50/50 p-3">
           <label className="mb-1 block text-[12px] font-medium text-gray-600">Firma (nur Zusagen) erinnern, den Kunden zu kontaktieren</label>
-          <select value={firmId} onChange={(e) => setFirmId(e.target.value)} className="w-full rounded-lg border px-3 py-2 text-[14px]">
+          <select value={firmId} onChange={(e) => { setFirmId(e.target.value); setForceResend(false); setError(null) }} className="w-full rounded-lg border px-3 py-2 text-[14px]">
             {acceptedFirms.map((f) => <option key={f.companyId} value={f.companyId}>{f.name}</option>)}
           </select>
           <button type="button" onClick={sendNachfassen} disabled={loading} className={`${btn} mt-3 bg-amber-500 text-white hover:bg-amber-600`}>

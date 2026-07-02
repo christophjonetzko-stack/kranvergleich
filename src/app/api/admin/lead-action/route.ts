@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 const bodySchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('won'), leadId: z.string().uuid(), winnerId: z.string().uuid() }),
   z.object({ action: z.literal('lost'), leadId: z.string().uuid(), reason: z.string().min(1).max(200) }),
-  z.object({ action: z.literal('nachfassen'), leadId: z.string().uuid(), firmId: z.string().uuid() }),
+  z.object({ action: z.literal('nachfassen'), leadId: z.string().uuid(), firmId: z.string().uuid(), force: z.boolean().optional() }),
   z.object({
     action: z.literal('customer_mail'),
     leadId: z.string().uuid(),
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
   let res
   if (body.action === 'won') res = await markLeadWon(body.leadId, body.winnerId)
   else if (body.action === 'lost') res = await markLeadLost(body.leadId, body.reason)
-  else if (body.action === 'nachfassen') res = await sendNachfassen(body.leadId, body.firmId)
+  else if (body.action === 'nachfassen') res = await sendNachfassen(body.leadId, body.firmId, body.force === true)
   else if (body.action === 'customer_mail') res = await sendCustomerMail(body.leadId, body.subject, body.body)
   else if (body.action === 'note') res = await addLeadNote(body.leadId, body.text)
   else res = await dispatchTopup(body.leadId, body.firmIds)

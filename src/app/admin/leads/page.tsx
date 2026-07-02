@@ -19,9 +19,12 @@ const BADGE: Record<LeadHealth, { label: string; cls: string }> = {
   lost: { label: '❌ Lost', cls: 'bg-gray-100 text-gray-500' },
 }
 
+// Berlin-local day.month — UTC shifts leads created around midnight to the wrong day.
+const DATE_FMT = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', day: '2-digit', month: '2-digit' })
+
 function fmtDate(iso: string): string {
-  const d = new Date(iso)
-  return `${String(d.getUTCDate()).padStart(2, '0')}.${String(d.getUTCMonth() + 1).padStart(2, '0')}.`
+  // de-DE already emits a trailing dot ("02.07."); normalize to exactly one.
+  return `${DATE_FMT.format(new Date(iso)).replace(/\.$/, '')}.`
 }
 
 function deadlineCell(l: LeadOverview): { text: string; cls: string } {

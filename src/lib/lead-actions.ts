@@ -148,7 +148,7 @@ function buildNachfassenHtml(
 // Nachfassen: remind a firm that ALREADY accepted but the customer has no offer
 // yet. Targets only response='accept' (never re-pokes firms that declined or
 // stayed silent). Reply-to = customer so the firm can reply to them directly.
-export async function sendNachfassen(leadId: string, firmId: string): Promise<ActionResult> {
+export async function sendNachfassen(leadId: string, firmId: string, force = false): Promise<ActionResult> {
   const sb = getServiceSupabase()
 
   const { data: lc } = await sb
@@ -172,7 +172,7 @@ export async function sendNachfassen(leadId: string, firmId: string): Promise<Ac
 
   const { data: lead } = await sb
     .from('leads')
-    .select('customer_name, customer_email, customer_phone, city, crane_type_id')
+    .select('customer_name, customer_email, customer_phone, city, crane_type_id, feedback_notes')
     .eq('id', leadId)
     .limit(1)
     .maybeSingle()
@@ -180,6 +180,14 @@ export async function sendNachfassen(leadId: string, firmId: string): Promise<Ac
 
   const { data: firm } = await sb.from('companies').select('name, email').eq('id', firmId).limit(1).maybeSingle()
   if (!firm?.email) return { ok: false, reason: 'firm_no_email' }
+
+  // Idempotency guard: the audit trail records every panel Nachfassen; a second
+  // send to the same firm needs an explicit force (double-poking accepted firms
+  // reads as pestering). The client confirms and retries with force=true.
+  const priorNote = `Nachfassen via Panel an ${firm.name}`
+  if (!force && typeof lead.feedback_notes === 'string' && lead.feedback_notes.includes(priorNote)) {
+    return { ok: false, reason: 'already_sent' }
+  }
 
   const { data: ct } = lead.crane_type_id
     ? await sb.from('crane_types').select('name').eq('id', lead.crane_type_id).limit(1).maybeSingle()
@@ -257,12 +265,13 @@ export async function dispatchTopup(leadId: string, firmIds: string[]): Promise<
 
   const { data: leadRows } = await sb
     .from('leads')
-    .select('crane_type_id, city, customer_name, customer_email, customer_phone, project_description, preferred_date, duration_days, entry_path')
+    .select('crane_type_id, city, country, customer_name, customer_email, customer_phone, project_description, preferred_date, duration_days, entry_path')
     .eq('id', leadId)
     .limit(1)
   const lead = leadRows?.[0]
   if (!lead) return { ok: false, reason: 'lead_not_found' }
   if (isOptinRequired(lead.entry_path as string | null)) return { ok: false, reason: 'optin_required' }
+  const leadCountry: 'DE' | 'AT' = String(lead.country ?? 'DE').toUpperCase() === 'AT' ? 'AT' : 'DE'
 
   const ctId = lead.crane_type_id as string | null
   const { data: ct } = ctId
@@ -285,7 +294,7 @@ export async function dispatchTopup(leadId: string, firmIds: string[]): Promise<
     .select('id', { count: 'exact', head: true })
     .eq('is_active', true)
     .eq('is_relevant', true)
-    .eq('country', 'DE')
+    .eq('country', leadCountry)
   const anbieterCount = Math.floor((count ?? 0) / 10) * 10
 
   const { data: comps } = await sb
@@ -306,6 +315,7 @@ export async function dispatchTopup(leadId: string, firmIds: string[]): Promise<
   const mailData: FirmLeadMailData = {
     leadId,
     craneType,
+    country: leadCountry,
     displayCity: (lead.city as string | null) ?? '–',
     customerName: lead.customer_name as string | null,
     customerEmail: lead.customer_email as string | null,
