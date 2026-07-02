@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { isAdminRequest } from '@/lib/admin-auth'
-import { markLeadWon, markLeadLost, sendNachfassen, sendCustomerMail, dispatchTopup } from '@/lib/lead-actions'
+import { markLeadWon, markLeadLost, sendNachfassen, sendCustomerMail, dispatchTopup, addLeadNote } from '@/lib/lead-actions'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -17,6 +17,7 @@ const bodySchema = z.discriminatedUnion('action', [
     body: z.string().min(1).max(5000),
   }),
   z.object({ action: z.literal('topup'), leadId: z.string().uuid(), firmIds: z.array(z.string().uuid()).min(1).max(20) }),
+  z.object({ action: z.literal('note'), leadId: z.string().uuid(), text: z.string().min(1).max(2000) }),
 ])
 
 export async function POST(req: Request) {
@@ -36,6 +37,7 @@ export async function POST(req: Request) {
   else if (body.action === 'lost') res = await markLeadLost(body.leadId, body.reason)
   else if (body.action === 'nachfassen') res = await sendNachfassen(body.leadId, body.firmId)
   else if (body.action === 'customer_mail') res = await sendCustomerMail(body.leadId, body.subject, body.body)
+  else if (body.action === 'note') res = await addLeadNote(body.leadId, body.text)
   else res = await dispatchTopup(body.leadId, body.firmIds)
 
   if (!res.ok) {

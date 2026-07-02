@@ -6,6 +6,7 @@ import { getLeadDetail, type FirmStatus, type LeadHealth } from '@/lib/lead-over
 import { LeadActions } from '@/components/lead-actions'
 import { LeadMailActions } from '@/components/lead-mail-actions'
 import { LeadTopupActions } from '@/components/lead-topup-actions'
+import { LeadNoteForm } from '@/components/lead-note-form'
 import { isOptinRequired } from '@/lib/lead-actions'
 import { getTopupCandidates } from '@/lib/lead-coverage'
 
@@ -128,12 +129,15 @@ export default async function AdminLeadDetailPage({
       </section>
 
       {/* Notizen */}
-      {lead.feedbackNotes && (
-        <section className="mt-4 rounded-lg border border-gray-200 p-4">
-          <h2 className="mb-2 text-[12px] font-semibold uppercase tracking-wide text-gray-400">Verlauf / Notizen</h2>
+      <section className="mt-4 rounded-lg border border-gray-200 p-4">
+        <h2 className="mb-2 text-[12px] font-semibold uppercase tracking-wide text-gray-400">Verlauf / Notizen</h2>
+        {lead.feedbackNotes ? (
           <p className="whitespace-pre-line text-[13px] leading-relaxed text-gray-700">{lead.feedbackNotes}</p>
-        </section>
-      )}
+        ) : (
+          <p className="text-[13px] text-gray-400">Noch keine Einträge.</p>
+        )}
+        <LeadNoteForm leadId={lead.id} />
+      </section>
 
       {/* Aktionen (Faza 2a) */}
       <section className="mt-4 rounded-lg border border-gray-200 p-4">

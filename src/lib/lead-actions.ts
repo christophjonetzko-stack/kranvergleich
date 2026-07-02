@@ -99,6 +99,31 @@ export async function markLeadLost(leadId: string, reason: string): Promise<Acti
   return { ok: true }
 }
 
+// Manual note: lets the owner log phone calls and Gmail threads into the
+// lead's timeline, so the panel keeps the full history, not only panel actions.
+export async function addLeadNote(leadId: string, text: string): Promise<ActionResult> {
+  const sb = getServiceSupabase()
+
+  const clean = text.trim().slice(0, 2000)
+  if (!clean) return { ok: false, reason: 'empty_note' }
+
+  const { data: lead, error: leadErr } = await sb
+    .from('leads')
+    .select('id')
+    .eq('id', leadId)
+    .limit(1)
+    .maybeSingle()
+  if (leadErr || !lead) return { ok: false, reason: 'lead_not_found' }
+
+  const notes = await appendNote(sb, leadId, `[${today()}] Notiz: ${clean}`)
+  const { error: updErr } = await sb.from('leads').update({ feedback_notes: notes }).eq('id', leadId)
+  if (updErr) {
+    console.error('[lead-actions] addLeadNote update failed:', updErr)
+    return { ok: false, reason: 'update_failed' }
+  }
+  return { ok: true }
+}
+
 function buildNachfassenHtml(
   firmName: string,
   craneType: string,
