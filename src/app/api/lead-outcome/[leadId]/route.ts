@@ -152,12 +152,14 @@ export async function POST(
              Firmen anrufen, Opt-in-Reroute zu Alternativen (Greb-Pattern) oder dem Kunden direkt antworten.</p>
              <ul><li>Kunde: <strong>${escapeHtml(customerName)}</strong> (${escapeHtml(city)})</li>
              <li>Krantyp: ${escapeHtml(craneType)}</li></ul>
+             <p><a href="${BASE_URL}/admin/leads/${leadId}" style="font-size:13px;color:#2563eb;">→ Lead im Panel öffnen</a></p>
              <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${leadId}</p>`
           : `<h3>Kunde meldet: Angebot erhalten</h3>
              <p>Kandidat für status='won'. Wir raten den Gewinner nicht: bei Gelegenheit prüfen,
              welche Firma akzeptiert hatte (lead_responses), und den Lead manuell schließen.</p>
              <ul><li>Kunde: <strong>${escapeHtml(customerName)}</strong> (${escapeHtml(city)})</li>
              <li>Krantyp: ${escapeHtml(craneType)}</li></ul>
+             <p><a href="${BASE_URL}/admin/leads/${leadId}" style="font-size:13px;color:#2563eb;">→ Lead im Panel öffnen</a></p>
              <p style="font-size:12px;color:#9ca3af;">Lead-ID: ${leadId}</p>`,
       })
     } catch (err) {

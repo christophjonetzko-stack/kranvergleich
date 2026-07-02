@@ -335,6 +335,7 @@ export async function POST(
      ${action === 'decline'
        ? '<p><em>Reason wird in der Folge-Seite erfragt (4 Optionen + Sonstiges). lead_companies.feedback_outcome ist vorläufig auf "lost" gesetzt; die Form refined das ggf. zu wrong_fit oder other.</em></p>'
        : '<p><em>Die Firma sollte den Kunden innerhalb 24h direkt kontaktieren. Wenn 48h ohne Folge, manuell nachhaken (Kunden anrufen, Status erfragen).</em></p>'}
+     <p><a href="${BASE_URL}/admin/leads/${leadId}" style="font-size:13px;color:#2563eb;">→ Lead im Panel öffnen</a></p>
      <p style="font-size:12px;color:#9ca3af;">Response-ID: ${inserted.id}</p>`,
   )
 

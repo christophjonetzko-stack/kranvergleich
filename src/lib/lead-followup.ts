@@ -242,7 +242,7 @@ async function runOwnerDigest(resend: Resend): Promise<number> {
         <td style="padding:6px 10px;border-top:1px solid #e5e7eb;">${escapeHtml(l.crane_types?.name || '–')}</td>
         <td style="padding:6px 10px;border-top:1px solid #e5e7eb;white-space:nowrap;">${age} Tage</td>
         <td style="padding:6px 10px;border-top:1px solid #e5e7eb;">${firms.length} (davon ${reminded} erinnert)</td>
-        <td style="padding:6px 10px;border-top:1px solid #e5e7eb;font-size:11px;color:#9ca3af;">${l.id}</td>
+        <td style="padding:6px 10px;border-top:1px solid #e5e7eb;font-size:11px;"><a href="${BASE_URL}/admin/leads/${l.id}" style="color:#2563eb;">Panel öffnen</a></td>
       </tr>`
     })
     .join('')

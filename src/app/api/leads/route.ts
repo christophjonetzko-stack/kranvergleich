@@ -1503,7 +1503,8 @@ export async function POST(request: Request) {
             <tr><td style="padding:4px 12px 4px 0;color:#6b7280;vertical-align:top;">Anbieter</td><td>${companyCount} ausgewählt${companyListHtml}</td></tr>
           </table>
           ${safeDesc ? `<p style="margin-top:12px;padding:12px;background:#f9fafb;border-radius:6px;font-size:14px;">${safeDesc}</p>` : ''}
-          <p style="margin-top:16px;font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
+          <p style="margin-top:16px;"><a href="${BASE_URL}/admin/leads/${lead.id}" style="font-size:13px;color:#2563eb;">→ Lead im Panel öffnen</a></p>
+          <p style="margin-top:8px;font-size:12px;color:#9ca3af;">Lead-ID: ${lead.id}</p>
         `,
       })
       ownerNotificationSent = notifRes.ok
