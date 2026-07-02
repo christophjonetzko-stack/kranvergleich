@@ -113,7 +113,7 @@ export function buildFirmLeadHtml(firmId: string, firmName: string, d: FirmLeadM
               </div>
               ${sam}
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
-              <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;"><strong style="color:#1a1a1a;">Über ${brand}</strong><br>${brand} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage prüfen wir manuell, bevor sie an Sie geht. Keine Bots, keine Massenmails. ${al}</p>
+              <p style="font-size:13px;color:#4b5563;line-height:1.6;margin:0 0 16px 0;"><strong style="color:#1a1a1a;">Über ${brand}</strong><br>${brand} ist die fokussierte Vergleichsplattform für Kranverleih in Deutschland und Österreich. Jede Anfrage wird vor dem Versand geprüft (E-Mail, Plausibilität, Einwilligung), keine Bots, keine Massenmails. ${al}</p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               <p style="font-size:14px;color:#374151;line-height:1.55;margin:0;">Mit freundlichen Grüßen<br><strong>${esc(FOUNDER_NAME)}</strong><br>Gründer, ${brand}<br><a href="mailto:${esc(FOUNDER_EMAIL)}" style="color:#2563eb;">${esc(FOUNDER_EMAIL)}</a></p>
               <p style="font-size:11px;color:#9ca3af;margin:16px 0 0 0;">Referenz: ${d.leadId}<br>Bei Rückfragen zu dieser Anfrage bitte diese Referenz angeben.</p>

@@ -957,6 +957,69 @@ export async function POST(request: Request) {
       ? `📞 Rückruf-Anfrage: ${subjectParts.join(' · ')}`
       : `Neue Anfrage: ${subjectParts.join(' · ')}`
 
+    // === Spam gate (2026-07-02, lead 30f4c0f0) =============================
+    // The Haiku qualification used to run only inside the owner-mail block,
+    // AFTER the firm mails had gone out — advisory-only, so a gibberish lead
+    // scored spam_risk and still reached 10 firms. It now runs here, before
+    // any firm-facing side effect, and a clear spam_risk verdict holds the
+    // dispatch. Fail-open: timeout / API error / every other tier dispatches
+    // normally, so a model hiccup can never block a real customer. Held leads
+    // stay status='new' with 0 firms → red "Handlungsbedarf" in /admin/leads;
+    // a human releases them via Top-up dispatch or closes them as LOST, so no
+    // automated adverse decision is taken on the customer (DSGVO Art. 22).
+    // The customer receives the neutral "Prüfung läuft" confirmation, same as
+    // validation holds.
+    let leadQuality: import('@/lib/ai-helper').LeadQualificationResult | null = null
+    if (projectDescription.trim().length >= 8) {
+      try {
+        const { runQualifyLead } = await import('@/lib/ai-helper')
+        leadQuality = await Promise.race([
+          runQualifyLead({
+            projectDescription,
+            craneTypeName,
+            durationDays,
+            hasEmail: !!customerEmail,
+            hasPhone: !!(customerPhone && customerPhone.trim()),
+            entryPath,
+          }),
+          new Promise<null>((resolve) => setTimeout(() => resolve(null), 6000)),
+        ])
+      } catch (err) {
+        console.error('lead qualification skipped:', err)
+      }
+    }
+    const heldSpamRisk = !dryRun && !validationFailed && leadQuality?.tier === 'spam_risk'
+    if (heldSpamRisk && companyIds.length > 0) {
+      console.warn(`[api/leads] spam gate: lead ${lead.id} held, dispatch to ${companyIds.length} firms stopped`)
+      // submitLead already created the lead_companies rows; remove them so the
+      // panel shows a clean 0-firm hold and a later Top-up release isn't
+      // deduped against firms that never received a mail.
+      const { error: delErr } = await getServiceSupabase()
+        .from('lead_companies')
+        .delete()
+        .eq('lead_id', lead.id)
+      if (delErr) console.error('[api/leads] spam gate lead_companies cleanup failed:', delErr)
+      companyIds = []
+    }
+    // Persist the advisory badge (mig 046) so /admin/leads shows it; on a hold
+    // also stamp the timeline (fresh lead → feedback_notes is empty, direct set
+    // cannot clobber anything). Best-effort: pre-migration columns missing →
+    // log and continue, mails still send.
+    if (leadQuality && !dryRun) {
+      const { error: qualErr } = await getServiceSupabase()
+        .from('leads')
+        .update({
+          qualification_tier: leadQuality.tier,
+          qualification_b2b: leadQuality.is_b2b,
+          qualification_note: leadQuality.rationale.slice(0, 300),
+          ...(heldSpamRisk
+            ? { feedback_notes: `[${new Date().toISOString().slice(0, 10)}] GEHALTEN: spam_risk — automatischer Dispatch gestoppt. Freigabe im Panel via Top-up oder als LOST schließen.` }
+            : {}),
+        })
+        .eq('id', lead.id)
+      if (qualErr) console.error('lead qualification persist skipped (pre-mig-046?):', qualErr.message)
+    }
+
     // Dispatch shape for the receiving firm:
     //   - Sammelanfrage: the lead went to >1 supplier in parallel; copy
     //     surfaces the "wer zuerst reagiert, gewinnt" oversubscribed framing.
@@ -1246,47 +1309,8 @@ export async function POST(request: Request) {
     const ownerEmail = getNotificationEmailOrNull()
     let ownerNotificationSent = false
     if (ownerEmail) {
-      // Lead qualification (advisory, 2026-06-24). One Haiku call scores the
-      // lead's value/seriousness so the owner can prioritise (a Lowind-style
-      // 18-month B2B contract should not read like a one-line private inquiry).
-      // ADVISORY ONLY — shown in the notification, no automated action is taken
-      // on the customer from it (DSGVO Art. 22). Best-effort: a 6s timeout or any
-      // failure just omits the badge, the mail still sends. Data-minimised: only
-      // the project text + non-PII facts go to the model, never the customer's
-      // name / e-mail / phone.
-      let leadQuality: import('@/lib/ai-helper').LeadQualificationResult | null = null
-      if (projectDescription.trim().length >= 8) {
-        try {
-          const { runQualifyLead } = await import('@/lib/ai-helper')
-          leadQuality = await Promise.race([
-            runQualifyLead({
-              projectDescription,
-              craneTypeName,
-              durationDays,
-              hasEmail: !!customerEmail,
-              hasPhone: !!(customerPhone && customerPhone.trim()),
-              entryPath,
-            }),
-            new Promise<null>((resolve) => setTimeout(() => resolve(null), 6000)),
-          ])
-        } catch (err) {
-          console.error('lead qualification skipped:', err)
-        }
-      }
-      // Persist the advisory badge (mig 046) so /admin/leads can show it.
-      // Best-effort: pre-migration the columns don't exist — log and continue,
-      // the owner mail still carries the banner either way.
-      if (leadQuality && !dryRun) {
-        const { error: qualErr } = await getServiceSupabase()
-          .from('leads')
-          .update({
-            qualification_tier: leadQuality.tier,
-            qualification_b2b: leadQuality.is_b2b,
-            qualification_note: leadQuality.rationale.slice(0, 300),
-          })
-          .eq('id', lead.id)
-        if (qualErr) console.error('lead qualification persist skipped (pre-mig-046?):', qualErr.message)
-      }
+      // Qualification (leadQuality) is computed and persisted in the spam-gate
+      // block above, BEFORE dispatch — here it only feeds the banner + prefix.
       const QUAL_STYLE: Record<string, { bg: string; border: string; color: string; label: string }> = {
         high_value: { bg: '#ecfdf5', border: '#059669', color: '#065f46', label: '🐋 Hochwertiger Lead' },
         solid: { bg: '#eff6ff', border: '#2563eb', color: '#1e3a8a', label: '🟢 Solider Lead' },
@@ -1305,10 +1329,18 @@ export async function POST(request: Request) {
       const qualPrefix =
         leadQuality?.tier === 'high_value'
           ? '🐋 HIGH-VALUE, '
-          : leadQuality?.tier === 'spam_risk'
+          : leadQuality?.tier === 'spam_risk' && !heldSpamRisk
           ? '⚠️ SPAM-RISIKO, '
           : ''
-      const alertBanner = validationFailed
+      const alertBanner = heldSpamRisk
+        ? `<div style="background:#fef2f2;border:2px solid #dc2626;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
+            <div style="font-size:15px;font-weight:600;color:#7f1d1d;margin-bottom:6px;">🚫 GEHALTEN: Spam-Risiko — kein Versand an Anbieter</div>
+            <div style="font-size:13px;color:#7f1d1d;line-height:1.5;">
+              Die Qualifizierung hat diesen Lead als Spam-/Test-Risiko eingestuft; der automatische Dispatch wurde gestoppt (Storno-Lektion Lead 30f4c0f0, 02.07.). Kunde hat die neutrale „Prüfung läuft"-Bestätigung erhalten.<br>
+              <strong>Im Panel entscheiden:</strong> echter Lead → über „Top-up dispatch" an Firmen senden · Spam → als LOST schließen.
+            </div>
+          </div>`
+        : validationFailed
         ? `<div style="background:#fef3c7;border:2px solid #d97706;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-family:system-ui;">
             <div style="font-size:15px;font-weight:600;color:#78350f;margin-bottom:6px;">⏸ Lead gehalten. Validation fehlgeschlagen</div>
             <div style="font-size:13px;color:#78350f;line-height:1.5;">
@@ -1473,7 +1505,9 @@ export async function POST(request: Request) {
             </div>
           </div>`
         : ''
-      const subjectPrefix = (validationFailed
+      const subjectPrefix = (heldSpamRisk
+        ? '🚫 GEHALTEN (Spam-Risiko), '
+        : validationFailed
         ? '⏸ LEAD GEHALTEN (Validation), '
         : noFirmsAttached
         ? '🚨 LEAD OHNE ANBIETER, '
@@ -1536,7 +1570,7 @@ export async function POST(request: Request) {
       // "most reply in 1-2 days"). replyTo is the monitored inbox, not the
       // send-only `send.` subdomain — otherwise "antworten Sie einfach" bounces.
       const greetingName = safeName !== '–' ? safeName : ''
-      const intro = validationFailed
+      const intro = (validationFailed || heldSpamRisk)
         ? 'danke. Wir prüfen Ihre Anfrage und melden uns innerhalb von 24 Stunden bei Ihnen. Bitte nicht erneut einsenden, damit wir Doppel-Einträge vermeiden.'
         : companyCount > 0
         ? `danke. Ihre Anfrage ist raus. Ich habe sie an <strong>${companyCount} passende Kranbetriebe</strong>${safeCity !== '–' ? ` in der Region ${safeCity}` : ''} weitergeleitet. Erste Rückmeldungen kommen oft innerhalb von ein bis zwei Werktagen, manchmal schneller, manchmal dauert es etwas länger.`
@@ -1553,7 +1587,7 @@ export async function POST(request: Request) {
         from: FROM_EMAIL,
         to: customerEmail,
         replyTo: founderEmail,
-        subject: `Ihre Anfrage bei ${BRAND_NAME}${validationFailed ? ' — Prüfung läuft' : companyCount > 0 ? ' — Anbieter informiert' : ' — Eingang bestätigt'}`,
+        subject: `Ihre Anfrage bei ${BRAND_NAME}${(validationFailed || heldSpamRisk) ? ' — Prüfung läuft' : companyCount > 0 ? ' — Anbieter informiert' : ' — Eingang bestätigt'}`,
         html: `
         <div style="font-family:system-ui;max-width:520px;color:#1a1a1a;">
           <p style="color:#4b5563;font-size:14px;line-height:1.6;margin:0;">${greetingName ? `Hallo ${greetingName},` : 'Hallo,'}</p>
