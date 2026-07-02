@@ -113,6 +113,11 @@ export default async function AdminLeadDetailPage({
                     <td className="py-2 pr-3">
                       {f.name}{isWinner ? <span className="ml-1 text-blue-700">★ Gewinner</span> : ''}
                       {f.email ? <span className="block text-[12px] text-gray-400">{f.email}</span> : null}
+                      {f.response === 'decline' && (f.declineReason || f.feedbackOutcome) ? (
+                        <span className="block text-[12px] text-red-400">
+                          Grund: {f.declineReason ?? f.feedbackOutcome}
+                        </span>
+                      ) : null}
                     </td>
                     <td className="py-2 pr-3 whitespace-nowrap text-gray-500">
                       {f.response ? ts(f.respondedAt) : `gesendet ${ts(f.sentAt)}`}

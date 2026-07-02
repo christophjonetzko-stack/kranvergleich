@@ -22,6 +22,7 @@ export interface FirmStatus {
   sentAt: string | null
   response: 'accept' | 'decline' | null
   respondedAt: string | null
+  declineReason: string | null
   feedbackOutcome: string | null
 }
 
@@ -178,16 +179,20 @@ async function fetchFirmsByLead(
       .from('lead_companies')
       .select('lead_id, company_id, sent_at, feedback_outcome, companies(name, email)')
       .in('lead_id', leadIds),
-    sb.from('lead_responses').select('lead_id, supplier_id, action, responded_at').in('lead_id', leadIds),
+    sb.from('lead_responses').select('lead_id, supplier_id, action, responded_at, reason').in('lead_id', leadIds),
   ])
 
   // Latest response per (lead, supplier).
-  const respMap = new Map<string, { action: 'accept' | 'decline'; respondedAt: string }>()
+  const respMap = new Map<string, { action: 'accept' | 'decline'; respondedAt: string; reason: string | null }>()
   for (const r of responses ?? []) {
     const key = `${r.lead_id}:${r.supplier_id}`
     const prev = respMap.get(key)
     if (!prev || (r.responded_at ?? '') > prev.respondedAt) {
-      respMap.set(key, { action: r.action as 'accept' | 'decline', respondedAt: r.responded_at ?? '' })
+      respMap.set(key, {
+        action: r.action as 'accept' | 'decline',
+        respondedAt: r.responded_at ?? '',
+        reason: (r.reason as string | null) ?? null,
+      })
     }
   }
 
@@ -202,6 +207,7 @@ async function fetchFirmsByLead(
       sentAt: lc.sent_at,
       response: resp?.action ?? null,
       respondedAt: resp?.respondedAt ?? null,
+      declineReason: resp?.action === 'decline' ? (resp.reason ?? null) : null,
       feedbackOutcome: lc.feedback_outcome ?? null,
     }
     const arr = byLead.get(lc.lead_id) ?? []
